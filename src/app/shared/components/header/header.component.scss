@@ -1,9 +1,32 @@
 ul li {
     list-style: none;
 }
-h1 {
-    padding-left: 10px;
-}
 img {
     padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: middle;
+}
+
+a:link {
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:active {
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    text-decoration: underline;
 }
