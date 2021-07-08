@@ -12,6 +12,10 @@ import { PrivacyComponent } from 'src/app/modules/footer/privacy/privacy.compone
 import { ImprintComponent } from 'src/app/modules/footer/imprint/imprint.component';
 import { LegalComponent } from 'src/app/modules/footer/legal/legal.component';
 import { ContactComponent } from 'src/app/modules/footer/contact/contact.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import {MatListModule} from '@angular/material/list';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -21,7 +25,7 @@ import { ContactComponent } from 'src/app/modules/footer/contact/contact.compone
     NextcloudComponent,
     SynologyComponent,
     PrivacyComponent,
-    ImprintComponent, 
+    ImprintComponent,
     LegalComponent,
     ContactComponent
   ],
@@ -30,7 +34,11 @@ import { ContactComponent } from 'src/app/modules/footer/contact/contact.compone
     RouterModule,
     SharedModule,
     MatSidenavModule,
-    MatDividerModule
+    MatDividerModule,
+    MatCardModule,
+    MatButtonModule,
+    MatListModule,
+    FlexLayoutModule
   ]
 })
 export class DefaultModule { }
