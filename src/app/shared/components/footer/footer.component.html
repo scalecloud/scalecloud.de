@@ -1,4 +1,37 @@
 <mat-divider></mat-divider>
 <footer>
-    &copy; 2021 <a routerLink="/">ScaleCloud.de</a>
+    <mat-list>
+        <mat-list-item>
+            <div matLine>
+                <div fxFlex fxLayout="row" fxLayoutAlign="flex-start">
+                    <ul fxLayout="row" fxLayoutGap="20px">
+                        <li>
+                            <a routerLink="/privacy">Privacy Policy</a>
+                        </li>
+                    </ul>
+                    <ul fxLayout="row" fxLayoutGap="20px">
+                        <li>
+                            <a routerLink="/imprint">Imprint</a>
+                        </li>
+                    </ul>
+                    <ul fxLayout="row" fxLayoutGap="20px">
+                        <li>
+                            <a routerLink="/legal">Legal</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </mat-list-item>
+        <mat-list-item>
+            <div fxFlex fxLayout="row" fxLayoutAlign="flex-start">
+                <ul fxLayout="row" fxLayoutGap="20px">
+                    <li>
+                        &copy; 2021 <a routerLink="/">ScaleCloud.de</a>
+                    </li>
+                </ul>
+            </div>
+        </mat-list-item>
+    </mat-list>
+
+
 </footer>
