@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
-import { HomeComponent } from './modules/home/home.component';
-import { NextcloudComponent } from './modules/nextcloud/nextcloud.component';
-import { SynologyComponent } from './modules/synology/synology.component';
+import { ImprintComponent } from './modules/footer/imprint/imprint.component';
+import { LegalComponent } from './modules/footer/legal/legal.component';
+import { PrivacyComponent } from './modules/footer/privacy/privacy.component';
+import { HomeComponent } from './modules/main/home/home.component';
+import { NextcloudComponent } from './modules/products/nextcloud/nextcloud.component';
+import { SynologyComponent } from './modules/products/synology/synology.component';
 
-const routes: Routes = [ {
+const routes: Routes = [{
   path: '',
   component: DefaultComponent,
   children: [{
@@ -17,6 +20,16 @@ const routes: Routes = [ {
   }, {
     path: 'synology',
     component: SynologyComponent
+  }, {
+    path: 'privacy',
+    component: PrivacyComponent
+  }, {
+    path: 'imprint',
+    component: ImprintComponent
+  },
+  {
+    path: 'legal',
+    component: LegalComponent
   }]
 }];
 
