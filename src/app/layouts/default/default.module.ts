@@ -11,6 +11,7 @@ import { SynologyComponent } from 'src/app/modules/products/synology/synology.co
 import { PrivacyComponent } from 'src/app/modules/footer/privacy/privacy.component';
 import { ImprintComponent } from 'src/app/modules/footer/imprint/imprint.component';
 import { LegalComponent } from 'src/app/modules/footer/legal/legal.component';
+import { ContactComponent } from 'src/app/modules/footer/contact/contact.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { LegalComponent } from 'src/app/modules/footer/legal/legal.component';
     SynologyComponent,
     PrivacyComponent,
     ImprintComponent, 
-    LegalComponent
+    LegalComponent,
+    ContactComponent
   ],
   imports: [
     CommonModule,

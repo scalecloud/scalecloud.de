@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
+import { ContactComponent } from './modules/footer/contact/contact.component';
 import { ImprintComponent } from './modules/footer/imprint/imprint.component';
 import { LegalComponent } from './modules/footer/legal/legal.component';
 import { PrivacyComponent } from './modules/footer/privacy/privacy.component';
@@ -26,10 +27,12 @@ const routes: Routes = [{
   }, {
     path: 'imprint',
     component: ImprintComponent
-  },
-  {
+  }, {
     path: 'legal',
     component: LegalComponent
+  }, {
+    path: 'contact',
+    component: ContactComponent
   }]
 }];
 
