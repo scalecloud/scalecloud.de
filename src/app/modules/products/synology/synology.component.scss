@@ -2,8 +2,8 @@
     height: 5rem;
 }
 .product-logo {
-    max-width:100%;
-    max-height:100%;    
+    max-width: 100%;
+    max-height: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -12,13 +12,17 @@ h1 {
     text-align: center;
 }
 
-mat-card-title {
-    font-size: 5rem;    
+mat-card {
+    max-width: 400px;
+    text-align: center;
 }
 
-.price-month {
-    font-size: 100px;
-    color: green;
+mat-card-title {
+    font-size: 2rem;
+}
+
+mat-icon {
+    padding-right: 1rem;
 }
 
 mat-card-subtitle {
@@ -27,13 +31,8 @@ mat-card-subtitle {
     font-weight: bold;
 }
 
-.product-card {
-    max-width: 400px;
-    text-align: center;
-}
-
-mat-icon {
-    padding-right: 1rem;
+.price-month {
+    font-size: 1rem;
 }
 
 mat-card:hover {
@@ -41,15 +40,12 @@ mat-card:hover {
     box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.3);
     transform: scale(1.04);
     transition: all 0.3s ease-in-out;
-    .front {
-        opacity: 0;
-        visibility: hidden;
+    mat-card-title {
+        color: red;
+        transition: all 0.3s ease-in-out;
     }
-    .back {
-        opacity: 1 !important;
-        visibility: visible !important;
-        a.button {
-            transform: translateY(0px) !important;
-        }
+    button {
+        color: red;
+        transition: all 0.3s ease-in-out;
     }
 }
