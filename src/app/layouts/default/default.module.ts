@@ -17,12 +17,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
-
+import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
+import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
 
 @NgModule({
   declarations: [
     DefaultComponent,
     HomeComponent,
+    TitelCardComponent,
+    SubscriptionCardComponent,
     NextcloudComponent,
     SynologyComponent,
     PrivacyComponent,
