@@ -27,7 +27,7 @@ node() {
         }
     }
     stage('Trigger test') {
-        echo "trigger test"
+        echo "Trigger test"
         echo "Current build result: ${currentBuild.result}"
     }
   }
