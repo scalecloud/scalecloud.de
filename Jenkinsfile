@@ -12,11 +12,27 @@ node() {
       checkout scm
       echo "Current build result: ${currentBuild.result}"
     }
+    stage('Install dependencies') {
+        lastStage = env.STAGE_NAME
+        sh 'npm install'
+    }
     if (env.BRANCH_NAME == "master") {
-        stage('Run Versions Test') {
+        stage('Run Tests') {
             lastStage = env.STAGE_NAME
             try {
-              echo "Running Versions test"
+              sh 'ng test scalecloud'
+            }
+            catch(err){
+                throw err
+            }
+            finally {
+              echo "Running tests done"
+            }
+        }
+        stage('Run e2e Tests') {
+            lastStage = env.STAGE_NAME
+            try {
+              sh 'ng run scalecloud:e2e'
             }
             catch(err){
                 throw err
@@ -26,9 +42,13 @@ node() {
             }
         }
     }
-    stage('Trigger test') {
-        echo "Trigger test"
-        echo "Current build result: ${currentBuild.result}"
+    stage('Build') {
+        lastStage = env.STAGE_NAME
+        sh 'ng build scalecloud'
+    }
+    stage('Upload') {
+        lastStage = env.STAGE_NAME
+        echo "Upload implementation needed."
     }
   }
   catch (err) {
