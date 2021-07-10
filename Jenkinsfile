@@ -7,7 +7,7 @@ node() {
     stage('Clean Workspace') {
      cleanWs()
     }
-    stage('Set NodeJS env and may install npm') {
+    stage('Set NodeJS env and may install NodeJS') {
       // Requires https://plugins.jenkins.io/nodejs/
       env.NODEJS_HOME = "${tool 'nodejs'}"
       env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
@@ -22,30 +22,28 @@ node() {
         lastStage = env.STAGE_NAME
         sh 'npm install'
     }
-    if (env.BRANCH_NAME == "master") {
-        stage('Run Tests') {
-            lastStage = env.STAGE_NAME
-            try {
-              sh 'npm run ng test scalecloud'
-            }
-            catch(err){
-                throw err
-            }
-            finally {
-              echo "Running tests done"
-            }
+    stage('Run Tests') {
+        lastStage = env.STAGE_NAME
+        try {
+          sh 'npm run ng test -- --watch=false --code-coverage'
         }
-        stage('Run e2e Tests') {
-            lastStage = env.STAGE_NAME
-            try {
-              sh 'npm run ng run scalecloud:e2e'
-            }
-            catch(err){
-                throw err
-            }
-            finally {
-              echo "Running e2e done"
-            }
+        catch(err){
+            throw err
+        }
+        finally {
+          echo "Running tests done"
+        }
+    }
+    stage('Run e2e Tests') {
+        lastStage = env.STAGE_NAME
+        try {
+          sh 'npm run ng run scalecloud:e2e'
+        }
+        catch(err){
+            throw err
+        }
+        finally {
+          echo "Running e2e done"
         }
     }
     stage('Build') {
