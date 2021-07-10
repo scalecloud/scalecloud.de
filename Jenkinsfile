@@ -41,7 +41,7 @@ node() {
     throw err
   }
   finally {
-    stage('Cleanup') {
+    stage('Clean Workspace') {
       cleanWs()
     }
 
