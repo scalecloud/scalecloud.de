@@ -7,6 +7,12 @@ node() {
     stage('Clean Workspace') {
      cleanWs()
     }
+    stage('Set NodeJS env and may install npm') {
+      // Requires https://plugins.jenkins.io/nodejs/
+      env.NODEJS_HOME = "${tool 'nodejs'}"
+      env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
+      sh 'npm --version'
+    }
     stage('Checkout') {
       lastStage = env.STAGE_NAME
       checkout scm
@@ -20,7 +26,7 @@ node() {
         stage('Run Tests') {
             lastStage = env.STAGE_NAME
             try {
-              sh 'ng test scalecloud'
+              sh 'npm run ng test scalecloud'
             }
             catch(err){
                 throw err
@@ -32,19 +38,19 @@ node() {
         stage('Run e2e Tests') {
             lastStage = env.STAGE_NAME
             try {
-              sh 'ng run scalecloud:e2e'
+              sh 'npm run ng run scalecloud:e2e'
             }
             catch(err){
                 throw err
             }
             finally {
-              echo "Running tests done"
+              echo "Running e2e done"
             }
         }
     }
     stage('Build') {
         lastStage = env.STAGE_NAME
-        sh 'ng build scalecloud'
+        sh 'npm run ng build scalecloud'
     }
     stage('Upload') {
         lastStage = env.STAGE_NAME
