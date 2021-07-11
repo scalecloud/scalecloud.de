@@ -26,7 +26,7 @@ node() {
         lastStage = env.STAGE_NAME
         // Requirement, as Jenkins runs in Docker and does not have Chrome installed after updates
         println "env.CHROME_BIN: " + env.CHROME_BIN 
-        if( env.CHROME_BIN == null ) {
+      /**  if( env.CHROME_BIN == null ) {
           sh 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" |  tee -a /etc/apt/sources.list'
           sh 'wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
           sh 'apt-get update'
@@ -38,7 +38,7 @@ node() {
         }
         else {
           println "Chrome Browser env found. No Install needed."
-        }
+        } **/
     }
     stage('Run Tests') {
         lastStage = env.STAGE_NAME
