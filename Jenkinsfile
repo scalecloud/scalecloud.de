@@ -8,7 +8,9 @@ node() {
      cleanWs()
     }
     stage('Set NodeJS env and may install NodeJS') {
-      // Requires https://plugins.jenkins.io/nodejs/
+      println "Requires: Plugin for NodeJS:"
+      println "https://plugins.jenkins.io/nodejs/"
+      println "Set up the plugin under jenkinsurl/configureTools/ to install NodeJS if it is missing."
       env.NODEJS_HOME = "${tool 'nodejs'}"
       env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
       sh 'npm --version'
@@ -22,27 +24,14 @@ node() {
         lastStage = env.STAGE_NAME
         sh 'npm install'
     }
-    stage('Setup headless Chrome Browser') {
-        lastStage = env.STAGE_NAME
-        // Requirement, as Jenkins runs in Docker and does not have Chrome installed after updates
-        println "env.CHROME_BIN: " + env.CHROME_BIN 
-      /**  if( env.CHROME_BIN == null ) {
-          sh 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" |  tee -a /etc/apt/sources.list'
-          sh 'wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
-          sh 'apt-get update'
-          sh 'apt-get -y install libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4'
-          sh 'apt-get -y install google-chrome-stable'
-          sh 'apt-get -y install xvfb gtk2-engines-pixbuf'
-          sh 'apt-get -y install xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable'
-          sh 'apt-get -y install imagemagick x11-apps'
-        }
-        else {
-          println "Chrome Browser env found. No Install needed."
-        } **/
-    }
     stage('Run Tests') {
         lastStage = env.STAGE_NAME
         try {
+          println "Requires: Google Chrome Headless. Could be installed by:"
+          println 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" |  tee -a /etc/apt/sources.list'
+          println "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -"
+          println "apt-get update"
+          println "apt-get -y install libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 google-chrome-stable xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable imagemagick x11-apps"
           sh 'npm run ng test -- --watch=false --code-coverage'
         }
         catch(err){
@@ -55,7 +44,11 @@ node() {
     stage('Run e2e Tests') {
         lastStage = env.STAGE_NAME
         try {
-          sh 'npm run ng run scalecloud:e2e'
+          println "Requires Docker."
+          println "Pull latest image."
+          sh "docker pull trion/ng-cli-e2e:latest"
+          println "Start e2e test"
+          sh "docker run --rm --name ng-cli-e2e -v /volume1/jenkins/jenkins_home/workspace/scalecloud.de/scalecloude.de:/app trion/ng-cli-e2e:latest ng e2e"
         }
         catch(err){
             throw err
@@ -86,6 +79,5 @@ node() {
     stage('Clean Workspace') {
       cleanWs()
     }
-
   }
 }
