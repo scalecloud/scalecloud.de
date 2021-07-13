@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SubscriptionType } from '../titel-card/titel-card.component';
+import { SubscriptionType } from '../SubscriptionType';
 
 @Component({
   selector: 'app-nextcloud',

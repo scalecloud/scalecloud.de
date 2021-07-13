@@ -1,10 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SubscriptionType } from '../SubscriptionType';
 
 
-export enum SubscriptionType {
-  Nextcloud,
-  Synology
-}
+
 
 @Component({
   selector: 'app-titel-card',
@@ -13,9 +11,9 @@ export enum SubscriptionType {
 })
 export class TitelCardComponent implements OnInit {
 
-  @Input() subscriptionType: SubscriptionType;
+  @Input() subscriptionType: SubscriptionType = SubscriptionType.Nextcloud;
+  
   constructor() {
-    this.subscriptionType = SubscriptionType.Nextcloud;
   }
 
   ngOnInit(): void {
