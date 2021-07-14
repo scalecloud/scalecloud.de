@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenu } from '@angular/material/menu';
+import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 
 import { HeaderComponent } from './header.component';
 
@@ -8,9 +11,15 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [
+        HeaderComponent,
+        MatMenu,
+        MatToolbar,
+        MatToolbarRow,
+        MatIcon
+      ],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

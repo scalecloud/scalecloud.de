@@ -1,4 +1,6 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDivider } from '@angular/material/divider';
 
 import { TitelCardComponent } from './titel-card.component';
 
@@ -8,9 +10,13 @@ describe('TitelCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TitelCardComponent ]
+      declarations: [
+        TitelCardComponent,
+        MatDivider
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

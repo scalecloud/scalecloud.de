@@ -1,4 +1,6 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TitelCardComponent } from '../titel-card/titel-card.component';
 
 import { SynologyComponent } from './synology.component';
 
@@ -8,9 +10,13 @@ describe('SynologyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SynologyComponent ]
+      declarations: [
+        SynologyComponent,
+        TitelCardComponent
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
