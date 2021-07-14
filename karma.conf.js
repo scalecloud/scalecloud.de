@@ -30,14 +30,14 @@ module.exports = function (config) {
       reporters: [
         { type: 'html' },
         { type: 'text-summary' }
-      ]
-    },
-    check: {
-      global: {
-        statements: 80,
-        branches: 80,
-        functions: 80,
-        lines: 80
+      ],
+      check: {
+        global: {
+          statements: 90,
+          branches: 100,
+          functions: 90,
+          lines: 87
+        }
       }
     },
     reporters: ['progress', 'kjhtml'],
@@ -49,7 +49,7 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox','--disable-setuid-sandbox']
+        flags: ['--no-sandbox', '--disable-setuid-sandbox']
       }
     },
     singleRun: false,

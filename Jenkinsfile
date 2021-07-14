@@ -32,7 +32,7 @@ node() {
           println "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -"
           println "apt-get update"
           println "apt-get -y install libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 google-chrome-stable xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable imagemagick x11-apps"
-          sh 'npm run ng test -- --watch=false --code-coverage'
+          sh 'npm run ng test -- --watch=false'
         }
         catch(err){
             throw err
