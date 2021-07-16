@@ -1,8 +1,6 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDivider } from '@angular/material/divider';
-import { MatList } from '@angular/material/list';
-
+import { MatListModule } from '@angular/material/list';
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
@@ -13,12 +11,13 @@ describe('HomeComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         HomeComponent,
-        MatList,
         MatDivider
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      imports: [
+        MatListModule
+      ],
     },
-    
+
     )
       .compileComponents();
   });

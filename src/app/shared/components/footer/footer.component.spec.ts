@@ -1,7 +1,7 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDivider } from '@angular/material/divider';
-import { MatList } from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { FooterComponent } from './footer.component';
 
@@ -13,10 +13,13 @@ describe('FooterComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         FooterComponent,
-        MatList,
-        MatDivider
+        MatDivider,
+        
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      imports: [
+        MatListModule,
+        MatSidenavModule
+      ]
     })
       .compileComponents();
   });

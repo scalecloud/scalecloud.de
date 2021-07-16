@@ -33,7 +33,7 @@ module.exports = function (config) {
       ],
       check: {
         global: {
-          statements: 90,
+          statements: 91,
           branches: 100,
           functions: 90,
           lines: 87

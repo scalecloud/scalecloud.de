@@ -1,5 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCard, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { SubscriptionCardComponent } from '../subscription-card/subscription-card.component';
 import { TitelCardComponent } from '../titel-card/titel-card.component';
 
 import { NextcloudComponent } from './nextcloud.component';
@@ -12,9 +16,20 @@ describe('NextcloudComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         NextcloudComponent,
-        TitelCardComponent
+        TitelCardComponent,
+        MatDivider,
+        SubscriptionCardComponent,
+        MatCard,
+        MatIcon,
+        MatDivider,
+        MatCardActions,
+        MatCardTitle,
+        MatCardContent,
+        MatCardSubtitle
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      imports: [
+        MatListModule
+      ]
     })
       .compileComponents();
   });

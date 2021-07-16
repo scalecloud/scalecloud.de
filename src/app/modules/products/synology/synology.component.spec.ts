@@ -1,7 +1,10 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCard, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { SubscriptionCardComponent } from '../subscription-card/subscription-card.component';
 import { TitelCardComponent } from '../titel-card/titel-card.component';
-
 import { SynologyComponent } from './synology.component';
 
 describe('SynologyComponent', () => {
@@ -12,9 +15,21 @@ describe('SynologyComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         SynologyComponent,
-        TitelCardComponent
+        TitelCardComponent,
+        MatDivider,
+        SubscriptionCardComponent,
+        SubscriptionCardComponent,
+        MatCard,
+        MatIcon,
+        MatDivider,
+        MatCardActions,
+        MatCardTitle,
+        MatCardContent,
+        MatCardSubtitle
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      imports: [
+        MatListModule
+      ]
     })
       .compileComponents();
   });
