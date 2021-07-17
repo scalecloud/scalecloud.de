@@ -1,7 +1,7 @@
 # ScaleCloud.de
 Going to create the homepage scalecloud.de with awt login and as backend golang + mongodb
 
-## SonarCloud.io:
+#### SonarCloud.io:
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=bugs)](https://sonarcloud.io/dashboard?id=scalecloud_scalecloud.de)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=code_smells)](https://sonarcloud.io/dashboard?id=scalecloud_scalecloud.de)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=coverage)](https://sonarcloud.io/dashboard?id=scalecloud_scalecloud.de)
