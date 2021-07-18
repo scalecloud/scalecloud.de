@@ -1,0 +1,9 @@
+export interface NextcloudProduct {
+  productId: number;
+  name: string;
+  storageAmount: number;
+  scalable: boolean;
+  trialDays: number;
+  usersPerSubscription: number;
+  pricePerMonth: number;
+}
