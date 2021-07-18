@@ -1,9 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SubscriptionType } from '../SubscriptionType';
 
-
-
-
 @Component({
   selector: 'app-titel-card',
   templateUrl: './titel-card.component.html',

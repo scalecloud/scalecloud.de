@@ -1,11 +1,23 @@
-<mat-card>
-    <mat-card-title>Ruby</mat-card-title>
+<mat-card *ngIf="nextcloudProduct != undefined || synologyProduct != undefined">
+    <mat-card-title>
+        <div *ngIf="nextcloudProduct != undefined">
+            {{nextcloudProduct.name}}
+        </div>
+        <div *ngIf="synologyProduct != undefined">
+            {{synologyProduct.name}}
+        </div>
+    </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
             <mat-list-item>
                 <mat-icon>cloud</mat-icon>
-                3TB
+                <div *ngIf="nextcloudProduct != undefined">
+                    {{nextcloudProduct.storageAmount}}TB
+                </div>
+                <div *ngIf="synologyProduct != undefined">
+                    {{synologyProduct.storageAmount}}TB
+                </div>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon>height</mat-icon>
@@ -13,16 +25,34 @@
             </mat-list-item>
             <mat-list-item>
                 <mat-icon>event_available</mat-icon>
-                30 days trial
+                <div *ngIf="nextcloudProduct != undefined">
+                    {{nextcloudProduct.trialDays}} days trial
+                </div>
+                <div *ngIf="synologyProduct != undefined">
+                    {{synologyProduct.trialDays}} days trial
+                </div>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon>person</mat-icon>
-                1 user per subscription
+                <div *ngIf="nextcloudProduct != undefined">
+                    {{nextcloudProduct.usersPerSubscription}} user per subscription
+                </div>
+                <div *ngIf="synologyProduct != undefined">
+                    {{synologyProduct.usersPerSubscription}} user per subscription
+                </div>
             </mat-list-item>
             <mat-divider></mat-divider>
         </mat-list>
     </mat-card-content>
-    <mat-card-subtitle>10€<span class="price-month">/month</span></mat-card-subtitle>
+    <mat-card-subtitle>
+        <span *ngIf="nextcloudProduct != undefined">
+            {{nextcloudProduct.pricePerMonth}}€
+        </span>
+        <span *ngIf="synologyProduct != undefined">
+            {{synologyProduct.pricePerMonth}}€
+        </span>
+        <span class="price-month">/month</span>
+    </mat-card-subtitle>
     <mat-card-actions>
         <button mat-stroked-button color="primary">SUBSCRIBE</button>
     </mat-card-actions>
