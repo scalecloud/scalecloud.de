@@ -13,9 +13,6 @@ export class TitelCardComponent implements OnInit {
 
   @Input() subscriptionType: SubscriptionType = SubscriptionType.Nextcloud;
   
-  constructor() {
-  }
-
   ngOnInit(): void {
   }
 

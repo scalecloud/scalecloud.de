@@ -8,11 +8,8 @@ import { SynologyProduct } from './synology-product';
 })
 export class SynologyProductService {
 
-  constructor() { }
-
   getProducts(): Observable<SynologyProduct[]> {
-    const synologyProducts = of(SYNOLOGYPRODUCTS);
-    return synologyProducts;
+    return of(SYNOLOGYPRODUCTS);
   }
 
 }

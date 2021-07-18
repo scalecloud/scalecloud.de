@@ -8,11 +8,8 @@ import { NextcloudProduct } from './nextcloud-product';
 })
 export class NextcloudProductService {
 
-  constructor() { }
-
   getNextcloudProducts(): Observable<NextcloudProduct[]> {
-    const nextcloudProducts = of(NEXTCLOUDPRODUCTS);
-    return nextcloudProducts;
+    return of(NEXTCLOUDPRODUCTS);
   }
 
 }

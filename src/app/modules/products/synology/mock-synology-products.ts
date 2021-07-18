@@ -9,8 +9,7 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     trialDays: 30,
     usersPerSubscription: 1,
     pricePerMonth: 10
-  },
-  {
+  }, {
     productId: 1,
     name: "Royal",
     storageAmount: 6,

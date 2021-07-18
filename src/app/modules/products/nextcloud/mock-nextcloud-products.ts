@@ -9,8 +9,7 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     trialDays: 30,
     usersPerSubscription: 1,
     pricePerMonth: 10
-  },
-  {
+  }, {
     productId: 1,
     name: "Jade",
     storageAmount: 6,

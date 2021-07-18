@@ -21,7 +21,7 @@ export class NextcloudComponent implements OnInit {
 
   getProducts(): void {
     this.nextcloudProductService.getNextcloudProducts().subscribe(
-      products => this.nextcloudProducts = this.nextcloudProducts);
+      nextcloudProducts => this.nextcloudProducts = nextcloudProducts);
   }
 
 }

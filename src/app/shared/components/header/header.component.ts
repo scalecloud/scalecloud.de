@@ -9,8 +9,6 @@ export class HeaderComponent implements OnInit {
 
   @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
-
   ngOnInit() { }
 
   toggleSideBar() {

@@ -21,7 +21,7 @@ export class SynologyComponent implements OnInit {
 
   getProducts(): void {
     this.synologyProductService.getProducts().subscribe(
-      products => this.synologyProducts = this.synologyProducts);
+      synologyProducts => this.synologyProducts = synologyProducts);
   }
 
 }
