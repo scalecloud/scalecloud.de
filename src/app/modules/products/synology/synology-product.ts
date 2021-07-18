@@ -1,9 +1,13 @@
 export interface SynologyProduct {
   productId: number;
   name: string;
+  storageIcon: string;
   storageAmount: number;
-  scalable: boolean;
+  storageUnit: string;
+  scalableIcon: string;
+  trialIcon: string;
   trialDays: number;
-  usersPerSubscription: number;
+  usersIcon: string;
+  usersAmount: number;
   pricePerMonth: number;
 }

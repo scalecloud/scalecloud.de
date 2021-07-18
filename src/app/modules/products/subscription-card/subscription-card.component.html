@@ -11,45 +11,75 @@
     <mat-card-content>
         <mat-list>
             <mat-list-item>
-                <mat-icon>cloud</mat-icon>
+                <mat-icon>
+                    <div *ngIf="nextcloudProduct != undefined">
+                        {{nextcloudProduct.storageIcon}}
+                    </div>
+                    <div *ngIf="synologyProduct != undefined">
+                        {{synologyProduct.storageIcon}}
+                    </div>
+                </mat-icon>
                 <div *ngIf="nextcloudProduct != undefined">
-                    {{nextcloudProduct.storageAmount}}TB
+                    {{nextcloudProduct.storageAmount}}{{nextcloudProduct.storageUnit}}
                 </div>
                 <div *ngIf="synologyProduct != undefined">
-                    {{synologyProduct.storageAmount}}TB
+                    {{synologyProduct.storageAmount}}{{synologyProduct.storageUnit}}
                 </div>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>height</mat-icon>
+                <mat-icon>
+                    <div *ngIf="nextcloudProduct != undefined">
+                        {{nextcloudProduct.scalableIcon}}
+                    </div>
+                    <div *ngIf="synologyProduct != undefined">
+                        {{synologyProduct.scalableIcon}}
+                    </div>
+                </mat-icon>
                 Scalable
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>event_available</mat-icon>
+                <mat-icon>
+                    <div *ngIf="nextcloudProduct != undefined">
+                        {{nextcloudProduct.trialIcon}}
+                    </div>
+                    <div *ngIf="synologyProduct != undefined">
+                        {{synologyProduct.trialIcon}}
+                    </div>
+                </mat-icon>
                 <div *ngIf="nextcloudProduct != undefined">
-                    {{nextcloudProduct.trialDays}} days trial
+                    {{nextcloudProduct.trialDays}}
                 </div>
                 <div *ngIf="synologyProduct != undefined">
-                    {{synologyProduct.trialDays}} days trial
+                    {{synologyProduct.trialDays}}
                 </div>
+                &nbsp;days trial
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>person</mat-icon>
+                <mat-icon>
+                    <div *ngIf="nextcloudProduct != undefined">
+                        {{nextcloudProduct.usersIcon}}
+                    </div>
+                    <div *ngIf="synologyProduct != undefined">
+                        {{synologyProduct.usersIcon}}
+                    </div>
+                </mat-icon>
                 <div *ngIf="nextcloudProduct != undefined">
-                    {{nextcloudProduct.usersPerSubscription}} user per subscription
+                    {{nextcloudProduct.usersAmount}}
                 </div>
                 <div *ngIf="synologyProduct != undefined">
-                    {{synologyProduct.usersPerSubscription}} user per subscription
+                    {{synologyProduct.usersAmount}}
                 </div>
+                &nbsp;user per subscription
             </mat-list-item>
             <mat-divider></mat-divider>
         </mat-list>
     </mat-card-content>
     <mat-card-subtitle>
         <span *ngIf="nextcloudProduct != undefined">
-            {{nextcloudProduct.pricePerMonth}}€
+            {{nextcloudProduct.pricePerMonth | currency:'EUR' : 'symbol' : '1.0-0'}}
         </span>
         <span *ngIf="synologyProduct != undefined">
-            {{synologyProduct.pricePerMonth}}€
+            {{synologyProduct.pricePerMonth | currency:'EUR' : 'symbol' : '1.0-0'}}
         </span>
         <span class="price-month">/month</span>
     </mat-card-subtitle>

@@ -15,5 +15,4 @@ export class SubscriptionCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
 }
