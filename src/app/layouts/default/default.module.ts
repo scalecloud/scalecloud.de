@@ -19,6 +19,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
 import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from 'src/app/modules/products/in-memory-data.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,14 @@ import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-ca
     MatButtonModule,
     MatListModule,
     FlexLayoutModule,
-    MatIconModule
+    MatIconModule,
+    HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, { delay: 0, dataEncapsulation: false },
+    )
+  ],
+  providers: [
+    HttpClientModule
   ]
 })
 export class DefaultModule { }

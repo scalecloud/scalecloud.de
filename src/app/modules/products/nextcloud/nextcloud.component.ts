@@ -16,12 +16,14 @@ export class NextcloudComponent implements OnInit {
   constructor(private nextcloudProductService: NextcloudProductService) { }
 
   ngOnInit(): void {
-    this.getProducts();
+    this.getNextcloudProducts();
   }
 
-  getProducts(): void {
-    this.nextcloudProductService.getNextcloudProducts().subscribe(
-      nextcloudProducts => this.nextcloudProducts = nextcloudProducts);
+  getNextcloudProducts(): void {
+    if (this.nextcloudProductService != null) {
+      this.nextcloudProductService.getNextcloudProducts().subscribe(
+        nextcloudProducts => this.nextcloudProducts = nextcloudProducts);
+    }
   }
 
 }

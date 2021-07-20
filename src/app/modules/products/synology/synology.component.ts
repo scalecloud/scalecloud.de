@@ -16,12 +16,14 @@ export class SynologyComponent implements OnInit {
   constructor(private synologyProductService: SynologyProductService) { }
 
   ngOnInit(): void {
-    this.getProducts();
+    this.getSynologyProducts();
   }
 
-  getProducts(): void {
-    this.synologyProductService.getProducts().subscribe(
-      synologyProducts => this.synologyProducts = synologyProducts);
+  getSynologyProducts(): void {
+    if (this.synologyProductService != null) {
+      this.synologyProductService.getSynologyProducts().subscribe(
+        synologyProducts => this.synologyProducts = synologyProducts);
+    }
   }
 
 }
