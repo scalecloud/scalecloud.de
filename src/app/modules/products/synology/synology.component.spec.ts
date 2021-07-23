@@ -8,7 +8,6 @@ import { TitelCardComponent } from '../titel-card/titel-card.component';
 import { SynologyComponent } from './synology.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
-import { SYNOLOGYPRODUCTS } from './mock-synology-products';
 
 describe('SynologyComponent', () => {
   let component: SynologyComponent;

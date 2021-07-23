@@ -2,8 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { NextcloudProductService } from './nextcloud-product.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
-import { NEXTCLOUDPRODUCTS } from './mock-nextcloud-products';
-
 
 describe('NextcloudProductService', () => {
   let service: NextcloudProductService;

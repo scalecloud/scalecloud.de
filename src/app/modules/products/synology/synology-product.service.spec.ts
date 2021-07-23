@@ -13,9 +13,6 @@ describe('SynologyProductService', () => {
       imports: [HttpClientTestingModule]
     });
     service = TestBed.inject(SynologyProductService);
-
-    httpClient = TestBed.get(HttpClient);
-    httpTestingController = TestBed.get(HttpTestingController);
   });
 
   it('should be created', () => {
