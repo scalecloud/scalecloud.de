@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDivider } from '@angular/material/divider';
 
 import { ImprintComponent } from './imprint.component';
 
@@ -8,9 +9,12 @@ describe('ImprintComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImprintComponent ]
+      declarations: [
+        ImprintComponent,
+        MatDivider
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
