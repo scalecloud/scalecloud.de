@@ -6,8 +6,9 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
   @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
+
+  login: boolean = false;
 
   ngOnInit() { }
 
@@ -18,6 +19,14 @@ export class HeaderComponent implements OnInit {
         new Event('resize')
       );
     }, 300);
+  }
+
+  isLogin(): boolean {
+    return this.login;
+  }
+
+  isLogout(): boolean {
+    return !this.isLogin();
   }
 
 }
