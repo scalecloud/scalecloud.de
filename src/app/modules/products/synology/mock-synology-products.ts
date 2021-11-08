@@ -12,7 +12,7 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     trialIcon: "event_available",
     usersIcon: "person",
     usersAmount: 1,
-    pricePerMonth: 10
+    pricePerMonth: 15
   }, {
     productId: 5,
     name: "Royal",
@@ -24,7 +24,7 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     trialDays: 14,
     usersIcon: "person",
     usersAmount: 1,
-    pricePerMonth: 15
+    pricePerMonth: 25
   }, {
     productId: 6,
     name: "Icy",
@@ -36,7 +36,7 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     trialDays: 14,
     usersIcon: "person",
     usersAmount: 1,
-    pricePerMonth: 25
+    pricePerMonth: 45
   }, {
     productId: 7,
     name: "Rose",
@@ -48,6 +48,6 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     trialDays: 14,
     usersIcon: "person",
     usersAmount: 1,
-    pricePerMonth: 50
+    pricePerMonth: 80
   }
 ];

@@ -36,7 +36,7 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     trialDays: 30,
     usersIcon: "person",
     usersAmount: 1,
-    pricePerMonth: 25
+    pricePerMonth: 30
   }, {
     productId: 3,
     name: "Obsidian",
@@ -48,6 +48,6 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     trialDays: 30,
     usersIcon: "person",
     usersAmount: 1,
-    pricePerMonth: 50
+    pricePerMonth: 60
   }
 ];
