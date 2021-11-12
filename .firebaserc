@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "scalecloud-de": {
+      "hosting": {
+        "scalecloud": [
+          "scalecloud-de"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "scalecloud-de"
+  }
+}

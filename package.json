@@ -16,6 +16,7 @@
     "@angular/common": "~13.0.0",
     "@angular/compiler": "~13.0.0",
     "@angular/core": "~13.0.0",
+    "@angular/fire": "^7.2.0",
     "@angular/flex-layout": "^12.0.0-beta.34",
     "@angular/forms": "~13.0.0",
     "@angular/material": "^12.2.12",
@@ -25,7 +26,9 @@
     "angular-in-memory-web-api": "^0.11.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "firebase": "^9.4.0",
+    "rxfire": "^6.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.0.1",
