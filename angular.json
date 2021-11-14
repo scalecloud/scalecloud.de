@@ -127,7 +127,7 @@
             "ssr": false,
             "browserTarget": "scalecloud:build:production",
             "firebaseProject": "scalecloud-de",
-            "firebaseHostingSite": "scalecloud-de"
+            "firebaseHostingSite": "scalecloud"
           }
         }
       }
