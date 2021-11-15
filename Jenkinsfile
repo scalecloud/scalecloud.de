@@ -63,7 +63,8 @@ node() {
     }
     stage('Upload') {
         lastStage = env.STAGE_NAME
-        echo "Upload implementation needed."
+        sh 'npm i -g firebase-tools'
+        sh 'firebase deploy --token"${FIREBASE_TOKEN}" --only hosting -m "Automatic Jenkins release."'
     }
   }
   catch (err) {
