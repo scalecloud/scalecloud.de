@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +12,8 @@ export class HeaderComponent implements OnInit {
   login: boolean = false;
 
   ngOnInit() { }
+
+  constructor(public auth: AuthService) { }
 
   toggleSideBar() {
     this.toggleSideBarForMe.emit();
