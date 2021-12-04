@@ -22,6 +22,8 @@ import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-ca
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from 'src/app/modules/products/in-memory-data.service';
+import { LoginComponent } from 'src/app/modules/account/login/login.component';
+import { RegisterComponent } from 'src/app/modules/account/register/register.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { InMemoryDataService } from 'src/app/modules/products/in-memory-data.ser
     PrivacyComponent,
     ImprintComponent,
     LegalComponent,
-    ContactComponent
+    ContactComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,
