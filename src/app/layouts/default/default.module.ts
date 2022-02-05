@@ -15,6 +15,8 @@ import { ContactComponent } from 'src/app/modules/footer/contact/contact.compone
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
@@ -24,6 +26,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from 'src/app/modules/products/in-memory-data.service';
 import { LoginComponent } from 'src/app/modules/account/login/login.component';
 import { RegisterComponent } from 'src/app/modules/account/register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,9 @@ import { RegisterComponent } from 'src/app/modules/account/register/register.com
     MatCardModule,
     MatButtonModule,
     MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
     FlexLayoutModule,
     MatIconModule,
     HttpClientModule,
