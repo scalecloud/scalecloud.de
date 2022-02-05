@@ -1,1 +1,35 @@
-<p>register works!</p>
+<div fxLayoutAlign="space-evenly">
+    <mat-card>
+        <mat-card-title>Register</mat-card-title>
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>
+                    <mat-form-field appearance="fill">
+                        <mat-label>E-Mail:</mat-label>
+                        <input type="email" matInput placeholder="E-Mail" [formControl]="email" required>
+                        <mat-error *ngIf="email.invalid">{{getErrorMessageEMail()}}</mat-error>
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Password:</mat-label>
+                        <input type="password" matInput placeholder="Password" name="passwordOne" [formControl]="password" required>
+                        <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Confirm password:</mat-label>
+                        <input type="password" matInput placeholder="Confirm password" name="passwordTwo" [formControl]="passwordConfirm"
+                            required>
+                        <mat-error *ngIf="passwordConfirm.invalid">{{getErrorMessagePasswordConfirm()}}</mat-error>
+                    </mat-form-field>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary">Register</button>
+            <button mat-stroked-button>Login</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
