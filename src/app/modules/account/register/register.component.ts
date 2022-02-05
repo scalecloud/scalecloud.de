@@ -11,8 +11,6 @@ export class RegisterComponent implements OnInit {
   password = new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")]);
   passwordConfirm = new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")]);
 
-  constructor() { }
-
   ngOnInit(): void {
   }
 
