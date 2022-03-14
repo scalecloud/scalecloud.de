@@ -1,55 +1,99 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")]);
-  passwordConfirm = new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")]);
+export class RegisterComponent {
+  form: FormGroup;
+  submitted = false;
 
-  ngOnInit(): void {
+  constructor(private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8)            
+          ]
+        ],
+        confirmPassword: ['', Validators.required],
+        acceptTerms: [false, Validators.requiredTrue]
+      },
+      {
+        validators: [this.match('password', 'confirmPassword')]
+      }
+    );
   }
 
-  getErrorMessageEMail() {
-    if (this.email.hasError('required')) {
-      return 'You must enter a value';
-    }
-    return this.email.hasError('email') ? 'Not a valid email' : '';
-  }
-
-  getErrorMessagePassword() {
-    var ret = "";
-    if (this.password.hasError('required')) {
-      ret = 'You must enter a value';
-    }
-    else if (this.password.hasError('minlength')) {
-      ret = 'Password must be at least 8 characters long';
-    }
-    else if (this.password.hasError('pattern')) {
-      ret = 'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character';
+  get f(): { [key: string]: AbstractControl } {
+    let ret = {};
+    if (this.form != null) {
+      ret = this.form.controls;
     }
     return ret;
   }
 
-  getErrorMessagePasswordConfirm() {
-    var ret = "";
-    if (this.passwordConfirm.hasError('required')) {
-      ret = 'You must enter a value';
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.form == null || this.form.invalid) {
+      return;
     }
-    else if (this.passwordConfirm.hasError('minlength')) {
-      ret = 'Password must be at least 8 characters long';
+    console.log(JSON.stringify(this.form.value, null, 2));
+  }
+
+  onReset(): void {
+    this.submitted = false;
+    if (this.form != null) {
+      this.form.reset();
     }
-    else if (this.passwordConfirm.hasError('pattern')) {
-      ret = 'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character';
-    }
-    else if (this.password.value !== this.passwordConfirm.value) {
-      ret = 'Passwords did not match';
-    }
-    return ret;
+  }
+
+  match(controlName: string, checkControlName: string): ValidatorFn {
+    return (controls: AbstractControl) => {
+      const control = controls.get(controlName);
+      const checkControl = controls.get(checkControlName);
+
+      if (checkControl == null || checkControl.errors && !checkControl.errors.matching) {
+        return null;
+      }
+
+      if (control != null && control.value !== checkControl.value) {
+
+        checkControl.setErrors({ matching: true });
+        return { matching: true };
+      } else {
+        return null;
+      }
+    };
+  }
+
+  getErrorMessageEMailRequired() {
+    return 'You must enter a value';
+  }
+
+  getErrorMessageEMailNotValid() {
+    return 'Not a valid email';
+  }
+
+  getErrorMessagePasswordRequired() {
+    return 'You must enter a value';
+  }
+
+  getErrorMessagePasswordMinLength() {
+    return 'Password must be at least 8 characters long';
+  }
+
+  getErrorMessagePasswordConfirmRequired() {
+    return 'Confirm Password is required';
+  }
+
+  getErrorMessagePasswordConfirmMatch() {
+    return 'Confirm Password does not match';
   }
 
 }

@@ -27,6 +27,7 @@ import { InMemoryDataService } from 'src/app/modules/products/in-memory-data.ser
 import { LoginComponent } from 'src/app/modules/account/login/login.component';
 import { RegisterComponent } from 'src/app/modules/account/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
+    MatPasswordStrengthModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MatIconModule,
