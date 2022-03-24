@@ -21,12 +21,7 @@ export class LoginComponent {
     }
     else {
       console.log("Valid inputs in Login.");
-      try {
-        this.auth.login(this.email.value, this.password.value);
-      }
-      catch (e) {
-        console.log("Error in login: " + e);
-      }
+      this.auth.login(this.email.value, this.password.value);
     }
   }
 
