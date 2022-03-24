@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
 import { FormControl, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 @Component({
@@ -7,11 +9,33 @@ import { FormControl, Validators } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   email = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', [Validators.required]);
 
-  ngOnInit(): void {
+  constructor(public auth: AuthService) { }
+
+  login(): void {
+    if (this.isEmailInvalid() || this.isPasswordInvalid()) {
+      console.log("Invalid inputs in Login.");
+    }
+    else {
+      console.log("Valid inputs in Login.");
+      try {
+        this.auth.login(this.email.value, this.password.value);
+      }
+      catch (e) {
+        console.log("Error in login: " + e);
+      }
+    }
+  }
+
+  isEmailInvalid(): boolean {
+    return this.email.hasError('required') || this.email.hasError('email');
+  }
+
+  isPasswordInvalid(): boolean {
+    return this.password.hasError('required');
   }
 
   getErrorMessageEMail() {
@@ -29,5 +53,7 @@ export class LoginComponent implements OnInit {
     }
     return ret;
   }
+
+
 
 }

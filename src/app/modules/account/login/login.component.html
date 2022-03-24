@@ -21,8 +21,8 @@
                   </mat-list>
             </mat-card-content>
             <mat-card-actions>
-                  <button mat-raised-button color="primary">Login</button>
-                  <button mat-stroked-button>Forgot Password</button>
+                  <button (click)="login()" mat-raised-button color="primary">Login</button>
+                  <button routerLink="/forgot-password" mat-stroked-button>Forgot Password</button>
             </mat-card-actions>
       </mat-card>
 </div>

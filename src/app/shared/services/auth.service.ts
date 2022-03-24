@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import  firebase from 'firebase/compat/app';
+import firebase from 'firebase/compat/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
@@ -31,11 +31,16 @@ export class AuthService {
     );
   }
 
-
-  async googleSignin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const credential = await firebase.auth().signInWithPopup(provider);
-    return this.updateUserData(credential.user);
+  async login(email: string, password: string) {
+    await this.afAuth.signInWithEmailAndPassword(email, password)
+      .then(credential => {
+        console.log('Nice, it worked!');
+        this.router.navigateByUrl('/');
+        this.updateUserData(credential.user);
+      })
+      .catch(err => {
+        console.log('Something went wrong: ', err.message);
+      });
   }
 
   async signOut() {
@@ -48,7 +53,7 @@ export class AuthService {
     var ret = null;
     if (user) {
       const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-      if (user.email && user.displayName && user.photoURL ) {
+      if (user.email && user.displayName && user.photoURL) {
         const data = {
           uid: user.uid,
           email: user.email,
