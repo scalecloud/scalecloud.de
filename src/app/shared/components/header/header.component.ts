@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { authState } from 'rxfire/auth';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
