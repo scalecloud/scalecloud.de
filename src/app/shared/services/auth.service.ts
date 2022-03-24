@@ -31,16 +31,19 @@ export class AuthService {
     );
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<boolean> {
+    var ret = false;
     await this.afAuth.signInWithEmailAndPassword(email, password)
       .then(credential => {
         console.log('Nice, it worked!');
         this.router.navigateByUrl('/');
         this.updateUserData(credential.user);
+        ret == true;
       })
       .catch(err => {
         console.log('Something went wrong: ', err.message);
       });
+      return ret;
   }
 
   async signOut() {
@@ -53,12 +56,13 @@ export class AuthService {
     var ret = null;
     if (user) {
       const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-      if (user.email && user.displayName && user.photoURL) {
+      console.log('userRef: ', userRef);
+      console.log('user: ', user);
+      console.log( 'email:', user.email)
+      if (user.email) {
         const data = {
           uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL
+          email: user.email
         };
         ret = userRef.set(data, { merge: true });
       }
