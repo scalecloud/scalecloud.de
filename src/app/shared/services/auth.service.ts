@@ -1,6 +1,5 @@
 
 import { Injectable, NgZone } from '@angular/core';
-import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
@@ -79,20 +78,6 @@ export class AuthService {
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null && user.emailVerified !== false ? true : false;
-  }
-
-  authLogin(provider: any) {
-    return this.afAuth
-      .signInWithPopup(provider)
-      .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
-        });
-        this.setUserData(result.user);
-      })
-      .catch((error) => {
-        window.alert(error);
-      });
   }
 
   setUserData(user: any) {
