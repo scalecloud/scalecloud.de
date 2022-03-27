@@ -1,76 +1,118 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import firebase from 'firebase/compat/app';
+
+import { Injectable, NgZone } from '@angular/core';
+import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
-  AngularFirestoreDocument
+  AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { User } from './user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  user$: Observable<any>;
+  user: any; 
 
   constructor(
-    private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
-    private router: Router
+    public afs: AngularFirestore,
+    public afAuth: AngularFireAuth, 
+    public router: Router,
+    public ngZone: NgZone 
   ) {
-    this.user$ = this.afAuth.authState.pipe(
-      switchMap(user => {
-        if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-        } else {
-          return of(null);
-        }
-      })
-    );
+    this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(this.user));
+        JSON.parse(localStorage.getItem('user')!);
+      } else {
+        localStorage.setItem('user', 'null');
+        JSON.parse(localStorage.getItem('user')!);
+      }
+    });
   }
 
-  async login(email: string, password: string): Promise<boolean> {
-    var ret = false;
-    await this.afAuth.signInWithEmailAndPassword(email, password)
-      .then(credential => {
-        console.log('Nice, it worked!');
-        this.router.navigateByUrl('/');
-        this.updateUserData(credential.user);
-        ret == true;
+  login(email: string, password: string) {
+    return this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.ngZone.run(() => {
+          this.router.navigate(['dashboard']);
+        });
+        this.setUserData(result.user);
       })
-      .catch(err => {
-        console.log('Something went wrong: ', err.message);
+      .catch((error) => {
+        window.alert(error.message);
       });
-      return ret;
   }
 
-  async signOut() {
-    await this.afAuth.signOut();
-    return this.router.navigate(['/']);
+  register(email: string, password: string) {
+    return this.afAuth
+      .createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.sendVerificationMail();
+        this.setUserData(result.user);
+      })
+      .catch((error) => {
+        window.alert(error.message);
+      });
   }
 
-  private updateUserData(user: firebase.User | null) {
-    // Sets user data to firestore on login
-    var ret = null;
-    if (user) {
-      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-      console.log('userRef: ', userRef);
-      console.log('user: ', user);
-      console.log( 'email:', user.email)
-      if (user.email) {
-        const data = {
-          uid: user.uid,
-          email: user.email
-        };
-        ret = userRef.set(data, { merge: true });
-      }
-      else {
-        console.log("User data incomplete");
-      }
-    }
-    return ret;
+  sendVerificationMail() {
+    return this.afAuth.currentUser
+      .then((u: any) => u.sendEmailVerification())
+      .then(() => {
+        this.router.navigate(['verify-email-address']);
+      });
   }
 
+  forgotPassword(passwordResetEmail: string) {
+    return this.afAuth
+      .sendPasswordResetEmail(passwordResetEmail)
+      .then(() => {
+        window.alert('Password reset email sent, check your inbox.');
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
+  }
+
+  get isLoggedIn(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user !== null && user.emailVerified !== false ? true : false;
+  }
+
+  authLogin(provider: any) {
+    return this.afAuth
+      .signInWithPopup(provider)
+      .then((result) => {
+        this.ngZone.run(() => {
+          this.router.navigate(['dashboard']);
+        });
+        this.setUserData(result.user);
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
+  }
+
+  setUserData(user: any) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `users/${user.uid}`
+    );
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      emailVerified: user.emailVerified,
+    };
+    return userRef.set(userData, {
+      merge: true,
+    });
+  }
+
+  signOut() {
+    return this.afAuth.signOut().then(() => {
+      localStorage.removeItem('user');
+      this.router.navigate(['sign-in']);
+    });
+  }
 }

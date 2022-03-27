@@ -12,7 +12,7 @@
         <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
             <ul fxLayout="row" fxLayoutGap="20px">
                 <li>
-                    <div *ngIf="auth.user$ | async as user; else login">
+                    <div *ngIf="auth.isLoggedIn; else login">
                         <button mat-button [matMenuTriggerFor]="menu">
                             <mat-icon>person_outline</mat-icon>
                         </button>
