@@ -1,22 +1,28 @@
-<h3>Thank You for Registering</h3>
-
-<div *ngIf="authService.user as user">
-    <p>
-        We have sent a confirmation email to <strong>{{ user.email }}</strong>.
-    </p>
-    <p>
-        Please check your E-Mail and click on the link to verfiy your email
-        address.
-    </p>
-</div>
-<div>
-    <button (click)="authService.sendVerificationMail()" mat-raised-button color="primary">
-        Resend Verification Email
-    </button>
-</div>
-
-<div>
-    <span>Go back to?
-        <button routerLink="/login" mat-stroked-button>Login</button>
-    </span>
+<div fxLayoutAlign="space-evenly">
+    <mat-card>
+        <mat-card-title>Thank You for Registering</mat-card-title>
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>
+                    <div *ngIf="authService.user as user">
+                        <p>
+                            We have sent a confirmation E-Mail to: <strong>{{ user.email }}</strong>.
+                        </p>
+                        <p>
+                            Please check your E-Mail and click on the link to verfiy your email
+                            address.
+                        </p>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+            <button (click)="authService.sendVerificationMail()" mat-raised-button color="primary">
+                Resend Verification E-Mail
+            </button>
+            <button routerLink="/login" mat-stroked-button>
+                Login
+            </button>
+        </mat-card-actions>
+    </mat-card>
 </div>
