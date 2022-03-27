@@ -45,7 +45,6 @@ export class RegisterComponent {
     if (this.form == null || this.form.invalid) {
       return;
     }
-    console.log(JSON.stringify(this.form.value, null, 2));
     this.auth.register(this.form.value.email, this.form.value.password);
   }
 
