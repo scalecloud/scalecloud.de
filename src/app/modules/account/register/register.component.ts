@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { authInstanceFactory } from '@angular/fire/auth/auth.module';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,7 +12,7 @@ export class RegisterComponent {
   form: FormGroup;
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, public auth: AuthService) {
     this.form = this.formBuilder.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -44,6 +46,7 @@ export class RegisterComponent {
       return;
     }
     console.log(JSON.stringify(this.form.value, null, 2));
+    this.auth.register(this.form.value.email, this.form.value.password);
   }
 
   onReset(): void {
