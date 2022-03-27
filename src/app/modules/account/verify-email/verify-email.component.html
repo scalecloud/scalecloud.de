@@ -1,0 +1,22 @@
+<h3>Thank You for Registering</h3>
+
+<div *ngIf="authService.user as user">
+    <p>
+        We have sent a confirmation email to <strong>{{ user.email }}</strong>.
+    </p>
+    <p>
+        Please check your E-Mail and click on the link to verfiy your email
+        address.
+    </p>
+</div>
+<div>
+    <button (click)="authService.sendVerificationMail()" mat-raised-button color="primary">
+        Resend Verification Email
+    </button>
+</div>
+
+<div>
+    <span>Go back to?
+        <button routerLink="/login" mat-stroked-button>Login</button>
+    </span>
+</div>
