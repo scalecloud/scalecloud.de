@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { authInstanceFactory } from '@angular/fire/auth/auth.module';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
