@@ -17,8 +17,8 @@
             </mat-list>
         </mat-card-content>
         <mat-card-actions>
-            <button (click)="authService.sendVerificationMail()" mat-raised-button color="primary">
-                Resend Verification E-Mail
+            <button [disabled]="clicked" (click)="sendVerificationMail();" mat-raised-button color="primary">
+             {{getButtonText()}} 
             </button>
             <button routerLink="/login" mat-stroked-button>
                 Login
