@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
+import { DashboardComponent } from './modules/account/dashboard/dashboard.component';
 import { LoginComponent } from './modules/account/login/login.component';
 import { RegisterComponent } from './modules/account/register/register.component';
 import { VerifyEmailComponent } from './modules/account/verify-email/verify-email.component';
@@ -27,7 +28,8 @@ const routes: Routes = [{
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'verify-email-address', component: VerifyEmailComponent }
+  { path: 'verify-email-address', component: VerifyEmailComponent },
+  { path: 'dashboard', component: DashboardComponent }
   ]
 }];
 

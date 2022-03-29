@@ -94,10 +94,10 @@ export class AuthService {
     });
   }
 
-  signOut() {
-    return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.router.navigate(['/login']);
-    });
+  async signOut() {
+    await this.afAuth.signOut();
+    localStorage.removeItem('user');
+    this.user = null;
+    this.router.navigate(['/']);
   }
 }

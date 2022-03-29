@@ -29,6 +29,7 @@ import { RegisterComponent } from 'src/app/modules/account/register/register.com
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
 import { VerifyEmailComponent } from 'src/app/modules/account/verify-email/verify-email.component';
+import { DashboardComponent } from 'src/app/modules/account/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { VerifyEmailComponent } from 'src/app/modules/account/verify-email/verif
     ContactComponent,
     LoginComponent,
     RegisterComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    DashboardComponent
   ],
   imports: [
     CommonModule,

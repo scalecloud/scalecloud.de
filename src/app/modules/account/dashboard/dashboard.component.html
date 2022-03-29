@@ -1,0 +1,6 @@
+<div *ngIf="authService.user as user">
+    <h1>Hello</h1>
+    <p>User ID: <strong>{{user.uid}}</strong></p>
+    <p>E-Mail: <strong>{{user.email}}</strong></p>
+    <p>E-Mail Verified: <strong>{{user.emailVerified}}</strong></p>
+</div>
