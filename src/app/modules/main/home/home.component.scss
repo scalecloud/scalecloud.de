@@ -1,6 +1,11 @@
-h1, h2 {
+h1,
+h2 {
     text-align: center;
 }
 ul li {
     list-style: none;
+}
+#globe {
+  margin-top: 30%;
+  z-index: -1;
 }
