@@ -6,6 +6,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { SnackBarService } from './snackbar/snack-bar.service';
 import { User } from './user.model';
 
 @Injectable({ providedIn: 'root' })
@@ -16,7 +17,8 @@ export class AuthService {
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth, 
     public router: Router,
-    public ngZone: NgZone 
+    public ngZone: NgZone,
+    public snackBarService: SnackBarService
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -40,7 +42,7 @@ export class AuthService {
         this.setUserData(result.user);
       })
       .catch((error) => {
-        window.alert(error.message);
+        this.snackBarService.error(error.message);
       });
   }
 
@@ -52,7 +54,7 @@ export class AuthService {
         this.setUserData(result.user);
       })
       .catch((error) => {
-        window.alert(error.message);
+        this.snackBarService.error(error.message);
       });
   }
 
@@ -68,10 +70,10 @@ export class AuthService {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert('Password reset email sent, check your inbox.');
+        this.snackBarService.info('Password reset email sent, check your inbox.');
       })
       .catch((error) => {
-        window.alert(error);
+        this.snackBarService.error(error.message);
       });
   }
 
