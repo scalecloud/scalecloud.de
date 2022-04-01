@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import createGlobe from 'cobe';
 
 @Component({
@@ -21,15 +21,15 @@ export class GlobeComponent implements OnInit {
       height: 800,
       phi: 1,
       theta: 0,
-      dark: 0,
+      dark: 1,
       diffuse: 1.2,
       mapSamples: 16000,
       mapBrightness: 6,
       baseColor: [0.3, 0.3, 0.3],
-      markerColor: [1, 0.5, 1],
+      markerColor: [236, 0, 0],
       glowColor: [1, 1, 1],
       markers: [
-        { location: [54.7945644, 9.397062], size: 0.03 }
+        { location: [54.7945644, 9.397062], size: 0.05 }
       ],
       onRender: (state) => {
         // Called on every animation frame.
