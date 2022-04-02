@@ -13,8 +13,7 @@ describe('FooterComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         FooterComponent,
-        MatDivider,
-        
+        MatDivider
       ],
       imports: [
         MatListModule,
