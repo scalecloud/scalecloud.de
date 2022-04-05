@@ -9,8 +9,10 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
   styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent {
-
   email = new FormControl('', [Validators.required, Validators.email]);
+  clicked = false;
+  defaultDisabledSecounds = 60;
+  secounds = 0;
 
   constructor(
     public authService: AuthService,
@@ -23,6 +25,7 @@ export class ForgotPasswordComponent {
     }
     else {
       console.log("Valid inputs in Login.");
+      this.disableButtonForSeconds();
       this.authService.forgotPassword(this.email.value);
     }
   }
@@ -37,6 +40,30 @@ export class ForgotPasswordComponent {
     }
 
     return this.email.hasError('email') ? 'Not a valid E-Mail address' : '';
+  }
+
+  getButtonText(): string {
+    let ret = "";
+    if (this.secounds > 0) {
+      ret = "Reset Password (" + this.secounds + ")";
+    }
+    else {
+      ret = "Reset Password";
+    }
+    return ret;
+  }
+
+  disableButtonForSeconds() {
+    this.clicked = true;
+    this.secounds = this.defaultDisabledSecounds;
+
+    let interval = setInterval(() => {
+      this.secounds--;
+      if (this.secounds < 1) {
+        this.clicked = false;
+        clearInterval(interval);
+      }
+    }, 1000);
   }
 
 }
