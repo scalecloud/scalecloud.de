@@ -11,11 +11,11 @@ import { User } from './user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  
-  user: any; 
+
+  user: any;
   constructor(
     public afs: AngularFirestore,
-    public afAuth: AngularFireAuth, 
+    public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
     public snackBarService: SnackBarService
@@ -66,15 +66,18 @@ export class AuthService {
       });
   }
 
-  forgotPassword(passwordResetEmail: string) {
-    return this.afAuth
+  async forgotPassword(passwordResetEmail: string): Promise<boolean> {
+    let result = false;
+    await this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        this.snackBarService.info('Password reset email sent, check your inbox.');
+        result = true;
+        this.snackBarService.infoDuration('Please check your E-Mail for further instructions.', 60);
       })
       .catch((error) => {
         this.snackBarService.error(error.message);
       });
+    return result;
   }
 
   get isLoggedIn(): boolean {

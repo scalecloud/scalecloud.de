@@ -19,14 +19,15 @@ export class ForgotPasswordComponent {
     public snackBarService: SnackBarService
   ) { }
 
-  forgotPassword(): void {
+  async forgotPassword(): Promise<void> {
     if (this.isEmailInvalid()) {
       this.snackBarService.error("Please enter a valid E-Mail address");
     }
     else {
       console.log("Valid inputs in Login.");
-      this.disableButtonForSeconds();
-      this.authService.forgotPassword(this.email.value);
+      if (await this.authService.forgotPassword(this.email.value)) {
+        this.disableButtonForSeconds();
+      }
     }
   }
 

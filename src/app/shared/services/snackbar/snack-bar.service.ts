@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SnackBarService {
 
-  private durationInSeconds = 8;
+  private defaultDuration = 8;
 
   constructor(
     public snackBar: MatSnackBar,
@@ -14,23 +14,35 @@ export class SnackBarService {
   ) { }
 
   info(message: string) {
-    this.showMessage(message, 'snackbar-info');
+    this.infoDuration(message, this.defaultDuration);
+  }
+
+  infoDuration(message: string, duration: number) {
+    this.showMessage(message, duration, 'snackbar-info');
   }
 
   warn(message: string) {
-    this.showMessage(message, 'snackbar-warn');
+    this.warnDuration(message, this.defaultDuration);
+  }
+
+  warnDuration(message: string, duration: number) {
+    this.showMessage(message, duration, 'snackbar-warn');
   }
 
   error(message: string) {
-    this.showMessage(message, 'snackbar-error');
+    this.errorDuration(message, this.defaultDuration);
   }
 
-  private showMessage(message: string, cssClass: string) {
+  errorDuration(message: string, duration: number) {
+    this.showMessage(message, duration, 'snackbar-error');
+  }
+
+  private showMessage(message: string, duration: number, cssClass: string) {
     let date = new Date();
     let time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     this.zone.run(() => {
       this.snackBar.open(message + " - " + time, '', {
-        duration: this.durationInSeconds * 1000,
+        duration: duration * 1000,
         panelClass: [cssClass]
       });
     });
