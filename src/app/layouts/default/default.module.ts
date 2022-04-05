@@ -31,6 +31,7 @@ import { MatPasswordStrengthModule } from "@angular-material-extensions/password
 import { VerifyEmailComponent } from 'src/app/modules/account/verify-email/verify-email.component';
 import { DashboardComponent } from 'src/app/modules/account/dashboard/dashboard.component';
 import { GlobeComponent } from 'src/app/modules/main/globe/globe.component';
+import { ForgotPasswordComponent } from 'src/app/modules/account/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { GlobeComponent } from 'src/app/modules/main/globe/globe.component';
     RegisterComponent,
     VerifyEmailComponent,
     DashboardComponent,
+    ForgotPasswordComponent,
     GlobeComponent
   ],
   imports: [
