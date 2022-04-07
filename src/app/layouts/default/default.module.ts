@@ -32,6 +32,7 @@ import { VerifyEmailComponent } from 'src/app/modules/account/verify-email/verif
 import { DashboardComponent } from 'src/app/modules/account/dashboard/dashboard.component';
 import { GlobeComponent } from 'src/app/modules/main/globe/globe.component';
 import { ForgotPasswordComponent } from 'src/app/modules/account/forgot-password/forgot-password.component';
+import { PageNotFoundComponent } from 'src/app/modules/main/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ForgotPasswordComponent } from 'src/app/modules/account/forgot-password
     VerifyEmailComponent,
     DashboardComponent,
     ForgotPasswordComponent,
-    GlobeComponent
+    GlobeComponent,
+    PageNotFoundComponent
   ],
   imports: [
     CommonModule,

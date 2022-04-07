@@ -11,12 +11,12 @@ import { ImprintComponent } from './modules/footer/imprint/imprint.component';
 import { LegalComponent } from './modules/footer/legal/legal.component';
 import { PrivacyComponent } from './modules/footer/privacy/privacy.component';
 import { HomeComponent } from './modules/main/home/home.component';
+import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
 import { NextcloudComponent } from './modules/products/nextcloud/nextcloud.component';
 import { SynologyComponent } from './modules/products/synology/synology.component';
 
 const routes: Routes = [{
-  path: '',
-  component: DefaultComponent,
+  path: '', component: DefaultComponent,
   children: [{
     path: '',
     component: HomeComponent
@@ -31,7 +31,8 @@ const routes: Routes = [{
   { path: 'register', component: RegisterComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent }
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: '**', component: PageNotFoundComponent }
   ]
 }];
 
