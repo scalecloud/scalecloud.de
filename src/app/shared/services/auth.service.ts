@@ -36,10 +36,11 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+        this.setUserData(result.user).then(() => {
+          this.ngZone.run(() => {
+            this.router.navigate(['dashboard']);
+          });
         });
-        this.setUserData(result.user);
       })
       .catch((error) => {
         this.snackBarService.error(error.message);
@@ -85,7 +86,7 @@ export class AuthService {
     return user !== null && user.emailVerified !== false ? true : false;
   }
 
-  setUserData(user: any) {
+  setUserData(user: any): Promise<void> {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );

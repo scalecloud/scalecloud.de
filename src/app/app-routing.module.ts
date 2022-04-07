@@ -14,6 +14,8 @@ import { HomeComponent } from './modules/main/home/home.component';
 import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
 import { NextcloudComponent } from './modules/products/nextcloud/nextcloud.component';
 import { SynologyComponent } from './modules/products/synology/synology.component';
+import { AuthGuard } from './shared/guard/auth.guard';
+import { LoginGuard } from './shared/guard/login.guard';
 
 const routes: Routes = [{
   path: '', component: DefaultComponent,
@@ -27,11 +29,17 @@ const routes: Routes = [{
   { path: 'imprint', component: ImprintComponent },
   { path: 'legal', component: LegalComponent },
   { path: 'contact', component: ContactComponent },
-  { path: 'login', component: LoginComponent },
+  // AuthGuard
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  // LoginGuard
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+  // RegisterGuard
   { path: 'register', component: RegisterComponent },
+  // VerifyEmailGuard
   { path: 'verify-email-address', component: VerifyEmailComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  // ForgotPasswordGuard
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  // PageNotFound
   { path: '**', component: PageNotFoundComponent }
   ]
 }];
