@@ -73,7 +73,7 @@ export class AuthService {
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
         result = true;
-        this.snackBarService.infoDuration('Please check your E-Mail for further instructions.', 60);
+        this.snackBarService.infoDuration('Please check your E-Mail for further instructions.', 30);
       })
       .catch((error) => {
         this.snackBarService.error(error.message);

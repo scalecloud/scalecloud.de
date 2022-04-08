@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class VerifyEmailComponent implements OnInit {
   clicked = false;
-  defaultDisabledSecounds = 60;
+  defaultDisabledSecounds = 30;
   secounds = 0;
 
   constructor(public authService: AuthService) { }
