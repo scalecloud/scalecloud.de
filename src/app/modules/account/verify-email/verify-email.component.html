@@ -20,8 +20,8 @@
             <button [disabled]="clicked" (click)="sendVerificationMail();" mat-raised-button color="primary">
              {{getButtonText()}} 
             </button>
-            <button routerLink="/login" mat-stroked-button>
-                Login
+            <button (click)="authService.signOut()" mat-stroked-button>
+                Logout
             </button>
         </mat-card-actions>
     </mat-card>
