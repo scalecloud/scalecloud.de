@@ -1,15 +1,32 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Injectable, NgZone } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VerifyEMailGuard implements CanActivate {
+  constructor(
+    public authService: AuthService,
+    public router: Router,
+    public ngZone: NgZone
+  ) { }
+
   canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.authService.isLoggedIn === true) {
+      this.ngZone.run(() => {
+        this.router.navigate(['dashboard']);
+      });
+    }
+    else if (this.authService.isLoggedIn === false && this.authService.isLoggedInNotVerified === false ) {
+      this.ngZone.run(() => {
+        this.router.navigate(['login']);
+      });
+    }
     return true;
   }
-  
+
 }

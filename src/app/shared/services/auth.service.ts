@@ -83,7 +83,12 @@ export class AuthService {
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    return user !== null && user.emailVerified === true ? true : false;
+  }
+
+  get isLoggedInNotVerified(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user !== null && user.emailVerified === false ? true : false;
   }
 
   setUserData(user: any): Promise<void> {

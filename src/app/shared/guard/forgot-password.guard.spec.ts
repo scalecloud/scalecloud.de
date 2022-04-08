@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { VerifyGuard } from './verify.guard';
+import { ForgotPasswordGuard } from './forgot-password.guard';
 
-describe('VerifyGuard', () => {
-  let guard: VerifyGuard;
+describe('ForgotPasswordGuard', () => {
+  let guard: ForgotPasswordGuard;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    guard = TestBed.inject(VerifyGuard);
+    guard = TestBed.inject(ForgotPasswordGuard);
   });
 
   it('should be created', () => {

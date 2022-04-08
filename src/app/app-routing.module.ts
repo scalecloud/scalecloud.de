@@ -14,8 +14,11 @@ import { HomeComponent } from './modules/main/home/home.component';
 import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
 import { NextcloudComponent } from './modules/products/nextcloud/nextcloud.component';
 import { SynologyComponent } from './modules/products/synology/synology.component';
-import { AuthGuard } from './shared/guard/auth.guard';
+import { DashboardGuard } from './shared/guard/dashboard.guard';
+import { ForgotPasswordGuard } from './shared/guard/forgot-password.guard';
 import { LoginGuard } from './shared/guard/login.guard';
+import { RegisterGuard } from './shared/guard/register.guard';
+import { VerifyEMailGuard } from './shared/guard/verify-email.guard';
 
 const routes: Routes = [{
   path: '', component: DefaultComponent,
@@ -30,15 +33,15 @@ const routes: Routes = [{
   { path: 'legal', component: LegalComponent },
   { path: 'contact', component: ContactComponent },
   // AuthGuard
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
   // LoginGuard
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   // RegisterGuard
-  { path: 'register', component: RegisterComponent },
+  { path: 'register', component: RegisterComponent, canActivate: [RegisterGuard] },
   // VerifyEmailGuard
-  { path: 'verify-email-address', component: VerifyEmailComponent },
+  { path: 'verify-email-address', component: VerifyEmailComponent, canActivate: [VerifyEMailGuard] },
   // ForgotPasswordGuard
-  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [ForgotPasswordGuard] },
   // PageNotFound
   { path: '**', component: PageNotFoundComponent }
   ]

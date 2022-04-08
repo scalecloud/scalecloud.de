@@ -6,8 +6,7 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuard implements CanActivate {
-
+export class DashboardGuard implements CanActivate {
   constructor(
     public authService: AuthService,
     public router: Router,
@@ -17,16 +16,17 @@ export class LoginGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedIn === true) {
-      this.ngZone.run(() => {
-        this.router.navigate(['dashboard']);
-      });
-    }
-    else if (this.authService.isLoggedInNotVerified === true) {
+    if (this.authService.isLoggedInNotVerified === true) {
       this.ngZone.run(() => {
         this.router.navigate(['verify-email-address']);
       });
     }
+    else if (this.authService.isLoggedIn === false) {
+      this.ngZone.run(() => {
+        this.router.navigate(['login']);
+      });
+    }
+
     return true;
   }
 
