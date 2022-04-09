@@ -51,8 +51,14 @@ export class AuthService {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        this.sendVerificationMail();
-        this.setUserData(result.user);
+        this.setUserData(result.user).then(() => {
+          this.sendVerificationMail().then(() => {
+            this.router.navigate(['verify-email-address']);
+          });
+        });
+        
+        
+        
       })
       .catch((error) => {
         this.snackBarService.error(error.message);
@@ -63,7 +69,7 @@ export class AuthService {
     return this.afAuth.currentUser
       .then((u: any) => u.sendEmailVerification())
       .then(() => {
-        this.router.navigate(['verify-email-address']);
+        this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
       });
   }
 
