@@ -1,5 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LogService } from '../log/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class SnackBarService {
 
   constructor(
     public snackBar: MatSnackBar,
-    private zone: NgZone
+    private zone: NgZone,
+    private logService: LogService
   ) { }
 
   info(message: string) {
@@ -19,6 +21,7 @@ export class SnackBarService {
 
   infoDuration(message: string, duration: number) {
     this.showMessage(message, duration, 'snackbar-info');
+    this.logService.info(message);
   }
 
   warn(message: string) {
@@ -27,6 +30,7 @@ export class SnackBarService {
 
   warnDuration(message: string, duration: number) {
     this.showMessage(message, duration, 'snackbar-warn');
+    this.logService.warn(message);
   }
 
   error(message: string) {
@@ -35,6 +39,7 @@ export class SnackBarService {
 
   errorDuration(message: string, duration: number) {
     this.showMessage(message, duration, 'snackbar-error');
+    this.logService.error(message);
   }
 
   private showMessage(message: string, duration: number, cssClass: string) {
