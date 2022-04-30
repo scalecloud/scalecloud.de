@@ -6,6 +6,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
 import { User } from './user.model';
 
@@ -13,12 +14,15 @@ import { User } from './user.model';
 export class AuthService {
 
   user: any;
+  token: string | null | undefined;
+
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
-    public snackBarService: SnackBarService
+    public snackBarService: SnackBarService,
+    private logService: LogService
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -30,7 +34,24 @@ export class AuthService {
         JSON.parse(localStorage.getItem('user')!);
       }
     });
+    this.subscribeToToken();
   }
+
+  subscribeToToken() {
+   this.afAuth.idToken.subscribe((token) => {
+      this.token = token;
+      this.logService.info('Token:' + this.token);
+    });
+  }
+
+  getToken(): string {
+    let ret = '';
+    if( this.token != null && this.token != undefined ) {
+      ret = this.token;
+    }
+    return ret;
+  }
+
 
   login(email: string, password: string) {
     return this.afAuth
