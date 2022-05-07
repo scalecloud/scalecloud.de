@@ -33,6 +33,8 @@ import { DashboardComponent } from 'src/app/modules/account/dashboard/dashboard.
 import { GlobeComponent } from 'src/app/modules/main/globe/globe.component';
 import { ForgotPasswordComponent } from 'src/app/modules/account/forgot-password/forgot-password.component';
 import { PageNotFoundComponent } from 'src/app/modules/main/page-not-found/page-not-found.component';
+import { BuyComponent } from 'src/app/modules/account/dashboard/buy/buy.component';
+import { DashboardSubscriptionCardComponent } from 'src/app/modules/account/dashboard/dashboard-subscription-card/dashboard-subscription-card.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { PageNotFoundComponent } from 'src/app/modules/main/page-not-found/page-
     DashboardComponent,
     ForgotPasswordComponent,
     GlobeComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    BuyComponent,
+    DashboardSubscriptionCardComponent
   ],
   imports: [
     CommonModule,
@@ -71,7 +75,11 @@ import { PageNotFoundComponent } from 'src/app/modules/main/page-not-found/page-
     MatIconModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { delay: 0, dataEncapsulation: false },
+      InMemoryDataService, {
+      delay: 0,
+      dataEncapsulation: false,
+      passThruUnknownUrl: true
+    },
     )
   ],
   providers: [
