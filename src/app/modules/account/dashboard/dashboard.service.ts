@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Logger } from '@firebase/logger';
 import { catchError, Observable, of } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ISubscription } from './subscription';
 
@@ -9,26 +9,25 @@ import { ISubscription } from './subscription';
   providedIn: 'root'
 })
 export class DashboardService {
-  
 
- // private url = 'api.scalecloud.de/dashboard/subscriptions';
-   private url = 'http://localhost:15000/albums';
+  // private url = 'api.scalecloud.de/dashboard/subscriptions';
+  private url = 'http://localhost:15000/dashboard/subscriptions';
 
-  httpOptions = {
-    headers: new HttpHeaders({ 
-      'Access-Control-Allow-Origin:': '*',
-      'Content-Type': 'application/json',
-   //   'Authorization': 'Basic ' + btoa('username:password')
-     })
-  };
- 
-  constructor(private http: HttpClient, private logService: LogService) { }
+  constructor(private http: HttpClient, private logService: LogService, private authService: AuthService) { }
 
   getSubscriptions(): Observable<ISubscription[]> {
-    return this.http.get<ISubscription[]>(this.url)
+    return this.http.get<ISubscription[]>(this.url, this.getHttpOptions())
       .pipe(
         catchError(this.handleError<ISubscription[]>('getSubscriptions', []))
       );
+  }
+
+  getHttpOptions() {
+    return {
+      headers: new HttpHeaders({
+        'Authorization': this.authService.getToken()
+      })
+    };
   }
 
   handleError<T>(operation = 'operation', result?: T) {

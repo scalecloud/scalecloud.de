@@ -40,7 +40,6 @@ export class AuthService {
   subscribeToToken() {
    this.afAuth.idToken.subscribe((token) => {
       this.token = token;
-      this.logService.info('Token:' + this.token);
     });
   }
 
@@ -48,6 +47,9 @@ export class AuthService {
     let ret = '';
     if( this.token != null && this.token != undefined ) {
       ret = this.token;
+    }
+    else {
+      this.logService.warn('Token is null or undefined');
     }
     return ret;
   }

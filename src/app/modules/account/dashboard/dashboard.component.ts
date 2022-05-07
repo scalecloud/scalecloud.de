@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { LogService } from 'src/app/shared/services/log/log.service';
 import { DashboardService } from './dashboard.service';
 import { ISubscription } from './subscription';
 
@@ -12,10 +13,19 @@ export class DashboardComponent implements OnInit {
 
   subscriptions: ISubscription[] = [];
 
-  constructor(public authService: AuthService, private dashboardService: DashboardService) {}
+  constructor(public authService: AuthService, private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
-    this.getSubscriptions();
+    this.waitForAuth();
+  }
+
+  waitForAuth(): void {
+    this.authService.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.getSubscriptions();
+      }
+    }
+    );
   }
 
   getSubscriptions(): void {
