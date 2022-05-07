@@ -27,7 +27,7 @@
     "@firebase/logger": "^0.3.2",
     "angular-in-memory-web-api": "^0.13.0",
     "cobe": "^0.5.0",
-    "firebase": "^9.8.0",
+    "firebase": "^9.7.0",
     "rxfire": "^6.0.3",
     "rxjs": "^7.5.5",
     "tslib": "^2.4.0",
