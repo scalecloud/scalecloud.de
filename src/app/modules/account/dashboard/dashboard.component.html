@@ -1,7 +1,4 @@
 <div *ngIf="authService.user as user">
-    <p>User ID: <strong>{{user.uid}}</strong></p>
-    <p>E-Mail: <strong>{{user.email}}</strong></p>
-    <p>E-Mail Verified: <strong>{{user.emailVerified}}</strong></p>
     <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="space-evenly">
         <div fxFlex="20rem" flex-shrink="50%" flex-basis="200px" fxFlex.xs="100%" *ngFor="let subscription of subscriptions">
          <app-dashboard-subscription-card [subscription]="subscription"></app-dashboard-subscription-card>
