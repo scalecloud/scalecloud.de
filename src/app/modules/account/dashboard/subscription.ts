@@ -1,5 +1,9 @@
 export interface ISubscription {
     id: string;
+    storageAmount: number;
+    contractNumber: number;
+    productName: string;
+    userCount: number;
     title: string;
     subscriptionArticelID: string;
     pricePerMonth: number;
