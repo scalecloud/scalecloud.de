@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card routerLink="/dashboard/subscription/{{getID()}}">
     <mat-card-title>
         {{getTitle()}}
     </mat-card-title>
@@ -23,6 +23,6 @@
         </mat-list>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-stroked-button color="primary">DETAILS</button>
+        <button routerLink="/dashboard/subscription/{{getID()}}" mat-stroked-button color="primary">DETAILS</button>
     </mat-card-actions>
 </mat-card>
