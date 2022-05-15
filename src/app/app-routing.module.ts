@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
 import { DashboardComponent } from './modules/account/dashboard/dashboard.component';
+import { SubscriptionDetailComponent } from './modules/account/dashboard/subscription-detail/subscription-detail.component';
 import { ForgotPasswordComponent } from './modules/account/forgot-password/forgot-password.component';
 import { LoginComponent } from './modules/account/login/login.component';
 import { RegisterComponent } from './modules/account/register/register.component';
@@ -34,6 +35,7 @@ const routes: Routes = [{
   { path: 'contact', component: ContactComponent },
   // AuthGuard
   { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
+  { path: 'dashboard/subscription/:id', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
   // LoginGuard
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   // RegisterGuard
