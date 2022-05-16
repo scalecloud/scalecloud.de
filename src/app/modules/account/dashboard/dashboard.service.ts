@@ -22,7 +22,7 @@ export class DashboardService {
     const url = `${this.subscriptionUrl}/${id}`;
     return this.http.get<ISubscription>(url).pipe(
       tap(_ => this.logService.info(`fetched subscription id=${id}`)),
-      catchError(this.handleError<ISubscription>(`getDashboard id=${id}`))
+      catchError(this.handleError<ISubscription>(`getSubscription id=${id}`))
     );
   }
 
