@@ -20,7 +20,8 @@ export class DashboardService {
 
   getSubscription(id: string): Observable<ISubscription> {
     const url = `${this.subscriptionUrl}/${id}`;
-    return this.http.get<ISubscription>(url).pipe(
+    return this.http.get<ISubscription>(url, this.getHttpOptions())
+    .pipe(
       tap(_ => this.logService.info(`fetched subscription id=${id}`)),
       catchError(this.handleError<ISubscription>(`getSubscription id=${id}`))
     );
