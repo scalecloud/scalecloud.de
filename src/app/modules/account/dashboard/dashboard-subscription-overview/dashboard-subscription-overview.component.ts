@@ -2,11 +2,11 @@ import { Component, Input } from '@angular/core';
 import { ISubscriptionOverview } from '../subscription-overview';
 
 @Component({
-  selector: 'app-dashboard-subscription-card',
-  templateUrl: './dashboard-subscription-card.component.html',
-  styleUrls: ['./dashboard-subscription-card.component.scss']
+  selector: 'app-dashboard-subscription-overview',
+  templateUrl: './dashboard-subscription-overview.component.html',
+  styleUrls: ['./dashboard-subscription-overview.component.scss']
 })
-export class DashboardSubscriptionCardComponent {
+export class DashboardSubscriptionOverviewComponent {
 
   @Input() subscriptionOverview: ISubscriptionOverview | undefined;
 
