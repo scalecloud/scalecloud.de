@@ -1,0 +1,28 @@
+<mat-card routerLink="/dashboard/subscription/{{getID()}}">
+    <mat-card-title>
+        {{getTitle()}}
+    </mat-card-title>
+    <mat-card-subtitle>{{getProductName()}}</mat-card-subtitle>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <mat-icon>numbers</mat-icon>
+                {{getID()}}
+            </mat-list-item>
+            <mat-list-item>
+                <mat-icon>cloud</mat-icon>
+                {{getStorageAmount()}} TB
+            </mat-list-item>
+            <mat-list-item>
+                <mat-icon>
+                    person
+                </mat-icon>
+                {{getUserCount()}}
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+        <button routerLink="/dashboard/subscription/{{getID()}}" mat-stroked-button color="primary">DETAILS</button>
+    </mat-card-actions>
+</mat-card>

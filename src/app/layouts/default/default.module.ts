@@ -35,6 +35,7 @@ import { ForgotPasswordComponent } from 'src/app/modules/account/forgot-password
 import { PageNotFoundComponent } from 'src/app/modules/main/page-not-found/page-not-found.component';
 import { SubscriptionDetailComponent } from 'src/app/modules/account/dashboard/subscription-detail/subscription-detail.component';
 import { SubscriptionOverviewComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-overview.component';
+import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboard/subscription-detail/subscription-detail-card/subscription-detail-card.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { SubscriptionOverviewComponent } from 'src/app/modules/account/dashboard
     GlobeComponent,
     PageNotFoundComponent,
     SubscriptionOverviewComponent,
-    SubscriptionDetailComponent
+    SubscriptionDetailComponent,
+    SubscriptionDetailCardComponent
   ],
   imports: [
     CommonModule,
