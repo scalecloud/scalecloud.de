@@ -12,7 +12,10 @@ export class DashboardComponent implements OnInit {
 
   subscriptionsOverview: ISubscriptionOverview[] = [];
 
-  constructor(public authService: AuthService, private subscriptionOverviewService: SubscriptionOverviewService) { }
+  constructor(
+    public authService: AuthService, 
+    private subscriptionOverviewService: SubscriptionOverviewService
+    ) { }
 
   ngOnInit(): void {
     this.waitForAuth();
@@ -21,13 +24,13 @@ export class DashboardComponent implements OnInit {
   waitForAuth(): void {
     this.authService.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.getSubscriptions();
+        this.getSubscriptionsOverview();
       }
     }
     );
   }
 
-  getSubscriptions(): void {
+  getSubscriptionsOverview(): void {
     if (this.subscriptionsOverview != null) {
       this.subscriptionOverviewService.getSubscriptionsOverview().subscribe(
         subscriptionsOverview => this.subscriptionsOverview = subscriptionsOverview);

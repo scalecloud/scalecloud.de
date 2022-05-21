@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SubscriptionDetailService } from './subscription-detail.service';
 import { ISubscriptionDetail } from './subscription-detail';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-subscription-detail',
@@ -15,6 +16,7 @@ export class SubscriptionDetailComponent implements OnInit {
   subscriptionDetail: ISubscriptionDetail | undefined;
 
   constructor(
+    public authService: AuthService, 
     private route: ActivatedRoute,
     private subscriptionDetailService: SubscriptionDetailService,
     private location: Location,
@@ -22,7 +24,16 @@ export class SubscriptionDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getSubscriptionDetail();
+    this.waitForAuth();
+  }
+
+  waitForAuth(): void {
+    this.authService.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.getSubscriptionDetail();
+      }
+    }
+    );
   }
 
   getSubscriptionDetail(): void {
