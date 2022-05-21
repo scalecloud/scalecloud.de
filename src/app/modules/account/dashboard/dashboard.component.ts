@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
 import { DashboardService } from './dashboard.service';
-import { ISubscription } from './subscription';
+import { ISubscriptionOverview } from './subscription-overview';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +10,7 @@ import { ISubscription } from './subscription';
 })
 export class DashboardComponent implements OnInit {
 
-  subscriptions: ISubscription[] = [];
+  subscriptionsOverview: ISubscriptionOverview[] = [];
 
   constructor(public authService: AuthService, private dashboardService: DashboardService) { }
 
@@ -29,9 +28,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getSubscriptions(): void {
-    if (this.subscriptions != null) {
-      this.dashboardService.getSubscriptions().subscribe(
-        subscriptions => this.subscriptions = subscriptions);
+    if (this.subscriptionsOverview != null) {
+      this.dashboardService.getSubscriptionsOverview().subscribe(
+        subscriptionsOverview => this.subscriptionsOverview = subscriptionsOverview);
     }
   }
 

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DashboardService } from '../dashboard.service';
-import { ISubscription } from '../subscription';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs';
 import { LogService } from 'src/app/shared/services/log/log.service';
+import { SubscriptionDetailService } from './subscription-detail.service';
+import { ISubscriptionDetail } from './subscription-detail';
 
 @Component({
   selector: 'app-subscription-detail',
@@ -13,26 +12,26 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 })
 export class SubscriptionDetailComponent implements OnInit {
 
-  subscription: ISubscription | undefined;
+  subscriptionDetail: ISubscriptionDetail | undefined;
 
   constructor(
     private route: ActivatedRoute,
-    private dashboardService: DashboardService,
+    private subscriptionDetailService: SubscriptionDetailService,
     private location: Location,
     private logService: LogService
   ) { }
 
   ngOnInit(): void {
-    this.getSubscription();
+    this.getSubscriptionDetail();
   }
 
-  getSubscription(): void {
+  getSubscriptionDetail(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id == null) {
-      this.logService.error('SubscriptionDetailComponent.getSubscription: id is null');
+      this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
     } else {
-      this.dashboardService.getSubscription(id)
-        .subscribe(subscription => this.subscription = subscription);
+      this.subscriptionDetailService.getSubscriptionDetail(id)
+        .subscribe(subscriptionDetail => this.subscriptionDetail = subscriptionDetail);
     }
   }
 
