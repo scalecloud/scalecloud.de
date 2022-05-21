@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ISubscriptionOverview } from '../subscription-overview';
+import { ISubscriptionOverview } from './subscription-overview';
 
 @Component({
   selector: 'app-subscription-overview',

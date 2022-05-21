@@ -9,7 +9,7 @@ import { ISubscriptionOverview } from './subscription-overview';
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService {
+export class SubscriptionOverviewService {
 
   // private url = 'api.scalecloud.de/dashboard/subscriptions';
   private url = 'http://localhost:15000/dashboard/subscriptions';

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { DashboardService } from './dashboard.service';
-import { ISubscriptionOverview } from './subscription-overview';
+import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
+import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +12,7 @@ export class DashboardComponent implements OnInit {
 
   subscriptionsOverview: ISubscriptionOverview[] = [];
 
-  constructor(public authService: AuthService, private dashboardService: DashboardService) { }
+  constructor(public authService: AuthService, private subscriptionOverviewService: SubscriptionOverviewService) { }
 
   ngOnInit(): void {
     this.waitForAuth();
@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
 
   getSubscriptions(): void {
     if (this.subscriptionsOverview != null) {
-      this.dashboardService.getSubscriptionsOverview().subscribe(
+      this.subscriptionOverviewService.getSubscriptionsOverview().subscribe(
         subscriptionsOverview => this.subscriptionsOverview = subscriptionsOverview);
     }
   }
