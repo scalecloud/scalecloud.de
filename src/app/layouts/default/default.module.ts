@@ -34,7 +34,7 @@ import { GlobeComponent } from 'src/app/modules/main/globe/globe.component';
 import { ForgotPasswordComponent } from 'src/app/modules/account/forgot-password/forgot-password.component';
 import { PageNotFoundComponent } from 'src/app/modules/main/page-not-found/page-not-found.component';
 import { SubscriptionDetailComponent } from 'src/app/modules/account/dashboard/subscription-detail/subscription-detail.component';
-import { DashboardSubscriptionOverviewComponent } from 'src/app/modules/account/dashboard/dashboard-subscription-overview/dashboard-subscription-overview.component';
+import { SubscriptionOverviewComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-overview.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,7 @@ import { DashboardSubscriptionOverviewComponent } from 'src/app/modules/account/
     ForgotPasswordComponent,
     GlobeComponent,
     PageNotFoundComponent,
-    DashboardSubscriptionOverviewComponent,
+    SubscriptionOverviewComponent,
     SubscriptionDetailComponent
   ],
   imports: [
