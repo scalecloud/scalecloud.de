@@ -9,46 +9,25 @@ import { ISubscriptionOverview } from './subscription-overview';
 export class SubscriptionOverviewComponent {
 
   @Input() subscriptionOverview: ISubscriptionOverview | undefined;
-
-  getStorageAmount(): number {
-    return this.subscriptionOverview?.storageAmount || 0;
-  }
-
-  getContractNumber(): number {
-    return this.subscriptionOverview?.contractNumber || 0;
-  }
-
-  getProductName(): string {
-    return this.subscriptionOverview?.productName || 'Nextcloud';
-  }
-
-  getUserCount(): number {
-    return this.subscriptionOverview?.userCount || 0;
+ 
+  getID(): string {
+    return this.subscriptionOverview?.id || '';
   }
 
   getTitle(): string {
     return this.subscriptionOverview?.title || '';
   }
 
-  getID(): string {
-    return this.subscriptionOverview?.id || '';
+  getProductName(): string {
+    return this.subscriptionOverview?.productName || '';
   }
 
-  getSubscriptionArticleID(): string {
-    return this.subscriptionOverview?.subscriptionArticelID || '';
+  getStorageAmount(): number {
+    return this.subscriptionOverview?.storageAmount || 0;
   }
 
-  getPricePerMonth(): number {
-    return this.subscriptionOverview?.pricePerMonth || 0;
+  getUserCount(): number {
+    return this.subscriptionOverview?.userCount || 0;
   }
-
-  getStarted(): string {
-    return this.subscriptionOverview?.started || '';
-  }
-
-  getEndsOn(): string {
-    return this.subscriptionOverview?.endsOn || '';
-  }
-
 
 }
