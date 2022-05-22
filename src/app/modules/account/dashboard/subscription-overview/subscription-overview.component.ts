@@ -14,8 +14,8 @@ export class SubscriptionOverviewComponent {
     return this.subscriptionOverview?.id || '';
   }
 
-  getTitle(): string {
-    return this.subscriptionOverview?.title || '';
+  getPlanProductName(): string {
+    return this.subscriptionOverview?.planProductName || '';
   }
 
   getProductName(): string {

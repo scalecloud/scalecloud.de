@@ -1,6 +1,6 @@
 export interface ISubscriptionOverview {
     id: string;
-    title: string;
+    planProductName: string;
     productName: string;
     storageAmount: number;
     userCount: number;
