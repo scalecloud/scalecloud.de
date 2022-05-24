@@ -6,7 +6,7 @@
     "scalecloud-de": {
       "hosting": {
         "scalecloud": [
-          "scalecloud"
+          "beta-scalecloud"
         ]
       }
     }
