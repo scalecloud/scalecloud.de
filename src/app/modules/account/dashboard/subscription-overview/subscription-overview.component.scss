@@ -1,5 +1,4 @@
 mat-card {
-    max-width: 400px;
     text-align: center;
     transition: all 0.3s ease-in-out;
 }
@@ -25,6 +24,6 @@ mat-card:hover {
 }
 
 button {
-    padding: 10px 105px;
+    padding: 0.5rem 8rem;
     font-size: 1.2rem;
 }
