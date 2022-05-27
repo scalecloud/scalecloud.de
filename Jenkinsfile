@@ -59,12 +59,11 @@ node() {
     }
     stage('Build') {
         lastStage = env.STAGE_NAME
-        sh 'npm run ng build scalecloud'
+        sh 'docker build --tag scalecloudde/scalecloud.de:latest .'
     }
-    stage('Upload') {
+    stage('Push Docker Image') {
         lastStage = env.STAGE_NAME
-        sh 'npm i -g firebase-tools'
-        sh 'firebase deploy --token"${FIREBASE_TOKEN}" --only hosting -m "Automatic Jenkins release."'
+        sh 'docker push scalecloudde/scalecloud.de:latest'
     }
   }
   catch (err) {
@@ -79,6 +78,10 @@ node() {
   finally {
     stage('Clean Workspace') {
       cleanWs()
+    }
+    stage('Docker remove not needed images') {
+        sh 'docker rmi node:16.15.0'
+        sh 'docker rmi nginx:latest' 
     }
   }
 }
