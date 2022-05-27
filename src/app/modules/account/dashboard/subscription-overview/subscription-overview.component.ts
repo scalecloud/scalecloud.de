@@ -14,12 +14,12 @@ export class SubscriptionOverviewComponent {
     return this.subscriptionOverview?.id || '';
   }
 
-  getPlanProductName(): string {
-    return this.subscriptionOverview?.planProductName || '';
-  }
-
   getProductName(): string {
     return this.subscriptionOverview?.productName || '';
+  }
+
+  getProductType(): string {
+    return this.subscriptionOverview?.productType || '';
   }
 
   getStorageAmount(): number {
