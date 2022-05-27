@@ -1,3 +1,4 @@
+import { UpperCasePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ISubscriptionDetail } from '../subscription-detail';
 
@@ -10,45 +11,44 @@ export class SubscriptionDetailCardComponent {
 
   @Input() subscriptionDetail: ISubscriptionDetail | undefined;
 
-  getStorageAmount(): number {
-    return this.subscriptionDetail?.storageAmount || 0;
+  getID(): string {
+    return this.subscriptionDetail?.id || '';
   }
 
-  getContractNumber(): number {
-    return this.subscriptionDetail?.contractNumber || 0;
+  isActive(): boolean {
+    return this.subscriptionDetail?.active || false;
   }
 
   getProductName(): string {
-    return this.subscriptionDetail?.productName || 'Nextcloud';
+    return this.subscriptionDetail?.productName || '';
+  }
+
+  getProductType(): string {
+    return this.subscriptionDetail?.productType || '';
+  }
+
+  getStorageAmount(): number {
+    return this.subscriptionDetail?.storageAmount || 0;
   }
 
   getUserCount(): number {
     return this.subscriptionDetail?.userCount || 0;
   }
 
-  getTitle(): string {
-    return this.subscriptionDetail?.title || '';
-  }
-
-  getID(): string {
-    return this.subscriptionDetail?.id || '';
-  }
-
-  getSubscriptionArticleID(): string {
-    return this.subscriptionDetail?.subscriptionArticelID || '';
-  }
-
   getPricePerMonth(): number {
     return this.subscriptionDetail?.pricePerMonth || 0;
   }
 
-  getStarted(): string {
-    return this.subscriptionDetail?.started || '';
+  getCurrency(): string {
+    return this.subscriptionDetail?.currency.toUpperCase() || '';
   }
 
-  getEndsOn(): string {
-    return this.subscriptionDetail?.endsOn || '';
+  isCancelAtPeriodEnd(): boolean {
+    return this.subscriptionDetail?.cancelAtPeriodEnd || false;
   }
 
+  getCancelAt(): number {
+    return this.subscriptionDetail?.cancelAt || 0;
+  }
 
 }

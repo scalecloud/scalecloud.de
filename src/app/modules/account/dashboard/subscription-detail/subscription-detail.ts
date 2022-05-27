@@ -1,12 +1,12 @@
 export interface ISubscriptionDetail {
     id: string;
-    storageAmount: number;
-    contractNumber: number;
+    active: boolean;
     productName: string;
+    productType: string;
+    storageAmount: number;
     userCount: number;
-    title: string;
-    subscriptionArticelID: string;
     pricePerMonth: number;
-    started: string;
-    endsOn: string;
+    currency: string;
+    cancelAtPeriodEnd: boolean;
+    cancelAt: number;
 }

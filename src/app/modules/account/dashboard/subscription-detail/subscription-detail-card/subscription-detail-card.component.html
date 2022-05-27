@@ -1,8 +1,8 @@
 <mat-card routerLink="/dashboard/subscription/{{getID()}}">
     <mat-card-title>
-        {{getTitle()}}
+        {{getProductName()}}
     </mat-card-title>
-    <mat-card-subtitle>{{getProductName()}}</mat-card-subtitle>
+    <mat-card-subtitle>{{getProductType()}}</mat-card-subtitle>
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
@@ -20,6 +20,21 @@
                 </mat-icon>
                 {{getUserCount()}}
             </mat-list-item>
+            <mat-list-item>
+                <mat-icon>
+                    payments
+                </mat-icon>
+                {{getPricePerMonth() / 100 | currency:getCurrency() : 'symbol' : '1.0-0'}}<span
+                    class="price-month">/month</span>
+            </mat-list-item>
+            <div *ngIf="isCancelAtPeriodEnd()">
+                <mat-list-item>
+                    <mat-icon>
+                        event_busy
+                    </mat-icon>
+                    {{getCancelAt() * 1000 | date }}
+                </mat-list-item>
+            </div>
         </mat-list>
     </mat-card-content>
     <mat-card-actions>
