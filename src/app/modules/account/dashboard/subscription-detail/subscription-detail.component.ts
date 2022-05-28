@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SubscriptionDetailService } from './subscription-detail.service';
 import { ISubscriptionDetail } from './subscription-detail';
@@ -16,10 +15,9 @@ export class SubscriptionDetailComponent implements OnInit {
   subscriptionDetail: ISubscriptionDetail | undefined;
 
   constructor(
-    public authService: AuthService, 
+    public authService: AuthService,
     private route: ActivatedRoute,
     private subscriptionDetailService: SubscriptionDetailService,
-    private location: Location,
     private logService: LogService
   ) { }
 
@@ -45,9 +43,4 @@ export class SubscriptionDetailComponent implements OnInit {
         .subscribe(subscriptionDetail => this.subscriptionDetail = subscriptionDetail);
     }
   }
-
-  goBack(): void {
-    this.location.back();
-  }
-
 }
