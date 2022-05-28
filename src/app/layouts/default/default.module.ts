@@ -36,6 +36,7 @@ import { PageNotFoundComponent } from 'src/app/modules/main/page-not-found/page-
 import { SubscriptionDetailComponent } from 'src/app/modules/account/dashboard/subscription-detail/subscription-detail.component';
 import { SubscriptionOverviewComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-overview.component';
 import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboard/subscription-detail/subscription-detail-card/subscription-detail-card.component';
+import { CustomerPortalComponent } from 'src/app/modules/account/dashboard/subscription-detail/customer-portal/customer-portal.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboa
     PageNotFoundComponent,
     SubscriptionOverviewComponent,
     SubscriptionDetailComponent,
-    SubscriptionDetailCardComponent
+    SubscriptionDetailCardComponent,
+    CustomerPortalComponent
   ],
   imports: [
     CommonModule,
