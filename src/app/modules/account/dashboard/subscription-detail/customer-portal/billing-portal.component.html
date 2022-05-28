@@ -1,6 +1,6 @@
-<mat-card routerLink="/dashboard/subscription/}">
+<mat-card>
     <mat-card-title>
-        Customer Portal
+        Billing Portal
     </mat-card-title>
     <mat-card-subtitle>What you can do:</mat-card-subtitle>
     <mat-divider></mat-divider>
@@ -21,6 +21,6 @@
         </mat-list>
     </mat-card-content>
     <mat-card-actions>
-        <button routerLink="/dashboard/subscription/" mat-stroked-button color="primary">Open Customer Portal</button>
+        <button (click)="openBillingPortal()" mat-stroked-button color="primary">Open Billing Portal</button>
     </mat-card-actions>
 </mat-card>
