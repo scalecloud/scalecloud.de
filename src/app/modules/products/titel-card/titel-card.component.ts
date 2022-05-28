@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SubscriptionType } from '../SubscriptionType';
 
 @Component({
@@ -6,13 +6,10 @@ import { SubscriptionType } from '../SubscriptionType';
   templateUrl: './titel-card.component.html',
   styleUrls: ['./titel-card.component.scss']
 })
-export class TitelCardComponent implements OnInit {
+export class TitelCardComponent {
 
   @Input() subscriptionType: SubscriptionType = SubscriptionType.Nextcloud;
   
-  ngOnInit(): void {
-  }
-
   get isSynology() {
     return this.subscriptionType === SubscriptionType.Synology;
   }

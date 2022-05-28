@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
 
@@ -7,12 +7,9 @@ import { SynologyProduct } from '../synology/synology-product';
   templateUrl: './subscription-card.component.html',
   styleUrls: ['./subscription-card.component.scss']
 })
-export class SubscriptionCardComponent implements OnInit {
+export class SubscriptionCardComponent {
 
   @Input() nextcloudProduct: NextcloudProduct | undefined;
   @Input() synologyProduct: SynologyProduct | undefined;
-
-  ngOnInit(): void {
-  }
 
 }
