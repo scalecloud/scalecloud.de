@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
@@ -9,7 +9,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
   styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent {
-  email = new FormControl('', [Validators.required, Validators.email]);
+  email = new UntypedFormControl('', [Validators.required, Validators.email]);
   clicked = false;
   defaultDisabledSecounds = 60;
   secounds = 0;

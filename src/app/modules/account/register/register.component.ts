@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -8,10 +8,10 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder, public auth: AuthService) {
+  constructor(private formBuilder: UntypedFormBuilder, public auth: AuthService) {
     this.form = this.formBuilder.group(
       {
         email: ['', [Validators.required, Validators.email]],
