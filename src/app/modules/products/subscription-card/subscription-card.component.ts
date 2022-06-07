@@ -12,4 +12,15 @@ export class SubscriptionCardComponent {
   @Input() nextcloudProduct: NextcloudProduct | undefined;
   @Input() synologyProduct: SynologyProduct | undefined;
 
+  constructor() { }
+
+  checkout(): void {
+    if (this.nextcloudProduct) {
+      console.log(this.nextcloudProduct);
+    } else if (this.synologyProduct) {
+      console.log(this.synologyProduct);
+    }
+  }
+
+
 }

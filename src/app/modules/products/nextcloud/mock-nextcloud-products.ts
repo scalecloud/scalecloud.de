@@ -2,7 +2,7 @@ import { NextcloudProduct } from "./nextcloud-product";
 
 export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
   {
-    productId: 0,
+    productID: "prod_HU3130fObXsqNH",
     name: "Ruby",
     storageIcon: "cloud",
     storageAmount: 3,
@@ -14,7 +14,7 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     usersAmount: 1,
     pricePerMonth: 10
   }, {
-    productId: 1,
+    productID: "prod_HU32LPogsIG5Pd",
     name: "Jade",
     storageIcon: "cloud",
     storageAmount: 6,
@@ -26,7 +26,7 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     usersAmount: 1,
     pricePerMonth: 15
   }, {
-    productId: 2,
+    productID: "prod_HU32LtMh0qaPZq",
     name: "Frosted",
     storageIcon: "cloud",
     storageAmount: 12,
@@ -38,7 +38,7 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     usersAmount: 1,
     pricePerMonth: 30
   }, {
-    productId: 3,
+    productID: "prod_HU33aKe3le4p0z",
     name: "Obsidian",
     storageIcon: "cloud",
     storageAmount: 24,

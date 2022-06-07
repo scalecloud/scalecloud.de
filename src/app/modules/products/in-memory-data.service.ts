@@ -15,8 +15,4 @@ export class InMemoryDataService implements InMemoryDbService {
     const synologyproducts: SynologyProduct[] = SYNOLOGYPRODUCTS;
     return { nextcloudproducts, synologyproducts };
   }
-
-  genId(nextcloudProducts: NextcloudProduct[]): number {
-    return nextcloudProducts.length > 0 ? Math.max(...nextcloudProducts.map(nextcloudProduct => nextcloudProduct.productId)) + 1 : 11;
-  }
 }
