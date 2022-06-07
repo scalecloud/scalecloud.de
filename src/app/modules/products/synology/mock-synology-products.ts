@@ -2,7 +2,7 @@ import { SynologyProduct } from "./synology-product";
 
 export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
   {
-    productId: 4,
+    productID: "prod_Lpo2OR77MBfpux",
     name: "Midnight",
     storageIcon: "cloud",
     storageAmount: 3,
@@ -14,7 +14,7 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     usersAmount: 1,
     pricePerMonth: 15
   }, {
-    productId: 5,
+    productID: "prod_Lpo6htENbTb535",
     name: "Royal",
     storageIcon: "cloud",
     storageAmount: 6,
@@ -26,7 +26,7 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     usersAmount: 1,
     pricePerMonth: 25
   }, {
-    productId: 6,
+    productID: "prod_Lpo7cML9t5r7L7",
     name: "Icy",
     storageIcon: "cloud",
     storageAmount: 12,
@@ -38,7 +38,7 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     usersAmount: 1,
     pricePerMonth: 45
   }, {
-    productId: 7,
+    productID: "prod_Lpo9R0OYdo9s4b",
     name: "Rose",
     storageIcon: "cloud",
     storageAmount: 24,

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { CheckoutService } from '../checkout/checkout.service';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
 
@@ -12,14 +13,16 @@ export class SubscriptionCardComponent {
   @Input() nextcloudProduct: NextcloudProduct | undefined;
   @Input() synologyProduct: SynologyProduct | undefined;
 
-  constructor() { }
+  constructor(public checkoutService: CheckoutService) { }
 
   checkout(): void {
+    let productID = ""
     if (this.nextcloudProduct) {
-      console.log(this.nextcloudProduct);
+      productID = this.nextcloudProduct.productID;
     } else if (this.synologyProduct) {
-      console.log(this.synologyProduct);
+      productID = this.synologyProduct.productID;
     }
+    this.checkoutService.checkout(productID);
   }
 
 

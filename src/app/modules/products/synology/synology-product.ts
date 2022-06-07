@@ -1,5 +1,5 @@
 export interface SynologyProduct {
-  productId: number;
+  productID: string;
   name: string;
   storageIcon: string;
   storageAmount: number;
