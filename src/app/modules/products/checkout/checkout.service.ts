@@ -16,7 +16,7 @@ export class CheckoutService {
   constructor(private http: HttpClient, private logService: LogService, private authService: AuthService) { }
 
   getCheckoutSession(productModel: ProductModel): Observable<CheckoutModel> {
-    return this.http.get<CheckoutModel>(this.url, this.getHttpOptions())
+    return this.http.post<CheckoutModel>(this.url, productModel, this.getHttpOptions())
       .pipe(
         catchError(this.handleError<CheckoutModel>('getBillingPortal'))
       );
