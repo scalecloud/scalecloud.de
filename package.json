@@ -25,7 +25,7 @@
     "@angular/platform-browser-dynamic": "^14.0.1",
     "@angular/router": "^14.0.1",
     "@firebase/logger": "^0.3.3",
-    "angular-in-memory-web-api": "^0.13.0",
+    "angular-in-memory-web-api": "^0.14.0",
     "cobe": "^0.5.0",
     "firebase": "^9.8.3",
     "rxfire": "^6.0.3",
