@@ -34,7 +34,7 @@ export class SubscriptionCardComponent {
         if (checkoutModel == null) {
           this.logService.error('SubscriptionCardComponent.openCheckoutSession: checkoutModel is null');
         } else {
-          window.open(checkoutModel.url, '_blank');
+          window.open(checkoutModel.url, '_self');
         }
       }
       );
