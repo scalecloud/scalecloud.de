@@ -29,7 +29,7 @@ const routes: Routes = [{
   },
   { path: 'nextcloud', component: NextcloudComponent },
   { path: 'synology', component: SynologyComponent },
-  { path: 'privacy', component: PrivacyComponent },
+  { path: 'privacy-policy', component: PrivacyComponent },
   { path: 'imprint', component: ImprintComponent },
   { path: 'legal', component: LegalComponent },
   { path: 'contact', component: ContactComponent },
