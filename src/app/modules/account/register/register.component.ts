@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { PasswordMatchComponent } from './password-match/password-match.component';
+import { PasswordStrengthComponent } from './password-strength/password-strength.component';
 
 @Component({
   selector: 'app-register',
@@ -8,6 +10,10 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
+
+  @ViewChild(PasswordStrengthComponent) passwordStrength: PasswordStrengthComponent | undefined;
+  @ViewChild(PasswordMatchComponent) passwordMatch: PasswordMatchComponent | undefined;
+
   form: UntypedFormGroup;
   submitted = false;
 
@@ -19,7 +25,7 @@ export class RegisterComponent {
           '',
           [
             Validators.required,
-            Validators.minLength(8)            
+            Validators.minLength(8)
           ]
         ],
         confirmPassword: ['', Validators.required],
@@ -29,6 +35,10 @@ export class RegisterComponent {
         validators: [this.match('password', 'confirmPassword')]
       }
     );
+  }
+
+  ngAfterViewInit() {
+
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -41,7 +51,10 @@ export class RegisterComponent {
 
   onSubmit(): void {
     this.submitted = true;
-    if (this.form == null || this.form.invalid) {
+    if (this.form == null || this.form.invalid
+      || this.passwordStrength == undefined || !this.passwordStrength.isPasswordStrength()
+      || this.passwordMatch == undefined || !this.passwordMatch.isMatching()
+    ) {
       return;
     }
     this.auth.register(this.form.value.email, this.form.value.password);

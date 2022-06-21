@@ -27,7 +27,6 @@ import { InMemoryDataService } from 'src/app/modules/products/in-memory-data.ser
 import { LoginComponent } from 'src/app/modules/account/login/login.component';
 import { RegisterComponent } from 'src/app/modules/account/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
 import { VerifyEmailComponent } from 'src/app/modules/account/verify-email/verify-email.component';
 import { DashboardComponent } from 'src/app/modules/account/dashboard/dashboard.component';
 import { GlobeComponent } from 'src/app/modules/main/globe/globe.component';
@@ -37,6 +36,8 @@ import { SubscriptionDetailComponent } from 'src/app/modules/account/dashboard/s
 import { SubscriptionOverviewComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-overview.component';
 import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboard/subscription-detail/subscription-detail-card/subscription-detail-card.component';
 import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscription-detail/customer-portal/billing-portal.component';
+import { PasswordStrengthComponent } from 'src/app/modules/account/register/password-strength/password-strength.component';
+import { PasswordMatchComponent } from 'src/app/modules/account/register/password-match/password-match.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,8 @@ import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscr
     ContactComponent,
     LoginComponent,
     RegisterComponent,
+    PasswordStrengthComponent,
+    PasswordMatchComponent,
     VerifyEmailComponent,
     DashboardComponent,
     ForgotPasswordComponent,
@@ -73,7 +76,6 @@ import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscr
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
-    MatPasswordStrengthModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MatIconModule,

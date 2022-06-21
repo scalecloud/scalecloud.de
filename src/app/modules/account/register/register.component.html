@@ -20,17 +20,19 @@
               <mat-label>Password:</mat-label>
               <input type="password" #password formControlName="password" class="form-control"
                 [ngClass]="{ 'is-invalid': submitted && f.password.errors }" matInput placeholder="Password"
-                name="password" #passwordTest required>
+                name="password" required>
               <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                 <mat-error *ngIf="f.password.errors.required">{{getErrorMessagePasswordRequired()}}</mat-error>
                 <mat-error *ngIf="f.password.errors.minlength">{{getErrorMessagePasswordMinLength()}}</mat-error>
               </div>
             </mat-form-field>
           </mat-list-item>
+          <app-password-strength class="passwordStrength" #passwordStrength [password]="password.value">
+          </app-password-strength>
           <mat-list-item>
             <mat-form-field appearance="fill">
               <mat-label>Confirm password:</mat-label>
-              <input type="password" formControlName="confirmPassword" class="form-control"
+              <input type="password" #confirmPassword formControlName="confirmPassword" class="form-control"
                 [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" matInput
                 placeholder="Confirm password" name="password" required>
               <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
@@ -41,12 +43,8 @@
               </div>
             </mat-form-field>
           </mat-list-item>
-          <mat-list-item class="password-strength-container">
-            <mat-password-strength #passwordStrengthComponent [password]="password.value">
-            </mat-password-strength>
-            <mat-password-strength-info [passwordComponent]="passwordStrengthComponent">
-            </mat-password-strength-info>
-          </mat-list-item>
+            <app-password-match #passwordMatch [password]="password.value" [confirmPassword]="confirmPassword.value">
+            </app-password-match>
           <mat-list-item>
             <input type="checkbox" formControlName="acceptTerms" class="form-check-input"
               [ngClass]="{ 'is-invalid': submitted && f.acceptTerms.errors }" />
