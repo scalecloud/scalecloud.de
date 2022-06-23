@@ -38,6 +38,8 @@ import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboa
 import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscription-detail/customer-portal/billing-portal.component';
 import { PasswordStrengthComponent } from 'src/app/modules/account/register/password-strength/password-strength.component';
 import { PasswordMatchComponent } from 'src/app/modules/account/register/password-match/password-match.component';
+import { CancelComponent } from 'src/app/modules/products/checkout/cancel/cancel.component';
+import { SuccessComponent } from 'src/app/modules/products/checkout/success/success.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { PasswordMatchComponent } from 'src/app/modules/account/register/passwor
     SubscriptionOverviewComponent,
     SubscriptionDetailComponent,
     SubscriptionDetailCardComponent,
-    BillingPortalComponent
+    BillingPortalComponent,
+    SuccessComponent,
+    CancelComponent
   ],
   imports: [
     CommonModule,

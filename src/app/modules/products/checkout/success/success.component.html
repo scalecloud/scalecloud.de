@@ -1,0 +1,27 @@
+<div fxLayoutAlign="space-evenly">
+    <mat-card>
+        <mat-card-title>Thank You for subscribing</mat-card-title>
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>
+                    <div *ngIf="authService.user as user">
+                        <p>
+                            We have sent a confirmation E-Mail to: <strong>{{ user.email }}</strong>.
+                        </p>
+                        <p>
+                            Your subscription is currently being set up. You will receive another E-Mail after your subscription is ready.
+                        </p>
+                        <p>
+                            You can view the status of your subscriptions in your dashboard.
+                        </p>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+            <button routerLink="/dashboard" mat-raised-button color="primary">
+                Dashboard
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
