@@ -11,6 +11,7 @@ import { ContactComponent } from './modules/footer/contact/contact.component';
 import { ImprintComponent } from './modules/footer/imprint/imprint.component';
 import { LegalComponent } from './modules/footer/legal/legal.component';
 import { PrivacyComponent } from './modules/footer/privacy/privacy.component';
+import { TermsComponent } from './modules/footer/terms/terms.component';
 import { HomeComponent } from './modules/main/home/home.component';
 import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
 import { CancelComponent } from './modules/products/checkout/cancel/cancel.component';
@@ -38,6 +39,7 @@ const routes: Routes = [{
   { path: 'privacy-policy', component: PrivacyComponent },
   { path: 'imprint', component: ImprintComponent },
   { path: 'legal', component: LegalComponent },
+  { path: 'terms', component: TermsComponent },
   { path: 'contact', component: ContactComponent },
   // AuthGuard
   { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },

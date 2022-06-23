@@ -40,6 +40,7 @@ import { PasswordStrengthComponent } from 'src/app/modules/account/register/pass
 import { PasswordMatchComponent } from 'src/app/modules/account/register/password-match/password-match.component';
 import { CancelComponent } from 'src/app/modules/products/checkout/cancel/cancel.component';
 import { SuccessComponent } from 'src/app/modules/products/checkout/success/success.component';
+import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { SuccessComponent } from 'src/app/modules/products/checkout/success/succ
     PrivacyComponent,
     ImprintComponent,
     LegalComponent,
+    TermsComponent,
     ContactComponent,
     LoginComponent,
     RegisterComponent,
