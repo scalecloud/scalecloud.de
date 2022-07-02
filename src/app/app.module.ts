@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DefaultModule } from './layouts/default/default.module';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { environment } from '../environments/environment';
 import { ScreenTrackingService,UserTrackingService } from '@angular/fire/analytics';
 import { provideAuth,getAuth } from '@angular/fire/auth';
@@ -24,6 +24,7 @@ import { AngularFireModule } from '@angular/fire/compat';
     BrowserAnimationsModule,
     DefaultModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAnalyticsModule,
   // provideFirebaseApp(() => initializeApp(environment.firebase)),
   // provideAnalytics(() => getAnalytics()),
     AngularFireAuthModule,
