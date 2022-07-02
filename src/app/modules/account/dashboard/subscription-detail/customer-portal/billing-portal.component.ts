@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { IBillingPortal } from './billing-portal';
 import { BillingPortalService } from './billing-portal.service';
 
 @Component({

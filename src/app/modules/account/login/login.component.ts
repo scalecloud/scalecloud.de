@@ -41,7 +41,7 @@ export class LoginComponent {
   }
 
   getErrorMessagePassword() {
-    var ret = "";
+    let ret = "";
     if (this.password.hasError('required')) {
       ret = 'You must enter your password';
     }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PasswordMatchComponent } from './password-match/password-match.component';
@@ -35,10 +35,6 @@ export class RegisterComponent {
         validators: [this.match('password', 'confirmPassword')]
       }
     );
-  }
-
-  ngAfterViewInit() {
-
   }
 
   get f(): { [key: string]: AbstractControl } {
