@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CheckoutService } from '../checkout/checkout.service';
 import { ProductModel } from '../checkout/ProductModel';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
+import { QuantityComponent } from './quantity/quantity.component';
 
 @Component({
   selector: 'app-subscription-card',
@@ -14,6 +15,8 @@ export class SubscriptionCardComponent {
 
   @Input() nextcloudProduct: NextcloudProduct | undefined;
   @Input() synologyProduct: SynologyProduct | undefined;
+
+  @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
 
   constructor(public checkoutService: CheckoutService, private logService: LogService) { }
 
@@ -26,7 +29,8 @@ export class SubscriptionCardComponent {
     }
 
     const productModel: ProductModel = {
-      productID: productID
+      productID: productID,
+      quantity: this.getQuantity(),
     }
 
     this.checkoutService.getCheckoutSession(productModel)
@@ -38,6 +42,14 @@ export class SubscriptionCardComponent {
         }
       }
       );
+  }
+
+  getQuantity(): number {
+    let ret = 1;
+    if ( this.quantityComponent != undefined ) {
+      ret = this.quantityComponent.getQuantity();
+    }
+    return ret;
   }
 
 }

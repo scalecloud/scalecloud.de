@@ -1,0 +1,10 @@
+input {
+    width: 4rem;
+    font-size: 2rem;
+    margin-left: 0.5rem;
+    text-align: right;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+}

@@ -63,23 +63,18 @@
                         {{synologyProduct.usersIcon}}
                     </div>
                 </mat-icon>
-                <div *ngIf="nextcloudProduct != undefined">
-                    {{nextcloudProduct.usersAmount}}
-                </div>
-                <div *ngIf="synologyProduct != undefined">
-                    {{synologyProduct.usersAmount}}
-                </div>
-                &nbsp;user per subscription
+                <mat-label>User count:</mat-label>
+                <app-quantity></app-quantity>
             </mat-list-item>
             <mat-divider></mat-divider>
         </mat-list>
     </mat-card-content>
     <mat-card-subtitle>
         <span *ngIf="nextcloudProduct != undefined">
-            {{nextcloudProduct.pricePerMonth | currency:'EUR' : 'symbol' : '1.0-0'}}
+            {{nextcloudProduct.pricePerMonth * getQuantity() | currency:'EUR' : 'symbol' : '1.0-0'}}
         </span>
         <span *ngIf="synologyProduct != undefined">
-            {{synologyProduct.pricePerMonth | currency:'EUR' : 'symbol' : '1.0-0'}}
+            {{synologyProduct.pricePerMonth * getQuantity() | currency:'EUR' : 'symbol' : '1.0-0'}}
         </span>
         <span class="price-month">/month</span>
     </mat-card-subtitle>

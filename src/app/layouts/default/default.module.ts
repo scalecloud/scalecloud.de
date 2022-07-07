@@ -41,6 +41,7 @@ import { PasswordMatchComponent } from 'src/app/modules/account/register/passwor
 import { CancelComponent } from 'src/app/modules/products/checkout/cancel/cancel.component';
 import { SuccessComponent } from 'src/app/modules/products/checkout/success/success.component';
 import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
+import { QuantityComponent } from 'src/app/modules/products/subscription-card/quantity/quantity.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
     HomeComponent,
     TitelCardComponent,
     SubscriptionCardComponent,
+    QuantityComponent,
     NextcloudComponent,
     SynologyComponent,
     PrivacyComponent,

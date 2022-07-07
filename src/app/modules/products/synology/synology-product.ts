@@ -8,6 +8,5 @@ export interface SynologyProduct {
   trialIcon: string;
   trialDays: number;
   usersIcon: string;
-  usersAmount: number;
   pricePerMonth: number;
 }

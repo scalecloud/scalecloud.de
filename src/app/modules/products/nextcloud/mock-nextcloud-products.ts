@@ -11,7 +11,6 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     trialIcon: "event_available",
     trialDays: 30,
     usersIcon: "person",
-    usersAmount: 1,
     pricePerMonth: 10
   }, {
     productID: "prod_HU32LPogsIG5Pd",
@@ -23,7 +22,6 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     trialIcon: "event_available",
     trialDays: 30,
     usersIcon: "person",
-    usersAmount: 1,
     pricePerMonth: 15
   }, {
     productID: "prod_HU32LtMh0qaPZq",
@@ -35,7 +33,6 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     trialIcon: "event_available",
     trialDays: 30,
     usersIcon: "person",
-    usersAmount: 1,
     pricePerMonth: 30
   }, {
     productID: "prod_HU33aKe3le4p0z",
@@ -47,7 +44,6 @@ export const NEXTCLOUDPRODUCTS: NextcloudProduct[] = [
     trialIcon: "event_available",
     trialDays: 30,
     usersIcon: "person",
-    usersAmount: 1,
     pricePerMonth: 60
   }
 ];

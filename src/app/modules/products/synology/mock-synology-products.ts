@@ -11,7 +11,6 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     trialDays: 14,
     trialIcon: "event_available",
     usersIcon: "person",
-    usersAmount: 1,
     pricePerMonth: 15
   }, {
     productID: "prod_Lpo6htENbTb535",
@@ -23,7 +22,6 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     trialIcon: "event_available",
     trialDays: 14,
     usersIcon: "person",
-    usersAmount: 1,
     pricePerMonth: 25
   }, {
     productID: "prod_Lpo7cML9t5r7L7",
@@ -35,7 +33,6 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     trialIcon: "event_available",
     trialDays: 14,
     usersIcon: "person",
-    usersAmount: 1,
     pricePerMonth: 45
   }, {
     productID: "prod_Lpo9R0OYdo9s4b",
@@ -47,7 +44,6 @@ export const SYNOLOGYPRODUCTS: SynologyProduct[] = [
     trialIcon: "event_available",
     trialDays: 14,
     usersIcon: "person",
-    usersAmount: 1,
     pricePerMonth: 80
   }
 ];
