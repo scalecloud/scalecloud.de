@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { CheckoutModel } from './CheckoutModel';
 import { ProductModel } from './ProductModel';
 
@@ -13,12 +14,17 @@ export class CheckoutService {
 
   private url = 'http://localhost:15000/dashboard/create-checkout-session';
 
-  constructor(private http: HttpClient, private logService: LogService, private authService: AuthService) { }
+  constructor(private http: HttpClient, 
+    private logService: LogService, 
+    private authService: AuthService,
+    public snackBarService: SnackBarService
+    ) { }
 
   getCheckoutSession(productModel: ProductModel): Observable<CheckoutModel> {
     return this.http.post<CheckoutModel>(this.url, productModel, this.getHttpOptions())
       .pipe(
         catchError(this.handleError<CheckoutModel>('getBillingPortal'))
+        
       );
   }
 
@@ -33,6 +39,7 @@ export class CheckoutService {
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
+      this.snackBarService.error("Checkout session could not be started. Please try again.");
       return of(result as T);
     };
   }
