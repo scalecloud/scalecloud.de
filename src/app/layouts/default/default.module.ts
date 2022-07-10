@@ -45,7 +45,6 @@ import { QuantityComponent } from 'src/app/modules/products/subscription-card/qu
 import { CheckoutComponent } from 'src/app/modules/products/checkout/checkout.component';
 import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/checkout-details/checkout-details.component';
 import { PaymentElementComponent } from 'src/app/modules/products/checkout/payment-element/payment-element.component';
-import { NgxStripeModule } from 'ngx-stripe';
 
 @NgModule({
   declarations: [
