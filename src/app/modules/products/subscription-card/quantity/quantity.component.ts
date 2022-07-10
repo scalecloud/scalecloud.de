@@ -8,7 +8,7 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 })
 export class QuantityComponent {
 
-  quantity = new UntypedFormControl('1', [Validators.required, Validators.min(1)]);
+  quantity = new UntypedFormControl(1, [Validators.required, Validators.min(1)]);
 
   formatLabel(value: number) {
     return value;
