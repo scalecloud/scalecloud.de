@@ -43,8 +43,9 @@ import { SuccessComponent } from 'src/app/modules/products/checkout/success/succ
 import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
 import { QuantityComponent } from 'src/app/modules/products/subscription-card/quantity/quantity.component';
 import { CheckoutComponent } from 'src/app/modules/products/checkout/checkout.component';
-import { CheckoutCardComponent } from 'src/app/modules/products/checkout/checkout-card/checkout-card.component';
 import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/checkout-details/checkout-details.component';
+import { PaymentElementComponent } from 'src/app/modules/products/checkout/payment-element/payment-element.component';
+import { NgxStripeModule } from 'ngx-stripe';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,7 @@ import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/chec
     BillingPortalComponent,
     CheckoutComponent,
     CheckoutDetailsComponent,
-    CheckoutCardComponent,
+    PaymentElementComponent,
     SuccessComponent,
     CancelComponent
   ],

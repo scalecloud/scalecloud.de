@@ -3,24 +3,31 @@ import { Component, OnInit } from '@angular/core';
 declare var Stripe: any;
 
 @Component({
-  selector: 'app-checkout-card',
-  templateUrl: './checkout-card.component.html',
-  styleUrls: ['./checkout-card.component.scss']
+  selector: 'app-payment-element',
+  templateUrl: './payment-element.component.html',
+  styleUrls: ['./payment-element.component.scss']
 })
-export class CheckoutCardComponent implements OnInit {
-
-  constructor() { }
+export class PaymentElementComponent implements OnInit {
 
   ngOnInit(): void {
     // Your Stripe public key
     const stripe = Stripe('pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3');
 
-    // Create `card` element that will watch for updates
-    // and display error messages
-    const elements = stripe.elements();
-    const card = elements.create('card');
-    card.mount('#card-element');
-    card.addEventListener('change', (event: { error: { message: string | null; }; }) => {
+    const options = {
+      clientSecret: 'pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3',
+      // Fully customizable with appearance API.
+      appearance: {/*...*/},
+    };
+
+    const elements = stripe.elements(options);
+    
+
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#payment-element');
+
+
+    
+    paymentElement.addEventListener('change', (event: { error: { message: string | null; }; }) => {
       const displayError = document.getElementById('card-errors');
       if (displayError) {
         if (event.error) {
@@ -34,7 +41,7 @@ export class CheckoutCardComponent implements OnInit {
     // Listen for form submission, process the form with Stripe,
     // and get the 
     const paymentForm = document.getElementById('payment-form');
-    if (paymentForm) {
+/*     if (paymentForm) {
       paymentForm.addEventListener('submit', event => {
         event.preventDefault();
         stripe.createToken(card).then((result: { error: { message: string | null; }; token: { id: any; }; }) => {
@@ -54,7 +61,7 @@ export class CheckoutCardComponent implements OnInit {
           }
         });
       });
-    }
+    } */
   }
 
 }
