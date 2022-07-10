@@ -15,6 +15,7 @@ import { TermsComponent } from './modules/footer/terms/terms.component';
 import { HomeComponent } from './modules/main/home/home.component';
 import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
 import { CancelComponent } from './modules/products/checkout/cancel/cancel.component';
+import { CheckoutComponent } from './modules/products/checkout/checkout.component';
 import { SuccessComponent } from './modules/products/checkout/success/success.component';
 import { NextcloudComponent } from './modules/products/nextcloud/nextcloud.component';
 import { SynologyComponent } from './modules/products/synology/synology.component';
@@ -33,6 +34,7 @@ const routes: Routes = [{
   { path: 'nextcloud', component: NextcloudComponent },
   { path: 'synology', component: SynologyComponent },
   // Checkout
+  { path: 'checkout', component: CheckoutComponent },
   { path: 'checkout/success', component: SuccessComponent },
   { path: 'checkout/cancel', component: CancelComponent },
   // Footer

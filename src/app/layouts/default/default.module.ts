@@ -42,6 +42,9 @@ import { CancelComponent } from 'src/app/modules/products/checkout/cancel/cancel
 import { SuccessComponent } from 'src/app/modules/products/checkout/success/success.component';
 import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
 import { QuantityComponent } from 'src/app/modules/products/subscription-card/quantity/quantity.component';
+import { CheckoutComponent } from 'src/app/modules/products/checkout/checkout.component';
+import { CheckoutCardComponent } from 'src/app/modules/products/checkout/checkout-card/checkout-card.component';
+import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/checkout-details/checkout-details.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +73,9 @@ import { QuantityComponent } from 'src/app/modules/products/subscription-card/qu
     SubscriptionDetailComponent,
     SubscriptionDetailCardComponent,
     BillingPortalComponent,
+    CheckoutComponent,
+    CheckoutDetailsComponent,
+    CheckoutCardComponent,
     SuccessComponent,
     CancelComponent
   ],
