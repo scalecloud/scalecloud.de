@@ -12,7 +12,7 @@ import { ProductModel } from './ProductModel';
 })
 export class CheckoutService {
 
-  private url = 'http://localhost:15000/dashboard/create-checkout-session';
+  private url = 'http://localhost:15000/checkout/create-checkout-session';
 
   constructor(private http: HttpClient, 
     private logService: LogService, 

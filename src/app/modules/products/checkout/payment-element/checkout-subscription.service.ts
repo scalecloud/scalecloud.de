@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ProductModel } from '../ProductModel';
 import { CheckoutSubscriptionModel } from './CheckoutSubscriptionModel';
 
@@ -11,9 +11,9 @@ import { CheckoutSubscriptionModel } from './CheckoutSubscriptionModel';
 })
 export class CheckoutSubscriptionService {
 
-  private url = 'http://localhost:15000/dashboard/create-checkout-subscription';
+  private url = 'http://localhost:15000/checkout/create-checkout-subscription';
 
-  constructor(private http: HttpClient, private logService: LogService, private authService: AuthService) { }
+  constructor(private http: HttpClient, private snackBarService: SnackBarService, private authService: AuthService) { }
 
   createCheckoutSubscription(productModel: ProductModel): Observable<CheckoutSubscriptionModel> {
     return this.http.post<CheckoutSubscriptionModel>(this.url, productModel, this.getHttpOptions())
@@ -33,6 +33,7 @@ export class CheckoutSubscriptionService {
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
+      this.snackBarService.error(`Could not create checkout session. Please try again.`);
       return of(result as T);
     };
   }
