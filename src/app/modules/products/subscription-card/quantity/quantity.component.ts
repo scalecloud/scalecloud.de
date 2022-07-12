@@ -8,14 +8,14 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 })
 export class QuantityComponent {
 
-  quantity = new UntypedFormControl(1, [Validators.required, Validators.min(1)]);
+  quantityValidator = new UntypedFormControl(1, [Validators.required, Validators.min(1)]);
 
   formatLabel(value: number) {
     return value;
   }
 
   getQuantity(): number {
-    let ret = this.quantity.value
+    let ret = this.quantityValidator.value
     if (ret < 1) {
       ret = 1;
     }
@@ -23,8 +23,8 @@ export class QuantityComponent {
   }
 
   checkValidators(): void {
-    if( this.quantity.hasError('required') || this.quantity.hasError('min') ) {
-      this.quantity.setValue(1)
+    if( this.quantityValidator.hasError('required') || this.quantityValidator.hasError('min') ) {
+      this.quantityValidator.setValue(1)
     }
   }
 

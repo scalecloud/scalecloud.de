@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { LogService } from 'src/app/shared/services/log/log.service';
 import { ProductModel } from '../ProductModel';
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
 import { CheckoutSubscriptionModel } from './CheckoutSubscriptionModel';
@@ -14,14 +15,18 @@ declare var Stripe: any;
 export class PaymentElementComponent implements OnInit {
 
   @Input() productID: string | undefined;
-  @Input() quantity: number | undefined;
+  quantity: number | undefined;
+  checkoutSubscriptionModel: CheckoutSubscriptionModel | undefined;
 
   constructor(
-    public authService: AuthService,
+    private logService: LogService, 
+    private authService: AuthService,
     private checkoutSubscriptionService: CheckoutSubscriptionService
   ) { }
 
-  checkoutSubscriptionModel: CheckoutSubscriptionModel | undefined;
+  setQuantity(quantity: number): void {
+    this.quantity = quantity;
+  }
 
   ngOnInit(): void {
     this.waitForAuth();
@@ -37,21 +42,20 @@ export class PaymentElementComponent implements OnInit {
   }
 
   createCheckoutSubscription(): void {
-    /* if (this.productID && this.quantity) { */
-    const productModel: ProductModel = {
-      productID: "prod_Lpo9R0OYdo9s4b",
-      quantity: 3,
-    }
-    /*   const productModel: ProductModel = {
+     if (this.productID && this.quantity) { 
+       const productModel: ProductModel = {
         productID: this.productID,
         quantity: this.quantity,
-      } */
+      } 
 
       let secret = this.checkoutSubscriptionService.createCheckoutSubscription(productModel).subscribe(checkoutSubscriptionModel => {
         this.checkoutSubscriptionModel = checkoutSubscriptionModel;
         this.initPaymentElements();
       });
-   /*  } */
+     } 
+     else {
+        this.logService.error('productID or quantity not defined');
+     }
   }
 
   initPaymentElements(): void {

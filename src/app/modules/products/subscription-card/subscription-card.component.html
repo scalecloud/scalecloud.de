@@ -20,10 +20,10 @@
                     </div>
                 </mat-icon>
                 <div *ngIf="nextcloudProduct != undefined">
-                    {{nextcloudProduct.storageAmount}}{{nextcloudProduct.storageUnit}}
+                    {{nextcloudProduct.storageAmount * getQuantity()}}{{nextcloudProduct.storageUnit}}
                 </div>
                 <div *ngIf="synologyProduct != undefined">
-                    {{synologyProduct.storageAmount}}{{synologyProduct.storageUnit}}
+                    {{synologyProduct.storageAmount * getQuantity()}}{{synologyProduct.storageUnit}}
                 </div>
             </mat-list-item>
             <mat-list-item>

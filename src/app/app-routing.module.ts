@@ -34,7 +34,7 @@ const routes: Routes = [{
   { path: 'nextcloud', component: NextcloudComponent },
   { path: 'synology', component: SynologyComponent },
   // Checkout
-  { path: 'checkout', component: CheckoutComponent },
+  { path: 'checkout/:id', component: CheckoutComponent },
   { path: 'checkout/success', component: SuccessComponent },
   { path: 'checkout/cancel', component: CancelComponent },
   // Footer
