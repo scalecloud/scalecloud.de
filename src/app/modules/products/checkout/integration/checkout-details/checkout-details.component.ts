@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
+import { Component, ViewChild } from '@angular/core';
+import { QuantityComponent } from '../../../subscription-card/quantity/quantity.component';
 
 @Component({
   selector: 'app-checkout-details',

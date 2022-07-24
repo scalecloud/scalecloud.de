@@ -42,9 +42,9 @@ import { CancelComponent } from 'src/app/modules/products/checkout/cancel/cancel
 import { SuccessComponent } from 'src/app/modules/products/checkout/success/success.component';
 import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
 import { QuantityComponent } from 'src/app/modules/products/subscription-card/quantity/quantity.component';
-import { CheckoutComponent } from 'src/app/modules/products/checkout/checkout.component';
-import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/checkout-details/checkout-details.component';
-import { PaymentElementComponent } from 'src/app/modules/products/checkout/payment-element/payment-element.component';
+import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/integration/checkout-details/checkout-details.component';
+import { PaymentElementComponent } from 'src/app/modules/products/checkout/integration/payment-element/payment-element.component';
+import { CheckoutComponent } from 'src/app/modules/products/checkout/integration/checkout.component';
 
 @NgModule({
   declarations: [

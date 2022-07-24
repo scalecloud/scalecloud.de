@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { ProductModel } from '../ProductModel';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { CheckoutModelPortalRequest } from '../../portal/checkout-model-portal';
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
 import { CheckoutSubscriptionModel } from './CheckoutSubscriptionModel';
 
@@ -17,9 +18,11 @@ export class PaymentElementComponent implements OnInit {
   @Input() productID: string | undefined;
   quantity: number | undefined;
   checkoutSubscriptionModel: CheckoutSubscriptionModel | undefined;
+  readonly publicKeyTest: string = "pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3"
 
   constructor(
-    private logService: LogService, 
+    private logService: LogService,
+    private snackBarService: SnackBarService,
     private authService: AuthService,
     private checkoutSubscriptionService: CheckoutSubscriptionService
   ) { }
@@ -42,25 +45,25 @@ export class PaymentElementComponent implements OnInit {
   }
 
   createCheckoutSubscription(): void {
-     if (this.productID && this.quantity) { 
-       const productModel: ProductModel = {
+    if (this.productID && this.quantity) {
+      const checkoutModelPortalRequest: CheckoutModelPortalRequest = {
         productID: this.productID,
         quantity: this.quantity,
-      } 
+      }
 
-      let secret = this.checkoutSubscriptionService.createCheckoutSubscription(productModel).subscribe(checkoutSubscriptionModel => {
+      let secret = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutSubscriptionModel => {
         this.checkoutSubscriptionModel = checkoutSubscriptionModel;
         this.initPaymentElements();
       });
-     } 
-     else {
-        this.logService.error('productID or quantity not defined');
-     }
+    }
+    else {
+      this.logService.error('productID or quantity not defined');
+    }
   }
 
   initPaymentElements(): void {
     // Your Stripe public key
-    const stripe = Stripe('pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3');
+    const stripe = Stripe(this.publicKeyTest);
     if (this.checkoutSubscriptionModel) {
       const options = {
         clientSecret: this.checkoutSubscriptionModel.clientSecret,
@@ -83,30 +86,32 @@ export class PaymentElementComponent implements OnInit {
         }
       });
 
-      // Listen for form submission, process the form with Stripe,
-      // and get the 
-      /*  const paymentForm = document.getElementById('payment-form'); */
-      /*     if (paymentForm) {
-            paymentForm.addEventListener('submit', event => {
-              event.preventDefault();
-              stripe.createToken(card).then((result: { error: { message: string | null; }; token: { id: any; }; }) => {
-                if (result.error) {
-                  console.log('Error creating payment method.');
-                  const errorElement = document.getElementById('card-errors');
-                  if (errorElement) {
-                    errorElement.textContent = result.error.message;
-                  }
-                } else {
-                  // At this point, you should send the token ID
-                  // to your server so it can attach
-                  // the payment source to a customer
-                  console.log('Token acquired!');
-                  console.log(result.token);
-                  console.log(result.token.id);
-                }
-              });
-            });
-          } */
+      const form = document.getElementById('payment-form');
+      if( form ) {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const { error } = await stripe.confirmPayment({
+          //`Elements` instance that was used to create the Payment Element
+          elements,
+          confirmParams: {
+            return_url: "https://www.scalecloud.de/order/123/complete",
+          }
+        });
+
+        if (error) {
+          // This point will only be reached if there is an immediate error when
+          // confirming the payment. Show error to your customer (for example, payment
+          // details incomplete)
+          const messageContainer = document.querySelector('#error-message');
+          this.snackBarService.error(error.message);
+        } else {
+          // Your customer will be redirected to your `return_url`. For some payment
+          // methods like iDEAL, your customer will be redirected to an intermediate
+          // site first to authorize the payment, then redirected to the `return_url`.
+        }
+      });
+    }
     }
   }
 

@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { CheckoutService } from '../checkout/checkout.service';
-import { ProductModel } from '../checkout/ProductModel';
+import { CheckoutIntegrationRequest } from '../checkout/integration/checkout-model-integration';
+import { CheckoutService } from '../checkout/portal/checkout.service';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
 import { QuantityComponent } from './quantity/quantity.component';
@@ -28,12 +28,12 @@ export class SubscriptionCardComponent {
       productID = this.synologyProduct.productID;
     }
 
-    const productModel: ProductModel = {
+    const checkoutIntegrationRequest: CheckoutIntegrationRequest = {
       productID: productID,
       quantity: this.getQuantity(),
     }
 
-    this.checkoutService.getCheckoutSession(productModel)
+    this.checkoutService.getCheckoutSession(checkoutIntegrationRequest)
       .subscribe((checkoutModel) => {
         if (checkoutModel == null) {
           this.logService.error('SubscriptionCardComponent.openCheckoutSession: checkoutModel is null');

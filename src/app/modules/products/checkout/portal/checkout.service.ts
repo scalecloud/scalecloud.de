@@ -4,8 +4,8 @@ import { catchError, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { CheckoutModel } from './CheckoutModel';
-import { ProductModel } from './ProductModel';
+import { CheckoutModelPortalRequest, CheckoutModelPortalReturn } from './checkout-model-portal';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +17,13 @@ export class CheckoutService {
   constructor(private http: HttpClient, 
     private logService: LogService, 
     private authService: AuthService,
-    public snackBarService: SnackBarService
+    private snackBarService: SnackBarService
     ) { }
 
-  getCheckoutSession(productModel: ProductModel): Observable<CheckoutModel> {
-    return this.http.post<CheckoutModel>(this.url, productModel, this.getHttpOptions())
+  getCheckoutSession(checkoutModelPortalRequest: CheckoutModelPortalRequest): Observable<CheckoutModelPortalReturn> {
+    return this.http.post<CheckoutModelPortalReturn>(this.url, checkoutModelPortalRequest, this.getHttpOptions())
       .pipe(
-        catchError(this.handleError<CheckoutModel>('getBillingPortal'))
+        catchError(this.handleError<CheckoutModelPortalReturn>('getBillingPortal'))
         
       );
   }
