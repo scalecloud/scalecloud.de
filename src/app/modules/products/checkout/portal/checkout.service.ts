@@ -12,7 +12,7 @@ import { CheckoutModelPortalRequest, CheckoutModelPortalReply } from './checkout
 })
 export class CheckoutService {
 
-  private url = 'http://localhost:15000/checkout/create-checkout-session';
+  private url = 'http://localhost:15000/checkout-portal/create-checkout-session';
 
   constructor(private http: HttpClient, 
     private logService: LogService, 
