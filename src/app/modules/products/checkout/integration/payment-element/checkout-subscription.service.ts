@@ -10,7 +10,7 @@ import { CheckoutIntegrationReply, CheckoutIntegrationRequest } from '../checkou
 })
 export class CheckoutSubscriptionService {
 
-  private url = 'http://localhost:15000/checkout/create-checkout-subscription';
+  private url = 'http://localhost:15000/checkout-integration/create-checkout-subscription';
 
   constructor(private http: HttpClient, private snackBarService: SnackBarService, private authService: AuthService) { }
 

@@ -16,7 +16,7 @@ declare var Stripe: any;
 export class PaymentElementComponent implements OnInit {
 
   @Input() productID: string | undefined;
-  quantity: number | undefined;
+  @Input() quantity: number | undefined;
   checkoutIntegrationReply: CheckoutIntegrationReply | undefined;
   readonly publicKeyTest: string = "pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3"
 

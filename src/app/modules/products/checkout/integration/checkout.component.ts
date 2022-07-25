@@ -14,6 +14,7 @@ export class CheckoutComponent implements OnInit {
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
   @ViewChild(PaymentElementComponent) paymentElementComponent: PaymentElementComponent | undefined;
   productID: string | undefined;
+  quantity: number | undefined;
 
   constructor(
     private logService: LogService,
@@ -22,6 +23,7 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.initProductID();
+    this.quantity = 1;
   }
 
   initProductID(): void {
