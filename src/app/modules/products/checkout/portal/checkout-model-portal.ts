@@ -3,7 +3,7 @@ export interface CheckoutModelPortalRequest {
     quantity: number;
 }
 
-export interface CheckoutModelPortalReturn {
+export interface CheckoutModelPortalReply {
     url: string;
 }
 

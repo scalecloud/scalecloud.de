@@ -3,7 +3,7 @@ export interface CheckoutIntegrationRequest {
     quantity: number;
 }
 
-export interface CheckoutIntegrationReturn {
+export interface CheckoutIntegrationReply {
     subscriptionID: string;
     clientSecret: string;
     quantity: number;
@@ -14,7 +14,7 @@ export interface CheckoutIntegrationUpdateRequest {
     quantity: number;
 }
 
-export interface CheckoutIntegrationUpdateReturn {
+export interface CheckoutIntegrationUpdateReply {
     subscriptionID: string;
     clientSecret: string;
     quantity: number;
