@@ -3,8 +3,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { CheckoutModelPortalRequest } from '../../portal/checkout-model-portal';
+import { CheckoutIntegrationReply } from '../checkout-model-integration';
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
-import { CheckoutSubscriptionModel } from './CheckoutSubscriptionModel';
 
 declare var Stripe: any;
 
@@ -17,7 +17,7 @@ export class PaymentElementComponent implements OnInit {
 
   @Input() productID: string | undefined;
   quantity: number | undefined;
-  checkoutSubscriptionModel: CheckoutSubscriptionModel | undefined;
+  checkoutIntegrationReply: CheckoutIntegrationReply | undefined;
   readonly publicKeyTest: string = "pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3"
 
   constructor(
@@ -51,8 +51,8 @@ export class PaymentElementComponent implements OnInit {
         quantity: this.quantity,
       }
 
-      let secret = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutSubscriptionModel => {
-        this.checkoutSubscriptionModel = checkoutSubscriptionModel;
+      let secret = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutIntegrationReply => {
+        this.checkoutIntegrationReply = checkoutIntegrationReply;
         this.initPaymentElements();
       });
     }
@@ -64,9 +64,9 @@ export class PaymentElementComponent implements OnInit {
   initPaymentElements(): void {
     // Your Stripe public key
     const stripe = Stripe(this.publicKeyTest);
-    if (this.checkoutSubscriptionModel) {
+    if (this.checkoutIntegrationReply) {
       const options = {
-        clientSecret: this.checkoutSubscriptionModel.clientSecret,
+        clientSecret: this.checkoutIntegrationReply.clientSecret,
         // Fully customizable with appearance API.
         appearance: {/*...*/ },
       };
