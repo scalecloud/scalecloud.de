@@ -1,67 +1,32 @@
 <mat-card *ngIf="nextcloudProduct != undefined || synologyProduct != undefined">
     <mat-card-title>
-        <div *ngIf="nextcloudProduct != undefined">
-            {{nextcloudProduct.name}}
-        </div>
-        <div *ngIf="synologyProduct != undefined">
-            {{synologyProduct.name}}
-        </div>
+        {{getName()}}
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
             <mat-list-item>
                 <mat-icon>
-                    <div *ngIf="nextcloudProduct != undefined">
-                        {{nextcloudProduct.storageIcon}}
-                    </div>
-                    <div *ngIf="synologyProduct != undefined">
-                        {{synologyProduct.storageIcon}}
-                    </div>
+                    {{getStorageIcon()}}
                 </mat-icon>
-                <div *ngIf="nextcloudProduct != undefined">
-                    {{nextcloudProduct.storageAmount * getQuantity()}}{{nextcloudProduct.storageUnit}}
-                </div>
-                <div *ngIf="synologyProduct != undefined">
-                    {{synologyProduct.storageAmount * getQuantity()}}{{synologyProduct.storageUnit}}
-                </div>
+                {{getStorageAmount() * getQuantity() }} {{getStorageUnit()}}
             </mat-list-item>
             <mat-list-item>
                 <mat-icon>
-                    <div *ngIf="nextcloudProduct != undefined">
-                        {{nextcloudProduct.scalableIcon}}
-                    </div>
-                    <div *ngIf="synologyProduct != undefined">
-                        {{synologyProduct.scalableIcon}}
-                    </div>
+                    {{getScalableIcon()}}
                 </mat-icon>
                 Scalable
             </mat-list-item>
             <mat-list-item>
                 <mat-icon>
-                    <div *ngIf="nextcloudProduct != undefined">
-                        {{nextcloudProduct.trialIcon}}
-                    </div>
-                    <div *ngIf="synologyProduct != undefined">
-                        {{synologyProduct.trialIcon}}
-                    </div>
+                    {{getTrialIcon()}}
                 </mat-icon>
-                <div *ngIf="nextcloudProduct != undefined">
-                    {{nextcloudProduct.trialDays}}
-                </div>
-                <div *ngIf="synologyProduct != undefined">
-                    {{synologyProduct.trialDays}}
-                </div>
+                {{getTrialDays()}}
                 &nbsp;days trial
             </mat-list-item>
             <mat-list-item>
                 <mat-icon>
-                    <div *ngIf="nextcloudProduct != undefined">
-                        {{nextcloudProduct.usersIcon}}
-                    </div>
-                    <div *ngIf="synologyProduct != undefined">
-                        {{synologyProduct.usersIcon}}
-                    </div>
+                    {{getUsersIcon()}}
                 </mat-icon>
                 <mat-label>User count:</mat-label>
                 <app-quantity></app-quantity>
@@ -70,12 +35,7 @@
         </mat-list>
     </mat-card-content>
     <mat-card-subtitle>
-        <span *ngIf="nextcloudProduct != undefined">
-            {{nextcloudProduct.pricePerMonth * getQuantity() | currency:'EUR' : 'symbol' : '1.0-0'}}
-        </span>
-        <span *ngIf="synologyProduct != undefined">
-            {{synologyProduct.pricePerMonth * getQuantity() | currency:'EUR' : 'symbol' : '1.0-0'}}
-        </span>
+        {{getPricePerMonth() * getQuantity() | currency:'EUR' : 'symbol' : '1.0-0'}}
         <span class="price-month">/month</span>
     </mat-card-subtitle>
     <mat-card-actions>

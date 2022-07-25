@@ -52,4 +52,93 @@ export class SubscriptionCardComponent {
     return ret;
   }
 
+  getName(): string {
+    let ret = "";
+    if ( this.nextcloudProduct != undefined ) {
+      ret = this.nextcloudProduct.name;
+    } else if ( this.synologyProduct != undefined ) {
+      ret = this.synologyProduct.name;
+    }
+    return ret;
+  }
+  getStorageIcon(): string {
+    let ret = "";
+    if ( this.nextcloudProduct != undefined ) {
+      ret = this.nextcloudProduct.storageIcon;
+    } else if ( this.synologyProduct != undefined ) {
+      ret = this.synologyProduct.storageIcon;
+    }
+    return ret;
+  }
+
+  getStorageAmount(): number {
+    let ret = 0;
+    if ( this.nextcloudProduct != undefined ) {
+      ret = this.nextcloudProduct.storageAmount;
+    } else if ( this.synologyProduct != undefined ) {
+      ret = this.synologyProduct.storageAmount;
+    }
+    return ret;
+  }
+
+  getStorageUnit(): string {
+    let ret = "";
+    if ( this.nextcloudProduct != undefined ) {
+      ret = this.nextcloudProduct.storageUnit;
+    } else if ( this.synologyProduct != undefined ) {
+      ret = this.synologyProduct.storageUnit;
+    }
+    return ret;
+  }
+
+  getScalableIcon(): string {
+    let ret = "";
+    if ( this.nextcloudProduct != undefined ) {
+      ret = this.nextcloudProduct.scalableIcon;
+    } else if ( this.synologyProduct != undefined ) {
+      ret = this.synologyProduct.scalableIcon;
+    }
+    return ret;
+  }
+
+  getTrialIcon(): string {
+    let ret = "";
+    if ( this.nextcloudProduct != undefined ) {
+      ret = this.nextcloudProduct.trialIcon;
+    } else if ( this.synologyProduct != undefined ) {
+      ret = this.synologyProduct.trialIcon;
+    }
+    return ret;
+  }
+
+  getTrialDays(): number {
+    let ret = 0;
+    if ( this.nextcloudProduct != undefined ) {
+      ret = this.nextcloudProduct.trialDays;
+    } else if ( this.synologyProduct != undefined ) {
+      ret = this.synologyProduct.trialDays;
+    }
+    return ret;
+  }
+
+  getUsersIcon(): string {
+    let ret = "";
+    if ( this.nextcloudProduct != undefined ) {
+      ret = this.nextcloudProduct.usersIcon;
+    } else if ( this.synologyProduct != undefined ) {
+      ret = this.synologyProduct.usersIcon;
+    }
+    return ret;
+  }
+
+  getPricePerMonth(): number {
+    let ret = 0;
+    if ( this.nextcloudProduct != undefined ) {
+      ret = this.nextcloudProduct.pricePerMonth;
+    } else if ( this.synologyProduct != undefined ) {
+      ret = this.synologyProduct.pricePerMonth;
+    }
+    return ret;
+  }
+
 }

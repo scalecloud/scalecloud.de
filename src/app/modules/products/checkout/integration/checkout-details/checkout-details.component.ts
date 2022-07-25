@@ -19,4 +19,8 @@ export class CheckoutDetailsComponent {
     }
   }
 
+  getPrice(): number {
+    return 10;
+  }
+
 }

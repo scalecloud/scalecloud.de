@@ -2,18 +2,20 @@
     <mat-card>
         <mat-card-title>Testen Sie Ruby</mat-card-title>
         <mat-card-subtitle>
-            <p>30 Tage kostenlos</p>
-            <p>Dann 10,00 € pro Monat</p>
+
         </mat-card-subtitle>
         <mat-card-content>
             <mat-list>
                 <mat-list-item>
-                    <mat-label>User count:</mat-label>
-                    <app-quantity></app-quantity>
+                    <p class="trial">30 Tage kostenlos</p>
                 </mat-list-item>
                 <mat-list-item>
-                    <p>30 kostenlose Tage</p>
-                    <p>danach 10,00€/Monat</p>
+                    <p class="price-after">danach {{getPrice() * getQuantity() | currency:'EUR' : 'symbol' :
+                        '1.0-0'}}<span class="price-month">/month</span></p>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-label>User count:</mat-label>
+                    <app-quantity></app-quantity>
                 </mat-list-item>
             </mat-list>
         </mat-card-content>

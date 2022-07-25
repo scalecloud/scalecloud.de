@@ -61,6 +61,10 @@ export class PaymentElementComponent implements OnInit {
     }
   }
 
+  getPrice(): number {
+    return 10;
+  }
+
   initPaymentElements(): void {
     // Your Stripe public key
     const stripe = Stripe(this.publicKeyTest);
