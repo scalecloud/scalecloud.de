@@ -7,26 +7,26 @@
         <mat-list>
             <mat-list-item>
                 <mat-icon>
-                    {{getStorageIcon()}}
+                    cloud
                 </mat-icon>
-                {{getStorageAmount() * getQuantity() }} {{getStorageUnit()}}
+                {{getStorageAmount() * getQuantity() }}{{getStorageUnit()}}
             </mat-list-item>
             <mat-list-item>
                 <mat-icon>
-                    {{getScalableIcon()}}
+                    height
                 </mat-icon>
                 Scalable
             </mat-list-item>
             <mat-list-item>
                 <mat-icon>
-                    {{getTrialIcon()}}
+                    event_available
                 </mat-icon>
                 {{getTrialDays()}}
                 &nbsp;days trial
             </mat-list-item>
             <mat-list-item>
                 <mat-icon>
-                    {{getUsersIcon()}}
+                    person
                 </mat-icon>
                 <mat-label>User count:</mat-label>
                 <app-quantity></app-quantity>

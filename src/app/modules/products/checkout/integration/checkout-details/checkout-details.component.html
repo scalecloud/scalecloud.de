@@ -1,23 +1,46 @@
 <div fxLayoutAlign="space-evenly">
     <mat-card>
-        <mat-card-title>Testen Sie Ruby</mat-card-title>
-        <mat-card-subtitle>
-
-        </mat-card-subtitle>
+        <mat-card-title>
+            {{getName()}}
+        </mat-card-title>
+        <mat-divider></mat-divider>
         <mat-card-content>
             <mat-list>
                 <mat-list-item>
-                    <p class="trial">30 Tage kostenlos</p>
+                    <mat-icon>
+                        cloud
+                    </mat-icon>
+                    {{getStorageAmount() * getQuantity() }}{{getStorageUnit()}}
                 </mat-list-item>
                 <mat-list-item>
-                    <p class="price-after">danach {{getPrice() * getQuantity() | currency:'EUR' : 'symbol' :
-                        '1.0-0'}}<span class="price-month">/month</span></p>
+                    <mat-icon>
+                        height
+                    </mat-icon>
+                    Scalable
                 </mat-list-item>
                 <mat-list-item>
+                    <mat-icon>
+                        event_available
+                    </mat-icon>
+                    {{getTrialDays()}}
+                    &nbsp;days trial
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon>
+                        person
+                    </mat-icon>
                     <mat-label>User count:</mat-label>
                     <app-quantity></app-quantity>
                 </mat-list-item>
+                <mat-divider></mat-divider>
             </mat-list>
         </mat-card-content>
+        <mat-card-subtitle>
+            {{getPricePerMonth() * getQuantity() | currency:'EUR' : 'symbol' : '1.0-0'}}
+            <span class="price-month">/month</span>
+        </mat-card-subtitle>
+        <mat-card-actions>
+            <button (click)="startSubscription()" mat-stroked-button color="primary">SUBSCRIBE<mat-icon>lock</mat-icon></button>
+        </mat-card-actions>
     </mat-card>
 </div>
