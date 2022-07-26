@@ -1,4 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CheckoutIntegrationRequest } from '../checkout/integration/checkout-model-integration';
 import { CheckoutService } from '../checkout/portal/checkout.service';
@@ -18,9 +19,13 @@ export class SubscriptionCardComponent {
 
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
 
-  constructor(public checkoutService: CheckoutService, private logService: LogService) { }
+  constructor(
+    private checkoutService: CheckoutService,
+    private logService: LogService,
+    private router: Router
+  ) { }
 
-  openCheckoutSession(): void {
+  openCheckoutPortal(): void {
     let productID = ""
     if (this.nextcloudProduct) {
       productID = this.nextcloudProduct.productID;
@@ -44,9 +49,26 @@ export class SubscriptionCardComponent {
       );
   }
 
+  openCheckoutIntegration(): void {
+    let productID = ""
+    if (this.nextcloudProduct) {
+      productID = this.nextcloudProduct.productID;
+    } else if (this.synologyProduct) {
+      productID = this.synologyProduct.productID;
+    }
+    this.router.navigate(['/checkout'],
+      {
+        queryParams: {
+          productID: productID,
+          quantity: this.getQuantity()
+        }
+      }
+    );
+  }
+
   getQuantity(): number {
     let ret = 1;
-    if ( this.quantityComponent != undefined ) {
+    if (this.quantityComponent != undefined) {
       ret = this.quantityComponent.getQuantity();
     }
     return ret;
@@ -54,9 +76,9 @@ export class SubscriptionCardComponent {
 
   getName(): string {
     let ret = "";
-    if ( this.nextcloudProduct != undefined ) {
+    if (this.nextcloudProduct != undefined) {
       ret = this.nextcloudProduct.name;
-    } else if ( this.synologyProduct != undefined ) {
+    } else if (this.synologyProduct != undefined) {
       ret = this.synologyProduct.name;
     }
     return ret;
@@ -64,9 +86,9 @@ export class SubscriptionCardComponent {
 
   getStorageAmount(): number {
     let ret = 0;
-    if ( this.nextcloudProduct != undefined ) {
+    if (this.nextcloudProduct != undefined) {
       ret = this.nextcloudProduct.storageAmount;
-    } else if ( this.synologyProduct != undefined ) {
+    } else if (this.synologyProduct != undefined) {
       ret = this.synologyProduct.storageAmount;
     }
     return ret;
@@ -74,9 +96,9 @@ export class SubscriptionCardComponent {
 
   getStorageUnit(): string {
     let ret = "";
-    if ( this.nextcloudProduct != undefined ) {
+    if (this.nextcloudProduct != undefined) {
       ret = this.nextcloudProduct.storageUnit;
-    } else if ( this.synologyProduct != undefined ) {
+    } else if (this.synologyProduct != undefined) {
       ret = this.synologyProduct.storageUnit;
     }
     return ret;
@@ -84,9 +106,9 @@ export class SubscriptionCardComponent {
 
   getTrialDays(): number {
     let ret = 0;
-    if ( this.nextcloudProduct != undefined ) {
+    if (this.nextcloudProduct != undefined) {
       ret = this.nextcloudProduct.trialDays;
-    } else if ( this.synologyProduct != undefined ) {
+    } else if (this.synologyProduct != undefined) {
       ret = this.synologyProduct.trialDays;
     }
     return ret;
@@ -94,9 +116,9 @@ export class SubscriptionCardComponent {
 
   getPricePerMonth(): number {
     let ret = 0;
-    if ( this.nextcloudProduct != undefined ) {
+    if (this.nextcloudProduct != undefined) {
       ret = this.nextcloudProduct.pricePerMonth;
-    } else if ( this.synologyProduct != undefined ) {
+    } else if (this.synologyProduct != undefined) {
       ret = this.synologyProduct.pricePerMonth;
     }
     return ret;

@@ -57,7 +57,7 @@ export class PaymentElementComponent implements OnInit {
       });
     }
     else {
-      this.logService.error('productID or quantity not defined');
+      this.logService.error('productID: ' + this.productID + ' or quantity: ' + this.quantity + ' not defined');
     }
   }
 

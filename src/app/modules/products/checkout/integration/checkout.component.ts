@@ -14,7 +14,7 @@ export class CheckoutComponent implements OnInit {
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
   @ViewChild(PaymentElementComponent) paymentElementComponent: PaymentElementComponent | undefined;
   productID: string | undefined;
-  quantity: number | undefined;
+  quantity: number = 1;
 
   constructor(
     private logService: LogService,
@@ -22,16 +22,31 @@ export class CheckoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initProductID();
-    this.quantity = 1;
+    this.initParamMap();
   }
 
-  initProductID(): void {
-    const productID = this.route.snapshot.paramMap.get('id');
-    if (productID == null) {
+  initParamMap(): void {
+    const queryParamMap = this.route.snapshot.queryParamMap;
+    if (queryParamMap.has('productID')) {
+      const productID = queryParamMap.get('productID');
+      if (productID) {
+        this.productID = productID;
+      }
+    }
+    else {
       this.logService.error('ProductID in url is null');
-    } else {
-      this.productID = productID;
+    }
+    if (queryParamMap.has('quantity')) {
+      const ParamQuantity = queryParamMap.get('quantity');
+      if (ParamQuantity) {
+        const quantity = Number(ParamQuantity);
+        if( quantity > 0 ) {
+          this.quantity = quantity;
+        }
+      }
+    }
+    else {
+      this.logService.error('Quantity in url is null');
     }
   }
 

@@ -7,12 +7,9 @@ import { QuantityComponent } from '../../../subscription-card/quantity/quantity.
   styleUrls: ['./checkout-details.component.scss']
 })
 export class CheckoutDetailsComponent {
-
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
 
-
   startSubscription(): void {
-
   }
 
   getQuantity(): number {
