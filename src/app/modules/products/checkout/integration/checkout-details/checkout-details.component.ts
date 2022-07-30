@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { LogService } from 'src/app/shared/services/log/log.service';
 import { QuantityComponent } from '../../../subscription-card/quantity/quantity.component';
 
 @Component({
@@ -9,12 +10,22 @@ import { QuantityComponent } from '../../../subscription-card/quantity/quantity.
 export class CheckoutDetailsComponent {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
 
+  constructor(
+    private logService: LogService
+  ) {}
+
   startSubscription(): void {
+  }
+
+  setQuantity(quantity: number): void {
+    if (this.quantityComponent) {
+      this.quantityComponent.setQuantity(quantity);
+    }
   }
 
   getQuantity(): number {
     if (this.quantityComponent) {
-    return this.quantityComponent?.getQuantity();
+      return this.quantityComponent?.getQuantity();
     }
     else {
       return 1;

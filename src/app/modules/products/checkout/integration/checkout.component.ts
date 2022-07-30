@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
@@ -9,19 +9,18 @@ import { PaymentElementComponent } from './payment-element/payment-element.compo
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent {
 
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
   @ViewChild(PaymentElementComponent) paymentElementComponent: PaymentElementComponent | undefined;
   productID: string | undefined;
-  quantity: number = 1;
-
+ 
   constructor(
     private logService: LogService,
     private route: ActivatedRoute,
   ) { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.initParamMap();
   }
 
@@ -41,7 +40,7 @@ export class CheckoutComponent implements OnInit {
       if (ParamQuantity) {
         const quantity = Number(ParamQuantity);
         if( quantity > 0 ) {
-          this.quantity = quantity;
+          this.setQuantity(quantity);
         }
       }
     }
@@ -50,9 +49,13 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
+  getQuantity(): number | undefined {
+    return this.checkoutDetailsComponent?.getQuantity();
+  }
+
   setQuantity(quantity: number): void {
-    if (this.paymentElementComponent) {
-      this.paymentElementComponent.setQuantity(quantity);
+    if (this.checkoutDetailsComponent) {
+      this.checkoutDetailsComponent.setQuantity(quantity);
     }
     else {
       this.logService.error('Could not set quantity');

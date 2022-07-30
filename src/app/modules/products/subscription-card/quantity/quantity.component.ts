@@ -14,6 +14,10 @@ export class QuantityComponent {
     return value;
   }
 
+  setQuantity(quantity: number): void {
+    this.quantityValidator.setValue(quantity);
+  }
+
   getQuantity(): number {
     let ret = this.quantityValidator.value
     if (ret < 1) {
