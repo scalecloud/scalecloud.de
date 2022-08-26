@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { QuantityComponent } from '../../../subscription-card/quantity/quantity.component';
 
 @Component({
@@ -11,10 +12,12 @@ export class CheckoutDetailsComponent {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
 
   constructor(
-    private logService: LogService
+    private logService: LogService,
+    private snackBarService: SnackBarService,
   ) {}
 
   startSubscription(): void {
+    this.snackBarService.info("Subscription started. Quantity: " + this.getQuantity());
   }
 
   setQuantity(quantity: number): void {

@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { CheckoutModelPortalRequest } from '../../portal/checkout-model-portal';
 import { CheckoutIntegrationReply } from '../checkout-model-integration';
+import { CheckoutComponent } from '../checkout.component';
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
 
 declare var Stripe: any;
@@ -17,6 +18,8 @@ export class PaymentElementComponent implements OnInit {
 
   @Input() productID: string | undefined;
   @Input() quantity: number | undefined;
+
+  @Input() parentApi: CheckoutComponent | undefined
   checkoutIntegrationReply: CheckoutIntegrationReply | undefined;
   readonly publicKeyTest: string = "pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3"
 
