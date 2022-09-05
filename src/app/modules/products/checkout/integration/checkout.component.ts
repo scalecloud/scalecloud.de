@@ -22,7 +22,12 @@ export class CheckoutComponent {
 
   ngAfterViewInit(): void {
     this.initParamMap();
-    this.paymentElementComponent?.createCheckoutSubscription(this.productID,this.checkoutDetailsComponent?.getQuantity())
+    if (this.paymentElementComponent && this.checkoutDetailsComponent != undefined && this.productID) {
+      this.paymentElementComponent.createCheckoutSubscription(this.productID, this.checkoutDetailsComponent.getQuantity());
+    }
+    else {
+      this.logService.error("Can not get productID or Quantity.")
+    }
   }
 
   initParamMap(): void {
