@@ -10,7 +10,4 @@ export class CancelComponent {
 
   constructor(public authService: AuthService) { }
 
-  ngOnInit(): void {
-  }
-
 }

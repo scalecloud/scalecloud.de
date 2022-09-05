@@ -6,7 +6,7 @@ import { CheckoutModelPortalRequest } from '../../portal/checkout-model-portal';
 import { CheckoutIntegrationReply } from '../checkout-model-integration';
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
 
-declare var Stripe: any;
+declare const Stripe: any;
 
 @Component({
   selector: 'app-payment-element',
@@ -34,7 +34,7 @@ export class PaymentElementComponent {
             quantity: quantity,
           }
 
-          let secret = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutIntegrationReply => {
+          const secret = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutIntegrationReply => {
             this.checkoutIntegrationReply = checkoutIntegrationReply;
             this.initPaymentElements();
           });
