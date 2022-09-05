@@ -14,7 +14,7 @@ export class CheckoutComponent {
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
   @ViewChild(PaymentElementComponent) paymentElementComponent: PaymentElementComponent | undefined;
   productID: string | undefined;
- 
+
   constructor(
     private logService: LogService,
     private route: ActivatedRoute,
@@ -22,6 +22,7 @@ export class CheckoutComponent {
 
   ngAfterViewInit(): void {
     this.initParamMap();
+    this.paymentElementComponent?.createCheckoutSubscription(this.productID,this.checkoutDetailsComponent?.getQuantity())
   }
 
   initParamMap(): void {
@@ -39,7 +40,7 @@ export class CheckoutComponent {
       const ParamQuantity = queryParamMap.get('quantity');
       if (ParamQuantity) {
         const quantity = Number(ParamQuantity);
-        if( quantity > 0 ) {
+        if (quantity > 0) {
           this.setQuantity(quantity);
         }
       }
@@ -49,8 +50,12 @@ export class CheckoutComponent {
     }
   }
 
-  getQuantity(): number | undefined {
-    return this.checkoutDetailsComponent?.getQuantity();
+  getQuantity(): number {
+    let quantity = 1;
+    if (this.checkoutDetailsComponent != undefined) {
+      quantity = this.checkoutDetailsComponent.getQuantity();
+    }
+    return quantity;
   }
 
   setQuantity(quantity: number): void {

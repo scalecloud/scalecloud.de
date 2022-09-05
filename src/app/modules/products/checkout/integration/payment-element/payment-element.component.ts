@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { CheckoutModelPortalRequest } from '../../portal/checkout-model-portal';
 import { CheckoutIntegrationReply } from '../checkout-model-integration';
-import { CheckoutComponent } from '../checkout.component';
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
 
 declare var Stripe: any;
@@ -14,12 +13,8 @@ declare var Stripe: any;
   templateUrl: './payment-element.component.html',
   styleUrls: ['./payment-element.component.scss']
 })
-export class PaymentElementComponent implements OnInit {
+export class PaymentElementComponent {
 
-  @Input() productID: string | undefined;
-  @Input() quantity: number | undefined;
-
-  @Input() parentApi: CheckoutComponent | undefined
   checkoutIntegrationReply: CheckoutIntegrationReply | undefined;
   readonly publicKeyTest: string = "pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3"
 
@@ -30,38 +25,26 @@ export class PaymentElementComponent implements OnInit {
     private checkoutSubscriptionService: CheckoutSubscriptionService
   ) { }
 
-  setQuantity(quantity: number): void {
-    this.quantity = quantity;
-  }
-
-  ngOnInit(): void {
-    this.waitForAuth();
-  }
-
-  waitForAuth(): void {
+  createCheckoutSubscription(productID: string | undefined, quantity: number | undefined): void {
     this.authService.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.createCheckoutSubscription();
+        if (productID && quantity) {
+          const checkoutModelPortalRequest: CheckoutModelPortalRequest = {
+            productID: productID,
+            quantity: quantity,
+          }
+
+          let secret = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutIntegrationReply => {
+            this.checkoutIntegrationReply = checkoutIntegrationReply;
+            this.initPaymentElements();
+          });
+        }
+        else {
+          this.logService.error('productID: ' + productID + ' or quantity: ' + quantity + ' not defined');
+        }
       }
     }
     );
-  }
-
-  createCheckoutSubscription(): void {
-    if (this.productID && this.quantity) {
-      const checkoutModelPortalRequest: CheckoutModelPortalRequest = {
-        productID: this.productID,
-        quantity: this.quantity,
-      }
-
-      let secret = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutIntegrationReply => {
-        this.checkoutIntegrationReply = checkoutIntegrationReply;
-        this.initPaymentElements();
-      });
-    }
-    else {
-      this.logService.error('productID: ' + this.productID + ' or quantity: ' + this.quantity + ' not defined');
-    }
   }
 
   getPrice(): number {
