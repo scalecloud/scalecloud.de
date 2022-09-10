@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { LogService } from '../log/log.service';
 
 @Injectable({
@@ -17,11 +17,11 @@ export class StripeKeyService {
 
   getPublicKey(): string | undefined {
     let key = undefined;
-    if( this.isLocalhost() || this.isBeta() ) {
+    if (this.isLocalhost() || this.isBeta()) {
       key = this.publicKeyTest;
       this.logService.info("Using publicKeyTest")
     }
-    else if( this.isLive() ) {
+    else if (this.isLive()) {
       key = this.publicKeyLive;
       this.logService.info("Using publicKeyLive")
     }
@@ -37,7 +37,7 @@ export class StripeKeyService {
 
   isLocalhost(): boolean {
     let localhost = false;
-    if( this.getURL().includes("localhost")) {
+    if (this.getURL().includes("localhost")) {
       localhost = true;
     }
     return localhost;
@@ -45,7 +45,7 @@ export class StripeKeyService {
 
   isBeta(): boolean {
     let beta = false;
-    if( this.getURL().startsWith("https://beta")) {
+    if (this.getURL().startsWith("https://beta")) {
       beta = true;
     }
     return beta;
@@ -53,7 +53,7 @@ export class StripeKeyService {
 
   isLive(): boolean {
     let live = false;
-    if( this.getURL().startsWith("https://www.scalecloud.de")) {
+    if (this.getURL().startsWith("https://www.scalecloud.de")) {
       live = true;
     }
     return live;
