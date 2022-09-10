@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { StripeKeyService } from 'src/app/shared/services/stripe/stripe-key.service';
 import { CheckoutModelPortalRequest } from '../../portal/checkout-model-portal';
 import { CheckoutIntegrationReply } from '../checkout-model-integration';
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
@@ -16,13 +17,13 @@ declare const Stripe: any;
 export class PaymentElementComponent {
 
   checkoutIntegrationReply: CheckoutIntegrationReply | undefined;
-  readonly publicKeyTest: string = "pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3"
 
   constructor(
     private logService: LogService,
     private snackBarService: SnackBarService,
     private authService: AuthService,
-    private checkoutSubscriptionService: CheckoutSubscriptionService
+    private checkoutSubscriptionService: CheckoutSubscriptionService,
+    private stripeKeyService: StripeKeyService
   ) { }
 
   createCheckoutSubscription(productID: string | undefined, quantity: number | undefined): void {
@@ -53,7 +54,12 @@ export class PaymentElementComponent {
 
   initPaymentElements(): void {
     // Your Stripe public key
-    const stripe = Stripe(this.publicKeyTest);
+    const publicKey = this.stripeKeyService.getPublicKey();
+    if( publicKey == undefined ) {
+      this.logService.error("Cannot display Payment because publicKey is undefined.")
+    }
+    else {
+    const stripe = Stripe(publicKey);
     if (this.checkoutIntegrationReply) {
       const options = {
         clientSecret: this.checkoutIntegrationReply.clientSecret,
@@ -106,6 +112,7 @@ export class PaymentElementComponent {
         });
       }
     }
+  }
   }
 
 }
