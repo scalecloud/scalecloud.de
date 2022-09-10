@@ -34,7 +34,7 @@ export class PaymentElementComponent {
             quantity: quantity,
           }
 
-          const secret = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutIntegrationReply => {
+          const observable = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutIntegrationReply => {
             this.checkoutIntegrationReply = checkoutIntegrationReply;
             this.initPaymentElements();
           });
