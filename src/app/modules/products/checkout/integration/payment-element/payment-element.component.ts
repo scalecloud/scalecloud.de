@@ -54,8 +54,6 @@ export class PaymentElementComponent {
     return 10;
   }
 
-
-
   initPaymentElements(): void {
     // Your Stripe public key
     const publicKey = this.stripeKeyService.getPublicKey();
@@ -95,7 +93,7 @@ export class PaymentElementComponent {
 
   startSubscription(quantity: number): void {
     this.logService.info("Checking if quantity was updated and subscriptions needs to be updated: " + quantity);
-    
+
     const elements = this.elements
     const { error } = this.stripeElement.confirmPayment({
       //`Elements` instance that was used to create the Payment Element
