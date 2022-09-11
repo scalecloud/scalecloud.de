@@ -72,4 +72,13 @@ export class CheckoutComponent {
     }
   }
 
+  startSubscription(quantity: number): void {
+    if (this.paymentElementComponent) {
+      this.paymentElementComponent.startSubscription(quantity);
+    }
+    else {
+      this.logService.error("PaymentElementComponent is undefined.")
+    }
+  }
+
 }

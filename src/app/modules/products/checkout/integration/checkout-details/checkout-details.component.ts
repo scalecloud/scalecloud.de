@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { QuantityComponent } from '../../../subscription-card/quantity/quantity.component';
@@ -10,6 +10,7 @@ import { QuantityComponent } from '../../../subscription-card/quantity/quantity.
 })
 export class CheckoutDetailsComponent {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
+  @Output() startSubscriptionEvent = new EventEmitter<number>();
 
   constructor(
     private logService: LogService,
@@ -17,7 +18,8 @@ export class CheckoutDetailsComponent {
   ) {}
 
   startSubscription(): void {
-    this.snackBarService.info("Subscription started. Quantity: " + this.getQuantity());
+    this.logService.info("Subscription started. Quantity: " + this.getQuantity());
+    this.startSubscriptionEvent.emit(this.getQuantity());
   }
 
   setQuantity(quantity: number): void {
