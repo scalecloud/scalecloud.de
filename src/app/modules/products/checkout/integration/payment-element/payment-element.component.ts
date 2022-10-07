@@ -95,7 +95,7 @@ export class PaymentElementComponent {
     this.logService.info("Checking if quantity was updated and subscriptions needs to be updated: " + quantity);
 
     const elements = this.elements
-    const { error } = await this.stripeElement.confirmPayment({
+    const { error } = await this.stripeElement.confirmSetup({
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
