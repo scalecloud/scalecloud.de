@@ -92,8 +92,7 @@ export class PaymentElementComponent {
   }
 
   async startSubscription(quantity: number): Promise<void> {
-    this.logService.info("Checking if quantity was updated and subscriptions needs to be updated: " + quantity);
-
+    this.snackBarService.error("Checking if quantity was updated and subscriptions needs to be updated: " + quantity)
     const elements = this.elements
     const { error } = await this.stripeElement.confirmSetup({
       //`Elements` instance that was used to create the Payment Element
