@@ -91,11 +91,11 @@ export class PaymentElementComponent {
 
   }
 
-  startSubscription(quantity: number): void {
+  async startSubscription(quantity: number): Promise<void> {
     this.logService.info("Checking if quantity was updated and subscriptions needs to be updated: " + quantity);
 
     const elements = this.elements
-    const { error } = this.stripeElement.confirmPayment({
+    const { error } = await this.stripeElement.confirmPayment({
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
