@@ -98,7 +98,7 @@ export class PaymentElementComponent {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: "https://www.scalecloud.de/order/123/complete",
+        return_url: "https://www.scalecloud.de/checkout/status",
       }
     });
 
