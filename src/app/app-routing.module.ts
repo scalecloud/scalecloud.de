@@ -14,9 +14,8 @@ import { PrivacyComponent } from './modules/footer/privacy/privacy.component';
 import { TermsComponent } from './modules/footer/terms/terms.component';
 import { HomeComponent } from './modules/main/home/home.component';
 import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
-import { CancelComponent } from './modules/products/checkout/cancel/cancel.component';
 import { CheckoutComponent } from './modules/products/checkout/integration/checkout.component';
-import { SuccessComponent } from './modules/products/checkout/success/success.component';
+import { StatusComponent } from './modules/products/checkout/status/status.component';
 import { NextcloudComponent } from './modules/products/nextcloud/nextcloud.component';
 import { SynologyComponent } from './modules/products/synology/synology.component';
 import { DashboardGuard } from './shared/guard/dashboard.guard';
@@ -35,8 +34,7 @@ const routes: Routes = [{
   { path: 'synology', component: SynologyComponent },
   // Checkout
   { path: 'checkout', component: CheckoutComponent },
-  { path: 'checkout/success', component: SuccessComponent },
-  { path: 'checkout/cancel', component: CancelComponent },
+  { path: 'checkout/status', component: StatusComponent },
   // Footer
   { path: 'privacy-policy', component: PrivacyComponent },
   { path: 'imprint', component: ImprintComponent },

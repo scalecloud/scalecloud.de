@@ -38,13 +38,12 @@ import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboa
 import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscription-detail/customer-portal/billing-portal.component';
 import { PasswordStrengthComponent } from 'src/app/modules/account/register/password-strength/password-strength.component';
 import { PasswordMatchComponent } from 'src/app/modules/account/register/password-match/password-match.component';
-import { CancelComponent } from 'src/app/modules/products/checkout/cancel/cancel.component';
-import { SuccessComponent } from 'src/app/modules/products/checkout/success/success.component';
 import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
 import { QuantityComponent } from 'src/app/modules/products/subscription-card/quantity/quantity.component';
 import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/integration/checkout-details/checkout-details.component';
 import { PaymentElementComponent } from 'src/app/modules/products/checkout/integration/payment-element/payment-element.component';
 import { CheckoutComponent } from 'src/app/modules/products/checkout/integration/checkout.component';
+import { StatusComponent } from 'src/app/modules/products/checkout/status/status.component';
 
 @NgModule({
   declarations: [
@@ -76,8 +75,7 @@ import { CheckoutComponent } from 'src/app/modules/products/checkout/integration
     CheckoutComponent,
     CheckoutDetailsComponent,
     PaymentElementComponent,
-    SuccessComponent,
-    CancelComponent
+    StatusComponent
   ],
   imports: [
     CommonModule,
