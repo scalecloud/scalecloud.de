@@ -86,34 +86,34 @@ export class StatusComponent {
         this.logService.error("Cannot display status because redirect_status is undefined.")
       }
       else {
-        // Retrieve the PaymentIntent
-        stripe.retrievePaymentIntent(this.setup_intent_client_secret).then(({ paymentIntent }: any) => {
-
-          // Inspect the PaymentIntent `status` to indicate the status of the payment
+        // Retrieve the SetupIntent
+        stripe.retrieveSetupIntent(this.setup_intent_client_secret).then(({ setupIntent }: any) => {
+          // Inspect the SetupIntent `status` to indicate the status of the payment
           // to your customer.
           //
           // Some payment methods will [immediately succeed or fail][0] upon
           // confirmation, while others will first enter a `processing` state.
           //
           // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
-          switch (paymentIntent.status) {
-            case 'succeeded':
-              this.message = 'Success! Payment received.';
+          switch (setupIntent.status) {
+            case 'succeeded': {
+              this.message = 'Success! Your payment method has been saved.';
               break;
+            }
 
-            case 'processing':
-              this.message = "Payment processing. We'll update you when payment is received.";
+            case 'processing': {
+              this.message = "Processing payment details. We'll update you when processing is complete.";
               break;
+            }
 
-            case 'requires_payment_method':
-              this.message = 'Payment failed. Please try another payment method.';
+            case 'requires_payment_method': {
+              this.message = 'Failed to process payment details. Please try another payment method.';
+
               // Redirect your user back to your payment page to attempt collecting
               // payment again
-              break;
 
-            default:
-              this.message = 'Something went wrong.';
               break;
+            }
           }
         });
       }
