@@ -1,1 +1,11 @@
-<p>Message: {{message}}</p>
+<div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="space-evenly">
+    <div *ngIf="succeeded">
+        <app-succeeded></app-succeeded>
+    </div>
+    <div *ngIf="processing">
+        <app-processing></app-processing>
+    </div>
+    <div *ngIf="requires_payment_method">
+        <app-requires-payment-method></app-requires-payment-method>
+    </div>
+</div>

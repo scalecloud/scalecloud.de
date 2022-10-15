@@ -19,6 +19,11 @@ export class StatusComponent {
 
   message: string = "Loading...";
 
+  loading: boolean = true;
+  succeeded: boolean = false;
+  processing: boolean = false;
+  requires_payment_method: boolean = false;
+
   constructor(
     private logService: LogService,
     private route: ActivatedRoute,
@@ -95,19 +100,24 @@ export class StatusComponent {
           // confirmation, while others will first enter a `processing` state.
           //
           // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
+          //this.setupIntent = setupIntent;
+          this.loading = false;
           switch (setupIntent.status) {
             case 'succeeded': {
-              this.message = 'Success! Your payment method has been saved.';
+              this.logService.info("Success! Your payment method has been saved.")
+              this.succeeded = true;
               break;
             }
 
             case 'processing': {
-              this.message = "Processing payment details. We'll update you when processing is complete.";
+              this.logService.warn("Processing payment details. We'll update you when processing is complete.")
+              this.processing = true;
               break;
             }
 
             case 'requires_payment_method': {
-              this.message = 'Failed to process payment details. Please try another payment method.';
+              this.logService.error("Failed to process payment details. Please try another payment method.")
+              this.requires_payment_method = true;
 
               // Redirect your user back to your payment page to attempt collecting
               // payment again

@@ -44,6 +44,9 @@ import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/inte
 import { PaymentElementComponent } from 'src/app/modules/products/checkout/integration/payment-element/payment-element.component';
 import { CheckoutComponent } from 'src/app/modules/products/checkout/integration/checkout.component';
 import { StatusComponent } from 'src/app/modules/products/checkout/status/status.component';
+import { ProcessingComponent } from 'src/app/modules/products/checkout/status/processing/processing.component';
+import { RequiresPaymentMethodComponent } from 'src/app/modules/products/checkout/status/requires-payment-method/requires-payment-method.component';
+import { SucceededComponent } from 'src/app/modules/products/checkout/status/succeeded/succeeded.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +78,10 @@ import { StatusComponent } from 'src/app/modules/products/checkout/status/status
     CheckoutComponent,
     CheckoutDetailsComponent,
     PaymentElementComponent,
-    StatusComponent
+    StatusComponent,
+    SucceededComponent,
+    ProcessingComponent,
+    RequiresPaymentMethodComponent
   ],
   imports: [
     CommonModule,
