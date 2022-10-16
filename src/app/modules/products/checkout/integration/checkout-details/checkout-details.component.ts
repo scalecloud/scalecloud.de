@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { QuantityComponent } from '../../../subscription-card/quantity/quantity.component';
+import { CheckoutProduct } from '../product/checkout-product';
 
 @Component({
   selector: 'app-checkout-details',
@@ -9,13 +10,14 @@ import { QuantityComponent } from '../../../subscription-card/quantity/quantity.
   styleUrls: ['./checkout-details.component.scss']
 })
 export class CheckoutDetailsComponent {
+  @Input() checkoutProduct: CheckoutProduct | undefined;
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
   @Output() startSubscriptionEvent = new EventEmitter<number>();
 
   constructor(
     private logService: LogService,
     private snackBarService: SnackBarService,
-  ) {}
+  ) { }
 
   startSubscription(): void {
     this.logService.info("Subscription started. Quantity: " + this.getQuantity());
@@ -38,24 +40,42 @@ export class CheckoutDetailsComponent {
   }
 
   getPricePerMonth(): number {
-    return 10;
+    let pricePerMonth = 0;
+    if (this.checkoutProduct) {
+      pricePerMonth = this.checkoutProduct.pricePerMonth;
+    }
+    return pricePerMonth;
   }
 
   getName(): string {
-    return "Ruby";
+    let name = "";
+    if (this.checkoutProduct) {
+      name = this.checkoutProduct.name;
+    }
+    return name;
   }
 
   getStorageAmount(): number {
-    return 12;
+    let storageAmount = 0;
+    if (this.checkoutProduct) {
+      storageAmount = this.checkoutProduct.storageAmount;
+    }
+    return storageAmount;
   }
 
   getTrialDays(): number {
-    return 14;
+    let trialDays = 0;
+    if (this.checkoutProduct) {
+      trialDays = this.checkoutProduct.trialDays;
+    }
+    return trialDays;
   }
 
   getStorageUnit(): string {
-    return "TB";
+    let storageUnit = "";
+    if (this.checkoutProduct) {
+      storageUnit = this.checkoutProduct.storageUnit;
+    }
+    return storageUnit;
   }
-
-
 }
