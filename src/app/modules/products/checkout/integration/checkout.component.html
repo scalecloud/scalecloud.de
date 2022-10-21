@@ -1,4 +1,4 @@
 <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="space-evenly">
-    <app-payment-element></app-payment-element>
-    <app-checkout-details [checkoutProduct]="checkoutProduct" (startSubscriptionEvent)="startSubscription($event)"></app-checkout-details>
+    <app-payment-element (initCheckoutProduct)="initCheckoutProduct($event)"></app-payment-element>
+    <app-checkout-details (startSubscriptionEvent)="startSubscription($event)"></app-checkout-details>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
@@ -16,6 +16,7 @@ declare const Stripe: any;
 })
 export class PaymentElementComponent {
 
+  @Output() initCheckoutProduct = new EventEmitter<string>();
   checkoutIntegrationReply: CheckoutIntegrationReply | undefined;
   stripeElement: any;
   elements: any;
@@ -40,6 +41,7 @@ export class PaymentElementComponent {
           const observable = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutIntegrationReply => {
             this.checkoutIntegrationReply = checkoutIntegrationReply;
             this.initPaymentElements();
+            this.initCheckoutProduct.emit(this.checkoutIntegrationReply.subscriptionID);
           });
         }
         else {

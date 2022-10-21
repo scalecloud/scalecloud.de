@@ -1,9 +1,7 @@
-import { HttpParams } from '@angular/common/http';
 import { Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CheckoutIntegrationRequest } from '../checkout/integration/checkout-model-integration';
-import { CheckoutProduct } from '../checkout/integration/product/checkout-product';
 import { CheckoutService } from '../checkout/portal/checkout.service';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
@@ -51,52 +49,14 @@ export class SubscriptionCardComponent {
       );
   }
 
-  getCheckoutProduct(): CheckoutProduct {
-    if (this.nextcloudProduct) {
-      return {
-        productID: this.nextcloudProduct.productID,
-        name: this.nextcloudProduct.name,
-        storageAmount: this.nextcloudProduct.storageAmount,
-        storageUnit: this.nextcloudProduct.storageUnit,
-        trialDays: this.nextcloudProduct.trialDays,
-        pricePerMonth: this.nextcloudProduct.pricePerMonth,
-        quantity: this.getQuantity(),
-      }
-    } else if (this.synologyProduct) {
-      return {
-        productID: this.synologyProduct.productID,
-        name: this.synologyProduct.name,
-        storageAmount: this.synologyProduct.storageAmount,
-        storageUnit: this.synologyProduct.storageUnit,
-        trialDays: this.synologyProduct.trialDays,
-        pricePerMonth: this.synologyProduct.pricePerMonth,
-        quantity: this.getQuantity(),
-      }
-    } else {
-      return {
-        productID: "",
-        name: "",
-        storageAmount: 0,
-        storageUnit: "",
-        trialDays: 0,
-        pricePerMonth: 0,
-        quantity: 0,
-      }
-    }
-  }
-
   openCheckoutIntegration(): void {
-    const checkoutProduct: CheckoutProduct = this.getCheckoutProduct();
+    const productID = this.getProductID();
+    const quantity = this.getQuantity();
     this.router.navigate(['/checkout'],
       {
         queryParams: {
-          productID: checkoutProduct.productID,
-          name: checkoutProduct.name,
-          storageAmount: checkoutProduct.storageAmount,
-          storageUnit: checkoutProduct.storageUnit,
-          trialDays: checkoutProduct.trialDays,
-          pricePerMonth: checkoutProduct.pricePerMonth,
-          quantity: checkoutProduct.quantity,
+          productID: productID,
+          quantity: quantity,
         }
       }
     );
@@ -106,6 +66,16 @@ export class SubscriptionCardComponent {
     let ret = 1;
     if (this.quantityComponent != undefined) {
       ret = this.quantityComponent.getQuantity();
+    }
+    return ret;
+  }
+
+  getProductID(): string {
+    let ret = "";
+    if (this.nextcloudProduct != undefined) {
+      ret = this.nextcloudProduct.productID;
+    } else if (this.synologyProduct != undefined) {
+      ret = this.synologyProduct.productID;
     }
     return ret;
   }
