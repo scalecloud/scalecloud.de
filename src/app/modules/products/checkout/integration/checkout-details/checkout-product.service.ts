@@ -13,7 +13,10 @@ export class CheckoutProductService {
 
   private url = 'http://localhost:15000/checkout-integration/get-checkout-product';
 
-  constructor(private http: HttpClient, private snackBarService: SnackBarService, private authService: AuthService) { }
+  constructor(
+    private http: HttpClient,
+    private snackBarService: SnackBarService,
+    private authService: AuthService) { }
 
   getCheckoutProduct(checkoutProductRequest: CheckoutProductRequest): Observable<CheckoutProductReply> {
     return this.http.post<CheckoutProductReply>(this.url, checkoutProductRequest, this.getHttpOptions())

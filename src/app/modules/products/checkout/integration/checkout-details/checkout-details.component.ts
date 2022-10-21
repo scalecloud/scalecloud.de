@@ -24,17 +24,18 @@ export class CheckoutDetailsComponent {
     private authService: AuthService,
   ) { }
 
-  initCheckoutProduct( subscriptionID: string): void {
+  initCheckoutProduct(subscriptionID: string): void {
     this.authService.afAuth.authState.subscribe((user) => {
       if (user) {
         if (!subscriptionID) {
-          this.logService.error("subscriptionID is undefined.");
+          this.logService.error("subscriptionID is undefined");
         }
         else {
           let checkoutProductRequest: CheckoutProductRequest = {
             subscriptionID: subscriptionID
           }
           const checkoutProductReply = this.checkoutProductService.getCheckoutProduct(checkoutProductRequest)
+          this.logService.info("checkoutProductReply: " + JSON.stringify(checkoutProductReply));
         }
       }
     });

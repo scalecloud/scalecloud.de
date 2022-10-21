@@ -85,11 +85,16 @@ export class CheckoutComponent {
   }
 
   initCheckoutProduct(subscriptionID: string): void {
-    if (this.checkoutDetailsComponent) {
-      this.checkoutDetailsComponent.initCheckoutProduct(subscriptionID);
+    if (!subscriptionID) {
+      this.logService.error("subscriptionID is undefined.");
     }
     else {
-      this.logService.error("CheckoutDetailsComponent is undefined.")
+      if (this.checkoutDetailsComponent) {
+        this.checkoutDetailsComponent.initCheckoutProduct(subscriptionID);
+      }
+      else {
+        this.logService.error("CheckoutDetailsComponent is undefined.")
+      }
     }
   }
 

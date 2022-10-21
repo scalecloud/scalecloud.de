@@ -38,11 +38,12 @@ export class PaymentElementComponent {
             quantity: quantity,
           }
 
-          const observable = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(checkoutIntegrationReply => {
-            this.checkoutIntegrationReply = checkoutIntegrationReply;
-            this.initPaymentElements();
-            this.initCheckoutProduct.emit(this.checkoutIntegrationReply.subscriptionID);
-          });
+          const observable = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(
+            (checkoutIntegrationReply: CheckoutIntegrationReply) => {
+              this.checkoutIntegrationReply = checkoutIntegrationReply;
+              this.initPaymentElements();
+              this.initCheckoutProduct.emit(checkoutIntegrationReply.subscriptionID);
+            });
         }
         else {
           this.logService.error('productID: ' + productID + ' or quantity: ' + quantity + ' not defined');
@@ -52,8 +53,13 @@ export class PaymentElementComponent {
     );
   }
 
-  getPrice(): number {
-    return 10;
+  getSubscriptionID(): string | undefined {
+    if (this.checkoutIntegrationReply) {
+      return this.checkoutIntegrationReply.subscriptionID;
+    }
+    else {
+      return undefined;
+    }
   }
 
   initPaymentElements(): void {
