@@ -12,7 +12,10 @@ export class CheckoutSubscriptionService {
 
   private url = 'http://localhost:15000/checkout-integration/create-checkout-subscription';
 
-  constructor(private http: HttpClient, private snackBarService: SnackBarService, private authService: AuthService) { }
+  constructor(
+    private http: HttpClient, 
+    private snackBarService: SnackBarService, 
+    private authService: AuthService) { }
 
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutIntegrationRequest): Observable<CheckoutIntegrationReply> {
     return this.http.post<CheckoutIntegrationReply>(this.url, checkoutIntegrationRequest, this.getHttpOptions())
