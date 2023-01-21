@@ -14,15 +14,11 @@
 <h2>
     Ready for your Cloud?
 </h2>
-<mat-list>
-    <mat-list-item>
-        <div fxFlex fxLayout="row wrap" fxLayoutAlign="center">
-            <div fxLayout="row">
-                    <button mat-raised-button color="primary" routerLink="/nextcloud">EXPLORE NEXTCLOUD</button>
-            </div>
-            <div fxLayout="row">
-                    <button mat-raised-button color="primary" routerLink="/synology">EXPLORE SYNOLOGY</button>
-            </div>
-        </div>
-    </mat-list-item>
-</mat-list>
+<div class="flex-container">
+    <div class="flex-item">
+        <button mat-raised-button color="primary" routerLink="/nextcloud">EXPLORE NEXTCLOUD</button>
+    </div>
+    <div class="flex-item">
+        <button mat-raised-button color="primary" routerLink="/synology">EXPLORE SYNOLOGY</button>
+    </div>
+</div>
