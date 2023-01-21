@@ -17,7 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
 import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
@@ -95,7 +94,6 @@ import { SucceededComponent } from 'src/app/modules/products/checkout/status/suc
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
     MatIconModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
