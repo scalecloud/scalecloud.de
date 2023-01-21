@@ -1,25 +1,35 @@
 ul li {
     list-style: none;
 }
+
 img {
     padding-left: 10px;
     padding-right: 10px;
     vertical-align: middle;
 }
+
 a:link {
     color: rgb(255, 255, 255);
     text-decoration: none;
 }
+
 a:visited {
     color: rgb(255, 255, 255);
 }
+
 a:hover {
     color: rgb(255, 255, 255);
 }
+
 a:active {
     color: rgb(255, 255, 255);
 }
-button{
+
+button {
     background-color: transparent;
     border: none;
+}
+
+.fill-remaining-space {
+    flex: auto;
 }
