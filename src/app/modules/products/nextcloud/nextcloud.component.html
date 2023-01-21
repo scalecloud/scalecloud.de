@@ -1,7 +1,7 @@
 <app-titel-card [subscriptionType]="subscriptionType"></app-titel-card>
 
-<div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="space-evenly">
-    <div fxFlex="20rem" flex-shrink="50%" flex-basis="200px" fxFlex.xs="100%" *ngFor="let nextcloudProduct of nextcloudProducts">
+<div class="flex-container">
+    <div class="flex-item" *ngFor="let nextcloudProduct of nextcloudProducts">
         <app-subscription-card [nextcloudProduct]="nextcloudProduct"></app-subscription-card>
     </div>
 </div>

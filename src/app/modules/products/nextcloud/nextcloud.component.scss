@@ -1,0 +1,10 @@
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flex-item {
+    flex-grow: 0;
+    padding: 1rem;
+}
