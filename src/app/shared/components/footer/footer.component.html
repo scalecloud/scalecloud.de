@@ -2,36 +2,16 @@
 <footer>
     <mat-list>
         <mat-list-item>
-            <div fxFlex fxLayout="row" fxLayoutAlign="flex-start">
-                <ul fxLayout="row">
-                    <li>
-                        <a routerLink="/privacy-policy">Privacy Policy</a>
-                    </li>
-                </ul>
-                <ul fxLayout="row">
-                    <li>
-                        <a routerLink="/imprint">Imprint</a>
-                    </li>
-                </ul>
-                <ul fxLayout="row">
-                    <li>
-                        <a routerLink="/legal">Legal</a>
-                    </li>
-                </ul>
-                <ul fxLayout="row">
-                    <li>
-                        <a routerLink="/terms">Terms</a>
-                    </li>
-                </ul>
+            <div class="grid-container">
+                <a class="grid-item" routerLink="/privacy-policy">Privacy Policy</a>
+                <a class="grid-item" routerLink="/imprint">Imprint</a>
+                <a class="grid-item" routerLink="/legal">Legal</a>
+                <a class="grid-item" routerLink="/terms">Terms</a>
             </div>
         </mat-list-item>
         <mat-list-item>
-            <div fxFlex fxLayout="row" fxLayoutAlign="flex-start">
-                <ul fxLayout="row">
-                    <li>
-                        &copy; 2022 <a routerLink="/">ScaleCloud.de</a>
-                    </li>
-                </ul>
+            <div class="grid-container">
+                <a class="grid-item" routerLink="/">&copy; 2022 ScaleCloud.de</a>
             </div>
         </mat-list-item>
     </mat-list>

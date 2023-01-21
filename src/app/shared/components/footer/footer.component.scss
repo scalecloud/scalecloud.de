@@ -2,15 +2,24 @@ a:link {
     color: rgb(0, 0, 0);
     text-decoration: none;
 }
+
 a:visited {
     color: rgb(0, 0, 0);
 }
+
 a:hover {
     color: red;
 }
+
 a:active {
     color: rgb(0, 0, 0);
 }
-ul li {
-    list-style: none;
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+
+.grid-item {
+    padding: 1rem;
 }
