@@ -8,17 +8,16 @@ import createGlobe from 'cobe';
 })
 export class GlobeComponent implements OnInit {
 // https://github.com/shuding/cobe
-  public phi = 1;
-
+ 
   ngOnInit(): void {
     
     let phi = 0;
     let canvas = <HTMLCanvasElement>document.getElementById("cobe");
 
     const globe = createGlobe(canvas, {
-      devicePixelRatio: 1,
-      width: 800,
-      height: 800,
+      devicePixelRatio: 2,
+      width: 1000,
+      height: 1000,
       phi: 1,
       theta: 0,
       dark: 1,

@@ -1,5 +1,5 @@
 <app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
-<mat-drawer-container class="example-container" autosize>
+<mat-drawer-container>
     <mat-drawer mode="side" opened="true" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()" >
         <app-sidebar [isExpanded]="isExpanded" [isShowing]="isShowing"></app-sidebar>
     </mat-drawer>
