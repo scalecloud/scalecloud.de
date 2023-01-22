@@ -12,12 +12,6 @@ h2 {
     1px 1px 0 #000;
 }
 
-button {
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-top: 2rem;
-}
-
 #globe {
   margin-top: 25rem;
   z-index: -1;
@@ -25,5 +19,12 @@ button {
 
 .flex-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+}
+
+.flex-item {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
 }
