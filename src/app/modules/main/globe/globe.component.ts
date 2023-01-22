@@ -7,17 +7,41 @@ import createGlobe from 'cobe';
   styleUrls: ['./globe.component.scss']
 })
 export class GlobeComponent implements OnInit {
-// https://github.com/shuding/cobe
- 
+  // https://github.com/shuding/cobe
+
+  public globeSize: any;
+
   ngOnInit(): void {
-    
+    let innerHeight = window.innerHeight;
+    let innerWidth = window.innerWidth;
+    if (innerWidth > innerHeight) {
+      this.globeSize = innerHeight * 70 / 100;
+    }
+    else {
+      this.globeSize = innerWidth * 70 / 100;
+    }
+  }
+
+  ngAfterViewInit() {
+    this.showGlobe();
+  }
+
+  setGlobeSize() {
+    let styles = {
+      'width': this.globeSize + 'px',
+      'height': this.globeSize + 'px',
+    };
+    return styles;
+  }
+
+  showGlobe() {
     let phi = 0;
     let canvas = <HTMLCanvasElement>document.getElementById("cobe");
 
     const globe = createGlobe(canvas, {
       devicePixelRatio: 2,
-      width: 1000,
-      height: 1000,
+      width: this.globeSize * 2,
+      height: this.globeSize * 2,
       phi: 1,
       theta: 0,
       dark: 1,
