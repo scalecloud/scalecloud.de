@@ -1,23 +1,22 @@
 <mat-nav-list>
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/">
-        <mat-icon>home</mat-icon>
-        Home
-    </a>
+    <mat-list-item routerLinkActive="list-item-active" routerLink="/">
+        <mat-icon mat-list-icon>home</mat-icon>
+        <span *ngIf="isExpanded || isShowing">Home</span>
+    </mat-list-item>
     <mat-divider></mat-divider>
     <h2 matSubheader>Buy</h2>
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/nextcloud">
-        <mat-icon>cloud</mat-icon>
-        Nextcloud
-    </a>
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/synology">
-        <mat-icon>cloud</mat-icon>
-        Synology
-    </a>
+    <mat-list-item routerLinkActive="list-item-active" routerLink="/nextcloud">
+        <mat-icon mat-list-icon>cloud</mat-icon>
+        <span *ngIf="isExpanded || isShowing">Nextcloud</span>
+    </mat-list-item>
+    <mat-list-item routerLinkActive="list-item-active" routerLink="/synology">
+        <mat-icon mat-list-icon>cloud</mat-icon>
+        <span *ngIf="isExpanded || isShowing">Synology</span>
+    </mat-list-item>
     <mat-divider></mat-divider>
-
     <h2 matSubheader>Help</h2>
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/contact">
-        <mat-icon>email</mat-icon>
-        Contact
-    </a>
+    <mat-list-item routerLinkActive="list-item-active" routerLink="/contact">
+        <mat-icon mat-list-icon>email</mat-icon>
+        <span *ngIf="isExpanded || isShowing">Contact</span>
+    </mat-list-item>
 </mat-nav-list>

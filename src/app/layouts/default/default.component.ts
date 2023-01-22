@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-default',
@@ -6,11 +7,25 @@ import { Component } from '@angular/core';
   styleUrls: ['./default.component.scss']
 })
 export class DefaultComponent {
+  @ViewChild('sidenav') sidenav: MatSidenav | undefined;
 
-  sideBarOpen = true;
+  isExpanded = true;
+  showSubmenu: boolean = false;
+  isShowing = false;
+  showSubSubMenu: boolean = false;
 
   sideBarToggler() {
-    this.sideBarOpen = !this.sideBarOpen;
+    this.isExpanded = !this.isExpanded;
+  }
+  mouseenter() {
+    if (!this.isExpanded) {
+      this.isShowing = true;
+    }
   }
 
+  mouseleave() {
+    if (!this.isExpanded) {
+      this.isShowing = false;
+    }
+  }
 }

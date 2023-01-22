@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
 })
 export class SidebarComponent {
 
+  @Input() isExpanded: boolean | undefined;
+  @Input() isShowing: boolean | undefined;
 
 }
