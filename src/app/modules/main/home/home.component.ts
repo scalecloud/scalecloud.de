@@ -14,6 +14,4 @@ export class HomeComponent implements OnInit {
     this.snackBarService.errorDuration("This Website is currently under construction. Please come back later.", 30);
   }
 
-
-
 }

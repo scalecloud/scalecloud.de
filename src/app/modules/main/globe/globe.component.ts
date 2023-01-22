@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import createGlobe from 'cobe';
 
 @Component({
@@ -8,17 +8,19 @@ import createGlobe from 'cobe';
 })
 export class GlobeComponent implements OnInit {
   // https://github.com/shuding/cobe
-
   public globeSize: any;
 
   ngOnInit(): void {
     let innerHeight = window.innerHeight;
     let innerWidth = window.innerWidth;
     if (innerWidth > innerHeight) {
-      this.globeSize = innerHeight * 70 / 100;
+      this.globeSize = innerHeight;
+    }
+    else if( innerWidth < 425) {
+      this.globeSize = innerWidth * 55 / 100;
     }
     else {
-      this.globeSize = innerWidth * 70 / 100;
+      this.globeSize = innerWidth * 60 / 100;
     }
   }
 
