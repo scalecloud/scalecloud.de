@@ -4,10 +4,10 @@ import { DefaultComponent } from './default.component';
 import { SidebarComponent } from 'src/app/shared/components/sidebar/sidebar.component';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
-import { MatListModule, MatNavList } from '@angular/material/list';
+import { MatLegacyListModule as MatListModule, MatLegacyNavList as MatNavList } from '@angular/material/legacy-list';
 import { FooterComponent } from 'src/app/shared/components/footer/footer.component';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
-import { MatMenu, MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenu as MatMenu, MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
