@@ -15,11 +15,11 @@ a:active {
     color: rgb(0, 0, 0);
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
+.flex-item {
+    margin-right: 1rem;
 }
 
-.grid-item {
-    padding: 1rem;
+.navigation {
+    display: flex;
+    flex-flow: row wrap;
 }
