@@ -1,22 +1,30 @@
 <mat-nav-list>
     <mat-list-item routerLinkActive="list-item-active" routerLink="/">
-        <mat-icon mat-list-icon>home</mat-icon>
-        <span *ngIf="isExpanded || isShowing">Home</span>
+        <div class="icon-text">
+            <mat-icon mat-icon-button>home</mat-icon>
+            <span *ngIf="isExpanded || isShowing">Home</span>
+        </div>
     </mat-list-item>
     <mat-divider></mat-divider>
     <h2 matSubheader>Buy</h2>
     <mat-list-item routerLinkActive="list-item-active" routerLink="/nextcloud">
-        <mat-icon mat-list-icon>cloud</mat-icon>
-        <span *ngIf="isExpanded || isShowing">Nextcloud</span>
+        <div class="icon-text">
+            <mat-icon mat-list-icon>cloud</mat-icon>
+            <span *ngIf="isExpanded || isShowing">Nextcloud</span>
+        </div>
     </mat-list-item>
     <mat-list-item routerLinkActive="list-item-active" routerLink="/synology">
+        <div class="icon-text">
         <mat-icon mat-list-icon>cloud</mat-icon>
         <span *ngIf="isExpanded || isShowing">Synology</span>
+        </div>
     </mat-list-item>
     <mat-divider></mat-divider>
     <h2 matSubheader>Help</h2>
     <mat-list-item routerLinkActive="list-item-active" routerLink="/contact">
-        <mat-icon mat-list-icon>email</mat-icon>
-        <span *ngIf="isExpanded || isShowing">Contact</span>
+        <div class="icon-text">
+            <mat-icon mat-list-icon>email</mat-icon>
+            <span *ngIf="isExpanded || isShowing">Contact</span>
+        </div>
     </mat-list-item>
 </mat-nav-list>
