@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatLegacyCard as MatCard, MatLegacyCardActions as MatCardActions, MatLegacyCardContent as MatCardContent, MatLegacyCardSubtitle as MatCardSubtitle, MatLegacyCardTitle as MatCardTitle } from '@angular/material/legacy-card';
+import { MatCard, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
+import { MatListModule } from '@angular/material/list';
 
 
 import { SubscriptionCardComponent } from './subscription-card.component';

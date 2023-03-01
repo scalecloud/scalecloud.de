@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
-import { MatLegacyNavList as MatNavList } from '@angular/material/legacy-list';
+import { MatNavList } from '@angular/material/list';
 
 import { SidebarComponent } from './sidebar.component';
 

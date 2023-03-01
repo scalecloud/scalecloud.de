@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatLegacyCard as MatCard, MatLegacyCardActions as MatCardActions, MatLegacyCardContent as MatCardContent, MatLegacyCardSubtitle as MatCardSubtitle, MatLegacyCardTitle as MatCardTitle } from '@angular/material/legacy-card';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
 import { SubscriptionCardComponent } from '../subscription-card/subscription-card.component';
 import { TitelCardComponent } from '../titel-card/titel-card.component';
 import { SynologyComponent } from './synology.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatCard, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
 
 describe('SynologyComponent', () => {
   let component: SynologyComponent;

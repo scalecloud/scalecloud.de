@@ -12,11 +12,6 @@ import { PrivacyComponent } from 'src/app/modules/footer/privacy/privacy.compone
 import { ImprintComponent } from 'src/app/modules/footer/imprint/imprint.component';
 import { LegalComponent } from 'src/app/modules/footer/legal/legal.component';
 import { ContactComponent } from 'src/app/modules/footer/contact/contact.component';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
 import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
@@ -46,6 +41,11 @@ import { StatusComponent } from 'src/app/modules/products/checkout/status/status
 import { ProcessingComponent } from 'src/app/modules/products/checkout/status/processing/processing.component';
 import { RequiresPaymentMethodComponent } from 'src/app/modules/products/checkout/status/requires-payment-method/requires-payment-method.component';
 import { SucceededComponent } from 'src/app/modules/products/checkout/status/succeeded/succeeded.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
