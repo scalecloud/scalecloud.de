@@ -6,30 +6,31 @@
     <mat-card-content>
         <mat-list>
             <mat-list-item>
-                <mat-icon>
-                    cloud
-                </mat-icon>
-                {{getStorageAmount() * getQuantity() }}{{getStorageUnit()}}
+                <div class="icon-text">
+                    <mat-icon>cloud</mat-icon>
+                    {{getStorageAmount() * getQuantity() }}{{getStorageUnit()}}
+                </div>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>
-                    height
-                </mat-icon>
-                Scalable
+                <div class="icon-text">
+                    <mat-icon>height</mat-icon>
+                    Scalable
+                </div>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>
-                    event_available
-                </mat-icon>
-                {{getTrialDays()}}
-                &nbsp;days trial
+                <div class="icon-text">
+                    <mat-icon>event_available</mat-icon>
+                    {{getTrialDays()}}&nbsp;days trial
+                </div>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>
-                    person
-                </mat-icon>
-                <mat-label>User count:</mat-label>
-                <app-quantity></app-quantity>
+                <div class="icon-text">
+                    <div class="user-count">
+                        <mat-icon>person</mat-icon>
+                        <mat-label class="user">User count:</mat-label>
+                    </div>
+                    <app-quantity></app-quantity>
+                </div>
             </mat-list-item>
             <mat-divider></mat-divider>
         </mat-list>
