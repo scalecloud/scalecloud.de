@@ -1,9 +1,18 @@
 mat-drawer-container {
-  height: 80%;
+  height: 100%;
 }
 
 mat-drawer-content {
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+content {
+  flex: 1;
 }

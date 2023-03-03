@@ -1,10 +1,14 @@
-<app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
-<mat-drawer-container>
-    <mat-drawer mode="side" opened="true" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()">
-        <app-sidebar [isExpanded]="isExpanded" [isShowing]="isShowing"></app-sidebar>
-    </mat-drawer>
-    <mat-drawer-content>
-        <router-outlet></router-outlet>
-    </mat-drawer-content>
-</mat-drawer-container>
-<app-footer></app-footer>
+<body>
+    <app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
+    <content>
+        <mat-drawer-container>
+            <mat-drawer mode="side" opened="true" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()">
+                <app-sidebar [isExpanded]="isExpanded" [isShowing]="isShowing"></app-sidebar>
+            </mat-drawer>
+            <mat-drawer-content>
+                <router-outlet></router-outlet>
+            </mat-drawer-content>
+        </mat-drawer-container>
+    </content>
+    <app-footer></app-footer>
+</body>
