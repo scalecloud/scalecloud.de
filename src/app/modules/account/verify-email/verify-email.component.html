@@ -1,28 +1,26 @@
-<div fxLayoutAlign="space-evenly">
-    <mat-card>
-        <mat-card-title>Thank You for Registering</mat-card-title>
-        <mat-card-content>
-            <mat-list>
-                <mat-list-item>
-                    <div *ngIf="authService.user as user">
-                        <p>
-                            We have sent a confirmation E-Mail to: <strong>{{ user.email }}</strong>.
-                        </p>
-                        <p>
-                            Please check your E-Mail and click on the link to verfiy your E-Mail
-                            address.
-                        </p>
-                    </div>
-                </mat-list-item>
-            </mat-list>
-        </mat-card-content>
-        <mat-card-actions>
-            <button [disabled]="clicked" (click)="sendVerificationMail();" mat-raised-button color="primary">
-             {{getButtonText()}} 
-            </button>
-            <button (click)="authService.signOut()" mat-stroked-button>
-                Logout
-            </button>
-        </mat-card-actions>
-    </mat-card>
-</div>
+<mat-card>
+    <mat-card-title>Thank You for Registering</mat-card-title>
+    <mat-card-content>
+        <div *ngIf="authService.user as user">
+            <p>
+                We have sent a confirmation E-Mail to: <strong>{{ user.email }}</strong>.
+            </p>
+            <p>
+                Please check your E-Mail and click on the link to verfiy your E-Mail
+                address.
+            </p>
+        </div>
+        <div class="flex-container">
+            <div class="flex-item">
+                <button [disabled]="clicked" (click)="sendVerificationMail();" mat-raised-button color="primary">
+                    {{getButtonText()}}
+                </button>
+            </div>
+            <div class="flex-item">
+                <button (click)="authService.signOut()" mat-stroked-button>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
