@@ -1,20 +1,21 @@
 mat-card {
-    max-width: 400px;
     text-align: center;
 }
 
 mat-card-title {
     font-size: 2rem;
+    margin: 0.5rem;
 }
 
 mat-icon {
-    padding-right: 1rem;
+    padding-right: 0.5rem;
 }
 
 mat-card-subtitle {
     font-size: xx-large;
     color: rgb(0, 0, 0);
     font-weight: bold;
+    margin-top: 0.5rem;
 }
 
 .price-month {
@@ -22,6 +23,16 @@ mat-card-subtitle {
 }
 
 button {
-    padding: 10px 90px;
+    width: 100%;
     font-size: 1.2rem;
+}
+
+.icon-text {
+    display: flex;
+    justify-content: center;
+}
+
+.user-count {
+    display: flex;
+    margin-top: 0.5rem;
 }
