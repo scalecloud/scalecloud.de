@@ -1,4 +1,8 @@
-<div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="space-evenly">
-    <app-payment-element (initCheckoutProduct)="initCheckoutProduct($event)"></app-payment-element>
-    <app-checkout-details (startSubscriptionEvent)="startSubscription($event)"></app-checkout-details>
+<div class="flex-container">
+    <div class="flex-item">
+        <app-payment-element (initCheckoutProduct)="initCheckoutProduct($event)"></app-payment-element>
+    </div>
+    <div class="flex-item">
+        <app-checkout-details (startSubscriptionEvent)="startSubscription($event)"></app-checkout-details>
+    </div>
 </div>
