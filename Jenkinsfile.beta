@@ -22,7 +22,7 @@ node() {
     }
     stage('Install dependencies') {
         lastStage = env.STAGE_NAME
-        sh 'npm install'
+        sh 'npm install --ignore-scripts'
     }
     stage('Run Tests') {
         lastStage = env.STAGE_NAME
