@@ -45,7 +45,7 @@ export class StripeKeyService {
 
   isBeta(): boolean {
     let beta = false;
-    if (this.getURL().startsWith("https://beta")) {
+    if (this.getURL().startsWith("https://beta.scalecloud.de")) {
       beta = true;
     }
     return beta;
