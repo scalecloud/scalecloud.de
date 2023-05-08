@@ -1,12 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterGuard implements CanActivate {
+export class RegisterGuard  {
   constructor(
     public authService: AuthService,
     public router: Router,
