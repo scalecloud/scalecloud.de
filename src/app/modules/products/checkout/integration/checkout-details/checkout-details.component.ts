@@ -34,8 +34,10 @@ export class CheckoutDetailsComponent {
           let checkoutProductRequest: CheckoutProductRequest = {
             subscriptionID: subscriptionID
           }
-          const checkoutProductReply = this.checkoutProductService.getCheckoutProduct(checkoutProductRequest)
-          this.logService.info("checkoutProductReply: " + JSON.stringify(checkoutProductReply));
+          const observable = this.checkoutProductService.getCheckoutProduct(checkoutProductRequest).subscribe(
+            (checkoutProductReply: CheckoutProductReply) => {
+              this.checkoutProductReply = checkoutProductReply;
+            });
         }
       }
     });
