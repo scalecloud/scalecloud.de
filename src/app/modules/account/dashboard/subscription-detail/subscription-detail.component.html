@@ -1,8 +1,12 @@
 <div *ngIf="authService.user as user">
     <div *ngIf="subscriptionDetail">
-        <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="space-evenly">
-            <app-subscription-detail-card [subscriptionDetail]="subscriptionDetail"></app-subscription-detail-card>
-            <app-billing-portal></app-billing-portal>
+        <div class="flex-container">
+            <div class="flex-item">
+                <app-subscription-detail-card [subscriptionDetail]="subscriptionDetail"></app-subscription-detail-card>
+            </div>
+            <div class="flex-item">
+                <app-billing-portal></app-billing-portal>
+            </div>
         </div>
     </div>
 </div>
