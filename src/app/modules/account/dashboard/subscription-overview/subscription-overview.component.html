@@ -7,18 +7,24 @@
     <mat-card-content>
         <mat-list>
             <mat-list-item>
-                <mat-icon>numbers</mat-icon>
-                {{getID()}}
+                <div class="icon-text">
+                    <mat-icon>numbers</mat-icon>
+                    {{getID()}}
+                </div>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>cloud</mat-icon>
-                {{getStorageAmount()}} TB
+                <div class="icon-text">
+                    <mat-icon>cloud</mat-icon>
+                    {{getStorageAmount()}} TB
+                </div>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>
-                    person
-                </mat-icon>
-                {{getUserCount()}}
+                <div class="icon-text">
+                    <mat-icon>
+                        person
+                    </mat-icon>
+                    {{getUserCount()}}
+                </div>
             </mat-list-item>
         </mat-list>
     </mat-card-content>

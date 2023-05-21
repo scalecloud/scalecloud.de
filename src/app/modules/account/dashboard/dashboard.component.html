@@ -1,6 +1,6 @@
 <div *ngIf="authService.user as user">
-    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="space-evenly">
-        <div *ngFor="let subscriptionOverview of subscriptionsOverview">
+    <div class="flex-container"> 
+        <div class="flex-item" *ngFor="let subscriptionOverview of subscriptionsOverview">
          <app-subscription-overview [subscriptionOverview]="subscriptionOverview"></app-subscription-overview>
         </div>
     </div>
