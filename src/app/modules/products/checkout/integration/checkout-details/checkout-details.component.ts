@@ -6,6 +6,7 @@ import { QuantityComponent } from '../../../subscription-card/quantity/quantity.
 import { CheckoutProductReply } from '../product/checkout-product-reply';
 import { CheckoutProductRequest } from '../product/checkout-product-request';
 import { CheckoutProductService } from './checkout-product.service';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-checkout-details',
@@ -22,6 +23,7 @@ export class CheckoutDetailsComponent {
     private snackBarService: SnackBarService,
     private checkoutProductService: CheckoutProductService,
     private authService: AuthService,
+    private currencyPipe: CurrencyPipe
   ) { }
 
   initCheckoutProduct(subscriptionID: string): void {
@@ -63,10 +65,10 @@ export class CheckoutDetailsComponent {
     }
   }
 
-  getPricePerMonth(): number {
-    let pricePerMonth = 0;
-    if (this.checkoutProductReply) {
-      pricePerMonth = this.checkoutProductReply.pricePerMonth / 100;
+  getPricePerMonth(): string {
+    let pricePerMonth = "";
+    if (this.checkoutProductReply && this.checkoutProductReply.pricePerMonth > 0) {
+      pricePerMonth = this.currencyPipe.transform(this.checkoutProductReply.pricePerMonth / 100, this.getCurrency(), 'symbol', '1.0-0');
     }
     return pricePerMonth;
   }
@@ -110,4 +112,5 @@ export class CheckoutDetailsComponent {
     }
     return storageUnit;
   }
+
 }

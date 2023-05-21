@@ -12,6 +12,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { providePerformance,getPerformance } from '@angular/fire/performance';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireModule } from '@angular/fire/compat';
+import { CurrencyPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,9 @@ import { AngularFireModule } from '@angular/fire/compat';
     providePerformance(() => getPerformance())
   ],
   providers: [
-    ScreenTrackingService,UserTrackingService
+    CurrencyPipe,
+    ScreenTrackingService,
+    UserTrackingService
   ],
   bootstrap: [AppComponent]
 })
