@@ -10,7 +10,7 @@
         <span class="fill-remaining-space"></span>
         <div>
             <div *ngIf="auth.user as user; else login">
-                <button mat-button [matMenuTriggerFor]="menu">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
                     <mat-icon>person_outline</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
