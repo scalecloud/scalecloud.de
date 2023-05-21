@@ -6,4 +6,5 @@ export interface CheckoutProductReply {
     storageUnit: string;
     trialDays: number;
     pricePerMonth: number;
+    currency: string;
 }

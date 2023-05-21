@@ -71,6 +71,14 @@ export class CheckoutDetailsComponent {
     return pricePerMonth;
   }
 
+  getCurrency(): string {
+    let currency = "";
+    if (this.checkoutProductReply) {
+      currency = this.checkoutProductReply.currency;
+    }
+    return currency;
+  }
+
   getName(): string {
     let name = "";
     if (this.checkoutProductReply) {
