@@ -7,32 +7,39 @@
     <mat-card-content>
         <mat-list>
             <mat-list-item>
-                <mat-icon>numbers</mat-icon>
-                {{getID()}}
+                <div class="icon-text">
+                    <mat-icon>numbers</mat-icon>
+                    {{getID()}}
+                </div>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>cloud</mat-icon>
-                {{getStorageAmount()}} TB
+                <div class="icon-text">
+                    <mat-icon>cloud</mat-icon>
+                    {{getStorageAmount()}} TB
+                </div>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>
-                    person
-                </mat-icon>
-                {{getUserCount()}}
+                <div class="icon-text">
+                    <mat-icon>person</mat-icon>
+                    {{getUserCount()}}
+                </div>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon>
-                    payments
-                </mat-icon>
-                {{getPricePerMonth() / 100 | currency:getCurrency() : 'symbol' : '1.0-0'}}<span
-                    class="price-month">/month</span>
+                <div class="icon-text">
+                    <mat-icon>payments</mat-icon>
+                    {{getPricePerMonth() / 100 | currency:getCurrency() : 'symbol' : '1.0-0'}}
+                    <span class="price-month">/month</span>
+                </div>
             </mat-list-item>
+
             <div *ngIf="isCancelAtPeriodEnd()">
                 <mat-list-item>
-                    <mat-icon>
-                        event_busy
-                    </mat-icon>
-                    {{getCancelAt() * 1000 | date }}
+                    <div class="icon-text">
+                        <mat-icon>
+                            event_busy
+                        </mat-icon>
+                        {{getCancelAt() * 1000 | date }}
+                    </div>
                 </mat-list-item>
             </div>
         </mat-list>

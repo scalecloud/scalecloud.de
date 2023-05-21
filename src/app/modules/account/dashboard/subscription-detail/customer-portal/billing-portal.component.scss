@@ -1,15 +1,12 @@
 mat-card {
- //   text-align: center;
+    text-align: center;
     transition: all 0.3s ease-in-out;
 }
 
 mat-card-title {
     font-size: 2rem;
-    text-align: center;
-}
-
-mat-card-subtitle {
-    text-align: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 mat-icon {
@@ -29,6 +26,10 @@ mat-card:hover {
 }
 
 button {
-    padding: 0.5rem 8rem;
     font-size: 1.2rem;
+    width: 100%;
+}
+
+.icon-text {
+    display: flex;
 }

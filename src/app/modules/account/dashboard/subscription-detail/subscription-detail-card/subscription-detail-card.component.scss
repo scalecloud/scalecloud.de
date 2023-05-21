@@ -5,6 +5,8 @@ mat-card {
 
 mat-card-title {
     font-size: 2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 mat-icon {
@@ -24,8 +26,12 @@ mat-card:hover {
 }
 
 button {
-    padding: 0.5rem 8rem;
     font-size: 1.2rem;
+    width: 100%;
+}
+
+.icon-text {
+    display: flex;
 }
 
 .price-month {
