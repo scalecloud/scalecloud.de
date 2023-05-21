@@ -66,7 +66,7 @@ export class CheckoutDetailsComponent {
   getPricePerMonth(): number {
     let pricePerMonth = 0;
     if (this.checkoutProductReply) {
-      pricePerMonth = this.checkoutProductReply.pricePerMonth;
+      pricePerMonth = this.checkoutProductReply.pricePerMonth / 100;
     }
     return pricePerMonth;
   }
