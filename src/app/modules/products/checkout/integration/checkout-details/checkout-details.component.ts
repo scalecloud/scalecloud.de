@@ -68,7 +68,10 @@ export class CheckoutDetailsComponent {
   getPricePerMonth(): string {
     let pricePerMonth = "";
     if (this.checkoutProductReply && this.checkoutProductReply.pricePerMonth > 0) {
-      pricePerMonth = this.currencyPipe.transform(this.checkoutProductReply.pricePerMonth / 100, this.getCurrency(), 'symbol', '1.0-0');
+      let pricePipe = this.currencyPipe.transform(this.checkoutProductReply.pricePerMonth / 100, this.getCurrency(), 'symbol', '1.0-0');
+      if( pricePipe != null ) {
+        pricePerMonth = pricePipe;
+      }
     }
     return pricePerMonth;
   }
