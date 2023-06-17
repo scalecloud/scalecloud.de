@@ -3,8 +3,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
 import { ActivatedRoute } from '@angular/router';
-import { ISubscriptionCancelRequest } from './subscription-cancel-request';
-import { ISubscriptionCancelReply } from './subscription-cancel-reply';
+import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmCancelSubscriptionComponent } from './confirm-cancel-subscription/confirm-cancel-subscription.component';
@@ -37,7 +36,7 @@ export class CancelSubscriptionComponent {
   cancelSubscription(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id == null) {
-      this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
+      this.logService.error('CancelSubscriptionComponent.cancelSubscription: id is null');
     } else {
 
       const iSubscriptionCancelRequest: ISubscriptionCancelRequest = {
@@ -52,7 +51,7 @@ export class CancelSubscriptionComponent {
           else {
             if (iSubscriptionCancelReply.cancel_at_period_end) {
               var date = new Date(iSubscriptionCancelReply.cancel_at * 1000);
-              this.snackBarService.error(`Your Subscription will cancel at: ` + date);
+              this.snackBarService.info(`Your Subscription will cancel at: ` + date);
             }
           }
         });

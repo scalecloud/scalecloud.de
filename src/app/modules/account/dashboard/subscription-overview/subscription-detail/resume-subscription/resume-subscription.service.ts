@@ -1,27 +1,26 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, of, tap } from 'rxjs';
-import { Observable } from 'rxjs/internal/Observable';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
+import { Observable, catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CancelSubscriptionService {
+export class ResumeSubscriptionService {
 
-  private url = 'http://localhost:15000/dashboard/cancel-subscription';
+  private url = 'http://localhost:15000/dashboard/resume-subscription';
 
   constructor(
     private http: HttpClient, 
     private snackBarService: SnackBarService, 
     private authService: AuthService) { }
 
-    cancelSubscription(iSubscriptionCancelRequest: ISubscriptionCancelRequest): Observable<ISubscriptionCancelReply> {
-    return this.http.post<ISubscriptionCancelReply>(this.url, iSubscriptionCancelRequest, this.getHttpOptions())
+    resumeSubscription(iSubscriptionResumeRequest: ISubscriptionResumeRequest): Observable<ISubscriptionResumeReply> {
+    return this.http.post<ISubscriptionResumeReply>(this.url, iSubscriptionResumeRequest, this.getHttpOptions())
       .pipe(
-        catchError(this.handleError<ISubscriptionCancelReply>('cancelSubscription'))
+        catchError(this.handleError<ISubscriptionResumeReply>('resumeSubscription'))
       );
   }
 
@@ -36,9 +35,8 @@ export class CancelSubscriptionService {
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
-      this.snackBarService.error(`Could not cancel subscription. Please try again.`);
+      this.snackBarService.error(`Could not resume subscription. Please try again.`);
       return of(result as T);
     };
   }
-  
 }

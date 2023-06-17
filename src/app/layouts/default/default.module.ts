@@ -51,6 +51,8 @@ import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/subs
 import { CancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-subscription/cancel-subscription.component';
 import { ConfirmCancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-subscription/confirm-cancel-subscription/confirm-cancel-subscription.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/resume-subscription/resume-subscription.component';
+import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/resume-subscription/confirm-resume-subscription/confirm-resume-subscription.component';
 
 
 
@@ -74,6 +76,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     PasswordMatchComponent,
     VerifyEmailComponent,
     DashboardComponent,
+    ResumeSubscriptionComponent,
     CancelSubscriptionComponent,
     PaymentOverviewComponent,
     ChangePaymentComponent,
@@ -90,6 +93,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     StatusComponent,
     SucceededComponent,
     ProcessingComponent,
+    ConfirmResumeSubscriptionComponent,
     ConfirmCancelSubscriptionComponent,
     RequiresPaymentMethodComponent
   ],
