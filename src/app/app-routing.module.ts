@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
 import { DashboardComponent } from './modules/account/dashboard/dashboard.component';
-import { SubscriptionDetailComponent } from './modules/account/dashboard/subscription-detail/subscription-detail.component';
 import { ForgotPasswordComponent } from './modules/account/forgot-password/forgot-password.component';
 import { LoginComponent } from './modules/account/login/login.component';
 import { RegisterComponent } from './modules/account/register/register.component';
@@ -23,7 +22,8 @@ import { ForgotPasswordGuard } from './shared/guard/forgot-password.guard';
 import { LoginGuard } from './shared/guard/login.guard';
 import { RegisterGuard } from './shared/guard/register.guard';
 import { VerifyEMailGuard } from './shared/guard/verify-email.guard';
-import { ChangePaymentComponent } from './modules/account/dashboard/change-payment/change-payment.component';
+import { SubscriptionDetailComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component';
+import { ChangePaymentComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/change-payment/change-payment.component';
 
 const routes: Routes = [{
   path: '', component: DefaultComponent,

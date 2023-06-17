@@ -26,10 +26,7 @@ import { DashboardComponent } from 'src/app/modules/account/dashboard/dashboard.
 import { GlobeComponent } from 'src/app/modules/main/globe/globe.component';
 import { ForgotPasswordComponent } from 'src/app/modules/account/forgot-password/forgot-password.component';
 import { PageNotFoundComponent } from 'src/app/modules/main/page-not-found/page-not-found.component';
-import { SubscriptionDetailComponent } from 'src/app/modules/account/dashboard/subscription-detail/subscription-detail.component';
 import { SubscriptionOverviewComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-overview.component';
-import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboard/subscription-detail/subscription-detail-card/subscription-detail-card.component';
-import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscription-detail/customer-portal/billing-portal.component';
 import { PasswordStrengthComponent } from 'src/app/modules/account/register/password-strength/password-strength.component';
 import { PasswordMatchComponent } from 'src/app/modules/account/register/password-match/password-match.component';
 import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
@@ -46,8 +43,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ChangePaymentComponent } from 'src/app/modules/account/dashboard/change-payment/change-payment.component';
-import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
+import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/payment-overview/payment-overview.component';
+import { ChangePaymentComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/change-payment/change-payment.component';
+import { SubscriptionDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component';
+import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail-card/subscription-detail-card.component';
+import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/customer-portal/billing-portal.component';
 
 
 @NgModule({
