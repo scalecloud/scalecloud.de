@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-title>
+        Payment Method
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <div class="icon-text">
+                    <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
+                </div>
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+        <button routerLink="/dashboard/subscription/{{getID()}}" mat-stroked-button color="primary">Change payment
+            method</button>
+    </mat-card-actions>
+</mat-card>

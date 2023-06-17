@@ -46,6 +46,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ChangePaymentComponent } from 'src/app/modules/account/dashboard/change-payment/change-payment.component';
+import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
 
 
 @NgModule({
@@ -68,6 +70,8 @@ import { MatInputModule } from '@angular/material/input';
     PasswordMatchComponent,
     VerifyEmailComponent,
     DashboardComponent,
+    PaymentOverviewComponent,
+    ChangePaymentComponent,
     ForgotPasswordComponent,
     GlobeComponent,
     PageNotFoundComponent,

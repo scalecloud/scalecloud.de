@@ -33,3 +33,13 @@ button {
 .icon-text {
     display: flex;
 }
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flex-item {
+    padding: 1rem;
+}

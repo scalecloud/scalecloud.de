@@ -1,34 +1,42 @@
-<mat-card routerLink="/dashboard/subscription/{{getID()}}">
-    <mat-card-title>
-        {{getProductName()}}
-    </mat-card-title>
-    <mat-card-subtitle>{{getProductType()}}</mat-card-subtitle>
-    <mat-divider></mat-divider>
-    <mat-card-content>
-        <mat-list>
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>numbers</mat-icon>
-                    {{getID()}}
-                </div>
-            </mat-list-item>
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>cloud</mat-icon>
-                    {{getStorageAmount()}} TB
-                </div>
-            </mat-list-item>
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>
-                        person
-                    </mat-icon>
-                    {{getUserCount()}}
-                </div>
-            </mat-list-item>
-        </mat-list>
-    </mat-card-content>
-    <mat-card-actions>
-        <button routerLink="/dashboard/subscription/{{getID()}}" mat-stroked-button color="primary">DETAILS</button>
-    </mat-card-actions>
-</mat-card>
+<div class="flex-container">
+    <div class="flex-item">
+        <app-payment-overview> </app-payment-overview>
+    </div>
+    <div class="flex-item">
+        <mat-card routerLink="/dashboard/subscription/{{getID()}}">
+            <mat-card-title>
+                {{getProductName()}}
+            </mat-card-title>
+            <mat-card-subtitle>{{getProductType()}}</mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        <div class="icon-text">
+                            <mat-icon>numbers</mat-icon>
+                            {{getID()}}
+                        </div>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <div class="icon-text">
+                            <mat-icon>cloud</mat-icon>
+                            {{getStorageAmount()}} TB
+                        </div>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <div class="icon-text">
+                            <mat-icon>
+                                person
+                            </mat-icon>
+                            {{getUserCount()}}
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+            <mat-card-actions>
+                <button routerLink="/dashboard/subscription/{{getID()}}" mat-stroked-button
+                    color="primary">DETAILS</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

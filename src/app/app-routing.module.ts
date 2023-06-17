@@ -23,6 +23,7 @@ import { ForgotPasswordGuard } from './shared/guard/forgot-password.guard';
 import { LoginGuard } from './shared/guard/login.guard';
 import { RegisterGuard } from './shared/guard/register.guard';
 import { VerifyEMailGuard } from './shared/guard/verify-email.guard';
+import { ChangePaymentComponent } from './modules/account/dashboard/change-payment/change-payment.component';
 
 const routes: Routes = [{
   path: '', component: DefaultComponent,
@@ -44,6 +45,7 @@ const routes: Routes = [{
   // AuthGuard
   { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/subscription/:id', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
+  { path: 'dashboard/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
   // LoginGuard
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   // RegisterGuard
