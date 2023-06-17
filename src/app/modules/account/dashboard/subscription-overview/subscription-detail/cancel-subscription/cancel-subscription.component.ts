@@ -60,7 +60,4 @@ export class CancelSubscriptionComponent {
   }
 
 }
-function $filter(arg0: string) {
-  throw new Error('Function not implemented.');
-}
 
