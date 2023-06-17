@@ -28,17 +28,13 @@ export class SubscriptionDetailComponent implements OnInit {
   waitForAuth(): void {
     this.authService.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.getSubscriptionDetail();
+        this.reloadSubscriptionDetail();
       }
     }
     );
   }
 
   reloadSubscriptionDetail(): void {
-    this.getSubscriptionDetail();
-  }
-
-  getSubscriptionDetail(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id == null) {
       this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
