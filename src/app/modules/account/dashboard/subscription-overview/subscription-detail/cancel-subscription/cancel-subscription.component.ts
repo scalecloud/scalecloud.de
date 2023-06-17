@@ -20,7 +20,7 @@ export class CancelSubscriptionComponent {
     public authService: AuthService,
     private cancelSubscriptionService: CancelSubscriptionService,
     private logService: LogService,
-    private snackBarService: SnackBarService, 
+    private snackBarService: SnackBarService,
     private route: ActivatedRoute,
     public dialog: MatDialog
   ) { }
@@ -28,7 +28,7 @@ export class CancelSubscriptionComponent {
   openConfirmDialog() {
     const dialogRef = this.dialog.open(ConfirmCancelSubscriptionComponent);
     dialogRef.afterClosed().subscribe(cancel => {
-      if( cancel == true ) {
+      if (cancel == true) {
         this.cancelSubscription();
       }
     });
@@ -50,10 +50,17 @@ export class CancelSubscriptionComponent {
             this.logService.error('CancelSubscriptionComponent.cancelSubscription: iSubscriptionCancelReply is null');
           }
           else {
-            this.snackBarService.error(`Subscription was sucessfully canceled.`);
+            if (iSubscriptionCancelReply.cancel_at_period_end) {
+              var date = new Date(iSubscriptionCancelReply.cancel_at * 1000);
+              this.snackBarService.error(`Your Subscription will cancel at: ` + date);
+            }
           }
         });
     }
   }
 
 }
+function $filter(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+
