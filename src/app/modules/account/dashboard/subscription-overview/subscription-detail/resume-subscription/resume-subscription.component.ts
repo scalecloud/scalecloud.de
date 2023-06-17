@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ResumeSubscriptionService } from './resume-subscription.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -14,6 +14,8 @@ import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscrip
   styleUrls: ['./resume-subscription.component.scss']
 })
 export class ResumeSubscriptionComponent {
+
+  @Output() reloadSubscriptionDetail = new EventEmitter();
 
   constructor(
     public authService: AuthService,
@@ -54,6 +56,7 @@ export class ResumeSubscriptionComponent {
             }
             else {
               this.snackBarService.info(`Your Subscription has been resumed.`);
+              this.reloadSubscriptionDetail.emit();
             }
           }
         });

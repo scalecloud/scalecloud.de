@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
@@ -14,6 +14,8 @@ import { ConfirmCancelSubscriptionComponent } from './confirm-cancel-subscriptio
   styleUrls: ['./cancel-subscription.component.scss']
 })
 export class CancelSubscriptionComponent {
+
+  @Output() reloadSubscriptionDetail = new EventEmitter();
 
   constructor(
     public authService: AuthService,
@@ -52,6 +54,7 @@ export class CancelSubscriptionComponent {
             if (iSubscriptionCancelReply.cancel_at_period_end) {
               var date = new Date(iSubscriptionCancelReply.cancel_at * 1000);
               this.snackBarService.info(`Your Subscription will cancel at: ` + date);
+              this.reloadSubscriptionDetail.emit();
             }
           }
         });
