@@ -7,10 +7,10 @@
             <div class="flex-item">
                 <app-billing-portal></app-billing-portal>
             </div>
-            <div class="flex-item">
+            <div *ngIf="isEnding()" class="flex-item">
                 <app-resume-subscription></app-resume-subscription>
             </div>
-            <div class="flex-item">
+            <div *ngIf="!isEnding()" class="flex-item">
                 <app-cancel-subscription></app-cancel-subscription>
             </div>
         </div>

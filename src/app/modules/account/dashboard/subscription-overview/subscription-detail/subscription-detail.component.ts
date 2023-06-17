@@ -43,4 +43,12 @@ export class SubscriptionDetailComponent implements OnInit {
         .subscribe(subscriptionDetail => this.subscriptionDetail = subscriptionDetail);
     }
   }
+
+  isEnding(): boolean {
+    let isEnding = false;
+    if (this.subscriptionDetail ) {
+      isEnding = this.subscriptionDetail.cancelAtPeriodEnd;
+    }
+    return isEnding;
+  }
 }
