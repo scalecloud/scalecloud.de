@@ -49,6 +49,9 @@ import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboa
 import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/customer-portal/billing-portal.component';
 import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/payment-overview/payment-overview.component';
 import { CancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-subscription/cancel-subscription.component';
+import { ConfirmCancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-subscription/confirm-cancel-subscription/confirm-cancel-subscription.component';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 
 @NgModule({
@@ -87,6 +90,7 @@ import { CancelSubscriptionComponent } from 'src/app/modules/account/dashboard/s
     StatusComponent,
     SucceededComponent,
     ProcessingComponent,
+    ConfirmCancelSubscriptionComponent,
     RequiresPaymentMethodComponent
   ],
   imports: [
@@ -97,6 +101,7 @@ import { CancelSubscriptionComponent } from 'src/app/modules/account/dashboard/s
     MatDividerModule,
     MatCardModule,
     MatButtonModule,
+    MatDialogModule,
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
