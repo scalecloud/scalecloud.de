@@ -10,12 +10,13 @@ import { StripeKeyService } from 'src/app/shared/services/stripe/stripe-key.serv
 declare const Stripe: any;
 
 @Component({
-  selector: 'app-payment-element',
-  templateUrl: './payment-element.component.html',
-  styleUrls: ['./payment-element.component.scss']
+  selector: 'app-change-payment-element',
+  templateUrl: './change-payment-element.component.html',
+  styleUrls: ['./change-payment-element.component.scss']
 })
-export class PaymentElementComponent {
+export class ChangePaymentElementComponent {
 
+  
   subscriptionSetupIntentReply: SubscriptionSetupIntentReply | undefined;
   stripeElement: any;
   elements: any;
@@ -94,6 +95,5 @@ export class PaymentElementComponent {
     }
 
   }
-
 
 }
