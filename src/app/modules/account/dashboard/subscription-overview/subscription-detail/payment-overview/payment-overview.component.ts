@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SubscriptionPaymentMethodReply, SubscriptionPaymentMethodRequest } from './subscription-payment-method';
 import { SubscriptionPaymentMethodService } from './subscription-payment-method.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-payment-overview',
@@ -16,23 +17,33 @@ export class PaymentOverviewComponent {
   constructor(
     private logService: LogService,
     private subscriptionPaymentMethodService: SubscriptionPaymentMethodService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute,
   ) { }
 
-  getSubscriptionPaymentMethod(subscriptionID: string): void {
+  ngAfterViewInit(): void {
+    this.getSubscriptionPaymentMethod();
+  }
+
+  getSubscriptionPaymentMethod(): void {
     this.authService.afAuth.authState.subscribe((user) => {
       if (user) {
-        if (!subscriptionID) {
-          this.logService.error("PaymentOverviewComponent.getSubscriptionPaymentMethod: subscriptionID is null");
-        }
-        else {
-          let subscriptionPaymentMethodRequest: SubscriptionPaymentMethodRequest = {
-            id: subscriptionID
+        const id = this.route.snapshot.paramMap.get('id');
+        if (id == null) {
+          this.logService.error('SubscriptionPaymentMethodComponent.getSubscriptionPaymentMethod: id is null');
+        } else {
+          if (!id) {
+            this.logService.error('SubscriptionPaymentMethodComponent.getSubscriptionPaymentMethod: id is null');
           }
-          const observable = this.subscriptionPaymentMethodService.getSubscriptionPaymentMethod(subscriptionPaymentMethodRequest).subscribe(
-            (subscriptionPaymentMethodReply: SubscriptionPaymentMethodReply) => {
-              this.subscriptionPaymentMethodReply = subscriptionPaymentMethodReply;
-            });
+          else {
+            let subscriptionPaymentMethodRequest: SubscriptionPaymentMethodRequest = {
+              id: id
+            }
+            const observable = this.subscriptionPaymentMethodService.getSubscriptionPaymentMethod(subscriptionPaymentMethodRequest).subscribe(
+              (subscriptionPaymentMethodReply: SubscriptionPaymentMethodReply) => {
+                this.subscriptionPaymentMethodReply = subscriptionPaymentMethodReply;
+              });
+          }
         }
       }
     });

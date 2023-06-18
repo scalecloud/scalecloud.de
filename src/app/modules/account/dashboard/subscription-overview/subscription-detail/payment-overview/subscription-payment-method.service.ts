@@ -10,7 +10,7 @@ import { Observable, catchError, of } from 'rxjs';
 })
 export class SubscriptionPaymentMethodService {
 
-  private url = 'http://localhost:15000/dashboard/getPaymentMethod';
+  private url = 'http://localhost:15000/dashboard/get-subscription-payment-method';
 
   constructor(
     private http: HttpClient,

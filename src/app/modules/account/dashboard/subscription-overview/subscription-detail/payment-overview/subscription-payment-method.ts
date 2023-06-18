@@ -4,6 +4,7 @@ export interface SubscriptionPaymentMethodRequest {
 
 export interface SubscriptionPaymentMethodReply {
     id: string;
+    type: string;
     brand: string;
     last4: string;
     exp_month: number;
