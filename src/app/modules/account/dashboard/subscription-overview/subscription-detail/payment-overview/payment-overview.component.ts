@@ -61,6 +61,7 @@ export class PaymentOverviewComponent {
     let brand = '';
     if (this.subscriptionPaymentMethodReply) {
       brand = this.subscriptionPaymentMethodReply.brand;
+      brand = brand[0].toUpperCase() + brand.slice(1).toLowerCase();
     }
     return brand;
   }
