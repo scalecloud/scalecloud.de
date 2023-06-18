@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { SubscriptionPaymentMethodService } from '../payment-overview/subscription-payment-method.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionSetupIntentReply, SubscriptionSetupIntentRequest } from './change-payment';
 import { ChangePaymentService } from './change-payment.service';
+import { StripeKeyService } from 'src/app/shared/services/stripe/stripe-key.service';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+
+declare const Stripe: any;
 
 @Component({
   selector: 'app-change-payment',
@@ -14,13 +17,21 @@ import { ChangePaymentService } from './change-payment.service';
 export class ChangePaymentComponent {
 
   subscriptionSetupIntentReply: SubscriptionSetupIntentReply | undefined;
+  stripeElement: any;
+  elements: any;
 
   constructor(
     private logService: LogService,
+    private snackBarService: SnackBarService,
     private changePaymentService: ChangePaymentService,
     private authService: AuthService,
     private route: ActivatedRoute,
+    private stripeKeyService: StripeKeyService
   ) { }
+
+  ngAfterViewInit(): void {
+    this.getSetupIntent();
+  }
 
   getSetupIntent(): void {
     this.authService.afAuth.authState.subscribe((user) => {
@@ -39,11 +50,52 @@ export class ChangePaymentComponent {
             const observable = this.changePaymentService.getSubscriptionSetupIntent(subscriptionSetupIntentRequest).subscribe(
               (subscriptionSetupIntentReply: SubscriptionSetupIntentReply) => {
                 this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
+                this.initPaymentElements();
               });
           }
         }
       }
     });
   }
+
+  initPaymentElements(): void {
+    // Your Stripe public key
+    const publicKey = this.stripeKeyService.getPublicKey();
+    if (publicKey == undefined) {
+      this.logService.error("Cannot display Payment because publicKey is undefined.")
+    }
+    else {
+      this.stripeElement = Stripe(publicKey);
+    }
+    if (this.subscriptionSetupIntentReply) {
+      const options = {
+        clientSecret: this.subscriptionSetupIntentReply.clientsecret,
+        // Fully customizable with appearance API.
+        appearance: {/*...*/ },
+      };
+
+      this.elements = this.stripeElement.elements(options);
+      const paymentElement = this.elements.create('payment');
+      paymentElement.mount('#payment-element');
+
+      paymentElement.addEventListener('change', (event: { error: { message: string | null; }; }) => {
+        const displayError = document.getElementById('card-errors');
+        if (displayError) {
+          if (event.error) {
+            displayError.textContent = event.error.message;
+            if (displayError.textContent) {
+              this.snackBarService.error(displayError.textContent);
+            }
+          } else {
+            displayError.textContent = '';
+          }
+        }
+      });
+    }
+
+  }
+
+
+
 
 }

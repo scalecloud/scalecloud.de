@@ -4,5 +4,5 @@ export interface SubscriptionSetupIntentRequest {
 
 export interface SubscriptionSetupIntentReply {
     setupintentid: string;
-    secret: string;
+    clientsecret: string;
 }
