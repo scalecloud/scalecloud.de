@@ -24,7 +24,6 @@ import { RegisterGuard } from './shared/guard/register.guard';
 import { VerifyEMailGuard } from './shared/guard/verify-email.guard';
 import { SubscriptionDetailComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component';
 import { ChangePaymentComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/change-payment/change-payment.component';
-import { CancelSubscriptionComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/cancel-subscription/cancel-subscription.component';
 
 const routes: Routes = [{
   path: '', component: DefaultComponent,
@@ -46,7 +45,6 @@ const routes: Routes = [{
   // AuthGuard
   { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/subscription/:id', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/cancel-subscription/:id', component: CancelSubscriptionComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
   // LoginGuard
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },

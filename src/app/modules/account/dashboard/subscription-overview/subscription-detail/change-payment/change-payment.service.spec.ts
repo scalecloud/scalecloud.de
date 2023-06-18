@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SetupIntentService } from './setup-intent.service';
+import { ChangePaymentService } from './change-payment.service';
 
-describe('SetupIntentService', () => {
-  let service: SetupIntentService;
+describe('ChangePaymentService', () => {
+  let service: ChangePaymentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SetupIntentService);
+    service = TestBed.inject(ChangePaymentService);
   });
 
   it('should be created', () => {
