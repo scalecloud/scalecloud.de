@@ -2,25 +2,25 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
+import { SubscriptionPaymentMethodReply, SubscriptionPaymentMethodRequest } from './subscription-payment-method';
 import { Observable, catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ResumeSubscriptionService {
+export class SubscriptionPaymentMethodService {
 
-  private url = 'http://localhost:15000/dashboard/resume-subscription';
+  private url = 'http://localhost:15000/dashboard/getPaymentMethod';
 
   constructor(
     private http: HttpClient,
     private snackBarService: SnackBarService,
     private authService: AuthService) { }
 
-  resumeSubscription(iSubscriptionResumeRequest: ISubscriptionResumeRequest): Observable<ISubscriptionResumeReply> {
-    return this.http.post<ISubscriptionResumeReply>(this.url, iSubscriptionResumeRequest, this.getHttpOptions())
+  getSubscriptionPaymentMethod(subscriptionPaymentMethodRequest: SubscriptionPaymentMethodRequest): Observable<SubscriptionPaymentMethodReply> {
+    return this.http.post<SubscriptionPaymentMethodReply>(this.url, subscriptionPaymentMethodRequest, this.getHttpOptions())
       .pipe(
-        catchError(this.handleError<ISubscriptionResumeReply>('resumeSubscription'))
+        catchError(this.handleError<SubscriptionPaymentMethodReply>('resumeSubscription'))
       );
   }
 
@@ -35,7 +35,7 @@ export class ResumeSubscriptionService {
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
-      this.snackBarService.error(`Could not resume subscription. Please try again.`);
+      this.snackBarService.error(`Could not get default payment method. Please try again.`);
       return of(result as T);
     };
   }
