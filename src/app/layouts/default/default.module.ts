@@ -95,7 +95,8 @@ import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dash
     ProcessingComponent,
     ConfirmResumeSubscriptionComponent,
     ConfirmCancelSubscriptionComponent,
-    RequiresPaymentMethodComponent
+    RequiresPaymentMethodComponent,
+    PaymentElementComponent
   ],
   imports: [
     CommonModule,
