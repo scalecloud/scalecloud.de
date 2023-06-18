@@ -50,7 +50,14 @@ export class PaymentOverviewComponent {
   }
 
   getID(): string {
-    return 'pm_1NJycCA86yrbtIQrba0rzK9F';
+    let id = '';
+    const idRoute = this.route.snapshot.paramMap.get('id');
+    if (idRoute == null) {
+      this.logService.error('SubscriptionPaymentMethodComponent.getID: id is null');
+    } else {  
+      id = idRoute;
+    }
+    return id;
   }
 
   getPaymentMethod(): string {
