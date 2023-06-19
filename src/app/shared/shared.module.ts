@@ -34,7 +34,8 @@ import { StripePaymentElementComponent } from './components/stripe/stripe-paymen
   exports: [
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    StripePaymentElementComponent
   ]
 })
 export class SharedModule { }
