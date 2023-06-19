@@ -2,10 +2,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { StripeKeyService } from 'src/app/shared/services/stripe/stripe-key.service';
 import { CheckoutModelPortalRequest } from '../../portal/checkout-model-portal';
 import { CheckoutIntegrationReply } from '../checkout-model-integration';
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
+import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
 
 declare const Stripe: any;
 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { StripeKeyService } from 'src/app/shared/services/stripe/stripe-key.service';
+import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
 
 declare const Stripe: any;
 

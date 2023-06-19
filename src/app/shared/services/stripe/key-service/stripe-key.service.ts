@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { LogService } from '../log/log.service';
+import { LogService } from '../../log/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +10,7 @@ export class StripeKeyService {
   readonly publicKeyLive: string = ""
 
   constructor(
-    private logService: LogService,
-    private router: Router
+    private logService: LogService
   ) { }
 
   getPublicKey(): string | undefined {
@@ -37,6 +35,7 @@ export class StripeKeyService {
 
   isLocalhost(): boolean {
     let localhost = false;
+    
     if (this.getURL().includes("localhost")) {
       localhost = true;
     }

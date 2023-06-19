@@ -5,7 +5,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { ChangePaymentService } from '../../change-payment.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { StripeKeyService } from 'src/app/shared/services/stripe/stripe-key.service';
+import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
 
 declare const Stripe: any;
 
