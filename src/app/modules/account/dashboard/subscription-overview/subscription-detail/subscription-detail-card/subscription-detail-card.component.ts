@@ -19,35 +19,47 @@ export class SubscriptionDetailCardComponent {
   }
 
   getProductName(): string {
-    return this.subscriptionDetail?.productName || '';
+    return this.subscriptionDetail?.product_name || '';
   }
 
   getProductType(): string {
-    return this.subscriptionDetail?.productType || '';
+    return this.subscriptionDetail?.product_type || '';
   }
 
   getStorageAmount(): number {
-    return this.subscriptionDetail?.storageAmount || 0;
+    return this.subscriptionDetail?.storage_amount || 0;
   }
 
   getUserCount(): number {
-    return this.subscriptionDetail?.userCount || 0;
+    return this.subscriptionDetail?.user_count || 0;
   }
 
   getPricePerMonth(): number {
-    return this.subscriptionDetail?.pricePerMonth || 0;
+    return this.subscriptionDetail?.price_per_month || 0;
   }
 
   getCurrency(): string {
     return this.subscriptionDetail?.currency.toUpperCase() || '';
   }
 
+  isTrailing(): boolean {
+    let trailing = false;
+    if (this.subscriptionDetail?.status) {
+      trailing = this.subscriptionDetail?.status === 'trialing';
+    }
+    return trailing;
+  }
+
+  getTrailingEnd(): number {
+    return this.subscriptionDetail?.trial_end || 0;
+  }
+
   isCancelAtPeriodEnd(): boolean {
-    return this.subscriptionDetail?.cancelAtPeriodEnd || false;
+    return this.subscriptionDetail?.cancel_at_period_end || false;
   }
 
   getCancelAt(): number {
-    return this.subscriptionDetail?.cancelAt || 0;
+    return this.subscriptionDetail?.cancel_at || 0;
   }
 
 }

@@ -31,7 +31,16 @@
                     <span class="price-month">/month</span>
                 </div>
             </mat-list-item>
-
+            <div *ngIf="isTrailing()">
+                <mat-list-item>
+                    <div class="icon-text">
+                        <mat-icon>
+                            credit_card_off
+                        </mat-icon>
+                        {{getTrailingEnd() * 1000 | date }}
+                    </div>
+                </mat-list-item>
+            </div>
             <div *ngIf="isCancelAtPeriodEnd()">
                 <mat-list-item>
                     <div class="icon-text">
