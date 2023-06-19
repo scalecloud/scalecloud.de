@@ -12,7 +12,6 @@ declare const Stripe: any;
   styleUrls: ['./stripe-payment-element.component.scss']
 })
 export class StripePaymentElementComponent {
-
   stripeElement: any;
   elements: any;
   initPaymentElementStruct: InitPaymentElementStruct | undefined;
@@ -71,7 +70,6 @@ export class StripePaymentElementComponent {
         }
       });
     }
-
   }
 
   async submitIntent(submitIntentStruct: SubmitIntentStruct): Promise<void> {
@@ -99,7 +97,6 @@ export class StripePaymentElementComponent {
         }
       });
     }
-
     if (error) {
       // This point will only be reached if there is an immediate error when
       // confirming the payment. Show error to your customer (for example, payment
@@ -112,5 +109,4 @@ export class StripePaymentElementComponent {
       // site first to authorize the payment, then redirected to the `return_url`.
     }
   }
-
 }
