@@ -11,12 +11,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { StripePaymentElementComponent } from './components/stripe/stripe-payment-element/stripe-payment-element.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    StripePaymentElementComponent
   ],
   imports: [
     CommonModule,
