@@ -1,9 +1,10 @@
-export interface InitStripePaymentSetupIntent {
+export interface InitStripePayment {
     intent: Intent;
     client_secret: string;
+    customer_email: string;
 }
 
-export interface SubmitPaymentSetupIntent {
+export interface SubmitStripePayment {
     return_url: string;
 }
 

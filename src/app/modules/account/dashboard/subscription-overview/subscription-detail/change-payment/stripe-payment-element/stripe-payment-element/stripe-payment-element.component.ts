@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { StripeKeyService } from 'src/app/shared/services/stripe/stripe-key.service';
-import { InitStripePaymentSetupIntent, SubmitPaymentSetupIntent } from './stripe-payment-setup-intent';
+import { InitStripePayment as InitPaymentElementStruct, Intent, SubmitStripePayment as SubmitIntentStruct } from './stripe-payment-setup-intent';
 
 declare const Stripe: any;
 
@@ -13,9 +13,9 @@ declare const Stripe: any;
 })
 export class StripePaymentElementComponent {
 
-  @Output() submitted = new EventEmitter();
   stripeElement: any;
   elements: any;
+  initPaymentElementStruct: InitPaymentElementStruct | undefined;
 
   constructor(
     private logService: LogService,
@@ -23,7 +23,7 @@ export class StripePaymentElementComponent {
     private stripeKeyService: StripeKeyService
   ) { }
 
-  initPaymentElements( stripePaymentSetupIntentRequest : InitStripePaymentSetupIntent ): void {
+  initPaymentElement(initPaymentElementStruct: InitPaymentElementStruct): void {
     // Your Stripe public key
     const publicKey = this.stripeKeyService.getPublicKey();
     if (publicKey == undefined) {
@@ -32,9 +32,10 @@ export class StripePaymentElementComponent {
     else {
       this.stripeElement = Stripe(publicKey);
     }
-    if (stripePaymentSetupIntentRequest) {
+    this.initPaymentElementStruct = initPaymentElementStruct;
+    if (this.initPaymentElementStruct) {
       const options = {
-        clientSecret: stripePaymentSetupIntentRequest.client_secret,
+        clientSecret: this.initPaymentElementStruct.client_secret,
         // Fully customizable with appearance API.
         appearance: {/*...*/ },
       };
@@ -43,6 +44,19 @@ export class StripePaymentElementComponent {
       const paymentElement = this.elements.create('payment');
       paymentElement.mount('#payment-element');
 
+      // Create and mount the linkAuthentication Element to enable autofilling customer payment details
+      const linkAuthenticationElement = this.elements.create("linkAuthentication");
+      linkAuthenticationElement.mount("#link-authentication-element");
+      // If the customer's email is known when the page is loaded, you can
+      // pass the email to the linkAuthenticationElement on mount:
+      //
+      if (this.initPaymentElementStruct.customer_email != undefined) {
+        linkAuthenticationElement.mount("#link-authentication-element", {
+          defaultValues: {
+            email: this.initPaymentElementStruct.customer_email,
+          }
+        })
+      }
       paymentElement.addEventListener('change', (event: { error: { message: string | null; }; }) => {
         const displayError = document.getElementById('card-errors');
         if (displayError) {
@@ -60,15 +74,31 @@ export class StripePaymentElementComponent {
 
   }
 
-  async submitSetupIntent(submitPaymentSetupIntent : SubmitPaymentSetupIntent): Promise<void> {
+  async submitIntent(submitIntentStruct: SubmitIntentStruct): Promise<void> {
     const elements = this.elements
-    const { error } = await this.stripeElement.confirmSetup({
-      //`Elements` instance that was used to create the Payment Element
-      elements,
-      confirmParams: {
-        return_url: submitPaymentSetupIntent.return_url,
-      }
-    });
+    let error = undefined;
+    if (this.initPaymentElementStruct == undefined) {
+      this.logService.error("Cannot submit Payment because initStripePayment is undefined.")
+      return;
+    }
+    else if (this.initPaymentElementStruct.intent == Intent.SetupIntent) {
+      error = await this.stripeElement.confirmSetup({
+        //`Elements` instance that was used to create the Payment Element
+        elements,
+        confirmParams: {
+          return_url: submitIntentStruct.return_url,
+        }
+      });
+    }
+    else if (this.initPaymentElementStruct.intent == Intent.PaymentIntent) {
+      error = await this.stripeElement.confirmPayment({
+        //`Elements` instance that was used to create the Payment Element
+        elements,
+        confirmParams: {
+          return_url: submitIntentStruct.return_url,
+        }
+      });
+    }
 
     if (error) {
       // This point will only be reached if there is an immediate error when
