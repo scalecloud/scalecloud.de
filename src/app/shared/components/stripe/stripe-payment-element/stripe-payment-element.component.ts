@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { InitStripePayment as InitPaymentElementStruct, InitStripePayment, StripeIntent, SubmitStripePayment as SubmitIntentStruct } from './stripe-payment-setup-intent';
+import { InitStripePayment as InitPaymentElementStruct, InitStripePayment, StripeIntent, SubmitStripePayment as SubmitIntentStruct, SubmitStripePayment } from './stripe-payment-setup-intent';
 import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
 
 declare const Stripe: any;
@@ -72,7 +72,7 @@ export class StripePaymentElementComponent {
     }
   }
 
-  async submitIntent(submitIntentStruct: SubmitIntentStruct): Promise<void> {
+  async submitIntent(submitStripePayment: SubmitStripePayment): Promise<void> {
     const elements = this.elements
     let error = undefined;
     if (this.initPaymentElementStruct == undefined) {
@@ -84,7 +84,7 @@ export class StripePaymentElementComponent {
         //`Elements` instance that was used to create the Payment Element
         elements,
         confirmParams: {
-          return_url: submitIntentStruct.return_url,
+          return_url: submitStripePayment.return_url,
         }
       });
     }
@@ -93,7 +93,7 @@ export class StripePaymentElementComponent {
         //`Elements` instance that was used to create the Payment Element
         elements,
         confirmParams: {
-          return_url: submitIntentStruct.return_url,
+          return_url: submitStripePayment.return_url,
         }
       });
     }

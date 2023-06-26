@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { CheckoutSubscriptionService } from './payment-element/checkout-subscription.service';
 import { CheckoutModelPortalRequest } from '../portal/checkout-model-portal';
 import { StripePaymentElementComponent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-element.component';
-import { StripeIntent, InitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
+import { StripeIntent, InitStripePayment, SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
 
 @Component({
   selector: 'app-checkout',
@@ -91,13 +91,13 @@ export class CheckoutComponent {
       this.snackBarService.error("Checking if quantity was updated and subscriptions needs to be updated: " + quantity)
 
 
-      const intent = {
+      const submitStripePayment: SubmitStripePayment = {
         return_url : "https://scalecloud.de/checkout/status",
       }
 
      
 
-      this.stripePaymentElementComponent.submitIntent(intent);
+      this.stripePaymentElementComponent.submitIntent(submitStripePayment);
     }
     else {
       this.logService.error("PaymentElementComponent is undefined.")
@@ -139,7 +139,7 @@ export class CheckoutComponent {
               } 
 
               this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
-              
+              this.initCheckoutProduct(checkoutIntegrationReply.subscriptionID);
             });
         }
         else {
