@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { InitStripePayment as InitPaymentElementStruct, Intent, SubmitStripePayment as SubmitIntentStruct } from './stripe-payment-setup-intent';
+import { InitStripePayment as InitPaymentElementStruct, InitStripePayment, StripeIntent, SubmitStripePayment as SubmitIntentStruct } from './stripe-payment-setup-intent';
 import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
 
 declare const Stripe: any;
@@ -22,7 +22,7 @@ export class StripePaymentElementComponent {
     private stripeKeyService: StripeKeyService
   ) { }
 
-  initPaymentElement(initPaymentElementStruct: InitPaymentElementStruct): void {
+  initPaymentElement(initStripePayment: InitStripePayment): void {
     // Your Stripe public key
     const publicKey = this.stripeKeyService.getPublicKey();
     if (publicKey == undefined) {
@@ -31,7 +31,7 @@ export class StripePaymentElementComponent {
     else {
       this.stripeElement = Stripe(publicKey);
     }
-    this.initPaymentElementStruct = initPaymentElementStruct;
+    this.initPaymentElementStruct = initStripePayment;
     if (this.initPaymentElementStruct) {
       const options = {
         clientSecret: this.initPaymentElementStruct.client_secret,
@@ -49,10 +49,10 @@ export class StripePaymentElementComponent {
       // If the customer's email is known when the page is loaded, you can
       // pass the email to the linkAuthenticationElement on mount:
       //
-      if (this.initPaymentElementStruct.customer_email != undefined) {
+      if (this.initPaymentElementStruct.email != undefined) {
         linkAuthenticationElement.mount("#link-authentication-element", {
           defaultValues: {
-            email: this.initPaymentElementStruct.customer_email,
+            email: this.initPaymentElementStruct.email,
           }
         })
       }
@@ -79,7 +79,7 @@ export class StripePaymentElementComponent {
       this.logService.error("Cannot submit Payment because initStripePayment is undefined.")
       return;
     }
-    else if (this.initPaymentElementStruct.intent == Intent.SetupIntent) {
+    else if (this.initPaymentElementStruct.intent == StripeIntent.SetupIntent) {
       error = await this.stripeElement.confirmSetup({
         //`Elements` instance that was used to create the Payment Element
         elements,
@@ -88,7 +88,7 @@ export class StripePaymentElementComponent {
         }
       });
     }
-    else if (this.initPaymentElementStruct.intent == Intent.PaymentIntent) {
+    else if (this.initPaymentElementStruct.intent == StripeIntent.PaymentIntent) {
       error = await this.stripeElement.confirmPayment({
         //`Elements` instance that was used to create the Payment Element
         elements,

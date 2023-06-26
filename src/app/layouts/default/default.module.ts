@@ -32,7 +32,6 @@ import { PasswordMatchComponent } from 'src/app/modules/account/register/passwor
 import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
 import { QuantityComponent } from 'src/app/modules/products/subscription-card/quantity/quantity.component';
 import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/integration/checkout-details/checkout-details.component';
-import { PaymentElementComponent } from 'src/app/modules/products/checkout/integration/payment-element/payment-element.component';
 import { CheckoutComponent } from 'src/app/modules/products/checkout/integration/checkout.component';
 import { StatusComponent } from 'src/app/modules/products/checkout/status/status.component';
 import { ProcessingComponent } from 'src/app/modules/products/checkout/status/processing/processing.component';
@@ -88,7 +87,6 @@ import { ChangePaymentElementComponent } from 'src/app/modules/account/dashboard
     BillingPortalComponent,
     CheckoutComponent,
     CheckoutDetailsComponent,
-    PaymentElementComponent,
     StatusComponent,
     SucceededComponent,
     ProcessingComponent,

@@ -1,14 +1,14 @@
 export interface InitStripePayment {
-    intent: Intent;
+    intent: StripeIntent;
     client_secret: string;
-    customer_email: string;
+    email: string;
 }
 
 export interface SubmitStripePayment {
     return_url: string;
 }
 
-export enum Intent {
+export enum StripeIntent {
     PaymentIntent,
     SetupIntent,
 }

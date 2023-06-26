@@ -7,6 +7,7 @@ export interface CheckoutIntegrationReply {
     subscriptionID: string;
     clientSecret: string;
     quantity: number;
+    email: string;
 }
 
 export interface CheckoutIntegrationUpdateRequest {
