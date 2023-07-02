@@ -68,7 +68,7 @@ export class CheckoutDetailsComponent {
   getPricePerMonth(): string {
     let pricePerMonth = "";
     if (this.checkoutProductReply && this.checkoutProductReply.pricePerMonth > 0) {
-      let pricePipe = this.currencyPipe.transform(this.checkoutProductReply.pricePerMonth / 100, this.getCurrency(), 'symbol', '1.0-0');
+      let pricePipe = this.currencyPipe.transform(this.checkoutProductReply.pricePerMonth / 100 * this.getQuantity(), this.getCurrency(), 'symbol', '1.0-0');
       if( pricePipe != null ) {
         pricePerMonth = pricePipe;
       }
@@ -95,7 +95,7 @@ export class CheckoutDetailsComponent {
   getStorageAmount(): number {
     let storageAmount = 0;
     if (this.checkoutProductReply) {
-      storageAmount = this.checkoutProductReply.storageAmount;
+      storageAmount = this.checkoutProductReply.storageAmount * this.getQuantity();
     }
     return storageAmount;
   }
