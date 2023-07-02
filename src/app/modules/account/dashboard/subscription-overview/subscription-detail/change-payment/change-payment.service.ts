@@ -3,24 +3,24 @@ import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { Observable, catchError, of } from 'rxjs';
-import { SubscriptionSetupIntentReply, SubscriptionSetupIntentRequest } from './change-payment';
+import { ChangePaymentReply, ChangePaymentRequest } from './change-payment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChangePaymentService {
 
-  private url = 'http://localhost:15000/dashboard/change-subscription-payment-method';
+  private url = 'http://localhost:15000/dashboard/get-change-payment-setup-intent';
 
   constructor(
     private http: HttpClient,
     private snackBarService: SnackBarService,
     private authService: AuthService) { }
 
-  getSubscriptionSetupIntent(subscriptionSetupIntentRequest: SubscriptionSetupIntentRequest): Observable<SubscriptionSetupIntentReply> {
-    return this.http.post<SubscriptionSetupIntentReply>(this.url, subscriptionSetupIntentRequest, this.getHttpOptions())
+  getChangePaymentSetupIntent(changePaymentRequest: ChangePaymentRequest): Observable<ChangePaymentReply> {
+    return this.http.post<ChangePaymentReply>(this.url, changePaymentRequest, this.getHttpOptions())
       .pipe(
-        catchError(this.handleError<SubscriptionSetupIntentReply>('getSubscriptionPaymentMethod'))
+        catchError(this.handleError<ChangePaymentReply>('getChangePaymentSetupIntent'))
       );
   }
 

@@ -52,7 +52,6 @@ import { ConfirmCancelSubscriptionComponent } from 'src/app/modules/account/dash
 import { MatDialogModule } from '@angular/material/dialog';
 import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/resume-subscription/resume-subscription.component';
 import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/resume-subscription/confirm-resume-subscription/confirm-resume-subscription.component';
-import { ChangePaymentElementComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/change-payment/change-payment-element/change-payment-element/change-payment-element.component';
 
 @NgModule({
   declarations: [
@@ -92,8 +91,7 @@ import { ChangePaymentElementComponent } from 'src/app/modules/account/dashboard
     ProcessingComponent,
     ConfirmResumeSubscriptionComponent,
     ConfirmCancelSubscriptionComponent,
-    RequiresPaymentMethodComponent,
-    ChangePaymentElementComponent
+    RequiresPaymentMethodComponent
   ],
   imports: [
     CommonModule,

@@ -1,8 +1,9 @@
-export interface SubscriptionSetupIntentRequest {
+export interface ChangePaymentRequest {
     subscriptionid: string;
 }
 
-export interface SubscriptionSetupIntentReply {
+export interface ChangePaymentReply {
     setupintentid: string;
     clientsecret: string;
+    email: string;
 }
