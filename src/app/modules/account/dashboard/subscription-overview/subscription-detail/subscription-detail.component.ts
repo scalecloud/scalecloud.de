@@ -46,7 +46,7 @@ export class SubscriptionDetailComponent implements OnInit {
 
   isEnding(): boolean {
     let isEnding = false;
-    if (this.subscriptionDetail ) {
+    if (this.subscriptionDetail) {
       isEnding = this.subscriptionDetail.cancel_at_period_end;
     }
     return isEnding;

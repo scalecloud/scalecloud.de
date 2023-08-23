@@ -12,15 +12,18 @@ export class SubscriptionDetailService {
 
   private url = 'http://localhost:15000/dashboard/subscription';
 
-  constructor(private http: HttpClient, private logService: LogService, private authService: AuthService) { }
+  constructor(private http: HttpClient,
+    private logService: LogService,
+    private authService: AuthService
+  ) { }
 
   getSubscriptionDetail(id: string): Observable<ISubscriptionDetail> {
     const url = `${this.url}/${id}`;
     return this.http.get<ISubscriptionDetail>(url, this.getHttpOptions())
-    .pipe(
-      tap(_ => this.logService.info(`fetched subscription id=${id}`)),
-      catchError(this.handleError<ISubscriptionDetail>(`getSubscription id=${id}`))
-    );
+      .pipe(
+        tap(_ => this.logService.info(`fetched subscription id=${id}`)),
+        catchError(this.handleError<ISubscriptionDetail>(`getSubscription id=${id}`))
+      );
   }
 
   getHttpOptions() {
