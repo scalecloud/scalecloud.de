@@ -90,12 +90,9 @@ export class CheckoutComponent {
     if ( this.stripePaymentElementComponent ) {
       this.snackBarService.error("Checking if quantity was updated and subscriptions needs to be updated: " + quantity)
 
-
       const submitStripePayment: SubmitStripePayment = {
-        return_url : "https://scalecloud.de/checkout/status",
+        return_url : "/checkout/status",
       }
-
-     
 
       this.stripePaymentElementComponent.submitIntent(submitStripePayment);
     }

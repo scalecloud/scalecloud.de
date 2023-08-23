@@ -6,8 +6,9 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 import { SubscriptionDetailService } from '../subscription-detail.service';
 import { ChangePaymentReply, ChangePaymentRequest } from './change-payment';
 import { ChangePaymentService } from './change-payment.service';
-import { InitStripePayment, StripeIntent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
+import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
 import { StripePaymentElementComponent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-element.component';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-change-payment',
@@ -20,13 +21,14 @@ export class ChangePaymentComponent {
 
   subscriptionSetupIntentReply: ChangePaymentReply | undefined;
   subscriptionDetail: ISubscriptionDetail | undefined;
-  
+
   constructor(
     public authService: AuthService,
     private route: ActivatedRoute,
     private subscriptionDetailService: SubscriptionDetailService,
     private logService: LogService,
-    private changePaymentService: ChangePaymentService
+    private changePaymentService: ChangePaymentService,
+    private snackBarService: SnackBarService
   ) { }
 
   ngOnInit(): void {
@@ -44,10 +46,8 @@ export class ChangePaymentComponent {
   }
 
   reloadSubscriptionDetail(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id == null) {
-      this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
-    } else {
+    const id = this.getID();
+    if (id != null) {
       this.subscriptionDetailService.getSubscriptionDetail(id)
         .subscribe(subscriptionDetail => this.subscriptionDetail = subscriptionDetail);
     }
@@ -56,33 +56,52 @@ export class ChangePaymentComponent {
   getChangePaymentSetupIntent(): void {
     this.authService.afAuth.authState.subscribe((user) => {
       if (user) {
-        const id = this.route.snapshot.paramMap.get('id');
-        if (id == null) {
-          this.logService.error('SubscriptionPaymentMethodComponent.getChangePaymentSetupIntent: id is null');
-        } else {
-          if (!id) {
-            this.logService.error('SubscriptionPaymentMethodComponent.getChangePaymentSetupIntent: id is null');
+        const id = this.getID();
+        if (id != null) {
+          let subscriptionSetupIntentRequest: ChangePaymentRequest = {
+            subscriptionid: id
           }
-          else {
-            let subscriptionSetupIntentRequest: ChangePaymentRequest = {
-              subscriptionid: id
-            }
-            const observable = this.changePaymentService.getChangePaymentSetupIntent(subscriptionSetupIntentRequest).subscribe(
-              (subscriptionSetupIntentReply: ChangePaymentReply) => {
-                this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
+          const observable = this.changePaymentService.getChangePaymentSetupIntent(subscriptionSetupIntentRequest).subscribe(
+            (subscriptionSetupIntentReply: ChangePaymentReply) => {
+              this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
 
-                const initStripePayment : InitStripePayment  = {
-                  intent: StripeIntent.SetupIntent,
-                  client_secret: subscriptionSetupIntentReply.clientsecret,
-                  email: subscriptionSetupIntentReply.email
-                } 
-  
-                this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
-              });
-          }
+              const initStripePayment: InitStripePayment = {
+                intent: StripeIntent.SetupIntent,
+                client_secret: subscriptionSetupIntentReply.clientsecret,
+                email: subscriptionSetupIntentReply.email
+              }
+
+              this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
+            });
         }
       }
     });
+  }
+
+  getID(): string {
+    let id = this.route.snapshot.paramMap.get('id');
+    if (id == null) {
+      this.logService.error('SubscriptionPaymentMethodComponent.getID: id is null');
+    }
+    return id;
+  }
+
+  changePaymentMethod(): void {
+    if (this.stripePaymentElementComponent) {
+
+      const id = this.route.snapshot.paramMap.get('id');
+
+      const submitStripePayment: SubmitStripePayment = {
+        return_url: "/dashboard/subscription/" + this.getID(),
+      }
+
+      this.snackBarService.info("Need to update payment method of subscription: " + id);
+
+      this.stripePaymentElementComponent.submitIntent(submitStripePayment);
+    }
+    else {
+      this.logService.error("PaymentElementComponent is undefined.")
+    }
   }
 
 
