@@ -88,9 +88,11 @@ export class ChangePaymentComponent {
 
   changePaymentMethod(): void {
     if (this.stripePaymentElementComponent) {
+      
       const submitStripePayment: SubmitStripePayment = {
-        return_url: "/dashboard/subscription/" + this.getID(),
+        return_url: "https://www.scalecloud.de/dashboard/status",
       }
+      this.snackBarService.info("return url" + submitStripePayment.return_url);
       this.stripePaymentElementComponent.submitIntent(submitStripePayment);
     }
     else {

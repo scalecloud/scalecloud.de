@@ -47,6 +47,7 @@ const routes: Routes = [{
   { path: 'dashboard/subscription/:id', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/subscription/:id/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
+  { path: 'dashboard/status', component: StatusComponent },
   // LoginGuard
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   // RegisterGuard
