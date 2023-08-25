@@ -92,7 +92,6 @@ export class ChangePaymentComponent {
       const submitStripePayment: SubmitStripePayment = {
         return_url: "https://www.scalecloud.de/dashboard/status",
       }
-      this.snackBarService.info("return url" + submitStripePayment.return_url);
       this.stripePaymentElementComponent.submitIntent(submitStripePayment);
     }
     else {
