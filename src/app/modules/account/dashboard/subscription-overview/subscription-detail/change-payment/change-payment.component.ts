@@ -90,7 +90,7 @@ export class ChangePaymentComponent {
     if (this.stripePaymentElementComponent) {
       
       const submitStripePayment: SubmitStripePayment = {
-        return_url: "https://www.scalecloud.de/dashboard/status",
+        return_url: "https://www.scalecloud.de/dashboard/subscription/" + this.getID() + "/status",
       }
       this.stripePaymentElementComponent.submitIntent(submitStripePayment);
     }

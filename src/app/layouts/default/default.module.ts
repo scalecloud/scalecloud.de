@@ -52,6 +52,10 @@ import { ConfirmCancelSubscriptionComponent } from 'src/app/modules/account/dash
 import { MatDialogModule } from '@angular/material/dialog';
 import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/resume-subscription/resume-subscription.component';
 import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/resume-subscription/confirm-resume-subscription/confirm-resume-subscription.component';
+import { StatusPaymentChangedComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/status-payment-changed.component';
+import { PaymentChangedProcessingComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-processing/payment-changed-processing.component';
+import { PaymentChangedRequiresPaymentMethodComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-requires-payment-method/payment-changed-requires-payment-method.component';
+import { PaymentChangedSucceededComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-succeeded/payment-changed-succeeded.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +93,10 @@ import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dash
     StatusComponent,
     SucceededComponent,
     ProcessingComponent,
+    StatusPaymentChangedComponent,
+    PaymentChangedSucceededComponent,
+    PaymentChangedProcessingComponent,
+    PaymentChangedRequiresPaymentMethodComponent,
     ConfirmResumeSubscriptionComponent,
     ConfirmCancelSubscriptionComponent,
     RequiresPaymentMethodComponent

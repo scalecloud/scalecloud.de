@@ -1,0 +1,11 @@
+<div>
+    <div *ngIf="succeeded">
+        <app-payment-changed-succeeded></app-payment-changed-succeeded>
+    </div>
+    <div *ngIf="processing">
+        <app-payment-changed-processing></app-payment-changed-processing>
+    </div>
+    <div *ngIf="requires_payment_method">
+        <app-payment-changed-requires-payment-method></app-payment-changed-requires-payment-method>
+    </div>
+</div>
