@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { InitStripePayment as InitPaymentElementStruct, InitStripePayment, StripeIntent, SubmitStripePayment as SubmitIntentStruct, SubmitStripePayment } from './stripe-payment-setup-intent';
+import { InitStripePayment, StripeIntent,  SubmitStripePayment } from './stripe-payment-setup-intent';
 import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
 
 declare const Stripe: any;
@@ -14,7 +14,7 @@ declare const Stripe: any;
 export class StripePaymentElementComponent {
   stripeElement: any;
   elements: any;
-  initPaymentElementStruct: InitPaymentElementStruct | undefined;
+  initStripePayment: InitStripePayment | undefined;
 
   constructor(
     private logService: LogService,
@@ -31,10 +31,10 @@ export class StripePaymentElementComponent {
     else {
       this.stripeElement = Stripe(publicKey);
     }
-    this.initPaymentElementStruct = initStripePayment;
-    if (this.initPaymentElementStruct) {
+    this.initStripePayment = initStripePayment;
+    if (this.initStripePayment) {
       const options = {
-        clientSecret: this.initPaymentElementStruct.client_secret,
+        clientSecret: this.initStripePayment.client_secret,
         // Fully customizable with appearance API.
         appearance: {/*...*/ },
       };
@@ -49,10 +49,10 @@ export class StripePaymentElementComponent {
       // If the customer's email is known when the page is loaded, you can
       // pass the email to the linkAuthenticationElement on mount:
       //
-      if (this.initPaymentElementStruct.email != undefined) {
+      if (this.initStripePayment.email != undefined) {
         linkAuthenticationElement.mount("#link-authentication-element", {
           defaultValues: {
-            email: this.initPaymentElementStruct.email,
+            email: this.initStripePayment.email,
           }
         })
       }
@@ -74,39 +74,32 @@ export class StripePaymentElementComponent {
 
   async submitIntent(submitStripePayment: SubmitStripePayment): Promise<void> {
     const elements = this.elements
-    let error = undefined;
-    if (this.initPaymentElementStruct == undefined) {
+
+    if (this.initStripePayment == undefined) {
       this.logService.error("Cannot submit Payment because initStripePayment is undefined.")
       return;
     }
-    else if (this.initPaymentElementStruct.intent == StripeIntent.SetupIntent) {
-      error = await this.stripeElement.confirmSetup({
-        //`Elements` instance that was used to create the Payment Element
+    else if (this.initStripePayment.intent == StripeIntent.SetupIntent) {
+      const { error: stripeError } = await this.stripeElement.confirmSetup({
         elements,
         confirmParams: {
           return_url: submitStripePayment.return_url,
         }
       });
+      if (stripeError) {
+        this.snackBarService.error(stripeError.message);
+      }
     }
-    else if (this.initPaymentElementStruct.intent == StripeIntent.PaymentIntent) {
-      error = await this.stripeElement.confirmPayment({
-        //`Elements` instance that was used to create the Payment Element
+    else if (this.initStripePayment.intent == StripeIntent.PaymentIntent) {
+      const { error: stripeError } = await this.stripeElement.confirmPayment({
         elements,
         confirmParams: {
           return_url: submitStripePayment.return_url,
         }
       });
-    }
-    if (error) {
-      // This point will only be reached if there is an immediate error when
-      // confirming the payment. Show error to your customer (for example, payment
-      // details incomplete)
-      const messageContainer = document.querySelector('#error-message');
-      this.snackBarService.error(error.message);
-    } else {
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
+      if (stripeError) {
+        this.snackBarService.error(stripeError.message);
+      }
     }
   }
 }

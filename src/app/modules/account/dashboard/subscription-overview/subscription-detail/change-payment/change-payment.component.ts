@@ -88,15 +88,9 @@ export class ChangePaymentComponent {
 
   changePaymentMethod(): void {
     if (this.stripePaymentElementComponent) {
-
-      const id = this.route.snapshot.paramMap.get('id');
-
       const submitStripePayment: SubmitStripePayment = {
         return_url: "/dashboard/subscription/" + this.getID(),
       }
-
-      this.snackBarService.info("Need to update payment method of subscription: " + id);
-
       this.stripePaymentElementComponent.submitIntent(submitStripePayment);
     }
     else {
