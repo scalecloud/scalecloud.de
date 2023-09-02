@@ -59,11 +59,11 @@ node() {
     }
     stage('Build') {
         lastStage = env.STAGE_NAME
-        sh 'docker build --tag scalecloudde/scalecloud.de:latest .'
+        sh 'docker build --tag scalecloudde/scalecloud.de:beta .'
     }
     stage('Push Docker Image') {
         lastStage = env.STAGE_NAME
-        sh 'docker push scalecloudde/scalecloud.de:latest'
+        sh 'docker push scalecloudde/scalecloud.de:beta'
     }
   }
   catch (err) {
@@ -80,8 +80,8 @@ node() {
       cleanWs()
     }
     stage('Docker remove not needed images') {
-        sh 'docker rmi node:16.15.0'
-        sh 'docker rmi nginx:latest' 
+        sh 'docker rmi trion/ng-cli-e2e:latest'
+        sh 'docker rmi scalecloudde/scalecloud.de:beta'
     }
   }
 }

@@ -80,8 +80,8 @@ node() {
       cleanWs()
     }
     stage('Docker remove not needed images') {
-        sh 'docker rmi node:16.15.0'
-        sh 'docker rmi nginx:latest' 
+        sh 'docker rmi trion/ng-cli-e2e:latest'
+        sh 'docker rmi scalecloudde/scalecloud.de:latest'
     }
   }
 }
