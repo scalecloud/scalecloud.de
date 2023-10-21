@@ -23,7 +23,7 @@ import { LoginGuard } from './shared/guard/login.guard';
 import { RegisterGuard } from './shared/guard/register.guard';
 import { VerifyEMailGuard } from './shared/guard/verify-email.guard';
 import { SubscriptionDetailComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component';
-import { ChangePaymentComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/change-payment/change-payment.component';
+import { ChangePaymentComponent } from './modules/account/dashboard/change-payment/change-payment.component';
 import { StatusPaymentChangedComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/status-payment-changed.component';
 
 const routes: Routes = [{

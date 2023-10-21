@@ -1,5 +1,8 @@
 <div *ngIf="authService.user as user">
-    <div class="flex-container"> 
+    <div class="flex-container">
+        <div class="flex-item">
+            <app-payment-overview> </app-payment-overview>
+        </div>
         <div class="flex-item" *ngFor="let subscriptionOverview of subscriptionsOverview">
          <app-subscription-overview [subscriptionOverview]="subscriptionOverview"></app-subscription-overview>
         </div>

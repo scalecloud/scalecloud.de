@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { ISubscriptionDetail } from '../subscription-detail';
+import { ISubscriptionDetail } from '../subscription-overview/subscription-detail/subscription-detail';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { SubscriptionDetailService } from '../subscription-detail.service';
+import { SubscriptionDetailService } from '../subscription-overview/subscription-detail/subscription-detail.service';
 import { ChangePaymentReply, ChangePaymentRequest } from './change-payment';
 import { ChangePaymentService } from './change-payment.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';

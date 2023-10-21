@@ -42,7 +42,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ChangePaymentComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/change-payment/change-payment.component';
+import { ChangePaymentComponent } from 'src/app/modules/account/dashboard/change-payment/change-payment.component';
 import { SubscriptionDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component';
 import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail-card/subscription-detail-card.component';
 import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/customer-portal/billing-portal.component';
