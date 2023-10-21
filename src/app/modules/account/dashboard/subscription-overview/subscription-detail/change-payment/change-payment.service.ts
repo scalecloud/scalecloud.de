@@ -35,7 +35,7 @@ export class ChangePaymentService {
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
-      this.snackBarService.error(`Could change payment method. Please try again.`);
+      this.snackBarService.error(`Could not change payment method. Please try again.`);
       return of(result as T);
     };
   }
