@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { SubscriptionPaymentMethodReply, SubscriptionPaymentMethodRequest } from './subscription-payment-method';
-import { SubscriptionPaymentMethodService } from './subscription-payment-method.service';
+import { PaymentMethodOverviewReply } from './payment-method-overview';
+import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -12,39 +12,26 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PaymentOverviewComponent {
 
-  subscriptionPaymentMethodReply: SubscriptionPaymentMethodReply | undefined;
+  subscriptionPaymentMethodReply: PaymentMethodOverviewReply | undefined;
 
   constructor(
     private logService: LogService,
-    private subscriptionPaymentMethodService: SubscriptionPaymentMethodService,
+    private subscriptionPaymentMethodService: PaymentMethodOverviewService,
     private authService: AuthService,
     private route: ActivatedRoute,
   ) { }
 
   ngAfterViewInit(): void {
-    this.getSubscriptionPaymentMethod();
+    this.getPaymentMethodOverview();
   }
 
-  getSubscriptionPaymentMethod(): void {
+  getPaymentMethodOverview(): void {
     this.authService.afAuth.authState.subscribe((user) => {
       if (user) {
-        const id = this.route.snapshot.paramMap.get('id');
-        if (id == null) {
-          this.logService.error('SubscriptionPaymentMethodComponent.getSubscriptionPaymentMethod: id is null');
-        } else {
-          if (!id) {
-            this.logService.error('SubscriptionPaymentMethodComponent.getSubscriptionPaymentMethod: id is null');
-          }
-          else {
-            let subscriptionPaymentMethodRequest: SubscriptionPaymentMethodRequest = {
-              id: id
-            }
-            const observable = this.subscriptionPaymentMethodService.getSubscriptionPaymentMethod(subscriptionPaymentMethodRequest).subscribe(
-              (subscriptionPaymentMethodReply: SubscriptionPaymentMethodReply) => {
-                this.subscriptionPaymentMethodReply = subscriptionPaymentMethodReply;
-              });
-          }
-        }
+        const observable = this.subscriptionPaymentMethodService.getPaymentMethodOverview().subscribe(
+          (subscriptionPaymentMethodReply: PaymentMethodOverviewReply) => {
+            this.subscriptionPaymentMethodReply = subscriptionPaymentMethodReply;
+          });
       }
     });
   }
@@ -54,7 +41,7 @@ export class PaymentOverviewComponent {
     const idRoute = this.route.snapshot.paramMap.get('id');
     if (idRoute == null) {
       this.logService.error('SubscriptionPaymentMethodComponent.getID: id is null');
-    } else {  
+    } else {
       id = idRoute;
     }
     return id;

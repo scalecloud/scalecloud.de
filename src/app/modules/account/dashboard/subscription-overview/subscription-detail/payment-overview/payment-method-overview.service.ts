@@ -2,25 +2,25 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { SubscriptionPaymentMethodReply, SubscriptionPaymentMethodRequest } from './subscription-payment-method';
+import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { Observable, catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SubscriptionPaymentMethodService {
+export class PaymentMethodOverviewService {
 
-  private url = 'http://localhost:15000/dashboard/get-subscription-payment-method';
+  private url = 'http://localhost:15000/dashboard/get-payment-method-overview';
 
   constructor(
     private http: HttpClient,
     private snackBarService: SnackBarService,
     private authService: AuthService) { }
 
-  getSubscriptionPaymentMethod(subscriptionPaymentMethodRequest: SubscriptionPaymentMethodRequest): Observable<SubscriptionPaymentMethodReply> {
-    return this.http.post<SubscriptionPaymentMethodReply>(this.url, subscriptionPaymentMethodRequest, this.getHttpOptions())
+  getPaymentMethodOverview(): Observable<PaymentMethodOverviewReply> {
+    return this.http.post<PaymentMethodOverviewReply>(this.url, null, this.getHttpOptions())
       .pipe(
-        catchError(this.handleError<SubscriptionPaymentMethodReply>('resumeSubscription'))
+        catchError(this.handleError<PaymentMethodOverviewReply>('getPaymentMethodOverview'))
       );
   }
 
