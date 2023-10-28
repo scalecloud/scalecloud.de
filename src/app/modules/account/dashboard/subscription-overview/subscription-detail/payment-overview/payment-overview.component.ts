@@ -15,10 +15,8 @@ export class PaymentOverviewComponent {
   subscriptionPaymentMethodReply: PaymentMethodOverviewReply | undefined;
 
   constructor(
-    private logService: LogService,
     private subscriptionPaymentMethodService: PaymentMethodOverviewService,
     private authService: AuthService,
-    private route: ActivatedRoute,
   ) { }
 
   ngAfterViewInit(): void {
@@ -34,17 +32,6 @@ export class PaymentOverviewComponent {
           });
       }
     });
-  }
-
-  getID(): string {
-    let id = '';
-    const idRoute = this.route.snapshot.paramMap.get('id');
-    if (idRoute == null) {
-      this.logService.error('SubscriptionPaymentMethodComponent.getID: id is null');
-    } else {
-      id = idRoute;
-    }
-    return id;
   }
 
   getPaymentMethod(): string {

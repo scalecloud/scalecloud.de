@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { Observable, catchError, of } from 'rxjs';
-import { ChangePaymentReply, ChangePaymentRequest } from './change-payment';
+import { ChangePaymentReply } from './change-payment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class ChangePaymentService {
     private snackBarService: SnackBarService,
     private authService: AuthService) { }
 
-  getChangePaymentSetupIntent(changePaymentRequest: ChangePaymentRequest): Observable<ChangePaymentReply> {
-    return this.http.post<ChangePaymentReply>(this.url, changePaymentRequest, this.getHttpOptions())
+  getChangePaymentSetupIntent(): Observable<ChangePaymentReply> {
+    return this.http.post<ChangePaymentReply>(this.url, null, this.getHttpOptions())
       .pipe(
         catchError(this.handleError<ChangePaymentReply>('getChangePaymentSetupIntent'))
       );

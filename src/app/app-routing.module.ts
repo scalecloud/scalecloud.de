@@ -46,9 +46,8 @@ const routes: Routes = [{
   // AuthGuard
   { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/subscription/:id', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/subscription/:id/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/subscription/:id/status', component: StatusPaymentChangedComponent },
+  { path: 'dashboard/change-payment/status', component: StatusPaymentChangedComponent },
   // LoginGuard
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   // RegisterGuard

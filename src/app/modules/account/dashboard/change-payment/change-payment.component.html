@@ -1,10 +1,6 @@
 <div class="flex-container">
     <div class="flex-item">
         <app-stripe-payment-element></app-stripe-payment-element>
-       
-    </div>
-    <div class="flex-item">
-        <app-subscription-detail-card [subscriptionDetail]="subscriptionDetail"></app-subscription-detail-card>
         <button (click)="changePaymentMethod()" mat-stroked-button
         color="primary">Change Payment-Method<mat-icon>add_card</mat-icon></button>
     </div>
