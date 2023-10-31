@@ -56,6 +56,10 @@ export class CheckoutDetailsComponent {
     }
   }
 
+  getIsTrialIncluded(): boolean {
+    return this.getQuantity() < 2;
+  }
+
   getQuantity(): number {
     if (this.quantityComponent) {
       return this.quantityComponent?.getQuantity();

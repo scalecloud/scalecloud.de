@@ -21,7 +21,16 @@
                 <mat-list-item>
                     <div class="icon-text">
                         <mat-icon>event_available</mat-icon>
-                        {{getTrialDays()}}&nbsp;days trial
+                        <ng-container *ngIf="getIsTrialIncluded(); then trial; else noTrial">
+                        </ng-container>
+                        <ng-template #trial>
+                            {{getTrialDays()}}&nbsp;days trial
+                        </ng-template>
+                        <ng-template #noTrial>
+                            <s>
+                                {{getTrialDays()}}&nbsp;days trial
+                            </s>
+                        </ng-template>
                     </div>
                 </mat-list-item>
                 <mat-list-item>

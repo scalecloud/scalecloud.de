@@ -110,6 +110,10 @@ export class SubscriptionCardComponent {
     return ret;
   }
 
+  getIsTrialIncluded(): boolean {
+    return this.getQuantity() < 2;
+  }
+
   getTrialDays(): number {
     let ret = 0;
     if (this.nextcloudProduct != undefined) {
