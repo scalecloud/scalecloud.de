@@ -72,13 +72,13 @@ export class PaymentOverviewComponent {
   getCardExpiration(): string {
     let expiration = '';
     if (this.subscriptionPaymentMethodReply) {
-      expiration = 'Expires on ' + this.subscriptionPaymentMethodReply.card.exp_month + '/' + this.subscriptionPaymentMethodReply.card.exp_year;
+      expiration = 'Credit Card: ' + this.subscriptionPaymentMethodReply.card.exp_month + '/' + this.subscriptionPaymentMethodReply.card.exp_year;
     }
     return expiration;
   }
 
   getPaymentMethodSEPADebit(): string {
-    return this.getSEPADebitBankCode() + ' ' + this.getSEPADebitBranch() + ' ' + this.getSEPADebitCountry() + ' ' + this.getSEPADebitLast4();
+    return 'SEPA: ' + this.getSEPADebitBankCode() + ' ' + this.getSEPADebitBranch() + ' ' + this.getSEPADebitCountry() + ' ' + this.getSEPADebitLast4();
   }
 
   getSEPADebitBankCode(): string {
@@ -114,7 +114,7 @@ export class PaymentOverviewComponent {
   }
 
   getPaymentMethodPayPal(): string {
-    return this.getPayPalEMail();
+    return 'PayPal: ' + this.getPayPalEMail();
   }
 
   getPayPalEMail(): string {
