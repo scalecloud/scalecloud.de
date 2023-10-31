@@ -78,23 +78,7 @@ export class PaymentOverviewComponent {
   }
 
   getPaymentMethodSEPADebit(): string {
-    return 'SEPA: ' + this.getSEPADebitBankCode() + ' ' + this.getSEPADebitBranch() + ' ' + this.getSEPADebitCountry() + ' ' + this.getSEPADebitLast4();
-  }
-
-  getSEPADebitBankCode(): string {
-    let bankCode = '';
-    if (this.subscriptionPaymentMethodReply) {
-      bankCode = this.subscriptionPaymentMethodReply.sepa_debit.bank_code;
-    }
-    return bankCode;
-  }
-
-  getSEPADebitBranch(): string {
-    let branch = '';
-    if (this.subscriptionPaymentMethodReply) {
-      branch = this.subscriptionPaymentMethodReply.sepa_debit.branch;
-    }
-    return branch;
+    return 'IBAN: ' + this.getSEPADebitCountry() + '** **** **** **** **' + this.getSEPADebitLast4();
   }
 
   getSEPADebitCountry(): string {
@@ -107,8 +91,10 @@ export class PaymentOverviewComponent {
 
   getSEPADebitLast4(): string {
     let last4 = '';
-    if (this.subscriptionPaymentMethodReply) {
-      last4 = this.subscriptionPaymentMethodReply.sepa_debit.last4;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.sepa_debit.last4.length === 4) {
+      let first2 = this.subscriptionPaymentMethodReply.sepa_debit.last4.slice(0, 2);
+      let last2 = this.subscriptionPaymentMethodReply.sepa_debit.last4.slice(2, 4);
+      last4 = first2 + ' ' + last2;
     }
     return last4;
   }
