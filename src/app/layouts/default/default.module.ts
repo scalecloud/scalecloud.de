@@ -46,7 +46,7 @@ import { ChangePaymentComponent } from 'src/app/modules/account/dashboard/change
 import { SubscriptionDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component';
 import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail-card/subscription-detail-card.component';
 import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/customer-portal/billing-portal.component';
-import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/payment-overview/payment-overview.component';
+import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
 import { CancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-subscription/cancel-subscription.component';
 import { ConfirmCancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-subscription/confirm-cancel-subscription/confirm-cancel-subscription.component';
 import { MatDialogModule } from '@angular/material/dialog';
