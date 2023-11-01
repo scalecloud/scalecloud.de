@@ -42,14 +42,44 @@ export class PaymentOverviewComponent {
         paymentMethodOverview = this.getPaymentMethodSEPADebit();
       }
       else if (this.subscriptionPaymentMethodReply.type === 'paypal') {
-        paymentMethodOverview = this.getPaymentMethodPayPal();
+        paymentMethodOverview = this.getPayPalEMail();
       }
     }
     return paymentMethodOverview;
   }
 
+  isCreditCard(): boolean {
+    let isCreditCard = false;
+    if (this.subscriptionPaymentMethodReply) {
+      if (this.subscriptionPaymentMethodReply.type === 'card') {
+        isCreditCard = true;
+      }
+    }
+    return isCreditCard;
+  }
+
+  isSEPA(): boolean {
+    let isSepa = false;
+    if (this.subscriptionPaymentMethodReply) {
+      if (this.subscriptionPaymentMethodReply.type === 'sepa_debit') {
+        isSepa = true;
+      }
+    }
+    return isSepa;
+  }
+
+  isPayPal(): boolean {
+    let isPayPal = false;
+    if (this.subscriptionPaymentMethodReply) {
+      if (this.subscriptionPaymentMethodReply.type === 'paypal') {
+        isPayPal = true;
+      }
+    }
+    return isPayPal;
+  }
+
   getPaymentMethodCard(): string {
-    return this.getCardBrand() + ' ' + this.getCardLast4() + ' ' + this.getCardExpiration();
+    return this.getCardBrand() + ': **** **** **** ' + this.getCardLast4() + ' - ' + this.getCardExpiration();
   }
 
   getCardBrand(): string {
@@ -72,7 +102,7 @@ export class PaymentOverviewComponent {
   getCardExpiration(): string {
     let expiration = '';
     if (this.subscriptionPaymentMethodReply) {
-      expiration = 'Credit Card: ' + this.subscriptionPaymentMethodReply.card.exp_month + '/' + this.subscriptionPaymentMethodReply.card.exp_year;
+      expiration = ' ' + this.subscriptionPaymentMethodReply.card.exp_month + '/' + this.subscriptionPaymentMethodReply.card.exp_year;
     }
     return expiration;
   }
@@ -97,10 +127,6 @@ export class PaymentOverviewComponent {
       last4 = first2 + ' ' + last2;
     }
     return last4;
-  }
-
-  getPaymentMethodPayPal(): string {
-    return 'PayPal: ' + this.getPayPalEMail();
   }
 
   getPayPalEMail(): string {
