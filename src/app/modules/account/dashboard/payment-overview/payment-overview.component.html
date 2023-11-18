@@ -6,15 +6,43 @@
     <mat-card-content>
         <mat-list>
             <mat-list-item>
-               <div *ngIf="isCreditCard()" class="icon-text">
-                    <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
+                <div *ngIf="isCreditCard()" class="icon-text">
+                    <div *ngIf="isAmericanExpress()">
+                        <img src="assets/img/logo/payment/amex_logo.png" alt="American Express Logo">{{getPaymentMethod()}}
+                    </div>
+                    <div *ngIf="isDinersClub()">
+                        <img src="assets/img/logo/payment/dinersclub_logo.svg" alt="Diners Club Logo">{{getPaymentMethod()}}
+                    </div>
+                    <div *ngIf="isDiscover()">
+                        <img src="assets/img/logo/payment/discover_logo.jpg" alt="Discover Logo">{{getPaymentMethod()}}
+                    </div>
+                    <div *ngIf="isEFTPOS()">
+                        <img src="assets/img/logo/payment/eftpos_logo.png" alt="eftpos Australia Logo">{{getPaymentMethod()}}
+                    </div>
+                    <div *ngIf="isJCB()">
+                        <img src="assets/img/logo/payment/jcb_logo.gif" alt="Japan Credit Bureau (JCB) Logo">{{getPaymentMethod()}}
+                    </div>
+                    <div *ngIf="isUnionPay()">
+                        <img src="assets/img/logo/payment/union_logo.svg" alt="UnionPay Logo">{{getPaymentMethod()}}
+                    </div>
+                    <div *ngIf="isMasterCard()">
+                        <img src="assets/img/logo/payment/mastercard_logo.png" alt="MasterCard Logo">{{getPaymentMethod()}}
+                    </div>
+                    <div *ngIf="isVisa()">
+                        <img src="assets/img/logo/payment/visa_logo.png" alt="Visa Logo">{{getPaymentMethod()}}
+                    </div>
+                    <div *ngIf="isUnknownCreditCard()">
+                        <div *ngIf="isCreditCard()" class="icon-text">
+                            <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
+                        </div>
+                    </div>
                 </div>
                 <div *ngIf="isSEPA()">
-                    <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
-                  </div>
+                    <img src="assets/img/logo/payment/sepa_logo.jpg" alt="SEPA Logo">{{getPaymentMethod()}}
+                </div>
                 <div *ngIf="isPayPal()">
-                    <img src="assets/img/logo/paypal_logo.png" alt="PayPal Logo">{{getPaymentMethod()}}
-                  </div>
+                    <img src="assets/img/logo/payment/paypal_logo.png" alt="PayPal Logo">{{getPaymentMethod()}}
+                </div>
             </mat-list-item>
         </mat-list>
     </mat-card-content>

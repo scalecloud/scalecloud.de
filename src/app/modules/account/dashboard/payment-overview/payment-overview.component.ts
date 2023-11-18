@@ -79,7 +79,97 @@ export class PaymentOverviewComponent {
   }
 
   getPaymentMethodCard(): string {
-    return this.getCardBrand() + ': **** **** **** ' + this.getCardLast4() + ' - ' + this.getCardExpiration();
+    return '**** **** **** ' + this.getCardLast4() + ' - ' + this.getCardExpiration();
+  }
+
+  isAmericanExpress(): boolean {
+    let isAmericanExpress = false;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+      if (this.subscriptionPaymentMethodReply.card.brand === 'amex') {
+        isAmericanExpress = true;
+      }
+    }
+    return isAmericanExpress;
+  }
+
+  isDinersClub(): boolean {
+    let isDinersClub = false;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+      if (this.subscriptionPaymentMethodReply.card.brand === 'diners') {
+        isDinersClub = true;
+      }
+    }
+    return isDinersClub;
+  }
+
+  isDiscover(): boolean {
+    let isDiscover = false;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+      if (this.subscriptionPaymentMethodReply.card.brand === 'discover') {
+        isDiscover = true;
+      }
+    }
+    return isDiscover;
+  }
+
+  isEFTPOS(): boolean {
+    let isEFTPOS = false;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+      if (this.subscriptionPaymentMethodReply.card.brand === 'eftpos_au') {
+        isEFTPOS = true;
+      }
+    }
+    return isEFTPOS;
+  }
+
+  isJCB(): boolean {
+    let isJCB = false;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+      if (this.subscriptionPaymentMethodReply.card.brand === 'jcb') {
+        isJCB = true;
+      }
+    }
+    return isJCB;
+  }
+
+  isMasterCard(): boolean {
+    let isMastercard = false;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+      if (this.subscriptionPaymentMethodReply.card.brand === 'mastercard') {
+        isMastercard = true;
+      }
+    }
+    return isMastercard;
+  }
+
+  isUnionPay(): boolean {
+    let isUnionPay = false;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+      if (this.subscriptionPaymentMethodReply.card.brand === 'unionpay') {
+        isUnionPay = true;
+      }
+    }
+    return isUnionPay;
+  }
+
+  isVisa(): boolean {
+    let isVisa = false;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+      if (this.subscriptionPaymentMethodReply.card.brand === 'visa') {
+        isVisa = true;
+      }
+    }
+    return isVisa;
+  }
+
+  isUnknownCreditCard(): boolean {
+    let isUnknownCreditCard = false;
+    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+      if (this.subscriptionPaymentMethodReply.card.brand === 'unknown') {
+        isUnknownCreditCard = true;
+      }
+    }
+    return isUnknownCreditCard;
   }
 
   getCardBrand(): string {
@@ -108,7 +198,7 @@ export class PaymentOverviewComponent {
   }
 
   getPaymentMethodSEPADebit(): string {
-    return 'IBAN: ' + this.getSEPADebitCountry() + '** **** **** **** **' + this.getSEPADebitLast4();
+    return this.getSEPADebitCountry() + '** **** **** **** **' + this.getSEPADebitLast4();
   }
 
   getSEPADebitCountry(): string {
