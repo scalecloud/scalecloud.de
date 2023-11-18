@@ -3,7 +3,7 @@
 ##
 ## Build
 ##
-FROM node:16.15.0 AS build
+FROM node:20.9.0 AS build
 
 WORKDIR /build
 
