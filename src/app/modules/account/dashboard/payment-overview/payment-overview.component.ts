@@ -84,7 +84,7 @@ export class PaymentOverviewComponent {
 
   isAmericanExpress(): boolean {
     let isAmericanExpress = false;
-    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+    if (this.subscriptionPaymentMethodReply?.card?.brand) {
       if (this.subscriptionPaymentMethodReply.card.brand === 'amex') {
         isAmericanExpress = true;
       }
@@ -94,7 +94,7 @@ export class PaymentOverviewComponent {
 
   isDinersClub(): boolean {
     let isDinersClub = false;
-    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+    if (this.subscriptionPaymentMethodReply?.card?.brand) {
       if (this.subscriptionPaymentMethodReply.card.brand === 'diners') {
         isDinersClub = true;
       }
@@ -104,7 +104,7 @@ export class PaymentOverviewComponent {
 
   isDiscover(): boolean {
     let isDiscover = false;
-    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+    if (this.subscriptionPaymentMethodReply?.card?.brand) {
       if (this.subscriptionPaymentMethodReply.card.brand === 'discover') {
         isDiscover = true;
       }
@@ -114,7 +114,7 @@ export class PaymentOverviewComponent {
 
   isEFTPOS(): boolean {
     let isEFTPOS = false;
-    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+    if (this.subscriptionPaymentMethodReply?.card?.brand) {
       if (this.subscriptionPaymentMethodReply.card.brand === 'eftpos_au') {
         isEFTPOS = true;
       }
@@ -124,7 +124,7 @@ export class PaymentOverviewComponent {
 
   isJCB(): boolean {
     let isJCB = false;
-    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+    if (this.subscriptionPaymentMethodReply?.card?.brand) {
       if (this.subscriptionPaymentMethodReply.card.brand === 'jcb') {
         isJCB = true;
       }
@@ -134,7 +134,7 @@ export class PaymentOverviewComponent {
 
   isMasterCard(): boolean {
     let isMastercard = false;
-    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+    if (this.subscriptionPaymentMethodReply?.card?.brand) {
       if (this.subscriptionPaymentMethodReply.card.brand === 'mastercard') {
         isMastercard = true;
       }
@@ -144,7 +144,7 @@ export class PaymentOverviewComponent {
 
   isUnionPay(): boolean {
     let isUnionPay = false;
-    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+    if (this.subscriptionPaymentMethodReply?.card?.brand) {
       if (this.subscriptionPaymentMethodReply.card.brand === 'unionpay') {
         isUnionPay = true;
       }
@@ -154,7 +154,7 @@ export class PaymentOverviewComponent {
 
   isVisa(): boolean {
     let isVisa = false;
-    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+    if (this.subscriptionPaymentMethodReply?.card?.brand) {
       if (this.subscriptionPaymentMethodReply.card.brand === 'visa') {
         isVisa = true;
       }
@@ -164,7 +164,7 @@ export class PaymentOverviewComponent {
 
   isUnknownCreditCard(): boolean {
     let isUnknownCreditCard = false;
-    if (this.subscriptionPaymentMethodReply && this.subscriptionPaymentMethodReply.card && this.subscriptionPaymentMethodReply.card.brand) {
+    if (this.subscriptionPaymentMethodReply?.card?.brand) {
       if (this.subscriptionPaymentMethodReply.card.brand === 'unknown') {
         isUnknownCreditCard = true;
       }
