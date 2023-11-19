@@ -20,8 +20,7 @@
                     <img src="assets/img/logo/payment/eftpos_logo.png" alt="eftpos Australia Logo">{{getPaymentMethod()}}
                     }
                     @else if ( isJCB() ) {
-                    <img src="assets/img/logo/payment/jcb_logo.gif"
-                        alt="Japan Credit Bureau (JCB) Logo">{{getPaymentMethod()}}
+                    <img src="assets/img/logo/payment/jcb_logo.gif" alt="Japan Credit Bureau (JCB) Logo">{{getPaymentMethod()}}
                     }
                     @else if ( isUnionPay() ) {
                     <img src="assets/img/logo/payment/union_logo.svg" alt="UnionPay Logo">{{getPaymentMethod()}}
@@ -33,10 +32,14 @@
                     <img src="assets/img/logo/payment/visa_logo.png" alt="Visa Logo">{{getPaymentMethod()}}
                     }
                     @else if ( isUnknownCreditCard() ) {
-                    <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
+                    <div class="icon-text">
+                        <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
+                    </div>
                     }
                     @else {
-                    <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
+                    <div class="icon-text">
+                        <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
+                    </div>
                     }
                 }
                 @else if (isSEPA()) {
@@ -46,7 +49,9 @@
                 <img src="assets/img/logo/payment/paypal_logo.png" alt="PayPal Logo">{{getPaymentMethod()}}
                 }
                 @else {
-                <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
+                <div class="icon-text">
+                    <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
+                </div>
                 }
             </mat-list-item>
         </mat-list>
