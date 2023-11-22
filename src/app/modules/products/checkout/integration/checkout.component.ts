@@ -101,13 +101,13 @@ export class CheckoutComponent {
     }
   }
 
-  initCheckoutProduct(subscriptionID: string): void {
-    if (!subscriptionID) {
-      this.logService.error("subscriptionID is undefined.");
+  initCheckoutProduct(productID: string): void {
+    if (!productID) {
+      this.logService.error("productID is undefined.");
     }
     else {
       if (this.checkoutDetailsComponent) {
-        this.checkoutDetailsComponent.initCheckoutProduct(subscriptionID);
+        this.checkoutDetailsComponent.initCheckoutProduct(productID);
       }
       else {
         this.logService.error("CheckoutDetailsComponent is undefined.")
@@ -133,11 +133,10 @@ export class CheckoutComponent {
                 intent: StripeIntent.SetupIntent,
                 client_secret: checkoutIntegrationReply.clientSecret,
                 email: checkoutIntegrationReply.email
-              } 
-
+              }
               this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
-              this.initCheckoutProduct(checkoutIntegrationReply.subscriptionID);
             });
+            this.initCheckoutProduct(productID);
         }
         else {
           this.logService.error('productID: ' + productID + ' or quantity: ' + quantity + ' not defined');
@@ -145,16 +144,6 @@ export class CheckoutComponent {
       }
     }
     );
-  }
-
-  
-  getSubscriptionID(): string | undefined {
-    if (this.checkoutIntegrationReply) {
-      return this.checkoutIntegrationReply.subscriptionID;
-    }
-    else {
-      return undefined;
-    }
   }
 
 }

@@ -1,3 +1,3 @@
 export interface CheckoutProductRequest {
-    subscriptionID: string;
+    productID: string;
 }

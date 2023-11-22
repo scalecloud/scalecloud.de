@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { QuantityComponent } from '../../../subscription-card/quantity/quantity.component';
 import { CheckoutProductReply } from '../product/checkout-product-reply';
 import { CheckoutProductRequest } from '../product/checkout-product-request';
@@ -20,21 +19,20 @@ export class CheckoutDetailsComponent {
 
   constructor(
     private logService: LogService,
-    private snackBarService: SnackBarService,
     private checkoutProductService: CheckoutProductService,
     private authService: AuthService,
     private currencyPipe: CurrencyPipe
   ) { }
 
-  initCheckoutProduct(subscriptionID: string): void {
+  initCheckoutProduct(productID: string): void {
     this.authService.afAuth.authState.subscribe((user) => {
       if (user) {
-        if (!subscriptionID) {
-          this.logService.error("subscriptionID is undefined");
+        if (!productID) {
+          this.logService.error("productID is undefined");
         }
         else {
           let checkoutProductRequest: CheckoutProductRequest = {
-            subscriptionID: subscriptionID
+            productID: productID
           }
           const observable = this.checkoutProductService.getCheckoutProduct(checkoutProductRequest).subscribe(
             (checkoutProductReply: CheckoutProductReply) => {

@@ -1,5 +1,4 @@
 export interface CheckoutProductReply {
-    subscriptionID: string;
     productID: string;
     name: string;
     storageAmount: number;
