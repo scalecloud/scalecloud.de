@@ -75,18 +75,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "scalecloud:build"
+            "buildTarget": "scalecloud:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "scalecloud:build:production"
+              "buildTarget": "scalecloud:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "scalecloud:build"
+            "buildTarget": "scalecloud:build"
           }
         },
         "test": {
@@ -125,7 +125,7 @@
           "options": {
             "prerender": false,
             "ssr": false,
-            "browserTarget": "scalecloud:build:production",
+            "buildTarget": "scalecloud:build:production",
             "firebaseProject": "scalecloud-de",
             "firebaseHostingSite": "scalecloud"
           }
