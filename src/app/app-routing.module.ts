@@ -25,6 +25,7 @@ import { VerifyEMailGuard } from './shared/guard/verify-email.guard';
 import { SubscriptionDetailComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component';
 import { ChangePaymentComponent } from './modules/account/dashboard/change-payment/change-payment.component';
 import { StatusPaymentChangedComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/status-payment-changed.component';
+import { CheckoutGuard } from './shared/guard/checkout.guard';
 
 const routes: Routes = [{
   path: '', component: DefaultComponent,
@@ -35,7 +36,7 @@ const routes: Routes = [{
   { path: 'nextcloud', component: NextcloudComponent },
   { path: 'synology', component: SynologyComponent },
   // Checkout
-  { path: 'checkout', component: CheckoutComponent },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
   { path: 'checkout/status', component: StatusComponent },
   // Footer
   { path: 'privacy-policy', component: PrivacyComponent },

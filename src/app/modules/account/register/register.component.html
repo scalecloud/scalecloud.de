@@ -1,4 +1,14 @@
 <mat-card>
+  <mat-card-content>
+        <div class="flex-container">
+              <p>Already got an account?</p>
+              <div class="flex-item">
+                    <button routerLink="/login" mat-stroked-button>Login</button>
+              </div>
+        </div>
+  </mat-card-content>
+</mat-card>
+<mat-card>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="flex-container">
       <mat-card-title>Register</mat-card-title>
