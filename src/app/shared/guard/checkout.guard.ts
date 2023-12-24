@@ -26,7 +26,6 @@ export class CheckoutGuard {
         this.router.navigate(['/register']);
       });
     }
-
     return true;
   }
   
