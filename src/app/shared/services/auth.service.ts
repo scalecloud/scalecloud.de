@@ -5,7 +5,7 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
 import { User } from './user.model';
@@ -19,9 +19,10 @@ export class AuthService {
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
-    public router: Router,
-    public ngZone: NgZone,
-    public snackBarService: SnackBarService,
+    private router: Router,
+    private ngZone: NgZone,
+    private route: ActivatedRoute,
+    private snackBarService: SnackBarService,
     private logService: LogService
   ) {
     this.afAuth.authState.subscribe((user) => {
@@ -60,9 +61,9 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.setUserData(result.user).then(() => {
-          this.ngZone.run(() => {
-            this.router.navigate(['/dashboard']);
-          });
+          this.snackBarService.info('Login successful');
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          this.router.navigate([returnUrl || '/dashboard']);
         });
       })
       .catch((error) => {
