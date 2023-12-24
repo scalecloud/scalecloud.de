@@ -18,12 +18,12 @@ export class DashboardGuard  {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (this.authService.isLoggedInNotVerified === true) {
       this.ngZone.run(() => {
-        this.router.navigate(['verify-email-address']);
+        this.router.navigate(['/verify-email-address']);
       });
     }
     else if (this.authService.isLoggedIn === false) {
       this.ngZone.run(() => {
-        this.router.navigate(['login']);
+        this.router.navigate(['/login']);
       });
     }
 

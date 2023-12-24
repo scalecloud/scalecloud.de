@@ -61,7 +61,7 @@ export class AuthService {
       .then((result) => {
         this.setUserData(result.user).then(() => {
           this.ngZone.run(() => {
-            this.router.navigate(['dashboard']);
+            this.router.navigate(['/dashboard']);
           });
         });
       })
@@ -76,7 +76,7 @@ export class AuthService {
       .then((result) => {
         this.setUserData(result.user).then(() => {
           this.sendVerificationMail().then(() => {
-            this.router.navigate(['verify-email-address']);
+            this.router.navigate(['/verify-email-address']);
           });
         });
         
@@ -138,6 +138,6 @@ export class AuthService {
     await this.afAuth.signOut();
     localStorage.removeItem('user');
     this.user = null;
-    this.router.navigate(['']);
+    this.router.navigate(['/']);
   }
 }

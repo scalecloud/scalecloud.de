@@ -18,12 +18,12 @@ export class VerifyEMailGuard  {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (this.authService.isLoggedIn === true) {
       this.ngZone.run(() => {
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['/dashboard']);
       });
     }
     else if (this.authService.isLoggedIn === false && this.authService.isLoggedInNotVerified === false ) {
       this.ngZone.run(() => {
-        this.router.navigate(['login']);
+        this.router.navigate(['/login']);
       });
     }
     return true;
