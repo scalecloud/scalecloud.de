@@ -1,14 +1,15 @@
 
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
 import { User } from './user.model';
+import { ReturnUrlService } from './redirect/return-url.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -20,10 +21,9 @@ export class AuthService {
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     private router: Router,
-    private ngZone: NgZone,
-    private route: ActivatedRoute,
     private snackBarService: SnackBarService,
-    private logService: LogService
+    private logService: LogService,
+    private returnUrlService: ReturnUrlService,
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -39,14 +39,14 @@ export class AuthService {
   }
 
   subscribeToToken() {
-   this.afAuth.idToken.subscribe((token) => {
+    this.afAuth.idToken.subscribe((token) => {
       this.token = token;
     });
   }
 
   getToken(): string {
     let ret = '';
-    if( this.token != null && this.token != undefined ) {
+    if (this.token != null && this.token != undefined) {
       ret = this.token;
     }
     else {
@@ -61,15 +61,15 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.setUserData(result.user).then(() => {
-          this.snackBarService.info('Login successful');
-          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-          this.router.navigate([returnUrl || '/dashboard']);
+          this.returnUrlService.openReturnURL('/dashboard');
         });
       })
       .catch((error) => {
         this.snackBarService.error(error.message);
       });
   }
+
+
 
   register(email: string, password: string) {
     return this.afAuth
@@ -80,9 +80,6 @@ export class AuthService {
             this.router.navigate(['/verify-email-address']);
           });
         });
-        
-        
-        
       })
       .catch((error) => {
         this.snackBarService.error(error.message);

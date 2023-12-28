@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 
 @Component({
@@ -12,7 +13,10 @@ export class LoginComponent {
   email = new UntypedFormControl('', [Validators.required, Validators.email]);
   password = new UntypedFormControl('', [Validators.required]);
 
-  constructor(public auth: AuthService) { }
+  constructor(
+    public auth: AuthService,
+    private returnUrlService: ReturnUrlService,
+  ) { }
 
   login(): void {
     if (this.isEmailInvalid() || this.isPasswordInvalid()) {
@@ -48,6 +52,9 @@ export class LoginComponent {
     return ret;
   }
 
+  openUrlKeepReturnUrl() {
+    this.returnUrlService.openUrlKeepReturnUrl('/register');
+  }
 
 
 }

@@ -3,6 +3,7 @@ import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Val
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PasswordMatchComponent } from './password-match/password-match.component';
 import { PasswordStrengthComponent } from './password-strength/password-strength.component';
+import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,11 @@ export class RegisterComponent {
   form: UntypedFormGroup;
   submitted = false;
 
-  constructor(private formBuilder: UntypedFormBuilder, public auth: AuthService) {
+  constructor(
+    private formBuilder: UntypedFormBuilder, 
+    public auth: AuthService,
+    private returnUrlService: ReturnUrlService,
+    ) {
     this.form = this.formBuilder.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -104,6 +109,10 @@ export class RegisterComponent {
 
   getErrorMessagePasswordConfirmMatch() {
     return 'Confirm Password does not match';
+  }
+
+  openUrlKeepReturnUrl() {
+    this.returnUrlService.openUrlKeepReturnUrl('/login');
   }
 
 }
