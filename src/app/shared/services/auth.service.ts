@@ -77,7 +77,7 @@ export class AuthService {
       .then((result) => {
         this.setUserData(result.user).then(() => {
           this.sendVerificationMail().then(() => {
-            this.router.navigate(['/verify-email-address']);
+            this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
           });
         });
       })

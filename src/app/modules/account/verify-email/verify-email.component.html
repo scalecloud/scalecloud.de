@@ -12,13 +12,13 @@
         </div>
         <div class="flex-container">
             <div class="flex-item">
-                <button [disabled]="clicked" (click)="sendVerificationMail();" mat-raised-button color="primary">
-                    {{getButtonText()}}
+                <button (click)="openReturnURL()" mat-raised-button color="primary">
+                    Proceed to Checkout
                 </button>
             </div>
             <div class="flex-item">
-                <button (click)="authService.signOut()" mat-stroked-button>
-                    Logout
+                <button [disabled]="clicked" (click)="sendVerificationMail();" mat-stroked-button>
+                    {{getButtonText()}}
                 </button>
             </div>
         </div>

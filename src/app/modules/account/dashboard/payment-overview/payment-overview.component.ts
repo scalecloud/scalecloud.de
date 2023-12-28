@@ -32,6 +32,10 @@ export class PaymentOverviewComponent {
     });
   }
 
+  hasPaymentMethod(): boolean {
+    return Boolean(this.subscriptionPaymentMethodReply);
+  }
+
   getPaymentMethod(): string {
     let paymentMethodOverview = '';
     if (this.subscriptionPaymentMethodReply) {
