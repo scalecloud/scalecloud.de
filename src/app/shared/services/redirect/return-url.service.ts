@@ -33,7 +33,7 @@ export class ReturnUrlService {
       this.router.navigateByUrl(urlTree);
     }
     else {
-      this.router.navigateByUrl(defaultUrl);
+      this.router.navigate([defaultUrl]);
     }
   }
 }

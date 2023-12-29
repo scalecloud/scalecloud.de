@@ -24,7 +24,6 @@ export class ForgotPasswordComponent {
       this.snackBarService.error("Please enter a valid E-Mail address");
     }
     else {
-      console.log("Valid inputs in Login.");
       if (await this.authService.forgotPassword(this.email.value)) {
         this.disableButtonForSeconds();
       }

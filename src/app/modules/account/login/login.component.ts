@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 
@@ -16,14 +17,14 @@ export class LoginComponent {
   constructor(
     public auth: AuthService,
     private returnUrlService: ReturnUrlService,
+    private logService: LogService,
   ) { }
 
   login(): void {
     if (this.isEmailInvalid() || this.isPasswordInvalid()) {
-      console.log("Invalid inputs in Login.");
+      this.logService.warn("Invalid inputs in Login.");
     }
     else {
-      console.log("Valid inputs in Login.");
       this.auth.login(this.email.value, this.password.value);
     }
   }

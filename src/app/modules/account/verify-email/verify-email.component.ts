@@ -52,8 +52,9 @@ export class VerifyEmailComponent implements OnInit {
     }, 1000);
   }
 
-  openReturnURL() {
-    if( this.isLoggedIn() ) {
+  async openReturnURL() {
+    const isLoggedIn = await this.isLoggedIn();
+    if( isLoggedIn ) {
       this.returnUrlService.openReturnURL('/');
     }
     else {
@@ -62,7 +63,7 @@ export class VerifyEmailComponent implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    return this.authService.isLoggedIn;
+      return this.authService.isLoggedIn();
   }
 
 }

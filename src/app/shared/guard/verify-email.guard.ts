@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class VerifyEMailGuard  {
+export class VerifyEMailGuard {
   constructor(
     public authService: AuthService,
     public router: Router,
@@ -16,12 +16,12 @@ export class VerifyEMailGuard  {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedIn === true) {
+    if (this.authService.isLoggedIn()) {
       this.ngZone.run(() => {
         this.router.navigate(['/dashboard']);
       });
     }
-    else if (this.authService.isLoggedIn === false && this.authService.isLoggedInNotVerified === false ) {
+    else if (!this.authService.isLoggedIn() && !this.authService.isLoggedInNotVerified()) {
       this.ngZone.run(() => {
         this.router.navigate(['/login']);
       });

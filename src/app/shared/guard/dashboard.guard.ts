@@ -16,15 +16,15 @@ export class DashboardGuard {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedIn === true) {
+    if (this.authService.isLoggedIn()) {
       return true;
     }
-    else if (this.authService.isLoggedInNotVerified === true) {
+    else if (this.authService.isLoggedInNotVerified()) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });
     }
-    else if (this.authService.isLoggedIn === false) {
+    else if (!this.authService.isLoggedIn()) {
       this.ngZone.run(() => {
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
       });

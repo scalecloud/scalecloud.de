@@ -16,12 +16,12 @@ export class RegisterGuard  {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedIn === true) {
+    if (this.authService.isLoggedIn()) {
       this.ngZone.run(() => {
         this.router.navigate(['/dashboard']);
       });
     }
-    else if (this.authService.isLoggedInNotVerified === true) {
+    else if (this.authService.isLoggedInNotVerified()) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });

@@ -17,14 +17,14 @@ export class CheckoutGuard {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedInNotVerified === true) {
+    if (this.authService.isLoggedInNotVerified()) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });
     }
-    else if (this.authService.isLoggedIn === false) {
+    else if (!this.authService.isLoggedIn()) {
       this.ngZone.run(() => {
-        this.router.navigate(['/register'] , { queryParams: { returnUrl: state.url }});
+        this.router.navigate(['/register'], { queryParams: { returnUrl: state.url } });
       });
     }
     return true;
