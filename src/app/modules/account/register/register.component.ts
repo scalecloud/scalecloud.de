@@ -20,7 +20,7 @@ export class RegisterComponent {
 
   constructor(
     private formBuilder: UntypedFormBuilder, 
-    public auth: AuthService,
+    public authService: AuthService,
     private returnUrlService: ReturnUrlService,
     ) {
     this.form = this.formBuilder.group(
@@ -58,7 +58,7 @@ export class RegisterComponent {
     ) {
       return;
     }
-    this.auth.register(this.form.value.email, this.form.value.password);
+    this.authService.register(this.form.value.email, this.form.value.password);
   }
 
   onReset(): void {

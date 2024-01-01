@@ -58,7 +58,7 @@ export class VerifyEmailComponent implements OnInit {
   async proceedToCheckout() {
     this.isProceedToCheckoutLoading = true;
     await this.authService.reloadUser();
-    if (this.authService.isLoggedIn()) {
+    if (await this.authService.isLoggedIn()) {
       this.returnUrlService.openReturnURL('/');
     } else {
       this.snackBarService.error("Please verify your E-Mail address first.");

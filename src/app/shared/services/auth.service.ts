@@ -8,14 +8,13 @@ import { SnackBarService } from './snackbar/snack-bar.service';
 import { ReturnUrlService } from './redirect/return-url.service';
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-
-
-  user: User | null = null;
-  token: string | null = null;
+  private user: User | null | undefined = undefined;
+  private token: string | null | undefined = undefined;
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -24,6 +23,7 @@ export class AuthService {
     private logService: LogService,
     private returnUrlService: ReturnUrlService,
   ) {
+    this.afAuth.useDeviceLanguage();
     this.subscribeToUser();
     this.subscribeToToken();
   }
@@ -54,7 +54,7 @@ export class AuthService {
 
   async getTokenPromise(): Promise<string> {
     try {
-      const user = await this.getUser();
+      const user = await this.getUserPromise();
       if (user) {
         return await user.getIdToken();
       } else {
@@ -122,8 +122,13 @@ export class AuthService {
     };
     this.afAuth.currentUser.then((user) => {
       user.sendEmailVerification(actionCodeSettings)
-      this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
-      this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
+        .then(() => {
+          this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
+          this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
+        })
+        .catch((error) => {
+          this.snackBarService.error(error.message);
+        });
     })
       .catch((error) => {
         this.snackBarService.error(error.message);
@@ -145,21 +150,51 @@ export class AuthService {
   }
 
   async reloadUser(): Promise<void> {
-    if (this.user) {
-      await this.user.reload();
-      const user = await this.afAuth.currentUser;
-      this.setUser(user);
-      const token = await this.getTokenPromise();
-      this.setToken(token);
+    if (this.getUser()) {
+      await this.getUser().reload()
+        .catch((error) => {
+          this.logService.error(error.message);
+        });
+    }
+    else {
+      this.logService.error("Could not reload user, because user is null.");
     }
   }
 
-  isLoggedIn(): boolean {
-    return Boolean(this.getUser()) && this.getUser()?.emailVerified;
+  async authStateReady(): Promise<void> {
+    if (this.getUser() === undefined) {
+      await firstValueFrom(this.getUserObservable());
+    }
+    if (this.getToken() === undefined) {
+      await firstValueFrom(this.getTokenObservable());
+    }
+    if (this.getUser() === undefined) {
+      this.logService.warn("User should not be undefined.");
+    }
+    if (this.getToken() === undefined) {
+      this.logService.warn("Token should not be undefined.");
+    }
   }
 
-  isLoggedInNotVerified(): boolean {
-    return Boolean(this.getUser()) && !this.getUser()?.emailVerified;
+  async isLoggedIn(): Promise<boolean> {
+    let isLoggedIn = false;
+    await this.authStateReady();
+    let user = this.getUser();
+    isLoggedIn = Boolean(user) && user?.emailVerified;
+
+    this.logService.info("isLoggedIn: " + isLoggedIn + " user: " + JSON.stringify(user));
+    return isLoggedIn;
+  }
+
+  async isLoggedInNotVerified(): Promise<boolean> {
+    let isLoggedInNotVerified = false;
+    await this.authStateReady();
+    const user = this.getUser();
+    if (user) {
+      isLoggedInNotVerified = Boolean(user) && !user?.emailVerified;
+    }
+    this.logService.info("isLoggedInNotVerified: " + isLoggedInNotVerified + " user: " + JSON.stringify(user));
+    return isLoggedInNotVerified;
   }
 
   async signOut() {

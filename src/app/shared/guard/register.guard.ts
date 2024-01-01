@@ -2,31 +2,38 @@ import { Injectable, NgZone } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { LogService } from '../services/log/log.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterGuard  {
   constructor(
-    public authService: AuthService,
-    public router: Router,
-    public ngZone: NgZone
+    private authService: AuthService,
+    private router: Router,
+    private ngZone: NgZone,
+    private logService: LogService,
   ) { }
 
-  canActivate(
+  async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedIn()) {
+    state: RouterStateSnapshot): Promise<boolean> {
+    let canActivate = true;
+  
+    if (await this.authService.isLoggedIn()) {
       this.ngZone.run(() => {
         this.router.navigate(['/dashboard']);
       });
+      canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    else if (this.authService.isLoggedInNotVerified()) {
+    else if (await this.authService.isLoggedInNotVerified()) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });
+      canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    return true;
+  
+    return canActivate; // Single point of return
   }
 
 }

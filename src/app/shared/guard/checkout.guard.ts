@@ -3,31 +3,39 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { ReturnUrlService } from '../services/redirect/return-url.service';
+import { LogService } from '../services/log/log.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CheckoutGuard {
   constructor(
-    public authService: AuthService,
-    public router: Router,
-    public ngZone: NgZone,
+    private authService: AuthService,
+    private router: Router,
+    private ngZone: NgZone,
+    private logService: LogService,
   ) { }
 
-  canActivate(
+  async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedInNotVerified()) {
+    state: RouterStateSnapshot): Promise<boolean> {
+    let canActivate = true;
+  
+    if (await this.authService.isLoggedInNotVerified()) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });
+      canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    else if (!this.authService.isLoggedIn()) {
+    else if (!(await this.authService.isLoggedIn())) {
+      this.logService.log('CheckoutGuard: canActivate: User is not logged in. Redirecting to login page.');
       this.ngZone.run(() => {
         this.router.navigate(['/register'], { queryParams: { returnUrl: state.url } });
       });
+      canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    return true;
+  
+    return canActivate; // Single point of return
   }
 
 }

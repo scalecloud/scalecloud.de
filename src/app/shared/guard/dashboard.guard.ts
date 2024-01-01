@@ -13,24 +13,25 @@ export class DashboardGuard {
     public ngZone: NgZone
   ) { }
 
-  canActivate(
+  async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedIn()) {
-      return true;
-    }
-    else if (this.authService.isLoggedInNotVerified()) {
+    state: RouterStateSnapshot): Promise<boolean> {
+    let canActivate = true;
+
+    if (await this.authService.isLoggedInNotVerified()) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });
+      canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    else if (!this.authService.isLoggedIn()) {
+    else if (!(await this.authService.isLoggedIn())) {
       this.ngZone.run(() => {
-        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
+        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
       });
+      canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
 
-    return true;
+    return canActivate; // Single point of return
   }
 
 }

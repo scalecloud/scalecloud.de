@@ -14,20 +14,25 @@ export class LoginGuard {
     public ngZone: NgZone
   ) { }
 
-  canActivate(
+  async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedIn()) {
+    state: RouterStateSnapshot): Promise<boolean> {
+    let canActivate = true;
+  
+    if (await this.authService.isLoggedIn()) {
       this.ngZone.run(() => {
         this.router.navigate(['/dashboard']);
       });
+      canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    else if (this.authService.isLoggedInNotVerified()) {
+    else if (await this.authService.isLoggedInNotVerified()) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });
+      canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    return true;
+  
+    return canActivate; // Single point of return
   }
 
 }
