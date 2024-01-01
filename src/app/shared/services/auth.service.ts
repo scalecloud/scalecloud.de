@@ -192,9 +192,9 @@ export class AuthService {
     });
   }
 
-  async isLoggedIn(waitForAuth: boolean): Promise<boolean> {
+  async isLoggedIn(waitAuthStateReady: boolean): Promise<boolean> {
     let isLoggedIn = false;
-    if (waitForAuth) {
+    if (waitAuthStateReady) {
       await this.authStateReady();
     }
     let user = this.getUser();
@@ -204,9 +204,9 @@ export class AuthService {
     return isLoggedIn;
   }
 
-  async isLoggedInNotVerified(waitForAuth: boolean): Promise<boolean> {
+  async isLoggedInNotVerified(waitAuthStateReady: boolean): Promise<boolean> {
     let isLoggedInNotVerified = false;
-    if (waitForAuth) {
+    if (waitAuthStateReady) {
       await this.authStateReady();
     }
     const user = this.getUser();
