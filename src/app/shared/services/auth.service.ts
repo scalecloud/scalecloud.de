@@ -49,6 +49,7 @@ export class AuthService {
   }
 
   async getUserPromise(): Promise<User | null> {
+    await this.authStateReady();
     return this.afAuth.currentUser;
   }
 
