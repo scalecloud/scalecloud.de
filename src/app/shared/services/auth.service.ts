@@ -1,16 +1,21 @@
 
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { User } from 'firebase/auth';
 import { Router } from '@angular/router';
 import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
 import { ReturnUrlService } from './redirect/return-url.service';
+import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  user: any;
-  idToken: string | null | undefined;
+
+
+  user: User | null = null;
+  token: string | null = null;
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -20,37 +25,78 @@ export class AuthService {
     private returnUrlService: ReturnUrlService,
   ) {
     this.subscribeToUser();
+    this.subscribeToToken();
   }
 
   subscribeToUser() {
-    this.afAuth.authState.subscribe((user) => {
-      this.updateUser(user);
+    this.getUserObservable().subscribe((user) => {
+      this.setUser(user);
     });
   }
 
-  updateUser( user: any ): void {
+  subscribeToToken() {
+    this.getTokenObservable().subscribe((token) => {
+      this.setToken(token);
+    });
+  }
+
+  getUserObservable(): Observable<User | null> {
+    return this.afAuth.user;
+  }
+
+  getTokenObservable(): Observable<string | null> {
+    return this.afAuth.idToken;
+  }
+
+  async getUserPromise(): Promise<User | null> {
+    return this.afAuth.currentUser;
+  }
+
+  async getTokenPromise(): Promise<string> {
+    try {
+      const user = await this.getUser();
+      if (user) {
+        return await user.getIdToken();
+      } else {
+        throw new Error('User not found');
+      }
+    } catch (error) {
+      this.logService.error(error.message);
+      throw error;
+    }
+  }
+
+  setUser(user: User | null) {
     this.user = user;
-    this.user?.getIdToken().then((idToken: string) => {
-      this.idToken = idToken;
-    });
+    this.logService.info('setUser: ' + JSON.stringify(this.user));
   }
 
-  getToken(): string {
-    let ret = '';
-    if (this.idToken != null && this.idToken != undefined) {
-      ret = this.idToken;
-    }
-    else {
-      this.logService.warn('Token is null or undefined');
-    }
-    return ret;
+  getUser(): User | null {
+    return this.user;
+  }
+
+  setToken(token: string | null) {
+    this.token = token;
+    this.logService.info('setToken: ' + JSON.stringify(this.token));
+  }
+
+  getToken(): string | null {
+    return this.token;
+  }
+
+  getHttpOptions() {
+    return {
+      headers: new HttpHeaders({
+        'Authorization': this.getToken()
+      })
+    };
   }
 
   async login(email: string, password: string): Promise<void> {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.updateUser(result.user);
+        this.setUser(result.user);
         this.returnUrlService.openReturnURL('/dashboard');
       })
       .catch((error) => {
@@ -58,25 +104,29 @@ export class AuthService {
       });
   }
 
-  async register(email: string, password: string): Promise<void> {
-    return this.afAuth
+  register(email: string, password: string) {
+    this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        this.sendVerificationMail().then(() => {
-          this.updateUser(result.user);
-          this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
-        });
+        this.setUser(result.user);
+        this.sendVerificationMail();
       })
       .catch((error) => {
         this.snackBarService.error(error.message);
       });
   }
 
-  async sendVerificationMail(): Promise<void> {
-    return this.afAuth.currentUser
-      .then((u: any) => u.sendEmailVerification())
-      .then(() => {
-        this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
+  sendVerificationMail() {
+    var actionCodeSettings = {
+      url: this.returnUrlService.getReturnUrlDecoded(),
+    };
+    this.afAuth.currentUser.then((user) => {
+      user.sendEmailVerification(actionCodeSettings)
+      this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
+      this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
+    })
+      .catch((error) => {
+        this.snackBarService.error(error.message);
       });
   }
 
@@ -94,12 +144,22 @@ export class AuthService {
     return result;
   }
 
+  async reloadUser(): Promise<void> {
+    if (this.user) {
+      await this.user.reload();
+      const user = await this.afAuth.currentUser;
+      this.setUser(user);
+      const token = await this.getTokenPromise();
+      this.setToken(token);
+    }
+  }
+
   isLoggedIn(): boolean {
-    return Boolean(this.user) && this.user?.emailVerified;
+    return Boolean(this.getUser()) && this.getUser()?.emailVerified;
   }
 
   isLoggedInNotVerified(): boolean {
-    return Boolean(this.user) && !this.user?.emailVerified;
+    return Boolean(this.getUser()) && !this.getUser()?.emailVerified;
   }
 
   async signOut() {

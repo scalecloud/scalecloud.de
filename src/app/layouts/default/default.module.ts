@@ -38,6 +38,7 @@ import { ProcessingComponent } from 'src/app/modules/products/checkout/status/pr
 import { RequiresPaymentMethodComponent } from 'src/app/modules/products/checkout/status/requires-payment-method/requires-payment-method.component';
 import { SucceededComponent } from 'src/app/modules/products/checkout/status/succeeded/succeeded.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -109,6 +110,7 @@ import { PaymentChangedSucceededComponent } from 'src/app/modules/account/dashbo
     MatDividerModule,
     MatCardModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     MatDialogModule,
     MatListModule,
     MatFormFieldModule,

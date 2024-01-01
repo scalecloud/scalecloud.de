@@ -19,18 +19,10 @@ export class CancelSubscriptionService {
     private authService: AuthService) { }
 
     cancelSubscription(iSubscriptionCancelRequest: ISubscriptionCancelRequest): Observable<ISubscriptionCancelReply> {
-    return this.http.post<ISubscriptionCancelReply>(this.url, iSubscriptionCancelRequest, this.getHttpOptions())
+    return this.http.post<ISubscriptionCancelReply>(this.url, iSubscriptionCancelRequest, this.authService.getHttpOptions())
       .pipe(
         catchError(this.handleError<ISubscriptionCancelReply>('cancelSubscription'))
       );
-  }
-
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getToken()
-      })
-    };
   }
 
   handleError<T>(operation = 'operation', result?: T) {

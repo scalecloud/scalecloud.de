@@ -18,18 +18,10 @@ export class PaymentMethodOverviewService {
     private authService: AuthService) { }
 
   getPaymentMethodOverview(): Observable<PaymentMethodOverviewReply> {
-    return this.http.post<PaymentMethodOverviewReply>(this.url, null, this.getHttpOptions())
+    return this.http.post<PaymentMethodOverviewReply>(this.url, null, this.authService.getHttpOptions())
       .pipe(
         catchError(this.handleError<PaymentMethodOverviewReply>('getPaymentMethodOverview'))
       );
-  }
-
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getToken()
-      })
-    };
   }
 
   handleError<T>(operation = 'operation', result?: T) {

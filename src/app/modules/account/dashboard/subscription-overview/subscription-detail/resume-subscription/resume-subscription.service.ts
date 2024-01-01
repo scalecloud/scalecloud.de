@@ -18,18 +18,10 @@ export class ResumeSubscriptionService {
     private authService: AuthService) { }
 
   resumeSubscription(iSubscriptionResumeRequest: ISubscriptionResumeRequest): Observable<ISubscriptionResumeReply> {
-    return this.http.post<ISubscriptionResumeReply>(this.url, iSubscriptionResumeRequest, this.getHttpOptions())
+    return this.http.post<ISubscriptionResumeReply>(this.url, iSubscriptionResumeRequest, this.authService.getHttpOptions())
       .pipe(
         catchError(this.handleError<ISubscriptionResumeReply>('resumeSubscription'))
       );
-  }
-
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getToken()
-      })
-    };
   }
 
   handleError<T>(operation = 'operation', result?: T) {

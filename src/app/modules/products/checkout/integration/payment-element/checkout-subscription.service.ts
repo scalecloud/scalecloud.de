@@ -18,19 +18,12 @@ export class CheckoutSubscriptionService {
     private authService: AuthService) { }
 
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutIntegrationRequest): Observable<CheckoutIntegrationReply> {
-    return this.http.post<CheckoutIntegrationReply>(this.url, checkoutIntegrationRequest, this.getHttpOptions())
+    return this.http.post<CheckoutIntegrationReply>(this.url, checkoutIntegrationRequest, this.authService.getHttpOptions())
       .pipe(
         catchError(this.handleError<CheckoutIntegrationReply>('createCheckoutSubscription'))
       );
   }
 
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getToken()
-      })
-    };
-  }
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

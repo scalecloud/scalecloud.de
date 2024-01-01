@@ -21,19 +21,11 @@ export class CheckoutService {
     ) { }
 
   getCheckoutSession(checkoutModelPortalRequest: CheckoutModelPortalRequest): Observable<CheckoutModelPortalReply> {
-    return this.http.post<CheckoutModelPortalReply>(this.url, checkoutModelPortalRequest, this.getHttpOptions())
+    return this.http.post<CheckoutModelPortalReply>(this.url, checkoutModelPortalRequest, this.authService.getHttpOptions())
       .pipe(
         catchError(this.handleError<CheckoutModelPortalReply>('getBillingPortal'))
         
       );
-  }
-
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getToken()
-      })
-    };
   }
 
   handleError<T>(operation = 'operation', result?: T) {

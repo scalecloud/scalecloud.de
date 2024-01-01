@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-verify-email',
@@ -13,11 +14,13 @@ export class VerifyEmailComponent implements OnInit {
   defaultDisabledSecounds = 30;
   secounds = 0;
 
+  isProceedToCheckoutLoading = false;
+
   constructor(
     public authService: AuthService,
     private returnUrlService: ReturnUrlService,
     private snackBarService: SnackBarService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.disableButtonForSeconds();
@@ -52,18 +55,15 @@ export class VerifyEmailComponent implements OnInit {
     }, 1000);
   }
 
-  async openReturnURL() {
-    const isLoggedIn = await this.isLoggedIn();
-    if( isLoggedIn ) {
+  async proceedToCheckout() {
+    this.isProceedToCheckoutLoading = true;
+    await this.authService.reloadUser();
+    if (this.authService.isLoggedIn()) {
       this.returnUrlService.openReturnURL('/');
+    } else {
+      this.snackBarService.error("Please verify your E-Mail address first.");
     }
-    else {
-      this.snackBarService.error("Please verify your E-Mail address first.")
-    }
-  }
-
-  isLoggedIn(): boolean {
-      return this.authService.isLoggedIn();
+    this.isProceedToCheckoutLoading = false;
   }
 
 }

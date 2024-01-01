@@ -18,18 +18,10 @@ export class ChangePaymentService {
     private authService: AuthService) { }
 
   getChangePaymentSetupIntent(): Observable<ChangePaymentReply> {
-    return this.http.post<ChangePaymentReply>(this.url, null, this.getHttpOptions())
+    return this.http.post<ChangePaymentReply>(this.url, null, this.authService.getHttpOptions())
       .pipe(
         catchError(this.handleError<ChangePaymentReply>('getChangePaymentSetupIntent'))
       );
-  }
-
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getToken()
-      })
-    };
   }
 
   handleError<T>(operation = 'operation', result?: T) {

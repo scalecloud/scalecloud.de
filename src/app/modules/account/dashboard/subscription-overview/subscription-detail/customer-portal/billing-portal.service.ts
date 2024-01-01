@@ -15,18 +15,10 @@ export class BillingPortalService {
   constructor(private http: HttpClient, private logService: LogService, private authService: AuthService) { }
 
   getBillingPortal(): Observable<IBillingPortal> {
-    return this.http.get<IBillingPortal>(this.url, this.getHttpOptions())
+    return this.http.get<IBillingPortal>(this.url, this.authService.getHttpOptions())
     .pipe(
       catchError(this.handleError<IBillingPortal>('getBillingPortal'))
     );
-  }
-
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getToken()
-      })
-    };
   }
 
   handleError<T>(operation = 'operation', result?: T) {

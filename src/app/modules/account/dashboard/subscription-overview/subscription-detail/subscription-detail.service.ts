@@ -19,19 +19,11 @@ export class SubscriptionDetailService {
 
   getSubscriptionDetail(id: string): Observable<ISubscriptionDetail> {
     const url = `${this.url}/${id}`;
-    return this.http.get<ISubscriptionDetail>(url, this.getHttpOptions())
+    return this.http.get<ISubscriptionDetail>(url, this.authService.getHttpOptions())
       .pipe(
         tap(_ => this.logService.info(`fetched subscription id=${id}`)),
         catchError(this.handleError<ISubscriptionDetail>(`getSubscription id=${id}`))
       );
-  }
-
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getToken()
-      })
-    };
   }
 
   handleError<T>(operation = 'operation', result?: T) {

@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-header',
@@ -9,8 +10,7 @@ import { AuthService } from '../../services/auth.service';
 export class HeaderComponent {
   @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
 
-
-  constructor(public auth: AuthService) { }
+  constructor(public authService: AuthService) { }
 
   toggleSideBar() {
     this.toggleSideBarForMe.emit();

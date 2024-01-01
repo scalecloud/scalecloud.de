@@ -1,9 +1,9 @@
 <mat-card>
     <mat-card-title>Thank You for Registering</mat-card-title>
     <mat-card-content>
-        <div *ngIf="authService.user as user">
+        <div *ngIf="authService.getUser()">
             <p>
-                We have sent a confirmation E-Mail to: <strong>{{ user.email }}</strong>.
+                We have sent a confirmation E-Mail to: <strong>{{ authService.getUser()?.email }}</strong>.
             </p>
             <p>
                 Please check your E-Mail and click on the link to verfiy your E-Mail
@@ -12,8 +12,8 @@
         </div>
         <div class="flex-container">
             <div class="flex-item">
-                <button (click)="openReturnURL()" mat-raised-button color="primary">
-                    Proceed to Checkout
+                <button (click)="proceedToCheckout()" mat-raised-button color="primary" [disabled]="isProceedToCheckoutLoading">
+                    @if (isProceedToCheckoutLoading) {<mat-icon><mat-spinner color="accent" style="width: 100%; height: 100%;"></mat-spinner></mat-icon>}Proceed to Checkout
                 </button>
             </div>
             <div class="flex-item">

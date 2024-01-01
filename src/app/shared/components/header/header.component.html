@@ -9,7 +9,7 @@
         </a>
         <span class="fill-remaining-space"></span>
         <div>
-            <div *ngIf="auth.user as user; else login">
+            <div *ngIf="authService.isLoggedIn(); else login">
                 <button mat-icon-button [matMenuTriggerFor]="menu">
                     <mat-icon>person_outline</mat-icon>
                 </button>
@@ -18,7 +18,7 @@
                         <mat-icon>dashboard</mat-icon>
                         Dashboard
                     </button>
-                    <button mat-menu-item (click)="auth.signOut()">
+                    <button mat-menu-item (click)="authService.signOut()">
                         <mat-icon>logout</mat-icon>
                         Logout
                     </button>

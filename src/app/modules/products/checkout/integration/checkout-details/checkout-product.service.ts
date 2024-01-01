@@ -19,18 +19,10 @@ export class CheckoutProductService {
     private authService: AuthService) { }
 
   getCheckoutProduct(checkoutProductRequest: CheckoutProductRequest): Observable<CheckoutProductReply> {
-    return this.http.post<CheckoutProductReply>(this.url, checkoutProductRequest, this.getHttpOptions())
+    return this.http.post<CheckoutProductReply>(this.url, checkoutProductRequest, this.authService.getHttpOptions())
       .pipe(
         catchError(this.handleError<CheckoutProductReply>('getCheckoutProduct'))
       );
-  }
-
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Authorization': this.authService.getToken()
-      })
-    };
   }
 
   handleError<T>(operation = 'operation', result?: T) {
