@@ -35,7 +35,7 @@ export class CheckoutComponent {
     const quantity = this.getParamMapQuantity();
     this.setQuantity(quantity);
     const productID = this.getParamMapProductID();
-    if ( this.checkoutDetailsComponent != undefined && quantity) {
+    if (this.checkoutDetailsComponent != undefined && quantity) {
       this.createCheckoutSubscription(productID, this.checkoutDetailsComponent.getQuantity());
     }
     else {
@@ -87,11 +87,11 @@ export class CheckoutComponent {
   }
 
   startSubscription(quantity: number): void {
-    if ( this.stripePaymentElementComponent ) {
+    if (this.stripePaymentElementComponent) {
       this.snackBarService.error("Checking if quantity was updated and subscriptions needs to be updated: " + quantity)
 
       const submitStripePayment: SubmitStripePayment = {
-        return_url : "https://www.scalecloud.de/checkout/status",
+        return_url: "https://www.scalecloud.de/checkout/status",
       }
 
       this.stripePaymentElementComponent.submitIntent(submitStripePayment);
@@ -117,33 +117,33 @@ export class CheckoutComponent {
 
 
   createCheckoutSubscription(productID: string | undefined, quantity: number | undefined): void {
-    this.authService.afAuth.authState.subscribe((user) => {
-      if (user) {
-        if (productID && quantity) {
-          const checkoutModelPortalRequest: CheckoutModelPortalRequest = {
-            productID: productID,
-            quantity: quantity,
-          }
-
-          const observable = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(
-            (checkoutIntegrationReply: CheckoutIntegrationReply) => {
-              this.checkoutIntegrationReply = checkoutIntegrationReply;
-
-              const initStripePayment : InitStripePayment  = {
-                intent: StripeIntent.SetupIntent,
-                client_secret: checkoutIntegrationReply.clientSecret,
-                email: checkoutIntegrationReply.email
-              }
-              this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
-            });
-            this.initCheckoutProduct(productID);
+    this.authService.waitForAuth().then(() => {
+      if (productID && quantity) {
+        const checkoutModelPortalRequest: CheckoutModelPortalRequest = {
+          productID: productID,
+          quantity: quantity,
         }
-        else {
-          this.logService.error('productID: ' + productID + ' or quantity: ' + quantity + ' not defined');
-        }
+
+        const observable = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(
+          (checkoutIntegrationReply: CheckoutIntegrationReply) => {
+            this.checkoutIntegrationReply = checkoutIntegrationReply;
+
+            const initStripePayment: InitStripePayment = {
+              intent: StripeIntent.SetupIntent,
+              client_secret: checkoutIntegrationReply.clientSecret,
+              email: checkoutIntegrationReply.email
+            }
+            this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
+          });
+        this.initCheckoutProduct(productID);
+      }
+      else {
+        this.logService.error('productID: ' + productID + ' or quantity: ' + quantity + ' not defined');
       }
     }
-    );
+    ).catch((error) => {
+      this.logService.error("waitForAuth failed: " + error);
+    });
   }
 
 }

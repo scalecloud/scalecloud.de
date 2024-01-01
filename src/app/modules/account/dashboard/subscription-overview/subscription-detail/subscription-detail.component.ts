@@ -22,26 +22,21 @@ export class SubscriptionDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.waitForAuth();
-  }
-
-  waitForAuth(): void {
-    this.authService.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.reloadSubscriptionDetail();
-      }
-    }
-    );
+    this.reloadSubscriptionDetail();
   }
 
   reloadSubscriptionDetail(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id == null) {
-      this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
-    } else {
-      this.subscriptionDetailService.getSubscriptionDetail(id)
-        .subscribe(subscriptionDetail => this.subscriptionDetail = subscriptionDetail);
-    }
+    this.authService.waitForAuth().then(() => {
+      const id = this.route.snapshot.paramMap.get('id');
+      if (id == null) {
+        this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
+      } else {
+        this.subscriptionDetailService.getSubscriptionDetail(id)
+          .subscribe(subscriptionDetail => this.subscriptionDetail = subscriptionDetail);
+      }
+    }).catch((error) => {
+      this.logService.error("waitForAuth failed: " + error);
+    });
   }
 
   isEnding(): boolean {

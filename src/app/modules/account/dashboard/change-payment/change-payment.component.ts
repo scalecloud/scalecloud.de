@@ -24,34 +24,25 @@ export class ChangePaymentComponent {
   ) { }
 
   ngOnInit(): void {
-    this.waitForAuth();
-  }
-
-  waitForAuth(): void {
-    this.authService.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.getChangePaymentSetupIntent();
-      }
-    }
-    );
+    this.getChangePaymentSetupIntent();
   }
 
   getChangePaymentSetupIntent(): void {
-    this.authService.afAuth.authState.subscribe((user) => {
-      if (user) {
-          const observable = this.changePaymentService.getChangePaymentSetupIntent().subscribe(
-            (subscriptionSetupIntentReply: ChangePaymentReply) => {
-              this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
+    this.authService.waitForAuth().then(() => {
+      const observable = this.changePaymentService.getChangePaymentSetupIntent().subscribe(
+        (subscriptionSetupIntentReply: ChangePaymentReply) => {
+          this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
 
-              const initStripePayment: InitStripePayment = {
-                intent: StripeIntent.SetupIntent,
-                client_secret: subscriptionSetupIntentReply.clientsecret,
-                email: subscriptionSetupIntentReply.email
-              }
+          const initStripePayment: InitStripePayment = {
+            intent: StripeIntent.SetupIntent,
+            client_secret: subscriptionSetupIntentReply.clientsecret,
+            email: subscriptionSetupIntentReply.email
+          }
 
-              this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
-            });
-        }
+          this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
+        });
+    }).catch((error) => {
+      this.logService.error("waitForAuth failed: " + error);
     });
   }
 

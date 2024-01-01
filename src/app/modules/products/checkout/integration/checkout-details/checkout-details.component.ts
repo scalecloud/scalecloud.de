@@ -25,21 +25,21 @@ export class CheckoutDetailsComponent {
   ) { }
 
   initCheckoutProduct(productID: string): void {
-    this.authService.afAuth.authState.subscribe((user) => {
-      if (user) {
-        if (!productID) {
-          this.logService.error("productID is undefined");
-        }
-        else {
-          let checkoutProductRequest: CheckoutProductRequest = {
-            productID: productID
-          }
-          const observable = this.checkoutProductService.getCheckoutProduct(checkoutProductRequest).subscribe(
-            (checkoutProductReply: CheckoutProductReply) => {
-              this.checkoutProductReply = checkoutProductReply;
-            });
-        }
+    this.authService.waitForAuth().then(() => {
+      if (!productID) {
+        this.logService.error("productID is undefined");
       }
+      else {
+        let checkoutProductRequest: CheckoutProductRequest = {
+          productID: productID
+        }
+        const observable = this.checkoutProductService.getCheckoutProduct(checkoutProductRequest).subscribe(
+          (checkoutProductReply: CheckoutProductReply) => {
+            this.checkoutProductReply = checkoutProductReply;
+          });
+      }
+    }).catch((error) => {
+      this.logService.error("waitForAuth failed: " + error);
     });
   }
 
@@ -71,7 +71,7 @@ export class CheckoutDetailsComponent {
     let pricePerMonth = "";
     if (this.checkoutProductReply && this.checkoutProductReply.pricePerMonth > 0) {
       let pricePipe = this.currencyPipe.transform(this.checkoutProductReply.pricePerMonth / 100 * this.getQuantity(), this.getCurrency(), 'symbol', '1.0-0');
-      if( pricePipe != null ) {
+      if (pricePipe != null) {
         pricePerMonth = pricePipe;
       }
     }

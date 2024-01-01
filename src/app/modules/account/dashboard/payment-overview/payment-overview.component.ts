@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
+import { LogService } from 'src/app/shared/services/log/log.service';
 
 @Component({
   selector: 'app-payment-overview',
@@ -15,6 +16,7 @@ export class PaymentOverviewComponent {
   constructor(
     private subscriptionPaymentMethodService: PaymentMethodOverviewService,
     private authService: AuthService,
+    private logService: LogService,
   ) { }
 
   ngAfterViewInit(): void {
@@ -22,14 +24,15 @@ export class PaymentOverviewComponent {
   }
 
   getPaymentMethodOverview(): void {
-    this.authService.afAuth.authState.subscribe((user) => {
-      if (user) {
-        const observable = this.subscriptionPaymentMethodService.getPaymentMethodOverview().subscribe(
-          (subscriptionPaymentMethodReply: PaymentMethodOverviewReply) => {
-            this.subscriptionPaymentMethodReply = subscriptionPaymentMethodReply;
-          });
-      }
-    });
+    this.authService.waitForAuth().then(() => {
+      const observable = this.subscriptionPaymentMethodService.getPaymentMethodOverview().subscribe(
+        (subscriptionPaymentMethodReply: PaymentMethodOverviewReply) => {
+          this.subscriptionPaymentMethodReply = subscriptionPaymentMethodReply;
+        });
+    })
+      .catch((error) => {
+        this.logService.error("waitForAuth failed: " + error);
+      });
   }
 
   hasPaymentMethod(): boolean {

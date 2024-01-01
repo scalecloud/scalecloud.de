@@ -9,6 +9,7 @@ import { ReturnUrlService } from './redirect/return-url.service';
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
   private token: string | null | undefined = undefined;
 
   constructor(
-    public afAuth: AngularFireAuth,
+    private afAuth: AngularFireAuth,
     private router: Router,
     private snackBarService: SnackBarService,
     private logService: LogService,
@@ -163,11 +164,13 @@ export class AuthService {
   }
 
   async authStateReady(): Promise<void> {
+    const timeoutDuration = 4000; // 4 seconds
+  
     if (this.getUser() === undefined) {
-      await firstValueFrom(this.getUserObservable());
+      await firstValueFrom(this.getUserObservable().pipe(timeout(timeoutDuration)));
     }
     if (this.getToken() === undefined) {
-      await firstValueFrom(this.getTokenObservable());
+      await firstValueFrom(this.getTokenObservable().pipe(timeout(timeoutDuration)));
     }
     if (this.getUser() === undefined) {
       this.logService.warn("User should not be undefined.");
@@ -175,6 +178,18 @@ export class AuthService {
     if (this.getToken() === undefined) {
       this.logService.warn("Token should not be undefined.");
     }
+  }
+
+  async waitForAuth(): Promise<void> {
+    await this.authStateReady();
+    await new Promise<void>((resolve) => {
+      const subscription = this.getUserObservable().subscribe((user) => {
+        if (user) {
+          subscription.unsubscribe();
+          resolve();
+        }
+      });
+    });
   }
 
   async isLoggedIn(): Promise<boolean> {
