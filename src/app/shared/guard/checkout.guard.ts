@@ -20,21 +20,21 @@ export class CheckoutGuard {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
     let canActivate = true;
-  
-    if (await this.authService.isLoggedInNotVerified()) {
+
+    if (await this.authService.isLoggedInNotVerified(true)) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });
       canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    else if (!(await this.authService.isLoggedIn())) {
+    else if (!(await this.authService.isLoggedIn(true))) {
       this.logService.log('CheckoutGuard: canActivate: User is not logged in. Redirecting to login page.');
       this.ngZone.run(() => {
         this.router.navigate(['/register'], { queryParams: { returnUrl: state.url } });
       });
       canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-  
+
     return canActivate; // Single point of return
   }
 

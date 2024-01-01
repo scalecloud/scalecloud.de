@@ -165,7 +165,7 @@ export class AuthService {
 
   async authStateReady(): Promise<void> {
     const timeoutDuration = 4000; // 4 seconds
-  
+
     if (this.getUser() === undefined) {
       await firstValueFrom(this.getUserObservable().pipe(timeout(timeoutDuration)));
     }
@@ -192,9 +192,11 @@ export class AuthService {
     });
   }
 
-  async isLoggedIn(): Promise<boolean> {
+  async isLoggedIn(waitForAuth: boolean): Promise<boolean> {
     let isLoggedIn = false;
-    await this.authStateReady();
+    if (waitForAuth) {
+      await this.authStateReady();
+    }
     let user = this.getUser();
     isLoggedIn = Boolean(user) && user?.emailVerified;
 
@@ -202,9 +204,11 @@ export class AuthService {
     return isLoggedIn;
   }
 
-  async isLoggedInNotVerified(): Promise<boolean> {
+  async isLoggedInNotVerified(waitForAuth: boolean): Promise<boolean> {
     let isLoggedInNotVerified = false;
-    await this.authStateReady();
+    if (waitForAuth) {
+      await this.authStateReady();
+    }
     const user = this.getUser();
     if (user) {
       isLoggedInNotVerified = Boolean(user) && !user?.emailVerified;

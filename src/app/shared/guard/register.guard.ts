@@ -7,7 +7,7 @@ import { LogService } from '../services/log/log.service';
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterGuard  {
+export class RegisterGuard {
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -19,20 +19,20 @@ export class RegisterGuard  {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
     let canActivate = true;
-  
-    if (await this.authService.isLoggedIn()) {
+
+    if (await this.authService.isLoggedIn(true)) {
       this.ngZone.run(() => {
         this.router.navigate(['/dashboard']);
       });
       canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    else if (await this.authService.isLoggedInNotVerified()) {
+    else if (await this.authService.isLoggedInNotVerified(true)) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });
       canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-  
+
     return canActivate; // Single point of return
   }
 

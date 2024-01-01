@@ -18,13 +18,13 @@ export class DashboardGuard {
     state: RouterStateSnapshot): Promise<boolean> {
     let canActivate = true;
 
-    if (await this.authService.isLoggedInNotVerified()) {
+    if (await this.authService.isLoggedInNotVerified(true)) {
       this.ngZone.run(() => {
         this.router.navigate(['/verify-email-address']);
       });
       canActivate = false; // Prevent navigation to the current route because we're redirecting.
     }
-    else if (!(await this.authService.isLoggedIn())) {
+    else if (!(await this.authService.isLoggedIn(true))) {
       this.ngZone.run(() => {
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
       });
