@@ -193,28 +193,19 @@ export class AuthService {
   }
 
   async isLoggedIn(waitAuthStateReady: boolean): Promise<boolean> {
-    let isLoggedIn = false;
     if (waitAuthStateReady) {
       await this.authStateReady();
     }
     let user = this.getUser();
-    isLoggedIn = Boolean(user) && user?.emailVerified;
-
-    this.logService.info("isLoggedIn: " + isLoggedIn + " user: " + JSON.stringify(user));
-    return isLoggedIn;
+    return user && user?.emailVerified;
   }
 
   async isLoggedInNotVerified(waitAuthStateReady: boolean): Promise<boolean> {
-    let isLoggedInNotVerified = false;
     if (waitAuthStateReady) {
       await this.authStateReady();
     }
     const user = this.getUser();
-    if (user) {
-      isLoggedInNotVerified = Boolean(user) && !user?.emailVerified;
-    }
-    this.logService.info("isLoggedInNotVerified: " + isLoggedInNotVerified + " user: " + JSON.stringify(user));
-    return isLoggedInNotVerified;
+    return user && !user?.emailVerified;
   }
 
   async signOut() {
