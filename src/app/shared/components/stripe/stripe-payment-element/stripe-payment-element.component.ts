@@ -43,19 +43,6 @@ export class StripePaymentElementComponent {
       const paymentElement = this.elements.create('payment');
       paymentElement.mount('#payment-element');
 
-      // Create and mount the linkAuthentication Element to enable autofilling customer payment details
-      const linkAuthenticationElement = this.elements.create("linkAuthentication");
-      linkAuthenticationElement.mount("#link-authentication-element");
-      // If the customer's email is known when the page is loaded, you can
-      // pass the email to the linkAuthenticationElement on mount:
-      //
-      if (this.initStripePayment.email != undefined) {
-        linkAuthenticationElement.mount("#link-authentication-element", {
-          defaultValues: {
-            email: this.initStripePayment.email,
-          }
-        })
-      }
       paymentElement.addEventListener('change', (event: { error: { message: string | null; }; }) => {
         const displayError = document.getElementById('card-errors');
         if (displayError) {

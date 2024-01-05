@@ -29,7 +29,7 @@ export class ChangePaymentComponent {
 
   getChangePaymentSetupIntent(): void {
     this.authService.waitForAuth().then(() => {
-      const observable = this.changePaymentService.getChangePaymentSetupIntent().subscribe(
+      this.changePaymentService.getChangePaymentSetupIntent().subscribe(
         (subscriptionSetupIntentReply: ChangePaymentReply) => {
           this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
 

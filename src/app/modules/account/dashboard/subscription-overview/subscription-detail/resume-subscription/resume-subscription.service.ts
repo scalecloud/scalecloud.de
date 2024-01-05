@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
 import { Observable, catchError, of } from 'rxjs';
+import { LogService } from 'src/app/shared/services/log/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,9 @@ export class ResumeSubscriptionService {
   constructor(
     private http: HttpClient,
     private snackBarService: SnackBarService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private logService: LogService,
+    ) { }
 
   resumeSubscription(iSubscriptionResumeRequest: ISubscriptionResumeRequest): Observable<ISubscriptionResumeReply> {
     return this.http.post<ISubscriptionResumeReply>(this.url, iSubscriptionResumeRequest, this.authService.getHttpOptions())
@@ -26,7 +29,7 @@ export class ResumeSubscriptionService {
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
+      this.logService.error(error);
       this.snackBarService.error(`Could not resume subscription. Please try again.`);
       return of(result as T);
     };

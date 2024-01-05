@@ -14,8 +14,12 @@ export class SubscriptionOverviewService {
   // private url = 'api.scalecloud.de/dashboard/subscriptions';
   private url = 'http://localhost:15000/dashboard/subscriptions';
 
-  constructor(private http: HttpClient, private logService: LogService, private authService: AuthService) { }
- 
+  constructor(
+    private http: HttpClient,
+    private logService: LogService,
+    private authService: AuthService
+  ) { }
+
   getSubscriptionsOverview(): Observable<ISubscriptionOverview[]> {
     return this.http.get<ISubscriptionOverview[]>(this.url, this.authService.getHttpOptions())
       .pipe(
@@ -25,7 +29,7 @@ export class SubscriptionOverviewService {
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
+      this.logService.error(error);
       return of(result as T);
     };
   }

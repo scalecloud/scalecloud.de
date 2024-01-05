@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { LogService } from 'src/app/shared/services/log/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,9 @@ export class CancelSubscriptionService {
   constructor(
     private http: HttpClient, 
     private snackBarService: SnackBarService, 
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private logService: LogService,
+    ) { }
 
     cancelSubscription(iSubscriptionCancelRequest: ISubscriptionCancelRequest): Observable<ISubscriptionCancelReply> {
     return this.http.post<ISubscriptionCancelReply>(this.url, iSubscriptionCancelRequest, this.authService.getHttpOptions())
@@ -27,7 +30,7 @@ export class CancelSubscriptionService {
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
+      this.logService.error(error);
       this.snackBarService.error(`Could not cancel subscription. Please try again.`);
       return of(result as T);
     };

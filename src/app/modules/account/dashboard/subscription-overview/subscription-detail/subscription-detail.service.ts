@@ -14,7 +14,7 @@ export class SubscriptionDetailService {
 
   constructor(private http: HttpClient,
     private logService: LogService,
-    private authService: AuthService
+    private authService: AuthService,
   ) { }
 
   getSubscriptionDetail(id: string): Observable<ISubscriptionDetail> {
@@ -28,7 +28,7 @@ export class SubscriptionDetailService {
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
+      this.logService.error(error);
       return of(result as T);
     };
   }

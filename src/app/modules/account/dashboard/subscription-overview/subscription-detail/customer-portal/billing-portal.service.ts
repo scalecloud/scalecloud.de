@@ -12,7 +12,11 @@ export class BillingPortalService {
 
   private url = 'http://localhost:15000/dashboard/billing-portal';
 
-  constructor(private http: HttpClient, private logService: LogService, private authService: AuthService) { }
+  constructor(
+    private http: HttpClient, 
+    private logService: LogService, 
+    private authService: AuthService,
+    ) { }
 
   getBillingPortal(): Observable<IBillingPortal> {
     return this.http.get<IBillingPortal>(this.url, this.authService.getHttpOptions())
@@ -23,7 +27,7 @@ export class BillingPortalService {
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
+      this.logService.error(error);
       return of(result as T);
     };
   }

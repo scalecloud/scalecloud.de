@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { Observable, catchError, of } from 'rxjs';
 import { ChangePaymentReply } from './change-payment';
+import { LogService } from 'src/app/shared/services/log/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,9 @@ export class ChangePaymentService {
   constructor(
     private http: HttpClient,
     private snackBarService: SnackBarService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private logService: LogService,
+    ) { }
 
   getChangePaymentSetupIntent(): Observable<ChangePaymentReply> {
     return this.http.post<ChangePaymentReply>(this.url, null, this.authService.getHttpOptions())
@@ -26,7 +29,7 @@ export class ChangePaymentService {
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
+      this.logService.error(error);
       this.snackBarService.error(`Could not change payment method. Please try again.`);
       return of(result as T);
     };
