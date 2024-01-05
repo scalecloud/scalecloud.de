@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-payment-overview',
@@ -19,20 +20,16 @@ export class PaymentOverviewComponent {
     private logService: LogService,
   ) { }
 
-  ngAfterViewInit(): void {
-    this.getPaymentMethodOverview();
-  }
-
-  getPaymentMethodOverview(): void {
-    this.authService.waitForAuth().then(() => {
-      const observable = this.subscriptionPaymentMethodService.getPaymentMethodOverview().subscribe(
-        (subscriptionPaymentMethodReply: PaymentMethodOverviewReply) => {
-          this.subscriptionPaymentMethodReply = subscriptionPaymentMethodReply;
-        });
-    })
-      .catch((error) => {
-        this.logService.error("waitForAuth failed: " + error);
-      });
+  async initSubscriptionPaymentMethodReply(): Promise<boolean> {
+    try {
+      await this.authService.waitForAuth();
+      const subscriptionPaymentMethodReply = await firstValueFrom(this.subscriptionPaymentMethodService.getPaymentMethodOverview());
+      this.subscriptionPaymentMethodReply = subscriptionPaymentMethodReply;
+      return true;
+    } catch (error) {
+      this.logService.error("Error: " + error);
+      return false;
+    }
   }
 
   hasPaymentMethod(): boolean {

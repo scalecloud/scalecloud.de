@@ -1,7 +1,7 @@
 <div *ngIf="authService.isLoggedIn(false)">
     <div class="flex-container">
         <div class="flex-item">
-            <app-payment-overview> </app-payment-overview>
+            <app-payment-overview></app-payment-overview>
         </div>
         <div class="flex-item" *ngFor="let subscriptionOverview of subscriptionsOverview">
             <app-subscription-overview [subscriptionOverview]="subscriptionOverview"></app-subscription-overview>

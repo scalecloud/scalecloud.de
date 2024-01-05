@@ -70,7 +70,6 @@ export class AuthService {
 
   setUser(user: User | null) {
     this.user = user;
-    this.logService.info('setUser: ' + JSON.stringify(this.user));
   }
 
   getUser(): User | null {
@@ -79,7 +78,6 @@ export class AuthService {
 
   setToken(token: string | null) {
     this.token = token;
-    this.logService.info('setToken: ' + JSON.stringify(this.token));
   }
 
   getToken(): string | null {

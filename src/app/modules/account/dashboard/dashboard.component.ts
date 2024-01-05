@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
+import { PaymentOverviewComponent } from './payment-overview/payment-overview.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +12,7 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 })
 export class DashboardComponent implements OnInit {
 
+  @ViewChild(PaymentOverviewComponent) paymentOverviewComponent: PaymentOverviewComponent | undefined;
   subscriptionsOverview: ISubscriptionOverview[] = [];
 
   constructor(
@@ -21,6 +23,14 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSubscriptionsOverview();
+  }
+
+  ngAfterViewInit(): void {
+    this.paymentOverviewComponent?.initSubscriptionPaymentMethodReply().then(() => {
+      this.logService.info("Fetched payment method overview.");
+    }).catch((error) => {
+      this.logService.error("Error: " + error);
+    });
   }
 
   getSubscriptionsOverview(): void {

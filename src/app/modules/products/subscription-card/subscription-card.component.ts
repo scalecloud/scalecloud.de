@@ -1,8 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { CheckoutIntegrationRequest } from '../checkout/integration/checkout-model-integration';
-import { CheckoutService } from '../checkout/portal/checkout.service';
+import { CheckoutCreateSubscriptionRequest } from '../checkout/integration/checkout-create-subscription';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
 import { QuantityComponent } from './quantity/quantity.component';
@@ -20,34 +19,9 @@ export class SubscriptionCardComponent {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
 
   constructor(
-    private checkoutService: CheckoutService,
     private logService: LogService,
     private router: Router
   ) { }
-
-  openCheckoutPortal(): void {
-    let productID = ""
-    if (this.nextcloudProduct) {
-      productID = this.nextcloudProduct.productID;
-    } else if (this.synologyProduct) {
-      productID = this.synologyProduct.productID;
-    }
-
-    const checkoutIntegrationRequest: CheckoutIntegrationRequest = {
-      productID: productID,
-      quantity: this.getQuantity(),
-    }
-
-    this.checkoutService.getCheckoutSession(checkoutIntegrationRequest)
-      .subscribe((checkoutModel) => {
-        if (checkoutModel == null) {
-          this.logService.error('SubscriptionCardComponent.openCheckoutSession: checkoutModel is null');
-        } else {
-          window.open(checkoutModel.url, '_self');
-        }
-      }
-      );
-  }
 
   openCheckoutIntegration(): void {
     const productID = this.getProductID();

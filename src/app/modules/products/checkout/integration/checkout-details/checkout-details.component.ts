@@ -6,6 +6,7 @@ import { CheckoutProductReply } from '../product/checkout-product-reply';
 import { CheckoutProductRequest } from '../product/checkout-product-request';
 import { CheckoutProductService } from './checkout-product.service';
 import { CurrencyPipe } from '@angular/common';
+import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
 
 @Component({
   selector: 'app-checkout-details',
@@ -14,7 +15,7 @@ import { CurrencyPipe } from '@angular/common';
 })
 export class CheckoutDetailsComponent {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
-  @Output() startSubscriptionEvent = new EventEmitter<number>();
+  @Output() startSubscriptionEvent = new EventEmitter<CheckoutCreateSubscriptionRequest>();
   checkoutProductReply: CheckoutProductReply | undefined;
 
   constructor(
@@ -44,8 +45,13 @@ export class CheckoutDetailsComponent {
   }
 
   startSubscription(): void {
+    const checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest = {
+      productID: this.checkoutProductReply.productID,
+      quantity: this.getQuantity(),
+    }
+
     this.logService.info("Subscription started. Quantity: " + this.getQuantity());
-    this.startSubscriptionEvent.emit(this.getQuantity());
+    this.startSubscriptionEvent.emit(checkoutIntegrationRequest);
   }
 
   setQuantity(quantity: number): void {

@@ -2,13 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
-import { CheckoutIntegrationReply } from './checkout-model-integration';
+import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CheckoutSubscriptionService } from './payment-element/checkout-subscription.service';
-import { CheckoutModelPortalRequest } from '../portal/checkout-model-portal';
-import { StripePaymentElementComponent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-element.component';
-import { StripeIntent, InitStripePayment, SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
+import { SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
+import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
 
 @Component({
   selector: 'app-checkout',
@@ -17,30 +16,29 @@ import { StripeIntent, InitStripePayment, SubmitStripePayment } from 'src/app/sh
 })
 export class CheckoutComponent {
 
+  @ViewChild(PaymentOverviewComponent) paymentOverviewComponent: PaymentOverviewComponent | undefined;
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
-  @ViewChild(StripePaymentElementComponent) stripePaymentElementComponent: StripePaymentElementComponent | undefined;
   productID: string | undefined;
 
-  checkoutIntegrationReply: CheckoutIntegrationReply | undefined;
+  checkoutIntegrationReply: CheckoutCreateSubscriptionReply | undefined;
 
   constructor(
     private logService: LogService,
     private route: ActivatedRoute,
     private snackBarService: SnackBarService,
     private authService: AuthService,
-    private checkoutSubscriptionService: CheckoutSubscriptionService,
+    private checkoutSubscriptionService: CheckoutSubscriptionService
   ) { }
 
   ngAfterViewInit(): void {
-    const quantity = this.getParamMapQuantity();
-    this.setQuantity(quantity);
-    const productID = this.getParamMapProductID();
-    if (this.checkoutDetailsComponent != undefined && quantity) {
-      this.createCheckoutSubscription(productID, this.checkoutDetailsComponent.getQuantity());
-    }
-    else {
-      this.logService.error("Can not get productID or Quantity.")
-    }
+    this.paymentOverviewComponent?.initSubscriptionPaymentMethodReply().then(() => {
+      const quantity = this.getParamMapQuantity();
+      this.setQuantity(quantity);
+      const productID = this.getParamMapProductID();
+      this.initCheckoutProduct(productID);
+    }).catch((error) => {
+      this.logService.error("Error: " + error);
+    });
   }
 
   getParamMapQuantity(): number {
@@ -86,21 +84,6 @@ export class CheckoutComponent {
     }
   }
 
-  startSubscription(quantity: number): void {
-    if (this.stripePaymentElementComponent) {
-      this.snackBarService.error("Checking if quantity was updated and subscriptions needs to be updated: " + quantity)
-
-      const submitStripePayment: SubmitStripePayment = {
-        return_url: "https://www.scalecloud.de/checkout/status",
-      }
-
-      this.stripePaymentElementComponent.submitIntent(submitStripePayment);
-    }
-    else {
-      this.logService.error("PaymentElementComponent is undefined.")
-    }
-  }
-
   initCheckoutProduct(productID: string): void {
     if (!productID) {
       this.logService.error("productID is undefined.");
@@ -115,30 +98,20 @@ export class CheckoutComponent {
     }
   }
 
-
-  createCheckoutSubscription(productID: string | undefined, quantity: number | undefined): void {
+  createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): void {
     this.authService.waitForAuth().then(() => {
-      if (productID && quantity) {
-        const checkoutModelPortalRequest: CheckoutModelPortalRequest = {
-          productID: productID,
-          quantity: quantity,
-        }
-
-        const observable = this.checkoutSubscriptionService.createCheckoutSubscription(checkoutModelPortalRequest).subscribe(
-          (checkoutIntegrationReply: CheckoutIntegrationReply) => {
+      if (checkoutIntegrationRequest && checkoutIntegrationRequest.productID && checkoutIntegrationRequest.quantity) {
+        this.checkoutSubscriptionService.createCheckoutSubscription(checkoutIntegrationRequest).subscribe(
+          (checkoutIntegrationReply: CheckoutCreateSubscriptionReply) => {
             this.checkoutIntegrationReply = checkoutIntegrationReply;
-
-            const initStripePayment: InitStripePayment = {
-              intent: StripeIntent.SetupIntent,
-              client_secret: checkoutIntegrationReply.clientSecret,
-              email: checkoutIntegrationReply.email
-            }
-            this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
+            this.snackBarService.info("Subscription created. Return url missing.");
+            const submitStripePayment: SubmitStripePayment = {
+              return_url: "https://www.scalecloud.de/checkout/status",
+            };
           });
-        this.initCheckoutProduct(productID);
       }
       else {
-        this.logService.error('productID: ' + productID + ' or quantity: ' + quantity + ' not defined');
+        this.snackBarService.error("Could not create Subscription. Please try again.");
       }
     }
     ).catch((error) => {

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { CheckoutIntegrationReply, CheckoutIntegrationRequest } from '../checkout-model-integration';
+import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,10 @@ export class CheckoutSubscriptionService {
     private snackBarService: SnackBarService, 
     private authService: AuthService) { }
 
-  createCheckoutSubscription(checkoutIntegrationRequest: CheckoutIntegrationRequest): Observable<CheckoutIntegrationReply> {
-    return this.http.post<CheckoutIntegrationReply>(this.url, checkoutIntegrationRequest, this.authService.getHttpOptions())
+  createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): Observable<CheckoutCreateSubscriptionReply> {
+    return this.http.post<CheckoutCreateSubscriptionReply>(this.url, checkoutIntegrationRequest, this.authService.getHttpOptions())
       .pipe(
-        catchError(this.handleError<CheckoutIntegrationReply>('createCheckoutSubscription'))
+        catchError(this.handleError<CheckoutCreateSubscriptionReply>('createCheckoutSubscription'))
       );
   }
 

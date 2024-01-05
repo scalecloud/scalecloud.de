@@ -16,7 +16,8 @@ export class CheckoutProductService {
   constructor(
     private http: HttpClient,
     private snackBarService: SnackBarService,
-    private authService: AuthService) { }
+    private authService: AuthService
+  ) { }
 
   getCheckoutProduct(checkoutProductRequest: CheckoutProductRequest): Observable<CheckoutProductReply> {
     return this.http.post<CheckoutProductReply>(this.url, checkoutProductRequest, this.authService.getHttpOptions())
