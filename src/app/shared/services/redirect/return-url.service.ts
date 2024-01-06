@@ -8,6 +8,8 @@ import { DOCUMENT, Location } from '@angular/common';
 })
 export class ReturnUrlService {
 
+  private readonly baseURL: string = 'https://www.scalecloud.de';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -43,12 +45,16 @@ export class ReturnUrlService {
   }
 
   public getSpecifiedUrlWithReturnUrl(specifiedRoute: string): string {
-    let continueUrl = 'https://www.scalecloud.de';
-    let decodedReturnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-    if (decodedReturnUrl && specifiedRoute) {
-      const domain = this.document.location.origin;
-      if (domain && specifiedRoute.startsWith('/'))
-        continueUrl = domain + specifiedRoute + "?returnUrl=" + decodedReturnUrl;
+    let continueUrl = this.baseURL;
+
+    const domain = this.document.location.origin;
+    if (specifiedRoute && domain && specifiedRoute.startsWith('/')) {
+      const queryParams = this.route.snapshot.queryParams;
+      const queryString = new URLSearchParams(queryParams as any).toString();
+      continueUrl = domain + specifiedRoute + "?" + queryString;
+    }
+    if( continueUrl === this.baseURL ) {
+      this.logService.error('getSpecifiedUrlWithReturnUrl failed: ' + continueUrl);
     }
     return continueUrl;
   }
@@ -56,14 +62,16 @@ export class ReturnUrlService {
   public getReturnUrlButtonName(defaultButtonName: string): string {
     const returnUrl = this.getReturnUrlDecoded();
     if (returnUrl) {
-      const pathSegments = returnUrl.split('/');
-      defaultButtonName = pathSegments[pathSegments.length - 1].toUpperCase();
+      const url = new URL(returnUrl);
+      const pathSegments = url.pathname.split('/');
+      const lastSegment = pathSegments[pathSegments.length - 1];
+      defaultButtonName = lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).toLowerCase();
     }
     return defaultButtonName;
   }
 
   public getReturnUrlDecoded(): string {
-    let continueUrl = 'https://www.scalecloud.de';
+    let continueUrl = this.baseURL;
     const returnURL = this.route.snapshot.queryParamMap.get('returnUrl');
 
     if (returnURL && this.document && this.document.location) {
@@ -73,6 +81,9 @@ export class ReturnUrlService {
       if (domain && decodedReturnUrl.startsWith('/')) {
         continueUrl = domain + decodedReturnUrl;
       }
+    }
+    if( continueUrl === this.baseURL ) {
+      this.logService.error('getReturnUrlDecoded failed: ' + continueUrl);
     }
     return continueUrl;
   }
