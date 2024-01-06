@@ -31,11 +31,13 @@ export class CheckoutComponent {
   ) { }
 
   ngAfterViewInit(): void {
-    this.paymentOverviewComponent?.initSubscriptionPaymentMethodReply().then(() => {
-      const quantity = this.getParamMapQuantity();
-      this.setQuantity(quantity);
-      const productID = this.getParamMapProductID();
-      this.initCheckoutProduct(productID);
+    this.paymentOverviewComponent?.initSubscriptionPaymentMethodReply().then((retrievedPaymentMethod) => {
+      if (retrievedPaymentMethod) {
+        const quantity = this.getParamMapQuantity();
+        this.setQuantity(quantity);
+        const productID = this.getParamMapProductID();
+        this.initCheckoutProduct(productID);
+      }
     }).catch((error) => {
       this.logService.error("Error: " + error);
     });

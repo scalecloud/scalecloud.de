@@ -15,6 +15,7 @@ export interface PaymentMethodOverviewPayPal {
 }
 
 export interface PaymentMethodOverviewReply {
+    has_valid_payment_method: boolean;
     type: string;
     card: PaymentMethodOverviewCard;
     sepa_debit: PaymentMethodOverviewSEPADebit;
