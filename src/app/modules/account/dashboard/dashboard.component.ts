@@ -4,6 +4,7 @@ import { ISubscriptionOverview } from './subscription-overview/subscription-over
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PaymentOverviewComponent } from './payment-overview/payment-overview.component';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +20,7 @@ export class DashboardComponent implements OnInit {
     public authService: AuthService,
     private subscriptionOverviewService: SubscriptionOverviewService,
     private logService: LogService,
+    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
@@ -26,8 +28,12 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.paymentOverviewComponent?.initSubscriptionPaymentMethodReply().then(() => {
-      this.logService.info("Fetched payment method overview.");
+    this.paymentOverviewComponent?.initPaymentMethodOverview().then((hasPaymentMethod) => {
+      if (hasPaymentMethod) {
+        this.logService.info("Fetched payment method overview.");
+      } else {
+        this.logService.warn("User has no payment method. UID: " + this.authService.getUser()?.uid );
+      }
     }).catch((error) => {
       this.logService.error("Error: " + error);
     });

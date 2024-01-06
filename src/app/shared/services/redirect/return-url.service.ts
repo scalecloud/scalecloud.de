@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { LogService } from '../log/log.service';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,7 @@ export class ReturnUrlService {
     private route: ActivatedRoute,
     private logService: LogService,
     @Inject(DOCUMENT) private document: Document,
+    private location: Location,
   ) { }
 
   public openUrlKeepReturnUrl(url: string) {
@@ -41,20 +42,44 @@ export class ReturnUrlService {
     this.logService.info('openReturnURL: ' + defaultUrl + ' done');
   }
 
+  public getSpecifiedUrlWithReturnUrl(specifiedRoute: string): string {
+    let continueUrl = 'https://www.scalecloud.de';
+    let decodedReturnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    if (decodedReturnUrl && specifiedRoute) {
+      const domain = this.document.location.origin;
+      if (domain && specifiedRoute.startsWith('/'))
+        continueUrl = domain + specifiedRoute + "?returnUrl=" + decodedReturnUrl;
+    }
+    return continueUrl;
+  }
+
+  public getReturnUrlButtonName(defaultButtonName: string): string {
+    const returnUrl = this.getReturnUrlDecoded();
+    if (returnUrl) {
+      const pathSegments = returnUrl.split('/');
+      defaultButtonName = pathSegments[pathSegments.length - 1].toUpperCase();
+    }
+    return defaultButtonName;
+  }
+
   public getReturnUrlDecoded(): string {
     let continueUrl = 'https://www.scalecloud.de';
     const returnURL = this.route.snapshot.queryParamMap.get('returnUrl');
-    
+
     if (returnURL && this.document && this.document.location) {
       const domain = this.document.location.origin;
       const decodedReturnUrl = decodeURIComponent(returnURL);
-      
+
       if (domain && decodedReturnUrl.startsWith('/')) {
         continueUrl = domain + decodedReturnUrl;
       }
     }
-    
-    this.logService.info('continueUrl: ' + continueUrl);
     return continueUrl;
   }
+
+  public openUrlAddReturnUrl(url: string): void {
+    const returnUrl = this.location.path();
+    this.router.navigate([url], { queryParams: { returnUrl } });
+  }
+
 }

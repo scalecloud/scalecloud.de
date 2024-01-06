@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { CheckoutSubscriptionService } from './payment-element/checkout-subscription.service';
 import { SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
 import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
+import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 @Component({
   selector: 'app-checkout',
@@ -27,16 +28,19 @@ export class CheckoutComponent {
     private route: ActivatedRoute,
     private snackBarService: SnackBarService,
     private authService: AuthService,
-    private checkoutSubscriptionService: CheckoutSubscriptionService
+    private checkoutSubscriptionService: CheckoutSubscriptionService,
+    private returnUrlService: ReturnUrlService,
   ) { }
 
   ngAfterViewInit(): void {
-    this.paymentOverviewComponent?.initSubscriptionPaymentMethodReply().then((retrievedPaymentMethod) => {
-      if (retrievedPaymentMethod) {
+    this.paymentOverviewComponent?.initPaymentMethodOverview().then((hasPaymentMethod) => {
+      if (hasPaymentMethod) {
         const quantity = this.getParamMapQuantity();
         this.setQuantity(quantity);
         const productID = this.getParamMapProductID();
         this.initCheckoutProduct(productID);
+      } else {
+        this.returnUrlService.openUrlAddReturnUrl('/dashboard/change-payment');
       }
     }).catch((error) => {
       this.logService.error("Error: " + error);

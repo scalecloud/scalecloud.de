@@ -5,6 +5,8 @@ import { ChangePaymentReply } from './change-payment';
 import { ChangePaymentService } from './change-payment.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
 import { StripePaymentElementComponent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-element.component';
+import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-change-payment',
@@ -20,7 +22,9 @@ export class ChangePaymentComponent {
   constructor(
     public authService: AuthService,
     private logService: LogService,
-    private changePaymentService: ChangePaymentService
+    private changePaymentService: ChangePaymentService,
+    private returnUrlService: ReturnUrlService,
+    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
@@ -48,8 +52,11 @@ export class ChangePaymentComponent {
 
   changePaymentMethod(): void {
     if (this.stripePaymentElementComponent) {
+      const ret = this.returnUrlService.getReturnUrlDecoded();
+      const returnUrl = this.returnUrlService.getSpecifiedUrlWithReturnUrl('/dashboard/change-payment/status');
+      this.logService.info("returnUrl: " + returnUrl);
       const submitStripePayment: SubmitStripePayment = {
-        return_url: "https://www.scalecloud.de/dashboard/change-payment/status",
+        return_url: returnUrl,
       }
       this.stripePaymentElementComponent.submitIntent(submitStripePayment);
     }
@@ -58,5 +65,9 @@ export class ChangePaymentComponent {
     }
   }
 
+  cancel(): void {
+    this.snackBarService.info("Payment method change cancelled.");
+    this.returnUrlService.openReturnURL("/dashboard");
+  }
 
 }

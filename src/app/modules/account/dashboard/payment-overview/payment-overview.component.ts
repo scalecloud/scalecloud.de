@@ -4,6 +4,7 @@ import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { firstValueFrom } from 'rxjs';
+import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 @Component({
   selector: 'app-payment-overview',
@@ -18,18 +19,23 @@ export class PaymentOverviewComponent {
     private subscriptionPaymentMethodService: PaymentMethodOverviewService,
     private authService: AuthService,
     private logService: LogService,
+    private returnUrlService: ReturnUrlService,
   ) { }
 
-  async initSubscriptionPaymentMethodReply(): Promise<boolean> {
+  async initPaymentMethodOverview(): Promise<boolean> {
     try {
       await this.authService.waitForAuth();
       const subscriptionPaymentMethodReply = await firstValueFrom(this.subscriptionPaymentMethodService.getPaymentMethodOverview());
       this.paymentMethodOverviewReply = subscriptionPaymentMethodReply;
-      return this.paymentMethodOverviewReply && this.paymentMethodOverviewReply.has_valid_payment_method;
+      return this.hasPaymentMethod();
     } catch (error) {
       this.logService.error("Error: " + error);
       return false;
     }
+  }
+
+  openUrlChangePaymentMethod(): void {
+    this.returnUrlService.openUrlAddReturnUrl('/dashboard/change-payment');
   }
 
   hasPaymentMethod(): boolean {
