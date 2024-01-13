@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { CheckoutProductReply } from '../product/checkout-product-reply';
-import { CheckoutProductRequest } from '../product/checkout-product-request';
+import { CheckoutProductReply } from './checkout-product-reply';
+import { CheckoutProductRequest } from './checkout-product-request';
 import { LogService } from 'src/app/shared/services/log/log.service';
 
 @Injectable({
