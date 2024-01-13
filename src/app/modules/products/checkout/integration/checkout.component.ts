@@ -1,12 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
 import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CheckoutSubscriptionService } from './payment-element/checkout-subscription.service';
-import { SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
 import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
@@ -21,10 +20,9 @@ export class CheckoutComponent {
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
   productID: string | undefined;
 
-  checkoutIntegrationReply: CheckoutCreateSubscriptionReply | undefined;
-
   constructor(
     private logService: LogService,
+    private router: Router,
     private route: ActivatedRoute,
     private snackBarService: SnackBarService,
     private authService: AuthService,
@@ -109,11 +107,13 @@ export class CheckoutComponent {
       if (checkoutIntegrationRequest && checkoutIntegrationRequest.productID && checkoutIntegrationRequest.quantity) {
         this.checkoutSubscriptionService.createCheckoutSubscription(checkoutIntegrationRequest).subscribe(
           (checkoutIntegrationReply: CheckoutCreateSubscriptionReply) => {
-            this.checkoutIntegrationReply = checkoutIntegrationReply;
-            this.snackBarService.info("Subscription created. Return url missing.");
-            const submitStripePayment: SubmitStripePayment = {
-              return_url: "https://www.scalecloud.de/checkout/status",
-            };
+            if (checkoutIntegrationReply && checkoutIntegrationReply.subscriptionID) {
+              this.snackBarService.info("Subscription created.");
+              this.router.navigate(['/checkout/status'], { queryParams: checkoutIntegrationReply });
+            }
+            else {
+              this.snackBarService.error("Could not create Subscription. Please try again.");
+            }
           });
       }
       else {

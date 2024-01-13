@@ -4,8 +4,8 @@ export interface CheckoutCreateSubscriptionRequest {
 }
 
 export interface CheckoutCreateSubscriptionReply {
+    status: string;
     subscriptionID: string;
-    clientSecret: string;
-    quantity: number;
+    productName: string;
     email: string;
 }
