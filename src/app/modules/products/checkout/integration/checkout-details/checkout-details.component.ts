@@ -34,7 +34,7 @@ export class CheckoutDetailsComponent {
         let checkoutProductRequest: CheckoutProductRequest = {
           productID: productID
         }
-        const observable = this.checkoutProductService.getCheckoutProduct(checkoutProductRequest).subscribe(
+        this.checkoutProductService.getCheckoutProduct(checkoutProductRequest).subscribe(
           (checkoutProductReply: CheckoutProductReply) => {
             this.checkoutProductReply = checkoutProductReply;
           });
@@ -61,7 +61,7 @@ export class CheckoutDetailsComponent {
   }
 
   getIsTrialIncluded(): boolean {
-    return this.getQuantity() < 2;
+    return this.getQuantity() < 2 && this.getTrialDays() > 0;
   }
 
   getQuantity(): number {
@@ -110,7 +110,7 @@ export class CheckoutDetailsComponent {
 
   getTrialDays(): number {
     let trialDays = 0;
-    if (this.checkoutProductReply) {
+    if (this.checkoutProductReply && this.checkoutProductReply.trialDays > 0) {
       trialDays = this.checkoutProductReply.trialDays;
     }
     return trialDays;
