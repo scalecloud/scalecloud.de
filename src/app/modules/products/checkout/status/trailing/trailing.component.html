@@ -1,28 +1,41 @@
-<mat-card>
+@if( checkoutCreateSubscriptionReply ) {
+<mat-card class="responsive-card">
     <mat-card-title>
-        Success
+        Your Subscription {{checkoutCreateSubscriptionReply?.productName}} was created!
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
+            @if (checkoutCreateSubscriptionReply.subscriptionID) {
             <mat-list-item>
                 <div class="icon-text">
-                    <mat-icon>credit_card</mat-icon>
-                    Your payment method has been saved.
+                    <mat-icon>tag</mat-icon>{{checkoutCreateSubscriptionReply?.subscriptionID}}
                 </div>
             </mat-list-item>
+            }
+            @if (checkoutCreateSubscriptionReply.trialEnd) {
+            <mat-list-item>
+                <div class="icon-text">
+                    <mat-icon>credit_card_off</mat-icon>
+                    Your trial will run until {{checkoutCreateSubscriptionReply?.trialEnd * 1000 | date}}
+                </div>
+            </mat-list-item>
+            }
             <mat-list-item>
                 <div class="icon-text">
                     <mat-icon>published_with_changes</mat-icon>
                     Your Cloud is going to be prepared.
                 </div>
             </mat-list-item>
+            @if (checkoutCreateSubscriptionReply.email) {
             <mat-list-item>
                 <div class="icon-text">
                     <mat-icon>mail</mat-icon>
-                    You will recive an E-Mail when it is ready.
+                    We will soon send an E-Mail to&nbsp;<b>{{checkoutCreateSubscriptionReply?.email}}</b>&nbsp;when it
+                    is ready.
                 </div>
             </mat-list-item>
+            }
             <mat-list-item>
                 <div class="icon-text">
                     <mat-icon>dashboard</mat-icon>
@@ -35,3 +48,4 @@
         <button routerLink="/dashboard" mat-stroked-button color="primary">Dashboard</button>
     </mat-card-actions>
 </mat-card>
+}

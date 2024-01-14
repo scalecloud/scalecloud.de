@@ -8,4 +8,5 @@ export interface CheckoutCreateSubscriptionReply {
     subscriptionID: string;
     productName: string;
     email: string;
+    trialEnd: number;
 }

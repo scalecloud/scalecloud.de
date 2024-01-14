@@ -16,7 +16,7 @@ export class StatusComponent {
   checkoutCreateSubscriptionReply: CheckoutCreateSubscriptionReply;
 
   active: boolean = false;
-  trailing: boolean = false;
+  trialing: boolean = false;
   requires_payment_method: boolean = false;
 
   constructor(
@@ -55,9 +55,9 @@ export class StatusComponent {
           break;
         }
 
-        case 'trailing': {
+        case 'trialing': {
           this.logService.warn("Processing payment details. We'll update you when processing is complete.")
-          this.trailing = true;
+          this.trialing = true;
           break;
         }
 

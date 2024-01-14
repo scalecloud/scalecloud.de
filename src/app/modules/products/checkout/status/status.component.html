@@ -1,11 +1,9 @@
-<div>
-    <div *ngIf="active">
-        <app-succeeded></app-succeeded>
-    </div>
-    <div *ngIf="trailing">
-        <app-processing></app-processing>
-    </div>
-    <div *ngIf="requires_payment_method">
-        <app-requires-payment-method></app-requires-payment-method>
-    </div>
-</div>
+@if (active) {
+<app-active [checkoutCreateSubscriptionReply]="checkoutCreateSubscriptionReply"></app-active>
+}
+@if (trialing) {
+<app-trailing [checkoutCreateSubscriptionReply]="checkoutCreateSubscriptionReply"></app-trailing>
+}
+@if (requires_payment_method) {
+<app-requires-payment-method></app-requires-payment-method>
+}

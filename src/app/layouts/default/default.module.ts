@@ -34,9 +34,7 @@ import { QuantityComponent } from 'src/app/modules/products/subscription-card/qu
 import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/integration/checkout-details/checkout-details.component';
 import { CheckoutComponent } from 'src/app/modules/products/checkout/integration/checkout.component';
 import { StatusComponent } from 'src/app/modules/products/checkout/status/status.component';
-import { ProcessingComponent } from 'src/app/modules/products/checkout/status/processing/processing.component';
 import { RequiresPaymentMethodComponent } from 'src/app/modules/products/checkout/status/requires-payment-method/requires-payment-method.component';
-import { SucceededComponent } from 'src/app/modules/products/checkout/status/succeeded/succeeded.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
@@ -57,6 +55,8 @@ import { StatusPaymentChangedComponent } from 'src/app/modules/account/dashboard
 import { PaymentChangedProcessingComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-processing/payment-changed-processing.component';
 import { PaymentChangedRequiresPaymentMethodComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-requires-payment-method/payment-changed-requires-payment-method.component';
 import { PaymentChangedSucceededComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-succeeded/payment-changed-succeeded.component';
+import { TrailingComponent } from 'src/app/modules/products/checkout/status/trailing/trailing.component';
+import { ActiveComponent } from 'src/app/modules/products/checkout/status/active/active.component';
 
 @NgModule({
   declarations: [
@@ -92,8 +92,8 @@ import { PaymentChangedSucceededComponent } from 'src/app/modules/account/dashbo
     CheckoutComponent,
     CheckoutDetailsComponent,
     StatusComponent,
-    SucceededComponent,
-    ProcessingComponent,
+    ActiveComponent,
+    TrailingComponent,
     StatusPaymentChangedComponent,
     PaymentChangedSucceededComponent,
     PaymentChangedProcessingComponent,
