@@ -104,23 +104,28 @@ export class CheckoutComponent {
 
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): void {
     this.authService.waitForAuth().then(() => {
-      if (checkoutIntegrationRequest && checkoutIntegrationRequest.productID && checkoutIntegrationRequest.quantity) {
-        this.checkoutSubscriptionService.createCheckoutSubscription(checkoutIntegrationRequest).subscribe(
-          (checkoutIntegrationReply: CheckoutCreateSubscriptionReply) => {
-            if (checkoutIntegrationReply && checkoutIntegrationReply.subscriptionID) {
-              this.snackBarService.info("Subscription created.");
-              this.router.navigate(['/checkout/status'], { queryParams: checkoutIntegrationReply });
-            }
-            else {
-              this.snackBarService.error("Could not create Subscription. Please try again.");
-            }
-          });
+      const errorMessage = "Could not create Subscription. Please try again.";
+  
+      if (!checkoutIntegrationRequest || !checkoutIntegrationRequest.productID || !checkoutIntegrationRequest.quantity) {
+        this.snackBarService.error(errorMessage);
+        return;
       }
-      else {
-        this.snackBarService.error("Could not create Subscription. Please try again.");
-      }
-    }
-    ).catch((error) => {
+  
+      this.checkoutSubscriptionService.createCheckoutSubscription(checkoutIntegrationRequest).subscribe(
+        (checkoutIntegrationReply: CheckoutCreateSubscriptionReply) => {
+          if (!checkoutIntegrationReply || !checkoutIntegrationReply.status) {
+            this.snackBarService.error(errorMessage);
+            return;
+          }
+  
+          if (checkoutIntegrationReply.status === 'active' || checkoutIntegrationReply.status === 'trialing') {
+            this.snackBarService.info("Subscription created.");
+            this.router.navigate(['/checkout/status'], { queryParams: checkoutIntegrationReply });
+          } else {
+            this.snackBarService.error("Could not charge payment method. Please update your payment method.");
+          }
+        });
+    }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
     });
   }
