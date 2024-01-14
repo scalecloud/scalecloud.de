@@ -1,8 +1,8 @@
 <div>
-    <div *ngIf="succeeded">
+    <div *ngIf="active">
         <app-succeeded></app-succeeded>
     </div>
-    <div *ngIf="processing">
+    <div *ngIf="trailing">
         <app-processing></app-processing>
     </div>
     <div *ngIf="requires_payment_method">
