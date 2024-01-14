@@ -17,7 +17,6 @@ export class StatusComponent {
 
   active: boolean = false;
   trialing: boolean = false;
-  requires_payment_method: boolean = false;
 
   constructor(
     private logService: LogService,
@@ -58,12 +57,6 @@ export class StatusComponent {
         case 'trialing': {
           this.logService.warn("Processing payment details. We'll update you when processing is complete.")
           this.trialing = true;
-          break;
-        }
-
-        case 'requires_payment_method': {
-          this.logService.error("Failed to process payment details. Please try another payment method.")
-          this.requires_payment_method = true;
           break;
         }
       }

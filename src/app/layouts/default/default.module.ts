@@ -34,7 +34,6 @@ import { QuantityComponent } from 'src/app/modules/products/subscription-card/qu
 import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/integration/checkout-details/checkout-details.component';
 import { CheckoutComponent } from 'src/app/modules/products/checkout/integration/checkout.component';
 import { StatusComponent } from 'src/app/modules/products/checkout/status/status.component';
-import { RequiresPaymentMethodComponent } from 'src/app/modules/products/checkout/status/requires-payment-method/requires-payment-method.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
@@ -100,7 +99,6 @@ import { ActiveComponent } from 'src/app/modules/products/checkout/status/active
     PaymentChangedRequiresPaymentMethodComponent,
     ConfirmResumeSubscriptionComponent,
     ConfirmCancelSubscriptionComponent,
-    RequiresPaymentMethodComponent
   ],
   imports: [
     CommonModule,
