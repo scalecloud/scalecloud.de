@@ -56,6 +56,9 @@ import { PaymentChangedRequiresPaymentMethodComponent } from 'src/app/modules/ac
 import { PaymentChangedSucceededComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-succeeded/payment-changed-succeeded.component';
 import { TrailingComponent } from 'src/app/modules/products/checkout/status/trailing/trailing.component';
 import { ActiveComponent } from 'src/app/modules/products/checkout/status/active/active.component';
+import { SeatsComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seats.component';
+import { AddSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component';
+import { RemoveSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/remove-seat/remove-seat.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +90,9 @@ import { ActiveComponent } from 'src/app/modules/products/checkout/status/active
     SubscriptionOverviewComponent,
     SubscriptionDetailComponent,
     SubscriptionDetailCardComponent,
+    SeatsComponent,
+    AddSeatComponent,
+    RemoveSeatComponent,
     BillingPortalComponent,
     CheckoutComponent,
     CheckoutDetailsComponent,

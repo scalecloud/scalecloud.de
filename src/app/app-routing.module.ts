@@ -26,6 +26,8 @@ import { SubscriptionDetailComponent } from './modules/account/dashboard/subscri
 import { ChangePaymentComponent } from './modules/account/dashboard/change-payment/change-payment.component';
 import { StatusPaymentChangedComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/status-payment-changed.component';
 import { CheckoutGuard } from './shared/guard/checkout.guard';
+import { AddSeatComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component';
+import { RemoveSeatComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/seats/remove-seat/remove-seat.component';
 
 const routes: Routes = [{
   path: '', component: DefaultComponent,
@@ -47,6 +49,8 @@ const routes: Routes = [{
   // AuthGuard
   { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/subscription/:id', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
+  { path: 'dashboard/subscription/:id/add-seat', component: AddSeatComponent, canActivate: [DashboardGuard] },
+  { path: 'dashboard/subscription/:id/remove-seat', component: RemoveSeatComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/change-payment/status', component: StatusPaymentChangedComponent },
   // LoginGuard

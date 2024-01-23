@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-title>
+        Seats
+    </mat-card-title>
+    <mat-card-subtitle>Invite users so they have access to ??</mat-card-subtitle>
+    <mat-card-subtitle>?/?</mat-card-subtitle>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-list>
+            @for (mail of seatListReply.email; track $index) {
+            <mat-list-item>mail</mat-list-item>
+            }
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+        <button (click)="addSeat()" [disabled]="!isAddSeatPossible()" mat-stroked-button color="primary">Invite</button>
+        <button (click)="removeSeat()" [disabled]="!isRemoveSeatPossible()" mat-stroked-button>Delete</button>
+    </mat-card-actions>
+</mat-card>

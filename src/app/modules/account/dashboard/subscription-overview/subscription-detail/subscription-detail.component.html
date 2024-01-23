@@ -5,6 +5,9 @@
                 <app-subscription-detail-card [subscriptionDetail]="subscriptionDetail"></app-subscription-detail-card>
             </div>
             <div class="flex-item">
+                <app-seats [subscriptionID]="subscriptionDetail?.id"></app-seats>
+            </div>
+            <div class="flex-item">
                 <app-billing-portal></app-billing-portal>
             </div>
             <div *ngIf="isEnding()" class="flex-item">
