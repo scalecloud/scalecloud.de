@@ -2,13 +2,20 @@
     <mat-card-title>
         Seats
     </mat-card-title>
-    <mat-card-subtitle>Invite users so they have access to ??</mat-card-subtitle>
-    <mat-card-subtitle>?/?</mat-card-subtitle>
+    @if( seatListReply?.product_name && seatListReply?.product_type ) {
+    <mat-card-subtitle>Invite users so they have access to {{seatListReply.product_name}}
+        ({{seatListReply.product_type}})</mat-card-subtitle>
+    }
+    @if( getMaxSeats() > 0) {
+    <mat-card-subtitle>{{getCurrentSeats()}}/{{getMaxSeats()}}</mat-card-subtitle>
+    }
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
+            @if( seatListReply ) {
             @for (mail of seatListReply.email; track $index) {
             <mat-list-item>mail</mat-list-item>
+            }
             }
         </mat-list>
     </mat-card-content>

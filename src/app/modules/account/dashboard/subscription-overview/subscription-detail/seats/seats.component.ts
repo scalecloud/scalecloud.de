@@ -46,6 +46,14 @@ export class SeatsComponent {
     });
   }
 
+  getCurrentSeats(): number {
+    return this.seatListReply?.email?.length || 0;
+  }
+
+  getMaxSeats(): number {
+    return this.seatListReply?.max_seats || 0;
+  }
+
   isAddSeatPossible(): boolean {
     return this.seatListReply?.email?.length < this.seatListReply?.max_seats;
   }
