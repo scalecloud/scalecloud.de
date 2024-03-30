@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SubscriptionDetailService } from './subscription-detail.service';
-import { ISubscriptionDetail } from './subscription-detail';
+import { SubscriptionDetailReply } from './subscription-detail';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class SubscriptionDetailComponent implements OnInit {
 
-  subscriptionDetail: ISubscriptionDetail | undefined;
+  reply: SubscriptionDetailReply | undefined;
 
   constructor(
     public authService: AuthService,
@@ -32,7 +32,7 @@ export class SubscriptionDetailComponent implements OnInit {
         this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
       } else {
         this.subscriptionDetailService.getSubscriptionDetail(id)
-          .subscribe(subscriptionDetail => this.subscriptionDetail = subscriptionDetail);
+          .subscribe(subscriptionDetail => this.reply = subscriptionDetail);
       }
     }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
@@ -41,8 +41,8 @@ export class SubscriptionDetailComponent implements OnInit {
 
   isEnding(): boolean {
     let isEnding = false;
-    if (this.subscriptionDetail) {
-      isEnding = this.subscriptionDetail.cancel_at_period_end;
+    if (this.reply) {
+      isEnding = this.reply.cancel_at_period_end;
     }
     return isEnding;
   }

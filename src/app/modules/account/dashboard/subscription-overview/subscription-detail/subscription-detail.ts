@@ -1,4 +1,4 @@
-export interface ISubscriptionDetail {
+export interface SubscriptionDetailReply {
     id: string;
     active: boolean;
     product_name: string;

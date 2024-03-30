@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { ISubscriptionDetail } from './subscription-detail';
+import { SubscriptionDetailReply } from './subscription-detail';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +17,12 @@ export class SubscriptionDetailService {
     private authService: AuthService,
   ) { }
 
-  getSubscriptionDetail(id: string): Observable<ISubscriptionDetail> {
+  getSubscriptionDetail(id: string): Observable<SubscriptionDetailReply> {
     const url = `${this.url}/${id}`;
-    return this.http.get<ISubscriptionDetail>(url, this.authService.getHttpOptions())
+    return this.http.get<SubscriptionDetailReply>(url, this.authService.getHttpOptions())
       .pipe(
         tap(_ => this.logService.info(`fetched subscription id=${id}`)),
-        catchError(this.handleError<ISubscriptionDetail>(`getSubscription id=${id}`))
+        catchError(this.handleError<SubscriptionDetailReply>(`getSubscription id=${id}`))
       );
   }
 

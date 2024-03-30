@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ISubscriptionDetail } from '../subscription-detail';
+import { SubscriptionDetailReply } from '../subscription-detail';
 
 @Component({
   selector: 'app-subscription-detail-card',
@@ -8,58 +8,58 @@ import { ISubscriptionDetail } from '../subscription-detail';
 })
 export class SubscriptionDetailCardComponent {
 
-  @Input() subscriptionDetail: ISubscriptionDetail | undefined;
+  @Input() reply: SubscriptionDetailReply | undefined;
 
   getID(): string {
-    return this.subscriptionDetail?.id || '';
+    return this.reply?.id || '';
   }
 
   isActive(): boolean {
-    return this.subscriptionDetail?.active || false;
+    return this.reply?.active || false;
   }
 
   getProductName(): string {
-    return this.subscriptionDetail?.product_name || '';
+    return this.reply?.product_name || '';
   }
 
   getProductType(): string {
-    return this.subscriptionDetail?.product_type || '';
+    return this.reply?.product_type || '';
   }
 
   getStorageAmount(): number {
-    return this.subscriptionDetail?.storage_amount || 0;
+    return this.reply?.storage_amount || 0;
   }
 
   getUserCount(): number {
-    return this.subscriptionDetail?.user_count || 0;
+    return this.reply?.user_count || 0;
   }
 
   getPricePerMonth(): number {
-    return this.subscriptionDetail?.price_per_month || 0;
+    return this.reply?.price_per_month || 0;
   }
 
   getCurrency(): string {
-    return this.subscriptionDetail?.currency.toUpperCase() || '';
+    return this.reply?.currency.toUpperCase() || '';
   }
 
   isTrailing(): boolean {
     let trailing = false;
-    if (this.subscriptionDetail?.status) {
-      trailing = this.subscriptionDetail?.status === 'trialing';
+    if (this.reply?.status) {
+      trailing = this.reply?.status === 'trialing';
     }
     return trailing;
   }
 
   getTrailingEnd(): number {
-    return this.subscriptionDetail?.trial_end || 0;
+    return this.reply?.trial_end || 0;
   }
 
   isCancelAtPeriodEnd(): boolean {
-    return this.subscriptionDetail?.cancel_at_period_end || false;
+    return this.reply?.cancel_at_period_end || false;
   }
 
   getCancelAt(): number {
-    return this.subscriptionDetail?.cancel_at || 0;
+    return this.reply?.cancel_at || 0;
   }
 
 }
