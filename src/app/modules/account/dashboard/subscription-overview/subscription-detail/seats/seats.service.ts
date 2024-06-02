@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { AddSeatReply, AddSeatRequest, RemoveSeatReply, RemoveSeatRequest, SeatListReply, SeatListRequest } from './seats';
+import { ListSeatReply, ListSeatRequest } from './seats';
 import { Observable, catchError, of } from 'rxjs';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { Observable, catchError, of } from 'rxjs';
 })
 export class SeatsService {
 
-  private url = 'http://localhost:15000/dashboard/get-checkout-product';
+  private url = 'http://localhost:15000/dashboard/subscription/list-seats';
 
   constructor(
     private http: HttpClient,
@@ -20,16 +20,12 @@ export class SeatsService {
     private logService: LogService,
   ) { }
 
-  getSeatsList(seatListRequest: SeatListRequest): Observable<SeatListReply> {
-    return this.http.post<SeatListReply>(this.url, seatListRequest, this.authService.getHttpOptions())
+  getListSeats(listSeatRequest: ListSeatRequest): Observable<ListSeatReply> {
+    return this.http.post<ListSeatReply>(this.url, listSeatRequest, this.authService.getHttpOptions())
       .pipe(
-        catchError(this.handleError<SeatListReply>('getUserList'))
+        catchError(this.handleError<ListSeatReply>('getListSeats'))
       );
   }
-
-
-
-
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { SeatListReply, SeatListRequest } from './seats';
+import { ListSeatReply, ListSeatRequest } from './seats';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
@@ -14,7 +14,7 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 export class SeatsComponent {
 
   @Input() subscriptionID: string | undefined;
-  seatListReply: SeatListReply | undefined;
+  seatListReply: ListSeatReply | undefined;
 
   constructor(
     public authService: AuthService,
@@ -35,10 +35,10 @@ export class SeatsComponent {
       if (!this.subscriptionID) {
         this.logService.error('SeatsComponent.initSeatsList: subscriptionID is null');
       } else {
-        let seatListRequest: SeatListRequest = {
+        let seatListRequest: ListSeatRequest = {
           subscriptionID: this.subscriptionID
         };
-        this.seatService.getSeatsList(seatListRequest)
+        this.seatService.getListSeats(seatListRequest)
           .subscribe(seatListReply => this.seatListReply = seatListReply);
       }
     }).catch((error) => {
@@ -47,7 +47,7 @@ export class SeatsComponent {
   }
 
   getCurrentSeats(): number {
-    return this.seatListReply?.email?.length || 0;
+    return this.seatListReply?.emails?.length || 0;
   }
 
   getMaxSeats(): number {
@@ -55,11 +55,11 @@ export class SeatsComponent {
   }
 
   isAddSeatPossible(): boolean {
-    return this.seatListReply?.email?.length < this.seatListReply?.max_seats;
+    return this.seatListReply?.emails?.length < this.seatListReply?.max_seats;
   }
 
   isRemoveSeatPossible(): boolean {
-    return this.seatListReply?.email?.length > 0;
+    return this.seatListReply?.emails?.length > 0;
   }
 
   addSeat(): void {

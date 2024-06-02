@@ -1,13 +1,13 @@
-export interface SeatListRequest {
+export interface ListSeatRequest {
     subscriptionID: string;
 }
 
-export interface SeatListReply {
+export interface ListSeatReply {
     subscriptionID: string;
     product_name: string;
     product_type: string;
     max_seats: number;    
-    email: string[];
+    emails: string[];
 }
 
 export interface AddSeatRequest {
