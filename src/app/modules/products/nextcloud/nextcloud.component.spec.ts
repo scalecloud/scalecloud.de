@@ -4,9 +4,10 @@ import { MatIcon } from '@angular/material/icon';
 import { SubscriptionCardComponent } from '../subscription-card/subscription-card.component';
 import { TitelCardComponent } from '../titel-card/titel-card.component';
 import { NextcloudComponent } from './nextcloud.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatCard, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('NextcloudComponent', () => {
   let component: NextcloudComponent;
@@ -36,8 +37,9 @@ describe('NextcloudComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
-    });
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
     fixture = TestBed.createComponent(NextcloudComponent);
     component = fixture.componentInstance;

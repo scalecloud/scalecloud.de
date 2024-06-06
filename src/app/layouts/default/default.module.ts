@@ -15,7 +15,7 @@ import { ContactComponent } from 'src/app/modules/footer/contact/contact.compone
 import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
 import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from 'src/app/modules/products/in-memory-data.service';
 import { LoginComponent } from 'src/app/modules/account/login/login.component';
@@ -60,78 +60,69 @@ import { SeatsComponent } from 'src/app/modules/account/dashboard/subscription-o
 import { AddSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component';
 import { RemoveSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/remove-seat/remove-seat.component';
 
-@NgModule({
-  declarations: [
-    DefaultComponent,
-    HomeComponent,
-    TitelCardComponent,
-    SubscriptionCardComponent,
-    QuantityComponent,
-    NextcloudComponent,
-    SynologyComponent,
-    PrivacyComponent,
-    ImprintComponent,
-    LegalComponent,
-    TermsComponent,
-    ContactComponent,
-    LoginComponent,
-    RegisterComponent,
-    PasswordStrengthComponent,
-    PasswordMatchComponent,
-    VerifyEmailComponent,
-    DashboardComponent,
-    ResumeSubscriptionComponent,
-    CancelSubscriptionComponent,
-    PaymentOverviewComponent,
-    ChangePaymentComponent,
-    ForgotPasswordComponent,
-    GlobeComponent,
-    PageNotFoundComponent,
-    SubscriptionOverviewComponent,
-    SubscriptionDetailComponent,
-    SubscriptionDetailCardComponent,
-    SeatsComponent,
-    AddSeatComponent,
-    RemoveSeatComponent,
-    BillingPortalComponent,
-    CheckoutComponent,
-    CheckoutDetailsComponent,
-    StatusComponent,
-    ActiveComponent,
-    TrailingComponent,
-    StatusPaymentChangedComponent,
-    PaymentChangedSucceededComponent,
-    PaymentChangedProcessingComponent,
-    PaymentChangedRequiresPaymentMethodComponent,
-    ConfirmResumeSubscriptionComponent,
-    ConfirmCancelSubscriptionComponent,
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    SharedModule,
-    MatSidenavModule,
-    MatDividerModule,
-    MatCardModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatDialogModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, {
-      delay: 0,
-      dataEncapsulation: false,
-      passThruUnknownUrl: true
-    },
-    )
-  ],
-  providers: [
-    HttpClientModule
-  ]
-})
+@NgModule({ declarations: [
+        DefaultComponent,
+        HomeComponent,
+        TitelCardComponent,
+        SubscriptionCardComponent,
+        QuantityComponent,
+        NextcloudComponent,
+        SynologyComponent,
+        PrivacyComponent,
+        ImprintComponent,
+        LegalComponent,
+        TermsComponent,
+        ContactComponent,
+        LoginComponent,
+        RegisterComponent,
+        PasswordStrengthComponent,
+        PasswordMatchComponent,
+        VerifyEmailComponent,
+        DashboardComponent,
+        ResumeSubscriptionComponent,
+        CancelSubscriptionComponent,
+        PaymentOverviewComponent,
+        ChangePaymentComponent,
+        ForgotPasswordComponent,
+        GlobeComponent,
+        PageNotFoundComponent,
+        SubscriptionOverviewComponent,
+        SubscriptionDetailComponent,
+        SubscriptionDetailCardComponent,
+        SeatsComponent,
+        AddSeatComponent,
+        RemoveSeatComponent,
+        BillingPortalComponent,
+        CheckoutComponent,
+        CheckoutDetailsComponent,
+        StatusComponent,
+        ActiveComponent,
+        TrailingComponent,
+        StatusPaymentChangedComponent,
+        PaymentChangedSucceededComponent,
+        PaymentChangedProcessingComponent,
+        PaymentChangedRequiresPaymentMethodComponent,
+        ConfirmResumeSubscriptionComponent,
+        ConfirmCancelSubscriptionComponent,
+    ], imports: [CommonModule,
+        RouterModule,
+        SharedModule,
+        MatSidenavModule,
+        MatDividerModule,
+        MatCardModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        MatDialogModule,
+        MatListModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+            delay: 0,
+            dataEncapsulation: false,
+            passThruUnknownUrl: true
+        })], providers: [
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class DefaultModule { }
