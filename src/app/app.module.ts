@@ -28,11 +28,12 @@ import { CurrencyPipe } from '@angular/common';
   // provideFirebaseApp(() => initializeApp(environment.firebase)),
   // provideAnalytics(() => getAnalytics()),
     AngularFireAuthModule,
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
-    providePerformance(() => getPerformance())
+    
   ],
   providers: [
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    providePerformance(() => getPerformance()),
     CurrencyPipe,
     ScreenTrackingService,
     UserTrackingService
