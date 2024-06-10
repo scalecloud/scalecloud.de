@@ -30,7 +30,7 @@ export class SeatsService {
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.logService.error(error);
-      this.snackBarService.error(`Could not create checkout session. Please try again.`);
+      this.snackBarService.error(`Could not get list of seats. Please try again later.`);
       return of(result as T);
     };
   }

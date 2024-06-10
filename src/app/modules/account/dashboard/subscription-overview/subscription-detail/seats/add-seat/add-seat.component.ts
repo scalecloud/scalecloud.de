@@ -6,6 +6,14 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { AddSeatService } from './add-seat.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ActivatedRoute } from '@angular/router';
+import { UntypedFormControl, Validators } from '@angular/forms';
+import { RoleDescriptions, Roles } from 'src/app/shared/roles/roles';
+
+
+export interface ChipColor {
+  name: string;
+  selected: boolean;
+}
 
 
 @Component({
@@ -14,7 +22,15 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './add-seat.component.scss'
 })
 export class AddSeatComponent {
-  
+
+  email = new UntypedFormControl('', [Validators.required, Validators.email]);
+
+  // Exclude the Owner only while inviting users
+  inviteUserRoles = Object.values(Roles).filter(value => typeof value === 'string' && value !== Roles[Roles.Owner]);
+  roleDescriptions = RoleDescriptions;
+  Roles = Roles;
+  selectedRoles: Roles[] = [];
+
   constructor(
     private authService: AuthService,
     private logService: LogService,
@@ -23,9 +39,13 @@ export class AddSeatComponent {
     private returnUrlService: ReturnUrlService,
     private route: ActivatedRoute,
   ) { }
- 
-  addSeat( email: string ): void {
+
+  addSeat(): void {
     this.authService.waitForAuth().then(() => {
+
+      if (this.isEmailInvalid()) {
+        this.logService.warn("Invalid inputs in Login.");
+      }
 
       const subscriptionID = this.route.snapshot.paramMap.get('id');
 
@@ -36,7 +56,7 @@ export class AddSeatComponent {
       } else {
         let addSeatRequest: AddSeatRequest = {
           subscriptionID: subscriptionID,
-          email: email
+          email: this.email.value
         };
         this.addSeatService.addSeat(addSeatRequest)
           .subscribe(addSeatReply => {
@@ -52,6 +72,27 @@ export class AddSeatComponent {
     }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
     });
+  }
+
+  isEmailInvalid(): boolean {
+    return this.email.hasError('required') || this.email.hasError('email');
+  }
+
+  getErrorMessageEMail() {
+    if (this.email.hasError('required')) {
+      return 'You must enter a your E-Mail address';
+    }
+
+    return this.email.hasError('email') ? 'Not a valid E-Mail address' : '';
+  }
+
+  toggleRoleSelection(role: Roles): void {
+    const index = this.selectedRoles.indexOf(role);
+    if (index === -1) {
+      this.selectedRoles.push(role);
+    } else {
+      this.selectedRoles.splice(index, 1);
+    }
   }
 
 

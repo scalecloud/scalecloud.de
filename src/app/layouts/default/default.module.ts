@@ -15,7 +15,7 @@ import { ContactComponent } from 'src/app/modules/footer/contact/contact.compone
 import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
 import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
-import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from 'src/app/modules/products/in-memory-data.service';
 import { LoginComponent } from 'src/app/modules/account/login/login.component';
@@ -59,8 +59,11 @@ import { ActiveComponent } from 'src/app/modules/products/checkout/status/active
 import { SeatsComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seats.component';
 import { AddSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component';
 import { RemoveSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/remove-seat/remove-seat.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         DefaultComponent,
         HomeComponent,
         TitelCardComponent,
@@ -118,11 +121,14 @@ import { RemoveSeatComponent } from 'src/app/modules/account/dashboard/subscript
         MatInputModule,
         ReactiveFormsModule,
         MatIconModule,
+        MatChipsModule,
+        MatTooltipModule,
         HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
             delay: 0,
             dataEncapsulation: false,
             passThruUnknownUrl: true
         })], providers: [
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
+            provideHttpClient(withInterceptorsFromDi())
+        ]
+})
 export class DefaultModule { }
