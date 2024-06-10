@@ -4,8 +4,6 @@ export interface ListSeatRequest {
 
 export interface ListSeatReply {
     subscriptionID: string;
-    product_name: string;
-    product_type: string;
     max_seats: number;    
     emails: string[];
 }

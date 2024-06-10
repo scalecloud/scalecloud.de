@@ -2,12 +2,12 @@
     <mat-card-title>
         Seats
     </mat-card-title>
-    @if( seatListReply?.product_name && seatListReply?.product_type ) {
-    <mat-card-subtitle>Invite users so they have access to {{seatListReply.product_name}}
-        ({{seatListReply.product_type}})</mat-card-subtitle>
-    }
-    @if( getMaxSeats() > 0) {
-    <mat-card-subtitle>{{getCurrentSeats()}}/{{getMaxSeats()}}</mat-card-subtitle>
+    @if( seatListReply?.emails && seatListReply?.max_seats ) {
+    <mat-card-subtitle>Used
+        @if( getMaxSeats() > 0) {
+        {{getCurrentSeats()}}/{{getMaxSeats()}}
+        }
+    </mat-card-subtitle>
     }
     <mat-divider></mat-divider>
     <mat-card-content>
@@ -21,6 +21,5 @@
     </mat-card-content>
     <mat-card-actions>
         <button (click)="addSeat()" [disabled]="!isAddSeatPossible()" mat-stroked-button color="primary">Invite</button>
-        <button (click)="removeSeat()" [disabled]="!isRemoveSeatPossible()" mat-stroked-button>Delete</button>
     </mat-card-actions>
 </mat-card>

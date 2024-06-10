@@ -58,17 +58,8 @@ export class SeatsComponent {
     return this.seatListReply?.emails?.length < this.seatListReply?.max_seats;
   }
 
-  isRemoveSeatPossible(): boolean {
-    return this.seatListReply?.emails?.length > 0;
-  }
-
   addSeat(): void {
     this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + this.subscriptionID + '/add-seat');
   }
-
-  removeSeat(): void {
-    this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + this.subscriptionID + '/remove-seat');
-  }
-
 
 }
