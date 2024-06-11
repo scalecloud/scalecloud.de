@@ -11,7 +11,7 @@ import { AddSeatRequest, AddSeatReply } from '../seats';
 })
 export class AddSeatService {
 
-  private url = 'http://localhost:15000/dashboard/seats/add-seat';
+  private url = 'http://localhost:15000/dashboard/subscription/add-seat';
   constructor(
     private http: HttpClient,
     private snackBarService: SnackBarService,

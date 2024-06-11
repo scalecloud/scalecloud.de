@@ -14,7 +14,7 @@
         <mat-list>
             @if( seatListReply ) {
             @for (email of seatListReply.emails; track $index) {
-            <mat-list-item>mail</mat-list-item>
+            <mat-list-item>{{email}}</mat-list-item>
             }
             }
         </mat-list>
