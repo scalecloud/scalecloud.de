@@ -1,3 +1,5 @@
+import { Role } from "src/app/shared/roles/roles";
+
 export interface ListSeatRequest {
     subscriptionID: string;
 }
@@ -11,6 +13,7 @@ export interface ListSeatReply {
 export interface AddSeatRequest {
     subscriptionID: string;
     email: string;
+    roles: Role[];
 }
 
 export interface AddSeatReply {

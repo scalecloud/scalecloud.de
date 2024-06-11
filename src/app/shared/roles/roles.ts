@@ -1,13 +1,13 @@
-export enum Roles {
-    Owner,
-    Administrator,
-    User,
-    Billing
+export enum Role {
+    Owner = 'Owner',
+    Administrator = 'Administrator',
+    User = 'User',
+    Billing = 'Billing'
 }
 
-export const RoleDescriptions: { [key in Roles]: string } = {
-    [Roles.Owner]: 'Can\'t be removed from administrators.',
-    [Roles.Administrator]: 'Can add and remove users, change roles and cancel or resume the subscription.',
-    [Roles.User]: 'Can use the product. Uses a seat.',
-    [Roles.Billing]: 'Can see invoices and change payment methods.'
+export const RoleDescriptions: { [key in Role]: string } = {
+    [Role.Owner]: 'Can\'t be removed from administrators.',
+    [Role.Administrator]: 'Can add and remove users, change roles and cancel or resume the subscription.',
+    [Role.User]: 'Can use the product. Uses a seat.',
+    [Role.Billing]: 'Can see invoices and change payment methods.'
 };

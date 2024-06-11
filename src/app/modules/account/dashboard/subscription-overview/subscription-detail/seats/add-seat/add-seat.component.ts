@@ -7,7 +7,7 @@ import { AddSeatService } from './add-seat.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ActivatedRoute } from '@angular/router';
 import { UntypedFormControl, Validators } from '@angular/forms';
-import { RoleDescriptions, Roles } from 'src/app/shared/roles/roles';
+import { RoleDescriptions, Role } from 'src/app/shared/roles/roles';
 
 
 export interface ChipColor {
@@ -26,10 +26,10 @@ export class AddSeatComponent {
   email = new UntypedFormControl('', [Validators.required, Validators.email]);
 
   // Exclude the Owner only while inviting users
-  inviteUserRoles = Object.values(Roles).filter(value => typeof value === 'string' && value !== Roles[Roles.Owner]);
+  inviteUserRoles = Object.values(Role).filter(value => typeof value === 'string' && value !== Role[Role.Owner]);
   roleDescriptions = RoleDescriptions;
-  Roles = Roles;
-  selectedRoles: Roles[] = [];
+  Roles = Role;
+  selectedRoles: Role[] = [];
 
   constructor(
     private authService: AuthService,
@@ -56,7 +56,8 @@ export class AddSeatComponent {
       } else {
         let addSeatRequest: AddSeatRequest = {
           subscriptionID: subscriptionID,
-          email: this.email.value
+          email: this.email.value,
+          roles: this.selectedRoles,
         };
         this.addSeatService.addSeat(addSeatRequest)
           .subscribe(addSeatReply => {
@@ -86,7 +87,7 @@ export class AddSeatComponent {
     return this.email.hasError('email') ? 'Not a valid E-Mail address' : '';
   }
 
-  toggleRoleSelection(role: Roles): void {
+  toggleRoleSelection(role: Role): void {
     const index = this.selectedRoles.indexOf(role);
     if (index === -1) {
       this.selectedRoles.push(role);
