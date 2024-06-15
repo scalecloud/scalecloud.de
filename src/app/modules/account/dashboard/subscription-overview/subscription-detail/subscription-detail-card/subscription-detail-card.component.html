@@ -6,48 +6,48 @@
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
-            <mat-list-item>
+            <mat-list-item matTooltip="ID of the subscription.">
                 <div class="icon-text">
                     <mat-icon>numbers</mat-icon>
                     {{getID()}}
                 </div>
             </mat-list-item>
-            <mat-list-item>
+            <mat-list-item matTooltip="Total amount of storage available in the subscription.">
                 <div class="icon-text">
                     <mat-icon>cloud</mat-icon>
-                    {{getStorageAmount()}} TB
+                    Storage: {{getTotalStorageAmount()}} TB
                 </div>
             </mat-list-item>
-            <mat-list-item>
+            <mat-list-item matTooltip="Total amount of users available in the subscription.">
                 <div class="icon-text">
                     <mat-icon>person</mat-icon>
-                    {{getUserCount()}}
+                    Seats: {{getUserCount()}}
                 </div>
             </mat-list-item>
-            <mat-list-item>
+            <mat-list-item matTooltip="Monthly cost for all users in the subscription.">
                 <div class="icon-text">
                     <mat-icon>payments</mat-icon>
-                    {{getPricePerMonth() / 100 | currency:getCurrency() : 'symbol' : '1.0-0'}}
+                    Cost: {{getTotalPricePerMonth() / 100 | currency:getCurrency() : 'symbol' : '1.0-0'}}
                     <span class="price-month">/month</span>
                 </div>
             </mat-list-item>
             <div *ngIf="isTrailing()">
-                <mat-list-item>
+                <mat-list-item matTooltip="The date when the trial ends.">
                     <div class="icon-text">
                         <mat-icon>
                             credit_card_off
                         </mat-icon>
-                        {{getTrailingEnd() * 1000 | date }}
+                        Trial until: {{getTrailingEnd() * 1000 | date }}
                     </div>
                 </mat-list-item>
             </div>
             <div *ngIf="isCancelAtPeriodEnd()">
-                <mat-list-item>
+                <mat-list-item matTooltip="The date when the subscription will be canceled.">
                     <div class="icon-text">
                         <mat-icon>
                             event_busy
                         </mat-icon>
-                        {{getCancelAt() * 1000 | date }}
+                        Termination date: {{getCancelAt() * 1000 | date }}
                     </div>
                 </mat-list-item>
             </div>

@@ -30,12 +30,20 @@ export class SubscriptionDetailCardComponent {
     return this.reply?.storage_amount || 0;
   }
 
+  getTotalStorageAmount(): number {
+    return this.getStorageAmount() * this.getUserCount();
+  }
+
   getUserCount(): number {
     return this.reply?.user_count || 0;
   }
 
   getPricePerMonth(): number {
     return this.reply?.price_per_month || 0;
+  }
+
+  getTotalPricePerMonth(): number {
+    return this.getPricePerMonth() * this.getUserCount();
   }
 
   getCurrency(): string {
