@@ -56,9 +56,9 @@ import { PaymentChangedRequiresPaymentMethodComponent } from 'src/app/modules/ac
 import { PaymentChangedSucceededComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-succeeded/payment-changed-succeeded.component';
 import { TrailingComponent } from 'src/app/modules/products/checkout/status/trailing/trailing.component';
 import { ActiveComponent } from 'src/app/modules/products/checkout/status/active/active.component';
-import { UsersComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/users/users.component';
-import { AddUserComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/users/add-user/add-user.component';
-import { RemoveUserComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/users/remove-user/remove-user.component';
+import { SeatsComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seats.component';
+import { AddSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component';
+import { RemoveSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/remove-seat/remove-seat.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -92,9 +92,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         SubscriptionOverviewComponent,
         SubscriptionDetailComponent,
         SubscriptionDetailCardComponent,
-        UsersComponent,
-        AddUserComponent,
-        RemoveUserComponent,
+        SeatsComponent,
+        AddSeatComponent,
+        RemoveSeatComponent,
         BillingPortalComponent,
         CheckoutComponent,
         CheckoutDetailsComponent,

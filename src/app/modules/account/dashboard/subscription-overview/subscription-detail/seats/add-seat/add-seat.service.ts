@@ -4,14 +4,14 @@ import { Observable, catchError, of } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { AddUserRequest, AddUserReply } from '../users';
+import { AddSeatRequest, AddSeatReply } from '../seats';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AddUserService {
+export class AddSeatService {
 
-  private url = 'http://localhost:15000/dashboard/subscription/add-user';
+  private url = 'http://localhost:15000/dashboard/subscription/add-seat';
   constructor(
     private http: HttpClient,
     private snackBarService: SnackBarService,
@@ -19,17 +19,17 @@ export class AddUserService {
     private logService: LogService,
   ) { }
 
-  addUser(addUserRequest: AddUserRequest): Observable<AddUserReply> {
-    return this.http.post<AddUserReply>(this.url, addUserRequest, this.authService.getHttpOptions())
+  addSeat(addSeatRequest: AddSeatRequest): Observable<AddSeatReply> {
+    return this.http.post<AddSeatReply>(this.url, addSeatRequest, this.authService.getHttpOptions())
       .pipe(
-        catchError(this.handleError<AddUserReply>('addUser'))
+        catchError(this.handleError<AddSeatReply>('addSeat'))
       );
   }
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.logService.error(error);
-      this.snackBarService.error(`Could not add user. Please try again later.`);
+      this.snackBarService.error(`Could not add seat. Please try again later.`);
       return of(result as T);
     };
   }
