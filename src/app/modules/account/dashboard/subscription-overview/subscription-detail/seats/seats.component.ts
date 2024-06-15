@@ -17,6 +17,8 @@ export class SeatsComponent {
   @Input() subscriptionID: string | undefined;
   seatListReply: ListSeatReply | undefined;
   loading = false;
+  error = false;
+
   pageSize = 5;
   pageIndex = 0;
 
@@ -57,9 +59,17 @@ export class SeatsComponent {
         };
         this.loading = true;
         this.seatService.getListSeats(seatListRequest)
-          .subscribe(seatListReply => {
-            this.seatListReply = seatListReply;
-            this.loading = false;
+          .subscribe({
+            next: seatListReply => {
+              this.seatListReply = seatListReply;
+              this.loading = false;
+              this.error = false;
+            },
+            error: error => {
+              this.loading = false;
+              this.error = true;
+              this.snackBarService.error('Could not get list of seats. Please try again later.');
+            }
           });
       }
     }).catch((error) => {

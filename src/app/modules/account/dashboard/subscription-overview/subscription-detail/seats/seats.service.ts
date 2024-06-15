@@ -22,9 +22,9 @@ export class SeatsService {
 
   getListSeats(listSeatRequest: ListSeatRequest): Observable<ListSeatReply> {
     return this.http.post<ListSeatReply>(this.url, listSeatRequest, this.authService.getHttpOptions())
-      .pipe(
+      /* .pipe(
         catchError(this.handleError<ListSeatReply>('getListSeats'))
-      );
+      ) */;
   }
 
   handleError<T>(operation = 'operation', result?: T) {

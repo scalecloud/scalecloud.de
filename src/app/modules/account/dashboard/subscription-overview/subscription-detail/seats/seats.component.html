@@ -1,10 +1,16 @@
 <mat-card>
-    @if ( loading || seatListReply == null) {
-        <mat-progress-bar mode="query"></mat-progress-bar>
-        }
+    @if ( loading ) {
+    <mat-progress-bar mode="query"></mat-progress-bar>
+    }
     <mat-card-title>
         Users
     </mat-card-title>
+    @if (error) {
+    <button class="reload-button" mat-button (click)="getSeatsList()">
+        <mat-icon >refresh</mat-icon>Reload
+    </button>
+    }
+    @if ( seatListReply && !error ) {
     @if( seatListReply?.totalResults && seatListReply?.maxSeats ) {
     <mat-card-subtitle>
         Used {{getUsedSeats()}}/{{getMaxSeats()}}
@@ -25,6 +31,8 @@
         }
     </mat-card-content>
     <mat-card-actions>
-        <button (click)="addSeat()" [disabled]="!isAddSeatPossible()" mat-stroked-button color="primary">Invite</button>
+        <button class="addSeat-button" (click)="addSeat()" [disabled]="!isAddSeatPossible()" mat-stroked-button
+            color="primary">Invite</button>
     </mat-card-actions>
+    }
 </mat-card>
