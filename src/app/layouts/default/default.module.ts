@@ -62,6 +62,7 @@ import { RemoveSeatComponent } from 'src/app/modules/account/dashboard/subscript
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
     declarations: [
@@ -116,6 +117,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         MatCardModule,
         MatButtonModule,
         MatProgressSpinnerModule,
+        MatProgressBarModule,
         MatDialogModule,
         MatListModule,
         MatFormFieldModule,

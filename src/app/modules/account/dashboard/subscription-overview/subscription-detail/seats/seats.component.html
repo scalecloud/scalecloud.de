@@ -1,12 +1,13 @@
 <mat-card>
+    @if ( loading || seatListReply == null) {
+        <mat-progress-bar mode="query"></mat-progress-bar>
+        }
     <mat-card-title>
         Users
     </mat-card-title>
-    @if( seatListReply?.emails && seatListReply?.maxSeats ) {
-    <mat-card-subtitle>Used
-        @if( getMaxSeats() > 0) {
-        {{getCurrentSeats()}}/{{getMaxSeats()}}
-        }
+    @if( seatListReply?.totalResults && seatListReply?.maxSeats ) {
+    <mat-card-subtitle>
+        Used {{getUsedSeats()}}/{{getMaxSeats()}}
     </mat-card-subtitle>
     }
     <mat-divider></mat-divider>
@@ -17,9 +18,8 @@
             <mat-list-item>{{email}}</mat-list-item>
             }
         </mat-list>
-        <mat-paginator #paginator (page)="handlePageEvent($event)"
-            [length]="seatListReply.totalResults" [pageSize]="pageSize" [disabled]="disabled"
-            [showFirstLastButtons]="showFirstLastButtons"
+        <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="seatListReply.totalResults"
+            [pageSize]="pageSize" [disabled]="loading" [showFirstLastButtons]="showFirstLastButtons"
             [hidePageSize]="hidePageSize" [pageIndex]="seatListReply.pageIndex" aria-label="Select page">
         </mat-paginator>
         }

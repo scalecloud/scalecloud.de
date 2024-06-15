@@ -16,12 +16,12 @@ export class SeatsComponent {
 
   @Input() subscriptionID: string | undefined;
   seatListReply: ListSeatReply | undefined;
+  loading = false;
   pageSize = 5;
   pageIndex = 0;
 
-  hidePageSize = false;
-  showFirstLastButtons = true;
-  disabled = false;
+  hidePageSize = true;
+  showFirstLastButtons = false;
 
   pageEvent: PageEvent;
 
@@ -55,16 +55,20 @@ export class SeatsComponent {
           pageIndex: this.pageIndex,
           pageSize: this.pageSize
         };
+        this.loading = true;
         this.seatService.getListSeats(seatListRequest)
-          .subscribe(seatListReply => this.seatListReply = seatListReply);
+          .subscribe(seatListReply => {
+            this.seatListReply = seatListReply;
+            this.loading = false;
+          });
       }
     }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
     });
   }
 
-  getCurrentSeats(): number {
-    return this.seatListReply?.emails?.length || 0;
+  getUsedSeats(): number {
+    return this.seatListReply?.totalResults || 0;
   }
 
   getMaxSeats(): number {
