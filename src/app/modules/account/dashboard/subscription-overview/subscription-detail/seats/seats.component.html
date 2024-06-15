@@ -2,7 +2,7 @@
     <mat-card-title>
         Users
     </mat-card-title>
-    @if( seatListReply?.emails && seatListReply?.max_seats ) {
+    @if( seatListReply?.emails && seatListReply?.maxSeats ) {
     <mat-card-subtitle>Used
         @if( getMaxSeats() > 0) {
         {{getCurrentSeats()}}/{{getMaxSeats()}}
@@ -11,13 +11,18 @@
     }
     <mat-divider></mat-divider>
     <mat-card-content>
+        @if( seatListReply ) {
         <mat-list>
-            @if( seatListReply ) {
             @for (email of seatListReply.emails; track $index) {
             <mat-list-item>{{email}}</mat-list-item>
             }
-            }
         </mat-list>
+        <mat-paginator #paginator (page)="handlePageEvent($event)"
+            [length]="seatListReply.totalResults" [pageSize]="pageSize" [disabled]="disabled"
+            [showFirstLastButtons]="showFirstLastButtons"
+            [hidePageSize]="hidePageSize" [pageIndex]="seatListReply.pageIndex" aria-label="Select page">
+        </mat-paginator>
+        }
     </mat-card-content>
     <mat-card-actions>
         <button (click)="addSeat()" [disabled]="!isAddSeatPossible()" mat-stroked-button color="primary">Invite</button>

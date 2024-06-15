@@ -2,12 +2,16 @@ import { Role } from "src/app/shared/roles/roles";
 
 export interface ListSeatRequest {
     subscriptionID: string;
+    pageIndex: number;
+    pageSize: number;
 }
 
 export interface ListSeatReply {
     subscriptionID: string;
-    max_seats: number;    
+    maxSeats: number;
     emails: string[];
+    pageIndex: number;
+    totalResults: number;
 }
 
 export interface AddSeatRequest {

@@ -61,6 +61,7 @@ import { AddSeatComponent } from 'src/app/modules/account/dashboard/subscription
 import { RemoveSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/remove-seat/remove-seat.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
     declarations: [
@@ -123,6 +124,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatIconModule,
         MatChipsModule,
         MatTooltipModule,
+        MatPaginatorModule,
         HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
             delay: 0,
             dataEncapsulation: false,

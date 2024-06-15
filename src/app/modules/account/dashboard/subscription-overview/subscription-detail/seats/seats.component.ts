@@ -5,6 +5,7 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 import { ListSeatReply, ListSeatRequest } from './seats';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-seats',
@@ -15,6 +16,20 @@ export class SeatsComponent {
 
   @Input() subscriptionID: string | undefined;
   seatListReply: ListSeatReply | undefined;
+  pageSize = 5;
+  pageIndex = 0;
+
+  hidePageSize = false;
+  showFirstLastButtons = true;
+  disabled = false;
+
+  pageEvent: PageEvent;
+
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.pageIndex = e.pageIndex;
+    this.getSeatsList();
+  }
 
   constructor(
     public authService: AuthService,
@@ -26,17 +41,19 @@ export class SeatsComponent {
 
 
   ngOnInit(): void {
-    this.initSeatsList();
+    this.getSeatsList();
   }
 
-  initSeatsList(): void {
+  getSeatsList(): void {
     this.authService.waitForAuth().then(() => {
 
       if (!this.subscriptionID) {
-        this.logService.error('SeatsComponent.initSeatsList: subscriptionID is null');
+        this.logService.error('SeatsComponent.getSeatsList: subscriptionID is null');
       } else {
         let seatListRequest: ListSeatRequest = {
-          subscriptionID: this.subscriptionID
+          subscriptionID: this.subscriptionID,
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize
         };
         this.seatService.getListSeats(seatListRequest)
           .subscribe(seatListReply => this.seatListReply = seatListReply);
@@ -51,11 +68,11 @@ export class SeatsComponent {
   }
 
   getMaxSeats(): number {
-    return this.seatListReply?.max_seats || 0;
+    return this.seatListReply?.maxSeats || 0;
   }
 
   isAddSeatPossible(): boolean {
-    return this.seatListReply?.emails?.length < this.seatListReply?.max_seats;
+    return this.seatListReply?.emails?.length < this.seatListReply?.maxSeats;
   }
 
   addSeat(): void {
