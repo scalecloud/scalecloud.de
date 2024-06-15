@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddSeatComponent } from './add-seat.component';
+import { RemoveUserComponent } from './remove-user.component';
 
-describe('AddSeatComponent', () => {
-  let component: AddSeatComponent;
-  let fixture: ComponentFixture<AddSeatComponent>;
+describe('RemoveUserComponent', () => {
+  let component: RemoveUserComponent;
+  let fixture: ComponentFixture<RemoveUserComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddSeatComponent]
+      imports: [RemoveUserComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(AddSeatComponent);
+    fixture = TestBed.createComponent(RemoveUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

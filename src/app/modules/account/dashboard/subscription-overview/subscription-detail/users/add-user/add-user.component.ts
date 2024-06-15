@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { AddSeatRequest } from '../seats';
+import { AddUserRequest } from '../users';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { AddSeatService } from './add-seat.service';
+import { AddUserService } from './add-user.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ActivatedRoute } from '@angular/router';
 import { UntypedFormControl, Validators } from '@angular/forms';
@@ -17,11 +17,11 @@ export interface ChipColor {
 
 
 @Component({
-  selector: 'app-add-seat',
-  templateUrl: './add-seat.component.html',
-  styleUrl: './add-seat.component.scss'
+  selector: 'app-add-user',
+  templateUrl: './add-user.component.html',
+  styleUrl: './add-user.component.scss'
 })
-export class AddSeatComponent {
+export class AddUserComponent {
 
   email = new UntypedFormControl('', [Validators.required, Validators.email]);
 
@@ -35,12 +35,12 @@ export class AddSeatComponent {
     private authService: AuthService,
     private logService: LogService,
     private snackBarService: SnackBarService,
-    private addSeatService: AddSeatService,
+    private addUserService: AddUserService,
     private returnUrlService: ReturnUrlService,
     private route: ActivatedRoute,
   ) { }
 
-  addSeat(): void {
+  addUser(): void {
     this.authService.waitForAuth().then(() => {
 
       if (this.isEmailInvalid()) {
@@ -50,23 +50,23 @@ export class AddSeatComponent {
       const subscriptionID = this.route.snapshot.paramMap.get('id');
 
       if (!subscriptionID) {
-        this.logService.error('SeatsComponent.invite: subscriptionID is null');
+        this.logService.error('UsersComponent.invite: subscriptionID is null');
         this.snackBarService.error('Currently not possible to invite a user. Please try again later.');
         this.returnUrlService.openReturnURL('/dashboard');
       } else {
-        let addSeatRequest: AddSeatRequest = {
+        let addUserRequest: AddUserRequest = {
           subscriptionID: subscriptionID,
           email: this.email.value,
           roles: this.selectedRoles,
         };
-        this.addSeatService.addSeat(addSeatRequest)
-          .subscribe(addSeatReply => {
-            if (addSeatReply.success) {
-              this.snackBarService.info(`Invitation sent to ${addSeatReply?.email}.`);
+        this.addUserService.addUser(addUserRequest)
+          .subscribe(addUserReply => {
+            if (addUserReply.success) {
+              this.snackBarService.info(`Invitation sent to ${addUserReply?.email}.`);
               this.returnUrlService.openReturnURL('/dashboard');
             }
             else {
-              this.snackBarService.error(`Could not send invitation to ${addSeatReply?.email}. Please rety.`);
+              this.snackBarService.error(`Could not send invitation to ${addUserReply?.email}. Please rety.`);
             }
           });
       }

@@ -2,24 +2,24 @@
     <mat-card-title>
         Users
     </mat-card-title>
-    @if( seatListReply?.emails && seatListReply?.max_seats ) {
+    @if( userListReply?.emails && userListReply?.max_users ) {
     <mat-card-subtitle>Used
-        @if( getMaxSeats() > 0) {
-        {{getCurrentSeats()}}/{{getMaxSeats()}}
+        @if( getMaxUsers() > 0) {
+        {{getCurrentUsers()}}/{{getMaxUsers()}}
         }
     </mat-card-subtitle>
     }
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
-            @if( seatListReply ) {
-            @for (email of seatListReply.emails; track $index) {
+            @if( userListReply ) {
+            @for (email of userListReply.emails; track $index) {
             <mat-list-item>{{email}}</mat-list-item>
             }
             }
         </mat-list>
     </mat-card-content>
     <mat-card-actions>
-        <button (click)="addSeat()" [disabled]="!isAddSeatPossible()" mat-stroked-button color="primary">Invite</button>
+        <button (click)="addUser()" [disabled]="!isAddUserPossible()" mat-stroked-button color="primary">Invite</button>
     </mat-card-actions>
 </mat-card>

@@ -1,33 +1,33 @@
 import { Role } from "src/app/shared/roles/roles";
 
-export interface ListSeatRequest {
+export interface ListUserRequest {
     subscriptionID: string;
 }
 
-export interface ListSeatReply {
+export interface ListUserReply {
     subscriptionID: string;
-    max_seats: number;    
+    max_users: number;    
     emails: string[];
 }
 
-export interface AddSeatRequest {
+export interface AddUserRequest {
     subscriptionID: string;
     email: string;
     roles: Role[];
 }
 
-export interface AddSeatReply {
+export interface AddUserReply {
     subscriptionID: string;
     success: boolean;
     email: string;
 }
 
-export interface RemoveSeatRequest {
+export interface RemoveUserRequest {
     subscriptionID: string;
     email: string;
 }
 
-export interface RemoveSeatReply {
+export interface RemoveUserReply {
     subscriptionID: string;
     success: boolean;
     email: string;
