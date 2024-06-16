@@ -1,7 +1,7 @@
 {
   "hosting": {
     "target": "scalecloud",
-    "public": "dist/scalecloud",
+    "public": "dist/scalecloud/browser",
     "ignore": [
       "**/.*"
     ],
