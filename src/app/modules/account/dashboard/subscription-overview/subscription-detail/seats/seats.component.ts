@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { ListSeatReply, ListSeatRequest } from './seats';
+import { ListSeatReply, ListSeatRequest, Seat } from './seats';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { PageEvent } from '@angular/material/paginator';
@@ -92,6 +92,10 @@ export class SeatsComponent {
 
   addSeat(): void {
     this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + this.subscriptionID + '/add-seat');
+  }
+
+  openSeatDetail(seat: Seat): void {
+    this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + this.subscriptionID + '/' + seat.uid + '/seat-detail');
   }
 
 }
