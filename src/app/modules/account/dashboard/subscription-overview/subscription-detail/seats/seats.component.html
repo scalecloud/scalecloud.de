@@ -20,8 +20,8 @@
     <mat-card-content>
         @if( seatListReply ) {
         <mat-list>
-            @for (email of seatListReply.emails; track $index) {
-            <mat-list-item>{{email}}</mat-list-item>
+            @for (seat of seatListReply.seats; track $index) {
+            <mat-list-item>{{seat.email}}</mat-list-item>
             }
         </mat-list>
         <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="seatListReply.totalResults"

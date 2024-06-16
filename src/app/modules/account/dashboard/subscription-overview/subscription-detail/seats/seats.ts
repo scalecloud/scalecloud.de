@@ -1,5 +1,12 @@
 import { Role } from "src/app/shared/roles/roles";
 
+export interface Seat {
+    subscriptionID: string;
+    uid: string;
+    email: string;
+    roles: Role[];
+}
+
 export interface ListSeatRequest {
     subscriptionID: string;
     pageIndex: number;
@@ -9,7 +16,7 @@ export interface ListSeatRequest {
 export interface ListSeatReply {
     subscriptionID: string;
     maxSeats: number;
-    emails: string[];
+    seats: Seat[];
     pageIndex: number;
     totalResults: number;
 }

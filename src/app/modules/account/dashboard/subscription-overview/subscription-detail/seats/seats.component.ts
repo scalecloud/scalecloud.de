@@ -62,6 +62,7 @@ export class SeatsComponent {
           .subscribe({
             next: seatListReply => {
               this.seatListReply = seatListReply;
+              this.logService.warn('SeatsComponent.getSeatsList: ' + JSON.stringify(seatListReply));
               this.loading = false;
               this.error = false;
             },
@@ -86,7 +87,7 @@ export class SeatsComponent {
   }
 
   isAddSeatPossible(): boolean {
-    return this.seatListReply?.emails?.length < this.seatListReply?.maxSeats;
+    return this.seatListReply?.seats?.length < this.seatListReply?.maxSeats;
   }
 
   addSeat(): void {
