@@ -7,7 +7,7 @@
     </mat-card-title>
     @if (error) {
     <button class="reload-button" mat-button (click)="getSeatsList()">
-        <mat-icon >refresh</mat-icon>Reload
+        <mat-icon>refresh</mat-icon>Reload
     </button>
     }
     @if ( seatListReply && !error ) {
@@ -22,17 +22,19 @@
         <mat-list>
             @for (seat of seatListReply.seats; track $index) {
             <mat-list-item>
-                <button class="seat-button" mat-button (click)="openSeatDetail(seat)">
+                <button class="seat-button" mat-button (click)="openSeatDetail(seat)" matTooltip="{{seat.email}}">
                     <mat-icon>person</mat-icon> {{seat.email}}
-                  </button>
+                </button>
             </mat-list-item>
             }
         </mat-list>
-        <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="seatListReply.totalResults"
-            [pageSize]="pageSize" [disabled]="loading" [showFirstLastButtons]="showFirstLastButtons"
-            [hidePageSize]="hidePageSize" [pageIndex]="seatListReply.pageIndex" aria-label="Select page">
-        </mat-paginator>
-        }
+        @if( seatListReply.totalResults > pageSize ) { <mat-paginator #paginator (page)="handlePageEvent($event)"
+            [length]="seatListReply.totalResults" [pageSize]="pageSize" [disabled]="loading"
+            [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize"
+            [pageIndex]="seatListReply.pageIndex" aria-label="Select page">
+            </mat-paginator>
+            }
+            }
     </mat-card-content>
     <mat-card-actions>
         <button class="addSeat-button" (click)="addSeat()" [disabled]="!isAddSeatPossible()" mat-stroked-button
