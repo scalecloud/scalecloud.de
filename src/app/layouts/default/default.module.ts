@@ -58,7 +58,6 @@ import { TrailingComponent } from 'src/app/modules/products/checkout/status/trai
 import { ActiveComponent } from 'src/app/modules/products/checkout/status/active/active.component';
 import { SeatsComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seats.component';
 import { AddSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component';
-import { RemoveSeatComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/remove-seat/remove-seat.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -97,7 +96,6 @@ import { SeatDetailComponent } from 'src/app/modules/account/dashboard/subscript
         SubscriptionDetailCardComponent,
         SeatsComponent,
         AddSeatComponent,
-        RemoveSeatComponent,
         SeatDetailComponent,
         BillingPortalComponent,
         CheckoutComponent,

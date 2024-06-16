@@ -9,13 +9,6 @@ import { ActivatedRoute } from '@angular/router';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { RoleDescriptions, Role } from 'src/app/shared/roles/roles';
 
-
-export interface ChipColor {
-  name: string;
-  selected: boolean;
-}
-
-
 @Component({
   selector: 'app-add-seat',
   templateUrl: './add-seat.component.html',

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RemoveSeatService } from './remove-seat.service';
+import { SeatDetailService } from './seat-detail.service';
 
-describe('RemoveSeatService', () => {
-  let service: RemoveSeatService;
+describe('SeatDetailService', () => {
+  let service: SeatDetailService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RemoveSeatService);
+    service = TestBed.inject(SeatDetailService);
   });
 
   it('should be created', () => {

@@ -1,5 +1,33 @@
-mat-card-title {
+mat-card {
     text-align: center;
+    width: 20rem;
+    margin-bottom: 1rem;
+}
+
+mat-card-title {
     font-size: 2rem;
-    padding: 1rem;
+    margin: 1rem;
+}
+
+mat-card-subtitle {
+    margin-bottom: 1rem;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flex-item {
+    padding: 0.5rem;
+}
+
+.delete-button {
+    color: red;
+    background-color: red;
+
+    &:hover, &:focus {
+        background-color: darkred; // Change the background color to dark red when the button is hovered over or focused
+    }
 }

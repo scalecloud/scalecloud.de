@@ -1,1 +1,25 @@
-<p>seat-detail works!</p>
+<mat-card>
+      <mat-card-title><mat-icon>manage_accounts</mat-icon> Manage user</mat-card-title>
+      <mat-card-subtitle>
+            <div class="flex-container">
+                  <mat-icon>person</mat-icon>{{seat?.email}}
+            </div>
+      </mat-card-subtitle>
+      <mat-card-content>
+            <mat-label>Select roles:</mat-label>
+            <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked" formControlName="roles">
+                  <mat-chip-option *ngFor="let role of inviteUserRoles" [selected]="selectedRoles.includes(Roles[role])"
+                        (click)="toggleRoleSelection(Roles[role])" [matTooltip]="roleDescriptions[Roles[role]]">
+                        {{role}}
+                  </mat-chip-option>
+            </mat-chip-listbox>
+            <div class="flex-container">
+                  <div class="flex-item">
+                        <button (click)="updateSeat()" mat-raised-button color="primary">Update</button>
+                  </div>
+                  <div class="flex-item">
+                        <button class="delete-button" mat-raised-button color="warn" (click)="deleteSeat(seat.email)" ><mat-icon>delete</mat-icon> Delete</button>
+                  </div>
+            </div>
+      </mat-card-content>
+</mat-card>

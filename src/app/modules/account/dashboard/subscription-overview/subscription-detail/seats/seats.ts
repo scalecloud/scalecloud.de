@@ -33,13 +33,33 @@ export interface AddSeatReply {
     email: string;
 }
 
-export interface RemoveSeatRequest {
+export interface DeleteSeatRequest {
     subscriptionID: string;
     email: string;
 }
 
-export interface RemoveSeatReply {
+export interface DeleteSeatReply {
     subscriptionID: string;
     success: boolean;
     email: string;
+}
+
+export interface SeatDetailRequest {
+    subscriptionID: string;
+    uid: string;
+}
+
+export interface SeatDetailReply {
+    seat: Seat;
+    ownerUID: string;
+}
+
+export interface UpdateSeatDetailRequest {
+    seatOriginal: Seat;
+    seatUpdated: Seat;
+}
+
+export interface UpdateSeatDetailReply {
+    seat: Seat;
+    ownerUID: string;
 }
