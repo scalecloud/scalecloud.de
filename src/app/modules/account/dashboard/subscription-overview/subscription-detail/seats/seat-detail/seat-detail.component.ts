@@ -17,15 +17,14 @@ import { SeatDetailService } from './seat-detail.service';
 export class SeatDetailComponent {
 
   seatDetailReply: SeatDetailReply | null;
+  updatedSeat: Seat | null;
   loading = false;
   error = false;
 
   inviteUserRoles = Object.values(Role);
   roleDescriptions = RoleDescriptions;
   Roles = Role;
-  selectedRoles: Role[] = [];
-
-  seat: Seat | null;
+  
 
   constructor(
     private authService: AuthService,
@@ -41,11 +40,13 @@ export class SeatDetailComponent {
   }
 
   toggleRoleSelection(role: Role): void {
-    const index = this.selectedRoles.indexOf(role);
-    if (index === -1) {
-      this.selectedRoles.push(role);
-    } else {
-      this.selectedRoles.splice(index, 1);
+    if (this.updatedSeat) {
+      const index = this.updatedSeat.roles.indexOf(role);
+      if (index === -1) {
+        this.updatedSeat.roles.push(role);
+      } else {
+        this.updatedSeat.roles.splice(index, 1);
+      }
     }
   }
 
@@ -68,8 +69,9 @@ export class SeatDetailComponent {
         this.loading = true;
         this.seatDetailService.getSeat(request)
           .subscribe({
-            next: seatDetailReply => {
-              this.seatDetailReply = seatDetailReply;
+            next: reply => {
+              this.seatDetailReply = reply;
+              this.updatedSeat = JSON.parse(JSON.stringify(reply.seat));
               this.loading = false;
               this.error = false;
             },

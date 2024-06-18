@@ -55,8 +55,7 @@ export interface SeatDetailReply {
 }
 
 export interface UpdateSeatDetailRequest {
-    seatOriginal: Seat;
-    seatUpdated: Seat;
+    seat: Seat;
 }
 
 export interface UpdateSeatDetailReply {
