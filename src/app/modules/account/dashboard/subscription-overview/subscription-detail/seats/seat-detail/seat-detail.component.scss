@@ -22,12 +22,3 @@ mat-card-subtitle {
 .flex-item {
     padding: 0.5rem;
 }
-
-.delete-button {
-    color: red;
-    background-color: red;
-
-    &:hover, &:focus {
-        background-color: darkred; // Change the background color to dark red when the button is hovered over or focused
-    }
-}
