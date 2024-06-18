@@ -14,8 +14,8 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class SeatsComponent {
 
-  @Input() subscriptionID: string | undefined;
-  seatListReply: ListSeatReply | undefined;
+  @Input() subscriptionID: string | null;
+  seatListReply: ListSeatReply | null;
   loading = false;
   error = false;
 
@@ -52,17 +52,16 @@ export class SeatsComponent {
       if (!this.subscriptionID) {
         this.logService.error('SeatsComponent.getSeatsList: subscriptionID is null');
       } else {
-        let seatListRequest: ListSeatRequest = {
+        let request: ListSeatRequest = {
           subscriptionID: this.subscriptionID,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize
         };
         this.loading = true;
-        this.seatService.getListSeats(seatListRequest)
+        this.seatService.getListSeats(request)
           .subscribe({
             next: seatListReply => {
               this.seatListReply = seatListReply;
-              this.logService.warn('SeatsComponent.getSeatsList: ' + JSON.stringify(seatListReply));
               this.loading = false;
               this.error = false;
             },
