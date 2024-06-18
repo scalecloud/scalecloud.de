@@ -11,11 +11,14 @@
       <mat-card-content>
             <mat-label>Select roles:</mat-label>
             <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked" formControlName="roles">
-                  <mat-chip-option *ngFor="let role of inviteUserRoles" [selected]="updatedSeat?.roles.includes(Roles[role])"
-                      (click)="toggleRoleSelection(Roles[role])" [matTooltip]="roleDescriptions[Roles[role]]">
-                      {{role}}
+                  <mat-chip-option *ngFor="let role of inviteUserRoles" 
+                                   [selected]="updatedSeat?.roles.includes(role)"
+                                   [disabled]="role === Roles.Owner && !amIOwner"
+                                   (click)="toggleRoleSelection(role)" 
+                                   [matTooltip]="roleDescriptions[role]">
+                    {{role}}
                   </mat-chip-option>
-              </mat-chip-listbox>
+                </mat-chip-listbox>
             <div class="flex-container">
                   <div class="flex-item">
                         <button (click)="updateSeat()" mat-raised-button color="primary">Update</button>

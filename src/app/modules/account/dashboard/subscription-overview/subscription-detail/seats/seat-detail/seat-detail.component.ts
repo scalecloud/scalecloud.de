@@ -25,6 +25,7 @@ export class SeatDetailComponent {
   roleDescriptions = RoleDescriptions;
   Roles = Role;
   
+  amIOwner: boolean | undefined;
 
   constructor(
     private authService: AuthService,
@@ -72,6 +73,7 @@ export class SeatDetailComponent {
             next: reply => {
               this.seatDetailReply = reply;
               this.updatedSeat = JSON.parse(JSON.stringify(reply.seat));
+              this.initOwner();
               this.loading = false;
               this.error = false;
             },
@@ -84,6 +86,15 @@ export class SeatDetailComponent {
       }
     }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
+    });
+  }
+
+  initOwner(): void {
+    const userPromise = this.authService.getUserPromise();
+    userPromise.then((currentUser) => {
+      this.amIOwner =  this.seatDetailReply && currentUser && this.seatDetailReply.ownerUID === currentUser.uid;
+    }).catch((error) => {
+      this.logService.error("isOwner failed: " + error);
     });
   }
 
