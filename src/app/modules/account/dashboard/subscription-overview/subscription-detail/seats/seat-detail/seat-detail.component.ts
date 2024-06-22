@@ -169,6 +169,10 @@ export class SeatDetailComponent {
     // Save seat
   }
 
+  cancel(): void {
+    this.returnUrlService.openReturnURL('/dashboard');
+  }
+
   deleteSeat(email: string): void {
     this.authService.waitForAuth().then(() => {
 
