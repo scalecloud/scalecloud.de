@@ -63,6 +63,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { SeatDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component';
+import { ConfirmOwnerTransferComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/confirm-owner-transfer/confirm-owner-transfer.component';
 
 @NgModule({
     declarations: [
@@ -97,6 +98,7 @@ import { SeatDetailComponent } from 'src/app/modules/account/dashboard/subscript
         SeatsComponent,
         AddSeatComponent,
         SeatDetailComponent,
+        ConfirmOwnerTransferComponent,
         BillingPortalComponent,
         CheckoutComponent,
         CheckoutDetailsComponent,

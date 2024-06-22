@@ -31,7 +31,7 @@ export class SeatDetailService {
   updateSeat(updateSeatDetailRequest: UpdateSeatDetailRequest): Observable<UpdateSeatDetailReply> {
     return this.http.post<UpdateSeatDetailReply>(this.urlUpdateSeatDetail, updateSeatDetailRequest, this.authService.getHttpOptions())
       .pipe(
-        catchError(this.handleError<SeatDetailReply>('updateSeat'))
+        catchError(this.handleError<UpdateSeatDetailReply>('updateSeat'))
       );
   }
 

@@ -5,28 +5,29 @@
       <mat-card-title><mat-icon>manage_accounts</mat-icon> Manage user</mat-card-title>
       <mat-card-subtitle>
             <div class="flex-container">
-                  <mat-icon>person</mat-icon>{{seatDetailReply?.seat?.email}}
+                  <mat-icon>person</mat-icon>{{seatDetailReply?.selectedSeat?.email}}
             </div>
       </mat-card-subtitle>
       <mat-card-content>
             <mat-label>Select roles:</mat-label>
             <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked" formControlName="roles">
-                  <mat-chip-option *ngFor="let role of inviteUserRoles" 
-                                   [selected]="updatedSeat?.roles.includes(role)"
-                                   [disabled]="role === Roles.Owner && !amIOwner"
-                                   (click)="toggleRoleSelection(role)" 
-                                   [matTooltip]="roleDescriptions[role]">
-                    {{role}}
+                  <mat-chip-option *ngFor="let role of allRoles" [selected]="seatWithUpdates?.roles.includes(role)"
+                        [disabled]="shouldOwnerBeDisabled(role)" (click)="toggleRoleSelection(role)"
+                        [matTooltip]="roleDescriptions[role]">
+                        {{role}}
                   </mat-chip-option>
-                </mat-chip-listbox>
+            </mat-chip-listbox>
+            @if(seatDetailReply) {
             <div class="flex-container">
                   <div class="flex-item">
-                        <button (click)="updateSeat()" mat-raised-button color="primary">Update</button>
+                        <button (click)="updateSeat()" mat-raised-button color="primary" [disabled]="disableButtonUpdate()">Update</button>
                   </div>
                   <div class="flex-item">
-                        <button mat-raised-button color="warn"
-                              (click)="deleteSeat(seatDetailReply?.seat?.email)"><mat-icon>delete</mat-icon> Delete</button>
+                        <button mat-raised-button color="warn" [disabled]="disableButtonDelete()"
+                              (click)="deleteSeat(seatDetailReply?.selectedSeat?.email)">
+                              <mat-icon>delete</mat-icon>Delete</button>
                   </div>
             </div>
+            }
       </mat-card-content>
 </mat-card>

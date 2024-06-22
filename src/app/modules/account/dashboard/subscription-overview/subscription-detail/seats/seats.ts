@@ -50,8 +50,8 @@ export interface SeatDetailRequest {
 }
 
 export interface SeatDetailReply {
-    seat: Seat;
-    ownerUID: string;
+    selectedSeat: Seat;
+    mySeat: Seat;
 }
 
 export interface UpdateSeatDetailRequest {
