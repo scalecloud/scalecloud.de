@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { DeleteSeatRequest, Seat, SeatDetailReply, SeatDetailRequest } from '../seats';
+import { DeleteSeatRequest, Seat, SeatDetailReply, SeatDetailRequest, UpdateSeatDetailRequest } from '../seats';
 import { SeatDetailService } from './seat-detail.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmOwnerTransferComponent } from './confirm-owner-transfer/confirm-owner-transfer.component';
@@ -125,27 +125,27 @@ export class SeatDetailComponent {
     return role === Role.Owner && (!this.amIOwner() || this.isSelectedOwner(role));
   }
 
-  disableButtonUpdate(): boolean {
+  noRolesChanged(): boolean {
     const selectedRoles = this.seatDetailReply.selectedSeat?.roles;
     const updatedRoles = this.seatWithUpdates?.roles;
-  
+
     if (!selectedRoles || !updatedRoles || selectedRoles.length !== updatedRoles.length) {
       return false; // Enable button if roles are not set or lengths differ
     }
-  
+
     const selectedRolesSet = new Set(selectedRoles);
     const updatedRolesSet = new Set(updatedRoles);
-  
+
     if (selectedRolesSet.size !== updatedRolesSet.size) {
       return false; // Enable button if the number of unique roles differs
     }
-  
+
     for (const role of selectedRolesSet) {
       if (!updatedRolesSet.has(role)) {
         return false; // Enable button if any role differs
       }
     }
-  
+
     return true; // Disable button if all roles match
   }
 
@@ -166,7 +166,28 @@ export class SeatDetailComponent {
   }
 
   updateSeat(): void {
-    // Save seat
+    if (this.noRolesChanged()) {
+      this.snackBarService.info('Nothing to update.');
+    }
+    else {
+      this.authService.waitForAuth().then(() => {
+        let request: UpdateSeatDetailRequest = {
+          seatUpdated: this.seatWithUpdates
+        };
+        this.seatDetailService.updateSeat(request)
+          .subscribe(reply => {
+            if (reply.seat) {
+              this.snackBarService.info('User updated.');
+              this.returnUrlService.openReturnURL('/dashboard');
+            }
+            else {
+              this.snackBarService.error('Could not update user. Please try again later.');
+            }
+          });
+      }).catch((error) => {
+        this.logService.error("waitForAuth failed: " + error);
+      });
+    }
   }
 
   cancel(): void {
