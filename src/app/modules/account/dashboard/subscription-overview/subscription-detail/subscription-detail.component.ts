@@ -4,6 +4,7 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 import { SubscriptionDetailService } from './subscription-detail.service';
 import { SubscriptionDetailReply } from './subscription-detail';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 
 @Component({
   selector: 'app-subscription-detail',
@@ -13,9 +14,11 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class SubscriptionDetailComponent implements OnInit {
 
   reply: SubscriptionDetailReply | undefined;
+  mySeat: string | undefined;
 
   constructor(
     public authService: AuthService,
+    private permissionService: PermissionService,
     private route: ActivatedRoute,
     private subscriptionDetailService: SubscriptionDetailService,
     private logService: LogService

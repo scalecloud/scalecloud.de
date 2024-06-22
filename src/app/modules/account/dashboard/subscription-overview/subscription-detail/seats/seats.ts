@@ -61,3 +61,11 @@ export interface UpdateSeatDetailRequest {
 export interface UpdateSeatDetailReply {
     seat: Seat;
 }
+
+export interface PermissionRequest {
+    subscriptionID: string;
+}
+
+export interface PermissionReply {
+    mySeat: Seat;
+}
