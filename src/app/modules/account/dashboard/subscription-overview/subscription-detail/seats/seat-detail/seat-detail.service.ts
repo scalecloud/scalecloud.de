@@ -45,7 +45,11 @@ export class SeatDetailService {
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.logService.error(error);
-      this.snackBarService.error(`Could not add seat. Please try again later.`);
+      if (error.status === 403) {
+        this.snackBarService.error('You do not have permission to perform this action');
+      } else {
+        this.snackBarService.error(error.message || 'An error occurred');
+      }
       return of(result as T);
     };
   }
