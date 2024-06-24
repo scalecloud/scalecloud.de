@@ -10,7 +10,7 @@ export class ConfirmOwnerTransferComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmOwnerTransferComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: { email: string }
   ) {}
 
   onNoClick(): void {

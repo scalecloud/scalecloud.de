@@ -42,24 +42,27 @@ export class SeatDetailComponent {
   }
 
   toggleRoleSelection(role: Role) {
-    if (role === Role.Owner) {
+    if (!this.seatWithUpdates.roles.includes(role)) {
+      this.addRole(role);
+    } else {
+      this.removeRole(role);
+    }
+    this.askOwnerTransfer(role);
+  }
+
+  askOwnerTransfer(role: Role): void {
+    if (role === Role.Owner && this.seatWithUpdates.roles.includes(role)) {
       const dialogRef = this.dialog.open(ConfirmOwnerTransferComponent, {
         data: {
-          message: 'Are you sure you want to transfer ownership to this user?'
+          email: this.seatWithUpdates.email
         }
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.addRole(role);
+        if (!result) {
+          this.removeRole(role);
         }
       });
-    } else {
-      if (!this.seatWithUpdates.roles.includes(role)) {
-        this.addRole(role);
-      } else {
-        this.removeRole(role);
-      }
     }
   }
 
