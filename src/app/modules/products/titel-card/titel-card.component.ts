@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SubscriptionType } from '../SubscriptionType';
+import { ProductType } from '../product-model';
 
 @Component({
   selector: 'app-titel-card',
@@ -8,14 +8,14 @@ import { SubscriptionType } from '../SubscriptionType';
 })
 export class TitelCardComponent {
 
-  @Input() subscriptionType: SubscriptionType = SubscriptionType.Nextcloud;
+  @Input() productType: ProductType = ProductType.Nextcloud;
   
   get isSynology() {
-    return this.subscriptionType === SubscriptionType.Synology;
+    return this.productType === ProductType.Synology;
   }
 
   get isNextcloud() {
-    return this.subscriptionType === SubscriptionType.Nextcloud;
+    return this.productType === ProductType.Nextcloud;
   }
 
 }

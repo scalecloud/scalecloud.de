@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SynologyProduct } from './synology-product';
-import { SynologyProductService } from './synology-product.service';
-import { SubscriptionType } from '../SubscriptionType';
+import { ProductTiersRequest, ProductType } from '../product-model';
+import { ProductService } from '../product/product.service';
 
 @Component({
   selector: 'app-synology',
@@ -10,20 +10,21 @@ import { SubscriptionType } from '../SubscriptionType';
 })
 export class SynologyComponent implements OnInit {
 
-  subscriptionType = SubscriptionType.Synology;
+  productType = ProductType.Synology;
   synologyProducts: SynologyProduct[] = [];
 
-  constructor(private synologyProductService: SynologyProductService) { }
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
     this.getSynologyProducts();
   }
 
   getSynologyProducts(): void {
-    if (this.synologyProductService != null) {
-      this.synologyProductService.getSynologyProducts().subscribe(
-        synologyProducts => this.synologyProducts = synologyProducts);
-    }
+    const request: ProductTiersRequest = {
+      productType: this.productType
+    };
+      this.productService.getProductTiers(request).subscribe(
+        reply => this.synologyProducts = reply.productTiers);
   }
 
 }

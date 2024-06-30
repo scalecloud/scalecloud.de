@@ -1,7 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { CheckoutCreateSubscriptionRequest } from '../checkout/integration/checkout-create-subscription';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
 import { QuantityComponent } from './quantity/quantity.component';

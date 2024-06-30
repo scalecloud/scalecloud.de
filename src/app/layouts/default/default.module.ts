@@ -17,7 +17,6 @@ import { SubscriptionCardComponent } from 'src/app/modules/products/subscription
 import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from 'src/app/modules/products/in-memory-data.service';
 import { LoginComponent } from 'src/app/modules/account/login/login.component';
 import { RegisterComponent } from 'src/app/modules/account/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -129,11 +128,7 @@ import { ConfirmOwnerTransferComponent } from 'src/app/modules/account/dashboard
         MatChipsModule,
         MatTooltipModule,
         MatPaginatorModule,
-        HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
-            delay: 0,
-            dataEncapsulation: false,
-            passThruUnknownUrl: true
-        })], providers: [
+        ], providers: [
             provideHttpClient(withInterceptorsFromDi())
         ]
 })
