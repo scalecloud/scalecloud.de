@@ -104,7 +104,9 @@ export class SubscriptionCardComponent {
     } else if (this.synologyProduct != undefined) {
       ret = this.synologyProduct.pricePerMonth;
     }
+    if (ret > 0) {
+      ret = ret / 100;
+    }
     return ret;
   }
-
 }
