@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NextcloudProduct } from './nextcloud-product';
-import { ProductTiersRequest, ProductType } from '../product-model';
+import { ProductType } from '../product-model';
 import { ProductService } from '../product/product.service';
 
 @Component({
@@ -20,10 +20,8 @@ export class NextcloudComponent implements OnInit {
   }
 
   getNextcloudProducts(): void {
-    const request: ProductTiersRequest = {
-      productType: this.productType
-    };
-    this.productService.getProductTiers(request).subscribe(
+    
+    this.productService.getProductTiers(this.productType).subscribe(
       reply => this.nextcloudProducts = reply.productTiers);
   }
 

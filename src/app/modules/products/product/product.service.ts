@@ -2,8 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { NextcloudProduct } from '../nextcloud/nextcloud-product';
-import { ProductTiersReply, ProductTiersRequest } from '../product-model';
+import { ProductTiersReply,  ProductType } from '../product-model';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Injectable({
@@ -24,8 +23,8 @@ export class ProductService {
   ) { }
   
 
-  getProductTiers(request: ProductTiersRequest): Observable<ProductTiersReply> {
-    return this.http.post<ProductTiersReply>(this.url, request, this.httpOptions)
+  getProductTiers(productType: ProductType): Observable<ProductTiersReply> {
+    return this.http.get<ProductTiersReply>(this.url + "/" + productType.toString().toLowerCase(), this.httpOptions)
       .pipe(
         catchError(this.handleError<ProductTiersReply>('getProductTiers'))
       );
