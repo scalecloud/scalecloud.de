@@ -36,13 +36,13 @@ export class CancelSubscriptionComponent {
   }
 
   cancelSubscription(): void {
-    const id = this.route.snapshot.paramMap.get('subscriptionID');
-    if (id == null) {
+    const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
+    if (subscriptionID == null) {
       this.logService.error('CancelSubscriptionComponent.cancelSubscription: id is null');
     } else {
 
       const iSubscriptionCancelRequest: ISubscriptionCancelRequest = {
-        id: id
+        subscriptionID: subscriptionID
       }
 
       const observable = this.cancelSubscriptionService.cancelSubscription(iSubscriptionCancelRequest).subscribe(

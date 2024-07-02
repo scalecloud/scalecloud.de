@@ -1,9 +1,9 @@
 export interface ISubscriptionCancelRequest {
-    id: string;
+    subscriptionID: string;
 }
 
 export interface ISubscriptionCancelReply {
-    id: string;
+    subscriptionID: string;
     cancel_at_period_end: boolean;
     cancel_at: number;
 }
