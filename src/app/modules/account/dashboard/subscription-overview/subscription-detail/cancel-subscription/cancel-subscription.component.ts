@@ -36,7 +36,7 @@ export class CancelSubscriptionComponent {
   }
 
   cancelSubscription(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('subscriptionID');
     if (id == null) {
       this.logService.error('CancelSubscriptionComponent.cancelSubscription: id is null');
     } else {

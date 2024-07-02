@@ -30,7 +30,7 @@ export class SubscriptionDetailComponent implements OnInit {
 
   reloadSubscriptionDetail(): void {
     this.authService.waitForAuth().then(() => {
-      const id = this.route.snapshot.paramMap.get('id');
+      const id = this.route.snapshot.paramMap.get('subscriptionID');
       if (id == null) {
         this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
       } else {

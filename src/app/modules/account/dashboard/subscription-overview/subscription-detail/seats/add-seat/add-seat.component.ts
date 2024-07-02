@@ -40,7 +40,7 @@ export class AddSeatComponent {
         this.logService.warn("Invalid inputs in Login.");
       }
 
-      const subscriptionID = this.route.snapshot.paramMap.get('id');
+      const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
 
       if (!subscriptionID) {
         this.logService.error('SeatsComponent.invite: subscriptionID is null');

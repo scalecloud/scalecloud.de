@@ -1,8 +1,8 @@
 export interface ISubscriptionResumeRequest {
-    id: string;
+    subscriptionID: string;
 }
 
 export interface ISubscriptionResumeReply {
-    id: string;
+    subscriptionID: string;
     cancel_at_period_end: boolean;
 }

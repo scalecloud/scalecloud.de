@@ -90,7 +90,7 @@ export class SeatDetailComponent {
   getSeatDetail(): void {
     this.authService.waitForAuth().then(() => {
 
-      const subscriptionID = this.route.snapshot.paramMap.get('id');
+      const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
       const uid = this.route.snapshot.paramMap.get('uid');
 
       if (!subscriptionID) {
@@ -200,7 +200,7 @@ export class SeatDetailComponent {
   deleteSeat(email: string): void {
     this.authService.waitForAuth().then(() => {
 
-      const subscriptionID = this.route.snapshot.paramMap.get('id');
+      const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
 
       if (!subscriptionID) {
         this.logService.error('SeatsComponent.invite: subscriptionID is null');

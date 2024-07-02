@@ -36,13 +36,13 @@ export class ResumeSubscriptionComponent {
   }
 
   resumeSubscription(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id == null) {
+    const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
+    if (subscriptionID == null) {
       this.logService.error('ResumeSubscriptionComponent.resumeSubscription: id is null');
     } else {
 
       const iSubscriptionResumeRequest: ISubscriptionResumeRequest = {
-        id: id
+        subscriptionID: subscriptionID
       }
 
       const observable = this.resumeSubscriptionService.resumeSubscription(iSubscriptionResumeRequest).subscribe(

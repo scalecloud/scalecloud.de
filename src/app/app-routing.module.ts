@@ -48,9 +48,9 @@ const routes: Routes = [{
   { path: 'contact', component: ContactComponent },
   // AuthGuard
   { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/subscription/:id', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/subscription/:id/add-seat', component: AddSeatComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/subscription/:id/:uid/seat-detail', component: SeatDetailComponent, canActivate: [DashboardGuard] },
+  { path: 'dashboard/subscription/:subscriptionID', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
+  { path: 'dashboard/subscription/:subscriptionID/add-seat', component: AddSeatComponent, canActivate: [DashboardGuard] },
+  { path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail', component: SeatDetailComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
   { path: 'dashboard/change-payment/status', component: StatusPaymentChangedComponent },
   // LoginGuard
