@@ -44,9 +44,12 @@ export class SnackBarService {
 
   private showMessage(message: string, duration: number, cssClass: string) {
     let date = new Date();
-    let time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    let hours = String(date.getHours()).padStart(2, '0');
+    let minutes = String(date.getMinutes()).padStart(2, '0');
+    let seconds = String(date.getSeconds()).padStart(2, '0');
+    let time = `${hours}:${minutes}:${seconds}`;
     this.zone.run(() => {
-      this.snackBar.open(message + " - " + time, '', {
+      this.snackBar.open(`${message} - ${time}`, '', {
         duration: duration * 1000,
         panelClass: [cssClass]
       });
