@@ -31,17 +31,17 @@ export class ReturnUrlService {
   }
 
   public openReturnURL(defaultUrl: string) {
-    this.logService.info('openReturnURL: ' + defaultUrl);
     const returnURL = this.route.snapshot.queryParamMap.get('returnUrl');
     if (returnURL) {
       const returnUrlDecoded = decodeURIComponent(returnURL);
       const urlTree: UrlTree = this.router.parseUrl(returnUrlDecoded || defaultUrl);
+      this.logService.info('Opening returnUrl: ' + urlTree.toString());
       this.router.navigateByUrl(urlTree);
     }
     else {
+      this.logService.error('ReturnUrl not in query params. Open defaultUrl: ' + defaultUrl);
       this.router.navigate([defaultUrl]);
     }
-    this.logService.info('openReturnURL: ' + defaultUrl + ' done');
   }
 
   public getSpecifiedUrlWithReturnUrl(specifiedRoute: string): string {
