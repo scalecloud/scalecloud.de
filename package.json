@@ -37,8 +37,8 @@
     "@angular-devkit/schematics": "^18.1.1",
     "@angular/cli": "^18.1.1",
     "@angular/compiler-cli": "^18.1.1",
-    "@nrwl/angular": "19.5.1",
-    "@nrwl/workspace": "19.5.1",
+    "@nrwl/angular": "19.5.2",
+    "@nrwl/workspace": "19.5.2",
     "@schematics/angular": "^18.1.1",
     "@types/jasmine": "^5.1.4",
     "@types/node": "^20.14.11",
@@ -49,10 +49,10 @@
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "^2.2.1",
     "karma-jasmine": "~5.1.0",
-    "nx": "19.5.1",
+    "nx": "19.5.2",
     "protractor": "^7.0.0",
     "ts-node": "^10.9.2",
     "tslint": "~6.1.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   }
 }
