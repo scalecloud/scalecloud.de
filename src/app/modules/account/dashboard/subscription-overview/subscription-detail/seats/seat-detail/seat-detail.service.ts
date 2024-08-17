@@ -13,7 +13,7 @@ export class SeatDetailService {
 
   private urlGetSeat = 'http://localhost:15000/dashboard/subscription/seat-detail';
   private urlUpdateSeatDetail = 'http://localhost:15000/dashboard/subscription/update-seat';
-  private urlDeleteSeat = 'http://localhost:15000/dashboard/seats/delete-seat';
+  private urlDeleteSeat = 'http://localhost:15000/dashboard/subscription/delete-seat';
   constructor(
     private http: HttpClient,
     private snackBarService: SnackBarService,

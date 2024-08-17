@@ -34,14 +34,12 @@ export interface AddSeatReply {
 }
 
 export interface DeleteSeatRequest {
-    subscriptionID: string;
-    email: string;
+    seatToDelete: Seat;
 }
 
 export interface DeleteSeatReply {
-    subscriptionID: string;
+    deletedSeat: Seat;
     success: boolean;
-    email: string;
 }
 
 export interface SeatDetailRequest {

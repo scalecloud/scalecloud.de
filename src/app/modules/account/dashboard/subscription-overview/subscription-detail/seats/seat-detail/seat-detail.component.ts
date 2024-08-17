@@ -197,28 +197,27 @@ export class SeatDetailComponent {
     this.returnUrlService.openReturnURL('/dashboard');
   }
 
-  deleteSeat(email: string): void {
+  deleteSeat(seatToDelete: Seat): void {
     this.authService.waitForAuth().then(() => {
 
       const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
 
       if (!subscriptionID) {
         this.logService.error('SeatsComponent.invite: subscriptionID is null');
-        this.snackBarService.error('Currently not possible to invite a user. Please try again later.');
+        this.snackBarService.error('Currently not possible to delete a user. Please try again later.');
         this.returnUrlService.openReturnURL('/dashboard');
       } else {
         let removeSeatRequest: DeleteSeatRequest = {
-          subscriptionID: subscriptionID,
-          email: email
+          seatToDelete: seatToDelete
         };
         this.seatDetailService.deleteSeat(removeSeatRequest)
           .subscribe(removeSeatReply => {
-            if (removeSeatReply.success) {
-              this.snackBarService.info(`Removed ${removeSeatReply?.email}.`);
+            if (removeSeatReply?.success) {
+              this.snackBarService.info(`Removed ${removeSeatReply?.deletedSeat.email}.`);
               this.returnUrlService.openReturnURL('/dashboard');
             }
             else {
-              this.snackBarService.error(`Could not remove ${removeSeatReply?.email}. Please rety.`);
+              this.snackBarService.error(`Could not remove ${seatToDelete?.email}. Please rety.`);
             }
           });
       }
