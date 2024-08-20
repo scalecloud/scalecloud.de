@@ -4,6 +4,7 @@ export interface Seat {
     subscriptionID: string;
     uid: string;
     email: string;
+    emailVerified: boolean;
     roles: Role[];
 }
 
