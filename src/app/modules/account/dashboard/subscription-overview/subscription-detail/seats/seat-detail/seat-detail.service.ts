@@ -42,14 +42,19 @@ export class SeatDetailService {
       );
   }
 
-  handleError<T>(operation = 'operation', result?: T) {
+  private extractErrorMessage(error: any): string {
+    return error.error?.error || error.message || 'An error occurred';
+  }
+
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.logService.error(error);
       if (error.status === 403) {
         this.snackBarService.error('You do not have permission to perform this action');
       } else {
-        this.snackBarService.error(error.message || 'An error occurred');
+        this.snackBarService.error(this.extractErrorMessage(error));
       }
+
       return of(result as T);
     };
   }
