@@ -16,7 +16,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
 import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { LoginComponent } from 'src/app/modules/account/login/login.component';
 import { RegisterComponent } from 'src/app/modules/account/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -63,6 +62,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { SeatDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component';
 import { ConfirmOwnerTransferComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/confirm-owner-transfer/confirm-owner-transfer.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
     declarations: [
@@ -128,6 +128,7 @@ import { ConfirmOwnerTransferComponent } from 'src/app/modules/account/dashboard
         MatChipsModule,
         MatTooltipModule,
         MatPaginatorModule,
+        NgxSkeletonLoaderModule,
         ], providers: [
             provideHttpClient(withInterceptorsFromDi())
         ]

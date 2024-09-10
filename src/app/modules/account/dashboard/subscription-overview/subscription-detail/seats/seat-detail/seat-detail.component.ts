@@ -125,10 +125,13 @@ export class SeatDetailComponent {
   }
 
   shouldOwnerBeDisabled(role: Role): boolean {
-    return role === Role.Owner && (!this.amIOwner() || this.isSelectedOwner(role));
+    return role === Role.Owner && (!this.amIOwner() || this.isSelectedOwner());
   }
 
   noRolesChanged(): boolean {
+    if (this.loading) {
+      return true;
+    }
     const selectedRoles = this.seatDetailReply.selectedSeat?.roles;
     const updatedRoles = this.seatWithUpdates?.roles;
 
@@ -153,11 +156,11 @@ export class SeatDetailComponent {
   }
 
   disableButtonDelete(): boolean {
-    return this.isSelectedOwner(Role.Owner) && this.amIAdministrator();
+    return this.loading || !this.amIAdministrator() || this.isSelectedOwner();
   }
 
-  isSelectedOwner(role: Role): boolean {
-    return this.seatDetailReply.selectedSeat?.roles.includes(Role.Owner);
+  isSelectedOwner(): boolean {
+    return this.seatDetailReply?.selectedSeat?.roles.includes(Role.Owner);
   }
 
   amIOwner(): boolean {

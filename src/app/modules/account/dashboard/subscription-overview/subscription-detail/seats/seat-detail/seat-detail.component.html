@@ -4,9 +4,13 @@
       }
       <mat-card-title><mat-icon>manage_accounts</mat-icon> Manage user</mat-card-title>
       <mat-card-subtitle>
+            @if ( loading ) {
+            <ngx-skeleton-loader [theme]="{height: '1.5rem', width: '80%'}" />
+            } @else {
             <div class="flex-container">
                   <mat-icon>person</mat-icon>{{seatDetailReply?.selectedSeat?.email}}
             </div>
+            }
       </mat-card-subtitle>
       <mat-card-content>
             <mat-label>Select roles:</mat-label>
@@ -17,11 +21,9 @@
                         {{role}}
                   </mat-chip-option>
             </mat-chip-listbox>
-            @if(seatDetailReply) {
             <div class="flex-container">
                   <div class="flex-item">
-                        <button (click)="updateSeat()" mat-raised-button color="primary"
-                              [disabled]="noRolesChanged()">
+                        <button (click)="updateSeat()" mat-raised-button color="primary" [disabled]="noRolesChanged()">
                               <mat-icon>check</mat-icon>Apply Changes</button>
                   </div>
                   <div class="flex-item">
@@ -34,6 +36,5 @@
                               <mat-icon>delete</mat-icon>Delete</button>
                   </div>
             </div>
-            }
       </mat-card-content>
 </mat-card>
