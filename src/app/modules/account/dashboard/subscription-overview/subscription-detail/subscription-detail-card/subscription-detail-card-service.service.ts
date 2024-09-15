@@ -1,14 +1,14 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { Observable, tap, catchError, of } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { SubscriptionDetailReply } from './subscription-detail';
+import { SubscriptionDetailReply } from './subscription-detail-card';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SubscriptionDetailService {
+export class SubscriptionDetailCardServiceService {
 
   private url = 'http://localhost:15000/dashboard/subscription';
 

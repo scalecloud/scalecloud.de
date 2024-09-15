@@ -1,14 +1,45 @@
-import { Component, Input } from '@angular/core';
-import { SubscriptionDetailReply } from '../subscription-detail';
+import { Component, Input, OnInit } from '@angular/core';
+import { SubscriptionDetailReply } from './subscription-detail-card';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { LogService } from 'src/app/shared/services/log/log.service';
+import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { SubscriptionDetailCardServiceService } from './subscription-detail-card-service.service';
 
 @Component({
   selector: 'app-subscription-detail-card',
   templateUrl: './subscription-detail-card.component.html',
   styleUrls: ['./subscription-detail-card.component.scss']
 })
-export class SubscriptionDetailCardComponent {
+export class SubscriptionDetailCardComponent implements OnInit  {
 
-  @Input() reply: SubscriptionDetailReply | undefined;
+  reply: SubscriptionDetailReply | undefined;
+
+  constructor(
+    public authService: AuthService,
+    private permissionService: PermissionService,
+    private subscriptionDetailCardServiceService: SubscriptionDetailCardServiceService,
+    private route: ActivatedRoute,
+    private logService: LogService
+  ) { }
+
+  ngOnInit(): void {
+    this.reloadSubscriptionDetail();
+  }
+
+  reloadSubscriptionDetail(): void {
+    this.authService.waitForAuth().then(() => {
+      const id = this.route.snapshot.paramMap.get('subscriptionID');
+      if (id == null) {
+        this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
+      } else {
+        this.subscriptionDetailCardServiceService.getSubscriptionDetail(id)
+          .subscribe(subscriptionDetail => this.reply = subscriptionDetail);
+      }
+    }).catch((error) => {
+      this.logService.error("waitForAuth failed: " + error);
+    });
+  }
 
   getID(): string {
     return this.reply?.id || '';

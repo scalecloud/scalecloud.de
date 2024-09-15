@@ -8,6 +8,7 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 import { PageEvent } from '@angular/material/paginator';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-seats',
@@ -16,7 +17,6 @@ import { PermissionService } from 'src/app/shared/services/permission/permission
 })
 export class SeatsComponent implements OnInit {
   ServiceStatus = ServiceStatus;
-  @Input() subscriptionID: string | null;
   seatListReply: ListSeatReply | null;
   serviceStatus = ServiceStatus.Initializing;
 
@@ -34,7 +34,8 @@ export class SeatsComponent implements OnInit {
     private logService: LogService,
     private snackBarService: SnackBarService,
     private returnUrlService: ReturnUrlService,
-    private permissionService: PermissionService
+    private permissionService: PermissionService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -42,14 +43,15 @@ export class SeatsComponent implements OnInit {
   }
 
   async checkPermissions() {
-    if (!this.subscriptionID) {
+    const subscriptionID = this.getSubscriptionID();
+    if (!subscriptionID) {
       this.logService.error('SeatsComponent.checkPermissions: subscriptionID is null');
       this.serviceStatus = ServiceStatus.Error;
       return;
     }
 
     try {
-      const hasPermission = await this.permissionService.isAdministrator(this.subscriptionID);
+      const hasPermission = await this.permissionService.isAdministrator(subscriptionID);
       if (hasPermission) {
         this.getSeatsList();
       } else {
@@ -64,11 +66,12 @@ export class SeatsComponent implements OnInit {
   getSeatsList(): void {
     this.serviceStatus = ServiceStatus.Loading;
     this.authService.waitForAuth().then(() => {
-      if (!this.subscriptionID) {
+      const subscriptionID = this.getSubscriptionID();
+      if (!subscriptionID) {
         this.logService.error('SeatsComponent.getSeatsList: subscriptionID is null');
       } else {
         let request: ListSeatRequest = {
-          subscriptionID: this.subscriptionID,
+          subscriptionID: subscriptionID,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize
         };
@@ -109,10 +112,24 @@ export class SeatsComponent implements OnInit {
   }
 
   addSeat(): void {
-    this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + this.subscriptionID + '/add-seat');
+    const subscriptionID = this.getSubscriptionID();
+    if (!subscriptionID) {
+      this.snackBarService.error('Could not add seat. Please try again later.');
+      return;
+    }
+    this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + subscriptionID + '/add-seat');
   }
 
   openSeatDetail(seat: Seat): void {
-    this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + this.subscriptionID + '/' + seat.uid + '/seat-detail');
+    const subscriptionID = this.getSubscriptionID();
+    if (!subscriptionID) {
+      this.snackBarService.error('Could not open seat detail. Please try again later.');
+      return;
+    }
+    this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + subscriptionID + '/' + seat.uid + '/seat-detail');
+  }
+
+  getSubscriptionID(): string {
+    return this.route.snapshot.paramMap.get('subscriptionID') || '';
   }
 }
