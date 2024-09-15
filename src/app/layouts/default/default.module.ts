@@ -43,11 +43,7 @@ import { SubscriptionDetailComponent } from 'src/app/modules/account/dashboard/s
 import { SubscriptionDetailCardComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail-card/subscription-detail-card.component';
 import { BillingPortalComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/customer-portal/billing-portal.component';
 import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
-import { CancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-subscription/cancel-subscription.component';
-import { ConfirmCancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-subscription/confirm-cancel-subscription/confirm-cancel-subscription.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/resume-subscription/resume-subscription.component';
-import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/resume-subscription/confirm-resume-subscription/confirm-resume-subscription.component';
 import { StatusPaymentChangedComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/status-payment-changed.component';
 import { PaymentChangedProcessingComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-processing/payment-changed-processing.component';
 import { PaymentChangedRequiresPaymentMethodComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/payment-changed-requires-payment-method/payment-changed-requires-payment-method.component';
@@ -63,6 +59,11 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { SeatDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component';
 import { ConfirmOwnerTransferComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/confirm-owner-transfer/confirm-owner-transfer.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { CancelStateComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/cancel-state.component';
+import { CancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/cancel-subscription/cancel-subscription.component';
+import { ConfirmCancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/cancel-subscription/confirm-cancel-subscription/confirm-cancel-subscription.component';
+import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/resume-subscription/confirm-resume-subscription/confirm-resume-subscription.component';
+import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/resume-subscription/resume-subscription.component';
 
 @NgModule({
     declarations: [
@@ -84,6 +85,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
         PasswordMatchComponent,
         VerifyEmailComponent,
         DashboardComponent,
+        CancelStateComponent,
         ResumeSubscriptionComponent,
         CancelSubscriptionComponent,
         PaymentOverviewComponent,

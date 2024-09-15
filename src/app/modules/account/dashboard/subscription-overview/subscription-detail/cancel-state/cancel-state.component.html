@@ -1,0 +1,16 @@
+@if (serviceStatus === ServiceStatus.Loading) {
+<mat-progress-bar mode="query"></mat-progress-bar>
+<ngx-skeleton-loader [theme]="{height: '2rem', width: '12rem'}" />
+}
+@if (serviceStatus === ServiceStatus.Success) {
+@if( isEnding() ) {
+<app-resume-subscription (reloadSubscriptionDetail)="reloadSubscriptionDetail()"></app-resume-subscription>
+} @else if( !isEnding() ) {
+<app-cancel-subscription (reloadSubscriptionDetail)="reloadSubscriptionDetail()"></app-cancel-subscription>
+}
+}
+@if ( serviceStatus === ServiceStatus.Error ) {
+<button class="reload-button" mat-button (click)="getCancelState()">
+    <mat-icon>refresh</mat-icon>Reload
+</button>
+}

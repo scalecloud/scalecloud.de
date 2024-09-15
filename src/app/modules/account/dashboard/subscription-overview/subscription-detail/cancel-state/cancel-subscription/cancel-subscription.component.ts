@@ -26,13 +26,7 @@ export class CancelSubscriptionComponent {
     public dialog: MatDialog
   ) { }
 
- /*  isEnding(): boolean {
-    let isEnding = false;
-    if (this.reply) {
-      isEnding = this.reply.cancel_at_period_end;
-    }
-    return isEnding;
-  } */
+
 
   openConfirmDialog() {
     const dialogRef = this.dialog.open(ConfirmCancelSubscriptionComponent);
