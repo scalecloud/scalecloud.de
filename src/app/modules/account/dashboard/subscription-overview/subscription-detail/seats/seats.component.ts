@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -7,17 +7,18 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { PageEvent } from '@angular/material/paginator';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 
 @Component({
   selector: 'app-seats',
   templateUrl: './seats.component.html',
-  styleUrl: './seats.component.scss'
+  styleUrls: ['./seats.component.scss']
 })
-export class SeatsComponent {
+export class SeatsComponent implements OnInit {
   ServiceStatus = ServiceStatus;
   @Input() subscriptionID: string | null;
   seatListReply: ListSeatReply | null;
-  serviceStatus = ServiceStatus.Error;
+  serviceStatus = ServiceStatus.Initializing;
 
   pageSize = 5;
   pageIndex = 0;
@@ -27,28 +28,42 @@ export class SeatsComponent {
 
   pageEvent: PageEvent;
 
-  handlePageEvent(e: PageEvent) {
-    this.pageEvent = e;
-    this.pageIndex = e.pageIndex;
-    this.getSeatsList();
-  }
-
   constructor(
     public authService: AuthService,
     private seatService: SeatsService,
     private logService: LogService,
     private snackBarService: SnackBarService,
     private returnUrlService: ReturnUrlService,
+    private permissionService: PermissionService
   ) { }
 
-
   ngOnInit(): void {
-    this.getSeatsList();
+    this.checkPermissions();
+  }
+
+  async checkPermissions() {
+    if (!this.subscriptionID) {
+      this.logService.error('SeatsComponent.checkPermissions: subscriptionID is null');
+      this.serviceStatus = ServiceStatus.Error;
+      return;
+    }
+
+    try {
+      const hasPermission = await this.permissionService.isAdministrator(this.subscriptionID);
+      if (hasPermission) {
+        this.getSeatsList();
+      } else {
+        this.serviceStatus = ServiceStatus.NoPermission;
+      }
+    } catch (error) {
+      this.serviceStatus = ServiceStatus.Error;
+      this.snackBarService.error('An error occurred while checking permissions.');
+    }
   }
 
   getSeatsList(): void {
+    this.serviceStatus = ServiceStatus.Loading;
     this.authService.waitForAuth().then(() => {
-
       if (!this.subscriptionID) {
         this.logService.error('SeatsComponent.getSeatsList: subscriptionID is null');
       } else {
@@ -57,7 +72,6 @@ export class SeatsComponent {
           pageIndex: this.pageIndex,
           pageSize: this.pageSize
         };
-        this.serviceStatus = ServiceStatus.Loading;
         this.seatService.getListSeats(request)
           .subscribe({
             next: seatListReply => {
@@ -65,14 +79,21 @@ export class SeatsComponent {
               this.serviceStatus = ServiceStatus.Success;
             },
             error: error => {
-              this.snackBarService.error('Could not get list of seats. Please try again later.');
               this.serviceStatus = ServiceStatus.Error;
+              this.snackBarService.error('Could not get list of seats. Please try again later.');
             }
           });
       }
     }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
+      this.serviceStatus = ServiceStatus.Error;
     });
+  }
+
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.pageIndex = e.pageIndex;
+    this.getSeatsList();
   }
 
   getUsedSeats(): number {
@@ -94,5 +115,4 @@ export class SeatsComponent {
   openSeatDetail(seat: Seat): void {
     this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + this.subscriptionID + '/' + seat.uid + '/seat-detail');
   }
-
 }
