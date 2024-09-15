@@ -1,24 +1,34 @@
 <mat-card>
-    @if ( loading ) {
+    @if (serviceStatus === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
-    }
     <mat-card-title>
         <mat-icon>manage_accounts</mat-icon> Users
     </mat-card-title>
-    @if (error) {
-    <button class="reload-button" mat-button (click)="getSeatsList()">
-        <mat-icon>refresh</mat-icon>Reload
-    </button>
+    <mat-card-subtitle>
+        <ngx-skeleton-loader [theme]="{height: '1rem', width: '80%'}" />
+    </mat-card-subtitle>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-list>
+            <ngx-skeleton-loader [theme]="{height: '1.5rem', width: '100%'}" />
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+        <button class="addSeat-button" [disabled]="true" mat-stroked-button
+            color="primary"><mat-icon>person_add</mat-icon>
+            Invite</button>
+    </mat-card-actions>
     }
-    @if ( seatListReply && !error ) {
-    @if( seatListReply?.totalResults && seatListReply?.maxSeats ) {
+
+    @if (serviceStatus === ServiceStatus.Success) {
+    <mat-card-title>
+        <mat-icon>manage_accounts</mat-icon> Users
+    </mat-card-title>
     <mat-card-subtitle>
         Used {{getUsedSeats()}}/{{getMaxSeats()}}
     </mat-card-subtitle>
-    }
     <mat-divider></mat-divider>
     <mat-card-content>
-        @if( seatListReply ) {
         <mat-list>
             @for (seat of seatListReply.seats; track $index) {
             <mat-list-item>
@@ -28,17 +38,26 @@
             </mat-list-item>
             }
         </mat-list>
-        @if( seatListReply.totalResults > pageSize ) { <mat-paginator #paginator (page)="handlePageEvent($event)"
-            [length]="seatListReply.totalResults" [pageSize]="pageSize" [disabled]="loading"
-            [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize"
-            [pageIndex]="seatListReply.pageIndex" aria-label="Select page">
-            </mat-paginator>
-            }
-            }
+        @if( seatListReply.totalResults > pageSize ) {
+        <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="seatListReply.totalResults"
+            [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons"
+            [hidePageSize]="hidePageSize" [pageIndex]="seatListReply.pageIndex" aria-label="Select page">
+        </mat-paginator>
+        }
     </mat-card-content>
     <mat-card-actions>
         <button class="addSeat-button" (click)="addSeat()" [disabled]="!isAddSeatPossible()" mat-stroked-button
             color="primary"><mat-icon>person_add</mat-icon> Invite</button>
     </mat-card-actions>
     }
+
+    @if ( serviceStatus === ServiceStatus.Error ) {
+    <mat-card-title>
+        <mat-icon>manage_accounts</mat-icon> Users
+    </mat-card-title>
+    <button class="reload-button" mat-button (click)="getSeatsList()">
+        <mat-icon>refresh</mat-icon>Reload
+    </button>
+    }
+
 </mat-card>

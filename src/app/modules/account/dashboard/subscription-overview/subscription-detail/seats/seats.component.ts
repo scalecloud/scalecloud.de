@@ -6,6 +6,7 @@ import { ListSeatReply, ListSeatRequest, Seat } from './seats';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { PageEvent } from '@angular/material/paginator';
+import { ServiceStatus } from 'src/app/shared/services/service-status';
 
 @Component({
   selector: 'app-seats',
@@ -13,11 +14,10 @@ import { PageEvent } from '@angular/material/paginator';
   styleUrl: './seats.component.scss'
 })
 export class SeatsComponent {
-
+  ServiceStatus = ServiceStatus;
   @Input() subscriptionID: string | null;
   seatListReply: ListSeatReply | null;
-  loading = false;
-  error = false;
+  serviceStatus = ServiceStatus.Error;
 
   pageSize = 5;
   pageIndex = 0;
@@ -57,18 +57,16 @@ export class SeatsComponent {
           pageIndex: this.pageIndex,
           pageSize: this.pageSize
         };
-        this.loading = true;
+        this.serviceStatus = ServiceStatus.Loading;
         this.seatService.getListSeats(request)
           .subscribe({
             next: seatListReply => {
               this.seatListReply = seatListReply;
-              this.loading = false;
-              this.error = false;
+              this.serviceStatus = ServiceStatus.Success;
             },
             error: error => {
-              this.loading = false;
-              this.error = true;
               this.snackBarService.error('Could not get list of seats. Please try again later.');
+              this.serviceStatus = ServiceStatus.Error;
             }
           });
       }
