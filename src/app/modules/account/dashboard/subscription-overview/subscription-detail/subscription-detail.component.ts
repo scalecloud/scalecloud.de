@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { SubscriptionDetailCardComponent } from './subscription-detail-card/subscription-detail-card.component';
 
 @Component({
   selector: 'app-subscription-detail',
@@ -6,9 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./subscription-detail.component.scss']
 })
 export class SubscriptionDetailComponent {
-  
-reloadSubscriptionDetail() {
-throw new Error('Method not implemented.');
-}
- 
+
+  @ViewChild(SubscriptionDetailCardComponent) subscriptionDetailCard: SubscriptionDetailCardComponent;
+
+  reloadSubscriptionDetailEvent() {
+    if (this.subscriptionDetailCard) {
+      this.subscriptionDetailCard.reloadSubscriptionDetail();
+    }
+  }
+
 }

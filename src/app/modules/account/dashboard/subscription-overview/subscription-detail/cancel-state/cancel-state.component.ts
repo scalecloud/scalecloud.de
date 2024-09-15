@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -6,7 +6,6 @@ import { PermissionService } from 'src/app/shared/services/permission/permission
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { SeatsService } from '../seats/seats.service';
 import { CancelStateReply } from './cancel-state';
 import { CancelStateService } from './cancel-state.service';
 
@@ -18,6 +17,7 @@ import { CancelStateService } from './cancel-state.service';
 })
 export class CancelStateComponent implements OnInit {
 
+  @Output() reloadSubscriptionDetailEvent = new EventEmitter();
   ServiceStatus = ServiceStatus;
   reply: CancelStateReply | null;
   serviceStatus = ServiceStatus.Initializing;
@@ -92,7 +92,8 @@ export class CancelStateComponent implements OnInit {
   }
 
   reloadSubscriptionDetail() {
-    throw new Error('Method not implemented.');
+    this.getCancelState();
+    this.reloadSubscriptionDetailEvent.emit();
   }
 
   getSubscriptionID(): string {
