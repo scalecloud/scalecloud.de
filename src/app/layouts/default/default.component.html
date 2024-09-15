@@ -1,5 +1,6 @@
 <body>
     <app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
+    <mat-progress-bar *ngIf="isLoading()" mode="indeterminate"></mat-progress-bar>
     <content>
         <mat-drawer-container>
             <mat-drawer mode="side" opened="true" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()">

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
+import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 
 @Component({
   selector: 'app-default',
@@ -10,10 +11,16 @@ export class DefaultComponent {
   showSubmenu: boolean = false;
   isShowing = false;
   showSubSubMenu: boolean = false;
+  isLoading: Signal<boolean>;
+
+  constructor(private permissionService: PermissionService) {
+    this.isLoading = this.permissionService.loadingPermissions;
+  }
 
   sideBarToggler() {
     this.isExpanded = !this.isExpanded;
   }
+
   mouseenter() {
     if (!this.isExpanded) {
       this.isShowing = true;
