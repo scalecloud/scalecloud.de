@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { SubscriptionDetailCardServiceService } from './subscription-detail-card-service.service';
+import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-subscription-detail-card',
@@ -14,30 +16,69 @@ import { SubscriptionDetailCardServiceService } from './subscription-detail-card
 export class SubscriptionDetailCardComponent implements OnInit  {
 
   reply: SubscriptionDetailReply | undefined;
+  ServiceStatus = ServiceStatus;
+  serviceStatus = ServiceStatus.Initializing;
 
   constructor(
     public authService: AuthService,
     private permissionService: PermissionService,
     private subscriptionDetailCardServiceService: SubscriptionDetailCardServiceService,
     private route: ActivatedRoute,
-    private logService: LogService
+    private logService: LogService,
+    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
-    this.reloadSubscriptionDetail();
+    this.checkPermissions();
+  }
+
+  getSubscriptionID(): string {
+    return this.route.snapshot.paramMap.get('subscriptionID') || '';
+  }
+
+  async checkPermissions() {
+    const subscriptionID = this.getSubscriptionID();
+    if (!subscriptionID) {
+      this.logService.error('SeatsComponent.checkPermissions: subscriptionID is null');
+      this.serviceStatus = ServiceStatus.Error;
+      return;
+    }
+
+    try {
+      const hasPermission = await this.permissionService.isUser(subscriptionID);
+      if (hasPermission) {
+        this.reloadSubscriptionDetail();
+      } else {
+        this.serviceStatus = ServiceStatus.NoPermission;
+      }
+    } catch (error) {
+      this.serviceStatus = ServiceStatus.Error;
+      this.snackBarService.error('An error occurred while checking permissions.');
+    }
   }
 
   reloadSubscriptionDetail(): void {
     this.authService.waitForAuth().then(() => {
-      const id = this.route.snapshot.paramMap.get('subscriptionID');
-      if (id == null) {
+      this.serviceStatus = ServiceStatus.Loading;
+      const subscriptionID = this.getSubscriptionID();
+      if (subscriptionID == null) {
         this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
       } else {
-        this.subscriptionDetailCardServiceService.getSubscriptionDetail(id)
-          .subscribe(subscriptionDetail => this.reply = subscriptionDetail);
+          this.subscriptionDetailCardServiceService.getSubscriptionDetail(subscriptionID)
+          .subscribe({
+            next: subscriptionDetail => {
+              this.reply = subscriptionDetail;
+              this.serviceStatus = ServiceStatus.Success;
+            },
+            error: error => {
+              this.serviceStatus = ServiceStatus.Error;
+              this.snackBarService.error('Could not get subscription detail. Please try again later.');
+            }
+          });
       }
     }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
+      this.serviceStatus = ServiceStatus.Error;
     });
   }
 

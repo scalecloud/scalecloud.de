@@ -16,8 +16,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./seats.component.scss']
 })
 export class SeatsComponent implements OnInit {
-  ServiceStatus = ServiceStatus;
   seatListReply: ListSeatReply | null;
+  ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
   pageSize = 5;
@@ -64,8 +64,8 @@ export class SeatsComponent implements OnInit {
   }
 
   getSeatsList(): void {
-    this.serviceStatus = ServiceStatus.Loading;
     this.authService.waitForAuth().then(() => {
+      this.serviceStatus = ServiceStatus.Loading;
       const subscriptionID = this.getSubscriptionID();
       if (!subscriptionID) {
         this.logService.error('SeatsComponent.getSeatsList: subscriptionID is null');

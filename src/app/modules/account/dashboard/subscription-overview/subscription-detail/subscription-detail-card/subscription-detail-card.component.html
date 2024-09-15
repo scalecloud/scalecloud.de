@@ -1,8 +1,38 @@
-<mat-card routerLink="/dashboard/subscription/{{getID()}}">
+<mat-card>
+    @if (serviceStatus === ServiceStatus.Loading) {
+    <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-title>
+        <ngx-skeleton-loader [theme]="{height: '2rem', width: '40%'}" />
+    </mat-card-title>
+    <mat-card-subtitle>
+        <ngx-skeleton-loader [theme]="{height: '1rem', width: '40%'}" />
+    </mat-card-subtitle>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}" />
+            </mat-list-item>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+            </mat-list-item>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+            </mat-list-item>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+    }
+
+    @if (serviceStatus === ServiceStatus.Success) {
     <mat-card-title>
         {{getProductName()}}
     </mat-card-title>
-    <mat-card-subtitle>{{getProductType()}}</mat-card-subtitle>
+    <mat-card-subtitle>
+        {{getProductType()}}
+    </mat-card-subtitle>
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
@@ -53,4 +83,14 @@
             </div>
         </mat-list>
     </mat-card-content>
+    }
+
+    @if ( serviceStatus === ServiceStatus.Error ) {
+    <mat-card-title>
+        <mat-icon>manage_accounts</mat-icon> Users
+    </mat-card-title>
+    <button class="reload-button" mat-button (click)="reloadSubscriptionDetail()">
+        <mat-icon>refresh</mat-icon>Reload
+    </button>
+    }
 </mat-card>
