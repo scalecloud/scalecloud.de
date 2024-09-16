@@ -1,0 +1,27 @@
+.error-card {
+    max-width: 400px;
+    margin: 20px auto;
+    border: 1px solid #f44336;
+    background-color: #ffebee;
+}
+
+.title-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-with-icon mat-icon {
+    margin-right: 8px;
+    font-size: 2rem;
+    height: 2rem;
+    width: 2rem;
+}
+
+mat-card-title {
+    color: #f44336;
+}
+
+mat-card-content p {
+    color: #d32f2f;
+}

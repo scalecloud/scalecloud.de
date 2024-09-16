@@ -12,13 +12,16 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { StripePaymentElementComponent } from './components/stripe/stripe-payment-element/stripe-payment-element.component';
+import { MatCardModule } from '@angular/material/card';
+import { LoadingFailedComponent } from './components/loading-failed/loading-failed.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    StripePaymentElementComponent
+    StripePaymentElementComponent,
+    LoadingFailedComponent,
   ],
   imports: [
     CommonModule,
@@ -29,13 +32,15 @@ import { StripePaymentElementComponent } from './components/stripe/stripe-paymen
     MatMenuModule,
     MatListModule,
     RouterModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCardModule,
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    StripePaymentElementComponent
+    StripePaymentElementComponent,
+    LoadingFailedComponent,
   ]
 })
 export class SharedModule { }

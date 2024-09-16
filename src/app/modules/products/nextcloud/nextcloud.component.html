@@ -44,10 +44,9 @@
 </div>
 }
 @if ( serviceStatus === ServiceStatus.Error ) {
-    <mat-card-title>
-        <mat-icon>manage_accounts</mat-icon> Users
-    </mat-card-title>
-    <button class="reload-button" mat-button (click)="getNextcloudProducts()">
-        <mat-icon>refresh</mat-icon>Reload
-    </button>
+<div class="flex-container">
+    <div class="flex-item" *ngFor="let i of [0, 1, 2, 3]">
+        <app-loading-failed></app-loading-failed>
+    </div>
+</div>
 }
