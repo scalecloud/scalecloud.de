@@ -1,7 +1,53 @@
 <app-titel-card [productType]="productType"></app-titel-card>
-
+@if (serviceStatus === ServiceStatus.Loading) {
+<div class="flex-container">
+    <div class="flex-item" *ngFor="let i of [0, 1, 2, 3]">
+        <mat-card>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="titel">
+                <mat-card-title>
+                    <ngx-skeleton-loader [theme]="{height: '2rem', width: '6rem'}" />
+                </mat-card-title>
+            </div>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '12rem'}" />
+                    </mat-list-item>
+                    <mat-list-item>
+                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+                    </mat-list-item>
+                    <mat-list-item>
+                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+                    </mat-list-item>
+                    <mat-list-item>
+                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+                    </mat-list-item>
+                    <mat-list-item>
+                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+                    </mat-list-item>
+                    <mat-list-item>
+                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+}
+@if (serviceStatus === ServiceStatus.Success) {
 <div class="flex-container">
     <div class="flex-item" *ngFor="let synologyProduct of synologyProducts">
         <app-subscription-card [synologyProduct]="synologyProduct"></app-subscription-card>
     </div>
 </div>
+}
+@if ( serviceStatus === ServiceStatus.Error ) {
+<mat-card-title>
+    <mat-icon>manage_accounts</mat-icon> Users
+</mat-card-title>
+<button class="reload-button" mat-button (click)="getSynologyProducts()">
+    <mat-icon>refresh</mat-icon>Reload
+</button>
+}

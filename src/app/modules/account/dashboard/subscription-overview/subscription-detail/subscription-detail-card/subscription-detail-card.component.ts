@@ -13,7 +13,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
   templateUrl: './subscription-detail-card.component.html',
   styleUrls: ['./subscription-detail-card.component.scss']
 })
-export class SubscriptionDetailCardComponent implements OnInit  {
+export class SubscriptionDetailCardComponent implements OnInit {
 
   reply: SubscriptionDetailReply | undefined;
   ServiceStatus = ServiceStatus;
@@ -64,7 +64,7 @@ export class SubscriptionDetailCardComponent implements OnInit  {
       if (subscriptionID == null) {
         this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
       } else {
-          this.subscriptionDetailCardServiceService.getSubscriptionDetail(subscriptionID)
+        this.subscriptionDetailCardServiceService.getSubscriptionDetail(subscriptionID)
           .subscribe({
             next: subscriptionDetail => {
               this.reply = subscriptionDetail;
