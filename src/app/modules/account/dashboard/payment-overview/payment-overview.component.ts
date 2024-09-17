@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { LogService } from 'src/app/shared/services/log/log.service';
+import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { firstValueFrom } from 'rxjs';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 @Component({
   selector: 'app-payment-overview',

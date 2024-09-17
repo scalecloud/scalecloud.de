@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LogService } from '../log/log.service';
+import { SnackBarProgressComponent } from './snack-bar-progress/snack-bar-progress.component';
 
 @Injectable({
   providedIn: 'root'
@@ -49,9 +50,10 @@ export class SnackBarService {
     let seconds = String(date.getSeconds()).padStart(2, '0');
     let time = `${hours}:${minutes}:${seconds}`;
     this.zone.run(() => {
-      this.snackBar.open(`${message} - ${time}`, '', {
+      this.snackBar.openFromComponent(SnackBarProgressComponent, {
         duration: duration * 1000,
-        panelClass: [cssClass]
+        panelClass: [cssClass],
+        data: { message, time, duration }
       });
     });
   }

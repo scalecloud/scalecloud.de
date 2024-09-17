@@ -14,6 +14,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { StripePaymentElementComponent } from './components/stripe/stripe-payment-element/stripe-payment-element.component';
 import { MatCardModule } from '@angular/material/card';
 import { LoadingFailedComponent } from './components/loading-failed/loading-failed.component';
+import { SnackBarProgressComponent } from './services/snackbar/snack-bar-progress/snack-bar-progress.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { LoadingFailedComponent } from './components/loading-failed/loading-fail
     SidebarComponent,
     StripePaymentElementComponent,
     LoadingFailedComponent,
+    SnackBarProgressComponent,
   ],
   imports: [
     CommonModule,
@@ -34,6 +37,7 @@ import { LoadingFailedComponent } from './components/loading-failed/loading-fail
     RouterModule,
     MatSnackBarModule,
     MatCardModule,
+    MatProgressBarModule,
   ],
   exports: [
     HeaderComponent,
@@ -41,6 +45,7 @@ import { LoadingFailedComponent } from './components/loading-failed/loading-fail
     SidebarComponent,
     StripePaymentElementComponent,
     LoadingFailedComponent,
+    SnackBarProgressComponent,
   ]
 })
 export class SharedModule { }

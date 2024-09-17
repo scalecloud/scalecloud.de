@@ -1,0 +1,15 @@
+.custom-snack-bar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 25px;
+}
+
+#progress-bar {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: white;
+}
