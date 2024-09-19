@@ -1,3 +1,32 @@
+::ng-deep .mat-mdc-snack-bar-container {
+    &.snackbar-info {
+        --mdc-snackbar-container-color: #279e53;
+        --mdc-snackbar-supporting-text-color: #fff;
+
+        #progress-bar {
+             background-color: #279e53;
+        }
+    }
+
+    &.snackbar-warn {
+        --mdc-snackbar-container-color: #f4e136;
+        --mdc-snackbar-supporting-text-color: #000;
+
+        #progress-bar {
+            background-color: #f4e136;
+        }
+    }
+
+    &.snackbar-error {
+        --mdc-snackbar-container-color: #F44336;
+        --mdc-snackbar-supporting-text-color: #fff;
+
+        #progress-bar {
+            background-color: #fff;
+        }
+    }
+}
+
 .custom-snack-bar-row {
     display: flex;
     justify-content: space-between;
@@ -11,5 +40,4 @@
     bottom: 0px;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
-    background-color: white;
 }
