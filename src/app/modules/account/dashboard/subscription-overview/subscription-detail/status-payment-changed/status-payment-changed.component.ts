@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -12,7 +12,7 @@ declare const Stripe: any;
   templateUrl: './status-payment-changed.component.html',
   styleUrls: ['./status-payment-changed.component.scss']
 })
-export class StatusPaymentChangedComponent {
+export class StatusPaymentChangedComponent implements OnInit  {
 
   setup_intent: string | undefined;
   setup_intent_client_secret: string | undefined;
@@ -32,7 +32,7 @@ export class StatusPaymentChangedComponent {
     private stripeKeyService: StripeKeyService
   ) { }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.checkPaymentIntentStatus();
   }
 

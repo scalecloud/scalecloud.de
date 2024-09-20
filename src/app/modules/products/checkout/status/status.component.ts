@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { CheckoutCreateSubscriptionReply } from '../integration/checkout-create-subscription';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { CheckoutCreateSubscriptionReply } from '../integration/checkout-create-subscription';
 
 
 @Component({
@@ -11,7 +11,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.scss']
 })
-export class StatusComponent {
+export class StatusComponent implements OnInit {
 
   checkoutCreateSubscriptionReply: CheckoutCreateSubscriptionReply;
 
@@ -25,7 +25,7 @@ export class StatusComponent {
     private authService: AuthService
   ) { }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.checkPaymentIntentStatus();
   }
 

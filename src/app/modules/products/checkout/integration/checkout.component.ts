@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
@@ -14,7 +14,7 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements OnInit {
 
   @ViewChild(PaymentOverviewComponent) paymentOverviewComponent: PaymentOverviewComponent | undefined;
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
@@ -30,19 +30,11 @@ export class CheckoutComponent {
     private returnUrlService: ReturnUrlService,
   ) { }
 
-  ngAfterViewInit(): void {
-    this.paymentOverviewComponent?.initPaymentMethodOverview().then((hasPaymentMethod) => {
-      if (hasPaymentMethod) {
-        const quantity = this.getParamMapQuantity();
-        this.setQuantity(quantity);
-        const productID = this.getParamMapProductID();
-        this.initCheckoutProduct(productID);
-      } else {
-        this.returnUrlService.openUrlAddReturnUrl('/dashboard/change-payment');
-      }
-    }).catch((error) => {
-      this.logService.error("Error: " + error);
-    });
+  ngOnInit(): void {
+    const quantity = this.getParamMapQuantity();
+    this.setQuantity(quantity);
+    const productID = this.getParamMapProductID();
+    this.initCheckoutProduct(productID);
   }
 
   getParamMapQuantity(): number {
@@ -105,19 +97,19 @@ export class CheckoutComponent {
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): void {
     this.authService.waitForAuth().then(() => {
       const errorMessage = "Could not create Subscription. Please try again.";
-  
+
       if (!checkoutIntegrationRequest || !checkoutIntegrationRequest.productID || !checkoutIntegrationRequest.quantity) {
         this.snackBarService.error(errorMessage);
         return;
       }
-  
+
       this.checkoutSubscriptionService.createCheckoutSubscription(checkoutIntegrationRequest).subscribe(
         (checkoutIntegrationReply: CheckoutCreateSubscriptionReply) => {
           if (!checkoutIntegrationReply || !checkoutIntegrationReply.status) {
             this.snackBarService.error(errorMessage);
             return;
           }
-  
+
           if (checkoutIntegrationReply.status === 'active' || checkoutIntegrationReply.status === 'trialing') {
             this.snackBarService.info("Subscription created.");
             this.router.navigate(['/checkout/status'], { queryParams: checkoutIntegrationReply });

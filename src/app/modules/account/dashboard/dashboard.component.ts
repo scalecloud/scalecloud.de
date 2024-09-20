@@ -27,18 +27,6 @@ export class DashboardComponent implements OnInit {
     this.getSubscriptionsOverview();
   }
 
-  ngAfterViewInit(): void {
-    this.paymentOverviewComponent?.initPaymentMethodOverview().then((hasPaymentMethod) => {
-      if (hasPaymentMethod) {
-        this.logService.info("Fetched payment method overview.");
-      } else {
-        this.logService.warn("User has no payment method. UID: " + this.authService.getUser()?.uid );
-      }
-    }).catch((error) => {
-      this.logService.error("Error: " + error);
-    });
-  }
-
   getSubscriptionsOverview(): void {
     this.authService.waitForAuth().then(() => {
       if (this.subscriptionsOverview != null) {
