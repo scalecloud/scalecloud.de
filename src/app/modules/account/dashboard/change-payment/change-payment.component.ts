@@ -6,6 +6,7 @@ import { ChangePaymentService } from './change-payment.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
 import { StripePaymentElementComponent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-element.component';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { ServiceStatus } from 'src/app/shared/services/service-status';
 
 @Component({
   selector: 'app-change-payment',
@@ -13,9 +14,7 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
   styleUrls: ['./change-payment.component.scss']
 })
 export class ChangePaymentComponent {
-
   @ViewChild(StripePaymentElementComponent) stripePaymentElementComponent: StripePaymentElementComponent | undefined;
-
   subscriptionSetupIntentReply: ChangePaymentReply | undefined;
 
   constructor(
@@ -65,6 +64,10 @@ export class ChangePaymentComponent {
 
   cancel(): void {
     this.returnUrlService.openReturnURL("/dashboard");
+  }
+
+  isSuccess(): boolean {
+    return this.stripePaymentElementComponent?.serviceStatus == ServiceStatus.Success;
   }
 
 }
