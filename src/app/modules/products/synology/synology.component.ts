@@ -28,7 +28,6 @@ export class SynologyComponent implements OnInit {
 
   getSynologyProducts(): void {
     this.serviceStatus = ServiceStatus.Loading;
-
     this.productService.getProductTiers(this.productType)
       .subscribe({
         next: reply => {
@@ -40,9 +39,6 @@ export class SynologyComponent implements OnInit {
           this.snackBarService.error('Could not get subscriptions. Please try again later.');
         }
       });
-
-    this.productService.getProductTiers(this.productType).subscribe(
-      reply => this.synologyProducts = reply.productTiers);
   }
 
 }

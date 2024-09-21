@@ -31,8 +31,8 @@ export class PaymentOverviewComponent implements OnInit {
   }
 
   initPaymentMethodOverview(): void {
+    this.serviceStatus = ServiceStatus.Loading;
     this.authService.waitForAuth().then(() => {
-      this.serviceStatus = ServiceStatus.Loading;
       this.subscriptionPaymentMethodService.getPaymentMethodOverview()
         .subscribe({
           next: paymentMethodOverviewReply => {

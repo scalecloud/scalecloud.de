@@ -58,8 +58,8 @@ export class SubscriptionDetailCardComponent implements OnInit {
   }
 
   reloadSubscriptionDetail(): void {
+    this.serviceStatus = ServiceStatus.Loading;
     this.authService.waitForAuth().then(() => {
-      this.serviceStatus = ServiceStatus.Loading;
       const subscriptionID = this.getSubscriptionID();
       if (subscriptionID == null) {
         this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');

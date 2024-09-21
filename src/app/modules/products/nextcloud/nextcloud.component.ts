@@ -28,7 +28,6 @@ export class NextcloudComponent implements OnInit {
 
   getNextcloudProducts(): void {
     this.serviceStatus = ServiceStatus.Loading;
-
     this.productService.getProductTiers(this.productType)
       .subscribe({
         next: reply => {
@@ -40,10 +39,6 @@ export class NextcloudComponent implements OnInit {
           this.snackBarService.error('Could not get subscriptions. Please try again later.');
         }
       });
-
-
-    this.productService.getProductTiers(this.productType).subscribe(
-      reply => this.nextcloudProducts = reply.productTiers);
   }
 
 }
