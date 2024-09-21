@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
@@ -12,7 +12,7 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
   styleUrls: ['./payment-overview.component.scss']
 })
 export class PaymentOverviewComponent implements OnInit {
-
+  @Output() hasValidPaymentMethod = new EventEmitter<boolean>();
   reply: PaymentMethodOverviewReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
@@ -35,6 +35,7 @@ export class PaymentOverviewComponent implements OnInit {
         .subscribe({
           next: paymentMethodOverviewReply => {
             this.reply = paymentMethodOverviewReply;
+            this.hasValidPaymentMethod.emit(this.hasPaymentMethod());
             this.serviceStatus = ServiceStatus.Success;
           },
           error: error => {

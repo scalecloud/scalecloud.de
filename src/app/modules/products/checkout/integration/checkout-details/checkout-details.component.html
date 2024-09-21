@@ -79,8 +79,8 @@
     </mat-card-subtitle>
     <mat-card-actions>
         <button (click)="startSubscription()" mat-stroked-button
-            color="primary">SUBSCRIBE<mat-icon>payment</mat-icon></button>
-    </mat-card-actions>
+                color="primary" [disabled]="!hasPaymentMethod">Subscribe<mat-icon>payment</mat-icon></button>
+      </mat-card-actions>
     }
 </mat-card>
 @if ( serviceStatus === ServiceStatus.Error ) {

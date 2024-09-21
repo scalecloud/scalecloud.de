@@ -14,7 +14,6 @@ import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/paym
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent {
-
   @ViewChild(PaymentOverviewComponent) paymentOverviewComponent: PaymentOverviewComponent | undefined;
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
   productID: string | undefined;
@@ -53,6 +52,12 @@ export class CheckoutComponent {
     }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
     });
+  }
+
+  hasValidPaymentMethod(hasPaymentMethod: boolean): void {
+    if (this.checkoutDetailsComponent) {
+      this.checkoutDetailsComponent.hasPaymentMethod = hasPaymentMethod;
+    }
   }
 
 }
