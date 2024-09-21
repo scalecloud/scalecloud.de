@@ -15,7 +15,7 @@ import { ContactComponent } from 'src/app/modules/footer/contact/contact.compone
 import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
 import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { LoginComponent } from 'src/app/modules/account/login/login.component';
 import { RegisterComponent } from 'src/app/modules/account/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -64,6 +64,7 @@ import { CancelSubscriptionComponent } from 'src/app/modules/account/dashboard/s
 import { ConfirmCancelSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/cancel-subscription/confirm-cancel-subscription/confirm-cancel-subscription.component';
 import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/resume-subscription/confirm-resume-subscription/confirm-resume-subscription.component';
 import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/resume-subscription/resume-subscription.component';
+import { ServiceErrorInterceptorService } from 'src/app/shared/interceptors/service-error-interceptor.service';
 
 @NgModule({
     declarations: [
@@ -132,7 +133,8 @@ import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/s
         MatPaginatorModule,
         NgxSkeletonLoaderModule,
         ], providers: [
-            provideHttpClient(withInterceptorsFromDi())
+            provideHttpClient(withInterceptorsFromDi()),
+            { provide: HTTP_INTERCEPTORS, useClass: ServiceErrorInterceptorService, multi: true }
         ]
 })
 export class DefaultModule { }

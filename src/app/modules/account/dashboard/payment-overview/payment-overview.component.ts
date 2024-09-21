@@ -41,8 +41,8 @@ export class PaymentOverviewComponent implements OnInit {
           },
           error: error => {
             this.serviceStatus = ServiceStatus.Error;
-            this.logService.error('Could not load payment method overview: ' + error);
-            this.snackBarService.error('Could not load payment method overview.');
+         //   this.logService.error('Could not load payment method overview: ' + error);
+           // this.snackBarService.error('Could not load payment method overview.');
           }
         });
     }).catch((error) => {
