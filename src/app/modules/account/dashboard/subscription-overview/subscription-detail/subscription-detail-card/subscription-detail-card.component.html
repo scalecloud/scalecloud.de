@@ -84,13 +84,7 @@
         </mat-list>
     </mat-card-content>
     }
-
     @if ( serviceStatus === ServiceStatus.Error ) {
-    <mat-card-title>
-        <mat-icon>manage_accounts</mat-icon> Users
-    </mat-card-title>
-    <button class="reload-button" mat-button (click)="reloadSubscriptionDetail()">
-        <mat-icon>refresh</mat-icon>Reload
-    </button>
+    <app-loading-failed></app-loading-failed>
     }
 </mat-card>

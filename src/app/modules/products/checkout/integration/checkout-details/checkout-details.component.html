@@ -1,34 +1,34 @@
 <mat-card>
     @if (serviceStatus === ServiceStatus.Loading) {
-        <mat-progress-bar mode="query"></mat-progress-bar>
-        <mat-card-title>
-            <ngx-skeleton-loader [theme]="{height: '2rem', width: '50%'}" />
-        </mat-card-title>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-            <mat-list>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '5rem'}" />
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '6rem'}" />
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '8rem'}" />
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '3rem', width: '11rem'}" />
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '2rem', width: '6rem'}" />
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '2rem', width: '12rem'}" />
-                </mat-list-item>
-            </mat-list>
-        </mat-card-content>
-        }
-        @if (serviceStatus === ServiceStatus.Success) {
+    <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-title>
+        <ngx-skeleton-loader [theme]="{height: '2rem', width: '50%'}" />
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '5rem'}" />
+            </mat-list-item>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '6rem'}" />
+            </mat-list-item>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '8rem'}" />
+            </mat-list-item>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '3rem', width: '11rem'}" />
+            </mat-list-item>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '2rem', width: '6rem'}" />
+            </mat-list-item>
+            <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '2rem', width: '12rem'}" />
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+    }
+    @if (serviceStatus === ServiceStatus.Success) {
     <mat-card-title>
         {{getName()}}
     </mat-card-title>
@@ -81,13 +81,8 @@
         <button (click)="startSubscription()" mat-stroked-button
             color="primary">SUBSCRIBE<mat-icon>payment</mat-icon></button>
     </mat-card-actions>
-}
-
-@if ( serviceStatus === ServiceStatus.Error ) {
-    <div class="flex-container">
-        <div class="flex-item" *ngFor="let i of [0, 1, 2, 3]">
-            <app-loading-failed></app-loading-failed>
-        </div>
-    </div>
+    }
+    @if ( serviceStatus === ServiceStatus.Error ) {
+    <app-loading-failed></app-loading-failed>
     }
 </mat-card>

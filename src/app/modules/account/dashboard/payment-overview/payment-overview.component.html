@@ -89,10 +89,6 @@
     </mat-card-actions>
     }
     @if ( serviceStatus === ServiceStatus.Error ) {
-    <div class="flex-container">
-        <div class="flex-item" *ngFor="let i of [0, 1, 2, 3]">
-            <app-loading-failed></app-loading-failed>
-        </div>
-    </div>
+    <app-loading-failed></app-loading-failed>
     }
 </mat-card>

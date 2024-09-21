@@ -10,7 +10,5 @@
 }
 }
 @if ( serviceStatus === ServiceStatus.Error ) {
-<button class="reload-button" mat-button (click)="getCancelState()">
-    <mat-icon>refresh</mat-icon>Reload
-</button>
+<app-loading-failed></app-loading-failed>
 }

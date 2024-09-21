@@ -40,8 +40,8 @@
         </mat-list>
         @if( seatListReply.totalResults > pageSize ) {
         <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="seatListReply.totalResults"
-            [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons"
-            [hidePageSize]="hidePageSize" [pageIndex]="seatListReply.pageIndex" aria-label="Select page">
+            [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize"
+            [pageIndex]="seatListReply.pageIndex" aria-label="Select page">
         </mat-paginator>
         }
     </mat-card-content>
@@ -50,14 +50,7 @@
             color="primary"><mat-icon>person_add</mat-icon> Invite</button>
     </mat-card-actions>
     }
-
     @if ( serviceStatus === ServiceStatus.Error ) {
-    <mat-card-title>
-        <mat-icon>manage_accounts</mat-icon> Users
-    </mat-card-title>
-    <button class="reload-button" mat-button (click)="getSeatsList()">
-        <mat-icon>refresh</mat-icon>Reload
-    </button>
+    <app-loading-failed></app-loading-failed>
     }
-
 </mat-card>
