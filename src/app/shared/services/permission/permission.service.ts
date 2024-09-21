@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { LogService } from '../log/log.service';
 import { Role } from '../../roles/roles';
-import { WritableSignal, signal } from '@angular/core';
 import { PermissionReply, PermissionRequest } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seats';
 
 interface CacheEntry {

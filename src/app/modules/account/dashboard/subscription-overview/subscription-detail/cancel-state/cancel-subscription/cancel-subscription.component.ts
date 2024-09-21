@@ -26,12 +26,10 @@ export class CancelSubscriptionComponent {
     public dialog: MatDialog
   ) { }
 
-
-
   openConfirmDialog() {
     const dialogRef = this.dialog.open(ConfirmCancelSubscriptionComponent);
     dialogRef.afterClosed().subscribe(cancel => {
-      if (cancel == true) {
+      if (cancel) {
         this.cancelSubscription();
       }
     });
@@ -47,17 +45,15 @@ export class CancelSubscriptionComponent {
         subscriptionID: subscriptionID
       }
 
-      const observable = this.cancelSubscriptionService.cancelSubscription(iSubscriptionCancelRequest).subscribe(
+      this.cancelSubscriptionService.cancelSubscription(iSubscriptionCancelRequest).subscribe(
         (iSubscriptionCancelReply: ISubscriptionCancelReply) => {
           if (iSubscriptionCancelReply == null) {
             this.logService.error('CancelSubscriptionComponent.cancelSubscription: iSubscriptionCancelReply is null');
           }
-          else {
-            if (iSubscriptionCancelReply.cancel_at_period_end) {
-              var date = new Date(iSubscriptionCancelReply.cancel_at * 1000);
-              this.snackBarService.info(`Your Subscription will cancel at: ` + date);
-              this.reloadSubscriptionDetail.emit();
-            }
+          else if (iSubscriptionCancelReply.cancel_at_period_end) {
+            let date = new Date(iSubscriptionCancelReply.cancel_at * 1000);
+            this.snackBarService.info(`Your Subscription will cancel at: ` + date);
+            this.reloadSubscriptionDetail.emit();
           }
         });
     }

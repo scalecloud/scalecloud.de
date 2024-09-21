@@ -1,10 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { ReturnUrlService } from '../services/redirect/return-url.service';
 import { LogService } from '../services/log/log.service';
-import { PaymentMethodOverviewService } from 'src/app/modules/account/dashboard/payment-overview/payment-method-overview.service';
 
 @Injectable({
   providedIn: 'root'

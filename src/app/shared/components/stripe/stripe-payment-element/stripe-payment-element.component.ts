@@ -76,7 +76,6 @@ export class StripePaymentElementComponent {
 
     if (this.initStripePayment == undefined) {
       this.logService.error("Cannot submit Payment because initStripePayment is undefined.")
-      return;
     }
     else if (this.initStripePayment.intent == StripeIntent.SetupIntent) {
       const { error: stripeError } = await this.stripeElement.confirmSetup({

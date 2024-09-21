@@ -6,9 +6,8 @@ import { Router } from '@angular/router';
 import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
 import { ReturnUrlService } from './redirect/return-url.service';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -117,7 +116,7 @@ export class AuthService {
   }
 
   sendVerificationMail() {
-    var actionCodeSettings = {
+    let actionCodeSettings = {
       url: this.returnUrlService.getReturnUrlDecoded(),
     };
     this.afAuth.currentUser.then((user) => {

@@ -1,10 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { CheckoutProductReply, CheckoutProductRequest } from './checkout-product';
-import { LogService } from 'src/app/shared/services/log/log.service';
 
 @Injectable({
   providedIn: 'root'

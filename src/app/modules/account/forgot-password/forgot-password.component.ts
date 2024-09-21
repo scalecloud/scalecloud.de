@@ -23,10 +23,8 @@ export class ForgotPasswordComponent {
     if (this.isEmailInvalid()) {
       this.snackBarService.error("Please enter a valid E-Mail address");
     }
-    else {
-      if (await this.authService.forgotPassword(this.email.value)) {
-        this.disableButtonForSeconds();
-      }
+    else if (await this.authService.forgotPassword(this.email.value)) {
+      this.disableButtonForSeconds();
     }
   }
 

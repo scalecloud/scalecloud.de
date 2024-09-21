@@ -9,9 +9,7 @@ WORKDIR /build
 
 COPY ./ ./
 
-RUN npm install --ignore-scripts
-
-RUN npm run ng build scalecloud
+RUN npm install --ignore-scripts && npm run ng build scalecloud
 
 ##
 ## Deploy

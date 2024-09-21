@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-header',

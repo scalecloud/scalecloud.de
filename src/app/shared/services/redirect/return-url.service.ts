@@ -74,7 +74,7 @@ export class ReturnUrlService {
     let continueUrl = this.baseURL;
     const returnURL = this.route.snapshot.queryParamMap.get('returnUrl');
 
-    if (returnURL && this.document && this.document.location) {
+    if (returnURL && this.document?.location) {
       const domain = this.document.location.origin;
       const decodedReturnUrl = decodeURIComponent(returnURL);
 
