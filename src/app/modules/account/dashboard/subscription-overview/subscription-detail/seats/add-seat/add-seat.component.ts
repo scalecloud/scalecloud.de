@@ -88,5 +88,12 @@ export class AddSeatComponent {
     }
   }
 
+  handleKeyDown(event: KeyboardEvent, role: Role) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.toggleRoleSelection(role);
+    }
+  }
+
 
 }

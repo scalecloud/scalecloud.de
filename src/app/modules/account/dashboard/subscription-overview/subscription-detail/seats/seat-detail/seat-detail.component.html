@@ -17,7 +17,7 @@
             <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked" formControlName="roles">
                   <mat-chip-option *ngFor="let role of allRoles" [selected]="seatWithUpdates?.roles.includes(role)"
                         [disabled]="shouldOwnerBeDisabled(role)" (click)="toggleRoleSelection(role)"
-                        [matTooltip]="roleDescriptions[role]">
+                        [matTooltip]="roleDescriptions[role]" (keydown)="handleKeyDown($event, role)">
                         {{role}}
                   </mat-chip-option>
             </mat-chip-listbox>

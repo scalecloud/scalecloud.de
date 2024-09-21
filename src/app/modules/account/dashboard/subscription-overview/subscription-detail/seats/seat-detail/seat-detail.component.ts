@@ -228,4 +228,11 @@ export class SeatDetailComponent {
     });
   }
 
+  handleKeyDown(event: KeyboardEvent, role: Role) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.toggleRoleSelection(role);
+    }
+  }
+
 }
