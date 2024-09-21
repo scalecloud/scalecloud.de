@@ -47,6 +47,7 @@
                     Scalable
                 </div>
             </mat-list-item>
+            @if(hasPaymentMethod()) {
             <mat-list-item>
                 <div class="icon-text">
                     <mat-icon>event_available</mat-icon>
@@ -62,6 +63,7 @@
                     </ng-template>
                 </div>
             </mat-list-item>
+            }
             <mat-list-item>
                 <div class="icon-text">
                     <div class="user-count">
