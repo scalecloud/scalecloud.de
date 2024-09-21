@@ -8,16 +8,20 @@ import { CheckoutProductService } from './checkout-product.service';
 import { CurrencyPipe } from '@angular/common';
 import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
 import { ActivatedRoute } from '@angular/router';
+import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-checkout-details',
   templateUrl: './checkout-details.component.html',
   styleUrls: ['./checkout-details.component.scss']
 })
-export class CheckoutDetailsComponent implements OnInit  {
+export class CheckoutDetailsComponent implements OnInit {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
   @Output() startSubscriptionEvent = new EventEmitter<CheckoutCreateSubscriptionRequest>();
-  checkoutProductReply: CheckoutProductReply | undefined;
+  reply: CheckoutProductReply | undefined;
+  ServiceStatus = ServiceStatus;
+  serviceStatus = ServiceStatus.Initializing;
 
   constructor(
     private logService: LogService,
@@ -25,6 +29,7 @@ export class CheckoutDetailsComponent implements OnInit  {
     private authService: AuthService,
     private currencyPipe: CurrencyPipe,
     private route: ActivatedRoute,
+    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +37,7 @@ export class CheckoutDetailsComponent implements OnInit  {
   }
 
   initCheckoutProduct(): void {
+    this.serviceStatus = ServiceStatus.Loading;
     this.authService.waitForAuth().then(() => {
       const quantity = this.getParamMapQuantity();
       const productID = this.getParamMapProductID();
@@ -41,14 +47,22 @@ export class CheckoutDetailsComponent implements OnInit  {
       else {
         let checkoutProductRequest: CheckoutProductRequest = {
           productID: productID
-        }
-        this.checkoutProductService.getCheckoutProduct(checkoutProductRequest).subscribe(
-          (checkoutProductReply: CheckoutProductReply) => {
-            this.checkoutProductReply = checkoutProductReply;
+        };
+        this.checkoutProductService.getCheckoutProduct(checkoutProductRequest)
+          .subscribe({
+            next: checkoutProductReply => {
+              this.reply = checkoutProductReply;
+              this.serviceStatus = ServiceStatus.Success;
+            },
+            error: error => {
+              this.serviceStatus = ServiceStatus.Error;
+              this.snackBarService.error('Could not get subscription detail. Please try again later.');
+            }
           });
       }
     }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
+      this.serviceStatus = ServiceStatus.Error;
     });
   }
 
@@ -80,7 +94,7 @@ export class CheckoutDetailsComponent implements OnInit  {
 
   startSubscription(): void {
     const checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest = {
-      productID: this.checkoutProductReply.productID,
+      productID: this.reply.productID,
       quantity: this.getQuantity(),
     }
     this.startSubscriptionEvent.emit(checkoutIntegrationRequest);
@@ -106,8 +120,8 @@ export class CheckoutDetailsComponent implements OnInit  {
 
   getPricePerMonth(): string {
     let pricePerMonth = "";
-    if (this.checkoutProductReply && this.checkoutProductReply.pricePerMonth > 0) {
-      let pricePipe = this.currencyPipe.transform(this.checkoutProductReply.pricePerMonth / 100 * this.getQuantity(), this.getCurrency(), 'symbol', '1.0-0');
+    if (this.reply && this.reply.pricePerMonth > 0) {
+      let pricePipe = this.currencyPipe.transform(this.reply.pricePerMonth / 100 * this.getQuantity(), this.getCurrency(), 'symbol', '1.0-0');
       if (pricePipe != null) {
         pricePerMonth = pricePipe;
       }
@@ -117,40 +131,40 @@ export class CheckoutDetailsComponent implements OnInit  {
 
   getCurrency(): string {
     let currency = "";
-    if (this.checkoutProductReply) {
-      currency = this.checkoutProductReply.currency;
+    if (this.reply) {
+      currency = this.reply.currency;
     }
     return currency;
   }
 
   getName(): string {
     let name = "";
-    if (this.checkoutProductReply) {
-      name = this.checkoutProductReply.name;
+    if (this.reply) {
+      name = this.reply.name;
     }
     return name;
   }
 
   getStorageAmount(): number {
     let storageAmount = 0;
-    if (this.checkoutProductReply) {
-      storageAmount = this.checkoutProductReply.storageAmount * this.getQuantity();
+    if (this.reply) {
+      storageAmount = this.reply.storageAmount * this.getQuantity();
     }
     return storageAmount;
   }
 
   getTrialDays(): number {
     let trialDays = 0;
-    if (this.checkoutProductReply && this.checkoutProductReply.trialDays > 0) {
-      trialDays = this.checkoutProductReply.trialDays;
+    if (this.reply && this.reply.trialDays > 0) {
+      trialDays = this.reply.trialDays;
     }
     return trialDays;
   }
 
   getStorageUnit(): string {
     let storageUnit = "";
-    if (this.checkoutProductReply) {
-      storageUnit = this.checkoutProductReply.storageUnit;
+    if (this.reply) {
+      storageUnit = this.reply.storageUnit;
     }
     return storageUnit;
   }

@@ -1,56 +1,93 @@
-<div fxLayoutAlign="space-evenly">
-    <mat-card>
+<mat-card>
+    @if (serviceStatus === ServiceStatus.Loading) {
+        <mat-progress-bar mode="query"></mat-progress-bar>
         <mat-card-title>
-            {{getName()}}
+            <ngx-skeleton-loader [theme]="{height: '2rem', width: '50%'}" />
         </mat-card-title>
         <mat-divider></mat-divider>
         <mat-card-content>
             <mat-list>
                 <mat-list-item>
-                    <div class="icon-text">
-                        <mat-icon>cloud</mat-icon>
-                        {{getStorageAmount()}}{{getStorageUnit()}}
-                    </div>
+                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '5rem'}" />
                 </mat-list-item>
                 <mat-list-item>
-                    <div class="icon-text">
-                        <mat-icon>height</mat-icon>
-                        Scalable
-                    </div>
+                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '6rem'}" />
                 </mat-list-item>
                 <mat-list-item>
-                    <div class="icon-text">
-                        <mat-icon>event_available</mat-icon>
-                        <ng-container *ngIf="getIsTrialIncluded(); then trial; else noTrial">
-                        </ng-container>
-                        <ng-template #trial>
-                            {{getTrialDays()}}&nbsp;days trial*
-                        </ng-template>
-                        <ng-template #noTrial>
-                            <s>
-                                {{getTrialDays()}}&nbsp;days trial*
-                            </s>
-                        </ng-template>
-                    </div>
+                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '8rem'}" />
                 </mat-list-item>
                 <mat-list-item>
-                    <div class="icon-text">
-                        <div class="user-count">
-                            <mat-icon>person</mat-icon>
-                            <mat-label>User count:</mat-label>
-                        </div>
-                        <app-quantity></app-quantity>
-                    </div>
+                    <ngx-skeleton-loader [theme]="{height: '3rem', width: '11rem'}" />
                 </mat-list-item>
-                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <ngx-skeleton-loader [theme]="{height: '2rem', width: '6rem'}" />
+                </mat-list-item>
+                <mat-list-item>
+                    <ngx-skeleton-loader [theme]="{height: '2rem', width: '12rem'}" />
+                </mat-list-item>
             </mat-list>
         </mat-card-content>
-        <mat-card-subtitle>
-            {{getPricePerMonth()}}<span class="price-month">/month</span>
-        </mat-card-subtitle>
-        <mat-card-actions>
-            <button (click)="startSubscription()" mat-stroked-button
-                color="primary">SUBSCRIBE<mat-icon>payment</mat-icon></button>
-        </mat-card-actions>
-    </mat-card>
-</div>
+        }
+        @if (serviceStatus === ServiceStatus.Success) {
+    <mat-card-title>
+        {{getName()}}
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <div class="icon-text">
+                    <mat-icon>cloud</mat-icon>
+                    {{getStorageAmount()}}{{getStorageUnit()}}
+                </div>
+            </mat-list-item>
+            <mat-list-item>
+                <div class="icon-text">
+                    <mat-icon>height</mat-icon>
+                    Scalable
+                </div>
+            </mat-list-item>
+            <mat-list-item>
+                <div class="icon-text">
+                    <mat-icon>event_available</mat-icon>
+                    <ng-container *ngIf="getIsTrialIncluded(); then trial; else noTrial">
+                    </ng-container>
+                    <ng-template #trial>
+                        {{getTrialDays()}}&nbsp;days trial*
+                    </ng-template>
+                    <ng-template #noTrial>
+                        <s>
+                            {{getTrialDays()}}&nbsp;days trial*
+                        </s>
+                    </ng-template>
+                </div>
+            </mat-list-item>
+            <mat-list-item>
+                <div class="icon-text">
+                    <div class="user-count">
+                        <mat-icon>person</mat-icon>
+                        <mat-label>User count:</mat-label>
+                    </div>
+                    <app-quantity></app-quantity>
+                </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+        </mat-list>
+    </mat-card-content>
+    <mat-card-subtitle>
+        {{getPricePerMonth()}}<span class="price-month">/month</span>
+    </mat-card-subtitle>
+    <mat-card-actions>
+        <button (click)="startSubscription()" mat-stroked-button
+            color="primary">SUBSCRIBE<mat-icon>payment</mat-icon></button>
+    </mat-card-actions>
+}
+
+@if ( serviceStatus === ServiceStatus.Error ) {
+    <div class="flex-container">
+        <div class="flex-item" *ngFor="let i of [0, 1, 2, 3]">
+            <app-loading-failed></app-loading-failed>
+        </div>
+    </div>
+    }
+</mat-card>
