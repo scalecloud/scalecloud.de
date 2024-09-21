@@ -5,7 +5,6 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-payment-overview',
@@ -23,7 +22,6 @@ export class PaymentOverviewComponent implements OnInit {
     private authService: AuthService,
     private logService: LogService,
     private returnUrlService: ReturnUrlService,
-    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
@@ -41,8 +39,6 @@ export class PaymentOverviewComponent implements OnInit {
           },
           error: error => {
             this.serviceStatus = ServiceStatus.Error;
-         //   this.logService.error('Could not load payment method overview: ' + error);
-           // this.snackBarService.error('Could not load payment method overview.');
           }
         });
     }).catch((error) => {

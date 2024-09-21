@@ -115,7 +115,6 @@ export class SeatDetailComponent {
             error: error => {
               this.loading = false;
               this.error = true;
-              this.snackBarService.error('Could not get list of seats. Please try again later.');
             }
           });
       }

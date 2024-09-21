@@ -4,7 +4,6 @@ import { ISubscriptionOverview } from './subscription-overview/subscription-over
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PaymentOverviewComponent } from './payment-overview/payment-overview.component';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +19,6 @@ export class DashboardComponent implements OnInit {
     public authService: AuthService,
     private subscriptionOverviewService: SubscriptionOverviewService,
     private logService: LogService,
-    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {

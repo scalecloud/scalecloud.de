@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { CancelStateReply } from './cancel-state';
@@ -28,7 +27,6 @@ export class CancelStateComponent implements OnInit {
     private cancelStateService: CancelStateService,
     private logService: LogService,
     private snackBarService: SnackBarService,
-    private returnUrlService: ReturnUrlService,
     private permissionService: PermissionService,
     private route: ActivatedRoute,
   ) { }
@@ -81,7 +79,6 @@ export class CancelStateComponent implements OnInit {
             },
             error: error => {
               this.serviceStatus = ServiceStatus.Error;
-              this.snackBarService.error('Could not initialize component to cancel or resume subscription. Please try again later.');
             }
           });
       }

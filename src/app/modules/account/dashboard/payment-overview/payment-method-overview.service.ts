@@ -1,10 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
-import { Observable, catchError, of } from 'rxjs';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

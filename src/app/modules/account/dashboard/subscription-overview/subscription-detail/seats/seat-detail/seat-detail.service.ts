@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { SeatDetailRequest, SeatDetailReply, UpdateSeatDetailRequest, UpdateSeatDetailReply, DeleteSeatRequest, DeleteSeatReply } from '../seats';
 
 @Injectable({
@@ -16,46 +14,21 @@ export class SeatDetailService {
   private urlDeleteSeat = 'http://localhost:15000/dashboard/subscription/delete-seat';
   constructor(
     private http: HttpClient,
-    private snackBarService: SnackBarService,
     private authService: AuthService,
-    private logService: LogService,
   ) { }
 
   getSeat(seatDetailRequest: SeatDetailRequest): Observable<SeatDetailReply> {
-    return this.http.post<SeatDetailReply>(this.urlGetSeat, seatDetailRequest, this.authService.getHttpOptions())
-      .pipe(
-        catchError(this.handleError<SeatDetailReply>('getSeatDetail'))
-      );
+    return this.http.post<SeatDetailReply>(this.urlGetSeat, seatDetailRequest, this.authService.getHttpOptions());
   }
 
   updateSeat(updateSeatDetailRequest: UpdateSeatDetailRequest): Observable<UpdateSeatDetailReply> {
-    return this.http.post<UpdateSeatDetailReply>(this.urlUpdateSeatDetail, updateSeatDetailRequest, this.authService.getHttpOptions())
-      .pipe(
-        catchError(this.handleError<UpdateSeatDetailReply>('updateSeat'))
-      );
+    return this.http.post<UpdateSeatDetailReply>(this.urlUpdateSeatDetail, updateSeatDetailRequest, this.authService.getHttpOptions());
   }
 
   deleteSeat(deleteSeatRequest: DeleteSeatRequest): Observable<DeleteSeatReply> {
-    return this.http.post<DeleteSeatReply>(this.urlDeleteSeat, deleteSeatRequest, this.authService.getHttpOptions())
-      .pipe(
-        catchError(this.handleError<DeleteSeatReply>('deleteSeat'))
-      );
+    return this.http.post<DeleteSeatReply>(this.urlDeleteSeat, deleteSeatRequest, this.authService.getHttpOptions());;
   }
 
-  private extractErrorMessage(error: any): string {
-    return error.error?.error || error.message || 'An error occurred';
-  }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logService.error(error);
-      if (error.status === 403) {
-        this.snackBarService.error('You do not have permission to perform this action');
-      } else {
-        this.snackBarService.error(this.extractErrorMessage(error));
-      }
 
-      return of(result as T);
-    };
-  }
 }

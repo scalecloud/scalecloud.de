@@ -3,7 +3,6 @@ import { NextcloudProduct } from './nextcloud-product';
 import { ProductType } from '../product-model';
 import { ProductService } from '../product/product.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-nextcloud',
@@ -19,7 +18,6 @@ export class NextcloudComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +34,6 @@ export class NextcloudComponent implements OnInit {
         },
         error: error => {
           this.serviceStatus = ServiceStatus.Error;
-          this.snackBarService.error('Could not get subscriptions. Please try again later.');
         }
       });
   }

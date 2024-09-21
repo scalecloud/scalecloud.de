@@ -9,7 +9,6 @@ import { CurrencyPipe } from '@angular/common';
 import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-checkout-details',
@@ -29,7 +28,6 @@ export class CheckoutDetailsComponent implements OnInit {
     private authService: AuthService,
     private currencyPipe: CurrencyPipe,
     private route: ActivatedRoute,
-    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
@@ -56,7 +54,6 @@ export class CheckoutDetailsComponent implements OnInit {
             },
             error: error => {
               this.serviceStatus = ServiceStatus.Error;
-              this.snackBarService.error('Could not get subscription detail. Please try again later.');
             }
           });
       }

@@ -43,7 +43,6 @@ export class AddSeatComponent {
       const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
 
       if (!subscriptionID) {
-        this.logService.error('SeatsComponent.invite: subscriptionID is null');
         this.snackBarService.error('Currently not possible to invite a user. Please try again later.');
         this.returnUrlService.openReturnURL('/dashboard');
       } else {

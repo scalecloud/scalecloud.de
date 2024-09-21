@@ -6,7 +6,6 @@ import { ChangePaymentService } from './change-payment.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
 import { StripePaymentElementComponent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-element.component';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-change-payment',
@@ -24,7 +23,6 @@ export class ChangePaymentComponent {
     private logService: LogService,
     private changePaymentService: ChangePaymentService,
     private returnUrlService: ReturnUrlService,
-    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
@@ -66,7 +64,6 @@ export class ChangePaymentComponent {
   }
 
   cancel(): void {
-    this.snackBarService.info("Payment method change cancelled.");
     this.returnUrlService.openReturnURL("/dashboard");
   }
 

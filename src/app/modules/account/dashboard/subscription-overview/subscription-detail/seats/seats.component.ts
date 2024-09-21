@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -59,7 +59,6 @@ export class SeatsComponent implements OnInit {
       }
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
-      this.snackBarService.error('An error occurred while checking permissions.');
     }
   }
 
@@ -83,7 +82,6 @@ export class SeatsComponent implements OnInit {
             },
             error: error => {
               this.serviceStatus = ServiceStatus.Error;
-              this.snackBarService.error('Could not get list of seats. Please try again later.');
             }
           });
       }

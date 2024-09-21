@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ListSeatReply, ListSeatRequest } from './seats';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +13,10 @@ export class SeatsService {
 
   constructor(
     private http: HttpClient,
-    private snackBarService: SnackBarService,
     private authService: AuthService,
-    private logService: LogService,
   ) { }
 
   getListSeats(listSeatRequest: ListSeatRequest): Observable<ListSeatReply> {
-    return this.http.post<ListSeatReply>(this.url, listSeatRequest, this.authService.getHttpOptions())
-      /* .pipe(
-        catchError(this.handleError<ListSeatReply>('getListSeats'))
-      ) */;
-  }
-
-  handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logService.error(error);
-      this.snackBarService.error(`Could not get list of seats. Please try again later.`);
-      return of(result as T);
-    };
+    return this.http.post<ListSeatReply>(this.url, listSeatRequest, this.authService.getHttpOptions());
   }
 }

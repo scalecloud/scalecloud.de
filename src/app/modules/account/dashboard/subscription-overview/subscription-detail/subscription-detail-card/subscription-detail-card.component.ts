@@ -72,7 +72,6 @@ export class SubscriptionDetailCardComponent implements OnInit {
             },
             error: error => {
               this.serviceStatus = ServiceStatus.Error;
-              this.snackBarService.error('Could not get subscription detail. Please try again later.');
             }
           });
       }
