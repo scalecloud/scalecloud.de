@@ -3,6 +3,7 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
 import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
+import { ServiceStatus } from 'src/app/shared/services/service-status';
 
 declare const Stripe: any;
 
@@ -12,6 +13,8 @@ declare const Stripe: any;
   styleUrls: ['./stripe-payment-element.component.scss']
 })
 export class StripePaymentElementComponent {
+  ServiceStatus = ServiceStatus;
+  serviceStatus = ServiceStatus.Loading;
   stripeElement: any;
   elements: any;
   initStripePayment: InitStripePayment | undefined;
@@ -42,6 +45,15 @@ export class StripePaymentElementComponent {
       this.elements = this.stripeElement.elements(options);
       const paymentElement = this.elements.create('payment');
       paymentElement.mount('#payment-element');
+
+      paymentElement.on('ready', () => {
+        this.serviceStatus = ServiceStatus.Success;
+      });
+
+      paymentElement.on('error', (event: any) => {
+        this.serviceStatus = ServiceStatus.Error; // Update service status on error
+        this.snackBarService.error("Error loading Stripe: " + event.error.message);
+      });
 
       paymentElement.addEventListener('change', (event: { error: { message: string | null; }; }) => {
         const displayError = document.getElementById('card-errors');

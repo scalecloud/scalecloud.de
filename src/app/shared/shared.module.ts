@@ -16,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { LoadingFailedComponent } from './components/loading-failed/loading-failed.component';
 import { SnackBarProgressComponent } from './services/snackbar/snack-bar-progress/snack-bar-progress.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatSnackBarModule,
     MatCardModule,
     MatProgressBarModule,
+    NgxSkeletonLoaderModule,
   ],
   exports: [
     HeaderComponent,

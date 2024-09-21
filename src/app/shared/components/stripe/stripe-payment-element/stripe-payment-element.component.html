@@ -1,8 +1,51 @@
-<form id="payment-form">
-  <div id="payment-element">
-    <!-- Elements will create form elements here -->
-  </div>
-  <div id="error-message">
-    <!-- Display error message to your customers here -->
-  </div>
-</form>
+@if (serviceStatus === ServiceStatus.Loading) {
+<mat-card>
+  <mat-progress-bar mode="query"></mat-progress-bar>
+  <mat-card-subtitle>
+    <div class="skeleton-payent-methods">
+      <ngx-skeleton-loader count="3" appearance="circle" [theme]="{
+        width: '10rem',
+        height: '4rem',
+        'border-radius': '10px'
+      }">
+      </ngx-skeleton-loader>
+    </div>
+  </mat-card-subtitle>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>
+        <ngx-skeleton-loader [theme]="{height: '1rem', width: '20%'}" />
+      </mat-list-item>
+      <mat-list-item>
+        <ngx-skeleton-loader [theme]="{height: '2rem', width: '100%'}" />
+      </mat-list-item>
+      <mat-list-item>
+        <ngx-skeleton-loader [theme]="{height: '1rem', width: '20%'}" />
+      </mat-list-item>
+      <mat-list-item>
+        <ngx-skeleton-loader [theme]="{height: '2rem', width: '100%'}" />
+      </mat-list-item>
+      <mat-list-item>
+        <ngx-skeleton-loader [theme]="{height: '1rem', width: '20%'}" />
+      </mat-list-item>
+      <mat-list-item>
+        <ngx-skeleton-loader [theme]="{height: '2rem', width: '100%'}" />
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+}
+
+<div [ngClass]="{'hidden': serviceStatus !== ServiceStatus.Success}">
+  <form id="payment-form">
+    <div id="payment-element">
+      <!-- Elements will create form elements here -->
+    </div>
+    <div id="error-message">
+      <!-- Display error message to your customers here -->
+    </div>
+  </form>
+</div>
+@if ( serviceStatus === ServiceStatus.Error ) {
+<app-loading-failed></app-loading-failed>
+}
