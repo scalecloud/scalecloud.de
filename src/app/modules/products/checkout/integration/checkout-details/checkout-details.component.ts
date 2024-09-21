@@ -15,7 +15,6 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
   styleUrls: ['./checkout-details.component.scss']
 })
 export class CheckoutDetailsComponent implements OnInit {
-  @Input() hasPaymentMethod: boolean = false;
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
   @Output() startSubscriptionEvent = new EventEmitter<CheckoutCreateSubscriptionRequest>();
   reply: CheckoutProductReply | undefined;
@@ -37,7 +36,6 @@ export class CheckoutDetailsComponent implements OnInit {
   initCheckoutProduct(): void {
     this.serviceStatus = ServiceStatus.Loading;
     this.authService.waitForAuth().then(() => {
-      const quantity = this.getParamMapQuantity();
       const productID = this.getParamMapProductID();
       if (!productID) {
         this.logService.error("productID is undefined");
@@ -164,6 +162,10 @@ export class CheckoutDetailsComponent implements OnInit {
       storageUnit = this.reply.storageUnit;
     }
     return storageUnit;
+  }
+
+  hasPaymentMethod(): boolean {
+    return this.reply?.has_valid_payment_method;
   }
 
 }

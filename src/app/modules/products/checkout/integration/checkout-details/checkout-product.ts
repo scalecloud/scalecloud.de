@@ -10,4 +10,5 @@ export interface CheckoutProductReply {
     trialDays: number;
     pricePerMonth: number;
     currency: string;
+    has_valid_payment_method: boolean;
 }

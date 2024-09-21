@@ -54,10 +54,4 @@ export class CheckoutComponent {
     });
   }
 
-  hasValidPaymentMethod(hasPaymentMethod: boolean): void {
-    if (this.checkoutDetailsComponent) {
-      this.checkoutDetailsComponent.hasPaymentMethod = hasPaymentMethod;
-    }
-  }
-
 }

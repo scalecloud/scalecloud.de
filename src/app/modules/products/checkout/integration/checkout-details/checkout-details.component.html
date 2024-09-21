@@ -78,9 +78,9 @@
         {{getPricePerMonth()}}<span class="price-month">/month</span>
     </mat-card-subtitle>
     <mat-card-actions>
-        <button (click)="startSubscription()" mat-stroked-button
-                color="primary" [disabled]="!hasPaymentMethod">Subscribe<mat-icon>payment</mat-icon></button>
-      </mat-card-actions>
+        <button (click)="startSubscription()" mat-stroked-button color="primary"
+            [disabled]="!(hasPaymentMethod())">Subscribe<mat-icon>payment</mat-icon></button>
+    </mat-card-actions>
     }
 </mat-card>
 @if ( serviceStatus === ServiceStatus.Error ) {

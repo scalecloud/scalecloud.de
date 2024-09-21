@@ -12,7 +12,6 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
   styleUrls: ['./payment-overview.component.scss']
 })
 export class PaymentOverviewComponent implements OnInit {
-  @Output() hasValidPaymentMethod = new EventEmitter<boolean>();
   reply: PaymentMethodOverviewReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
@@ -35,7 +34,6 @@ export class PaymentOverviewComponent implements OnInit {
         .subscribe({
           next: paymentMethodOverviewReply => {
             this.reply = paymentMethodOverviewReply;
-            this.hasValidPaymentMethod.emit(this.hasPaymentMethod());
             this.serviceStatus = ServiceStatus.Success;
           },
           error: error => {
