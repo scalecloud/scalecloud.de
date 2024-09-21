@@ -40,7 +40,7 @@ export class GlobeComponent implements OnInit {
     let phi = 0;
     let canvas = <HTMLCanvasElement>document.getElementById("cobe");
 
-    const globe = createGlobe(canvas, {
+    createGlobe(canvas, {
       devicePixelRatio: 2,
       width: this.globeSize * 2,
       height: this.globeSize * 2,
