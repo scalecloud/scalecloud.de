@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { QuantityComponent } from '../../../subscription-card/quantity/quantity.component';
@@ -7,13 +7,14 @@ import { CheckoutProductRequest } from './checkout-product-request';
 import { CheckoutProductService } from './checkout-product.service';
 import { CurrencyPipe } from '@angular/common';
 import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-checkout-details',
   templateUrl: './checkout-details.component.html',
   styleUrls: ['./checkout-details.component.scss']
 })
-export class CheckoutDetailsComponent {
+export class CheckoutDetailsComponent implements OnInit  {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
   @Output() startSubscriptionEvent = new EventEmitter<CheckoutCreateSubscriptionRequest>();
   checkoutProductReply: CheckoutProductReply | undefined;
@@ -22,11 +23,18 @@ export class CheckoutDetailsComponent {
     private logService: LogService,
     private checkoutProductService: CheckoutProductService,
     private authService: AuthService,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private route: ActivatedRoute,
   ) { }
 
-  initCheckoutProduct(productID: string): void {
+  ngOnInit(): void {
+    this.initCheckoutProduct();
+  }
+
+  initCheckoutProduct(): void {
     this.authService.waitForAuth().then(() => {
+      const quantity = this.getParamMapQuantity();
+      const productID = this.getParamMapProductID();
       if (!productID) {
         this.logService.error("productID is undefined");
       }
@@ -44,13 +52,37 @@ export class CheckoutDetailsComponent {
     });
   }
 
+  getParamMapQuantity(): number {
+    let quantity = 1;
+    const queryParamMap = this.route.snapshot.queryParamMap;
+    if (queryParamMap.has('quantity')) {
+      quantity = Number(queryParamMap.get('quantity'));
+    } else {
+      this.logService.error("Could not get quantity from queryParamMap.");
+    }
+    return quantity;
+  }
+
+  getParamMapProductID(): string | undefined {
+    let productID: string | null | undefined = "";
+    const queryParamMap = this.route.snapshot.queryParamMap;
+    if (queryParamMap.has('productID')) {
+      productID = queryParamMap.get('productID');
+    } else {
+      this.logService.error("Could not get productID from queryParamMap.");
+    }
+    if (productID == null) {
+      this.logService.error("productID is null.");
+      productID = undefined;
+    }
+    return productID;
+  }
+
   startSubscription(): void {
     const checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest = {
       productID: this.checkoutProductReply.productID,
       quantity: this.getQuantity(),
     }
-
-    this.logService.info("Subscription started. Quantity: " + this.getQuantity());
     this.startSubscriptionEvent.emit(checkoutIntegrationRequest);
   }
 
@@ -65,12 +97,11 @@ export class CheckoutDetailsComponent {
   }
 
   getQuantity(): number {
+    let quantity = 0;
     if (this.quantityComponent) {
-      return this.quantityComponent?.getQuantity();
+      quantity = this.quantityComponent?.getQuantity();
     }
-    else {
-      return 1;
-    }
+    return quantity;
   }
 
   getPricePerMonth(): string {
