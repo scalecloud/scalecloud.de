@@ -19,16 +19,7 @@ export class BillingPortalService {
     ) { }
 
   getBillingPortal(): Observable<IBillingPortal> {
-    return this.http.get<IBillingPortal>(this.url, this.authService.getHttpOptions())
-    .pipe(
-      catchError(this.handleError<IBillingPortal>('getBillingPortal'))
-    );
+    return this.http.get<IBillingPortal>(this.url, this.authService.getHttpOptions());
   }
 
-  handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logService.error(error);
-      return of(result as T);
-    };
-  }
 }

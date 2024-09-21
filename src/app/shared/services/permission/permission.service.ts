@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { firstValueFrom, Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { LogService } from '../log/log.service';
 import { Role } from '../../roles/roles';
@@ -69,16 +68,7 @@ export class PermissionService {
   }
 
   getPermissions(request: PermissionRequest): Observable<PermissionReply> {
-    return this.http.post<PermissionReply>(this.urlPermission, request, this.authService.getHttpOptions())
-      .pipe(
-        catchError(this.handleError<PermissionReply>('getPermissions'))
-      );
+    return this.http.post<PermissionReply>(this.urlPermission, request, this.authService.getHttpOptions());
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logService.error(`${operation} failed: ${error.message}`);
-      return of(result as T);
-    };
-  }
 }

@@ -1,3 +1,7 @@
+export interface CheckoutProductRequest {
+    productID: string;
+}
+
 export interface CheckoutProductReply {
     productID: string;
     name: string;

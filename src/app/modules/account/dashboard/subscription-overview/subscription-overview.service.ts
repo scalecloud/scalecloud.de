@@ -16,21 +16,11 @@ export class SubscriptionOverviewService {
 
   constructor(
     private http: HttpClient,
-    private logService: LogService,
     private authService: AuthService
   ) { }
 
   getSubscriptionsOverview(): Observable<ISubscriptionOverview[]> {
-    return this.http.get<ISubscriptionOverview[]>(this.url, this.authService.getHttpOptions())
-      .pipe(
-        catchError(this.handleError<ISubscriptionOverview[]>('getSubscriptions', []))
-      );
+    return this.http.get<ISubscriptionOverview[]>(this.url, this.authService.getHttpOptions());
   }
 
-  handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logService.error(error);
-      return of(result as T);
-    };
-  }
 }

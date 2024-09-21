@@ -13,23 +13,11 @@ export class SubscriptionDetailCardServiceService {
   private url = 'http://localhost:15000/dashboard/subscription';
 
   constructor(private http: HttpClient,
-    private logService: LogService,
     private authService: AuthService,
   ) { }
 
   getSubscriptionDetail(id: string): Observable<SubscriptionDetailReply> {
     const url = `${this.url}/${id}`;
-    return this.http.get<SubscriptionDetailReply>(url, this.authService.getHttpOptions())
-      .pipe(
-        tap(_ => this.logService.info(`fetched subscription id=${id}`)),
-        catchError(this.handleError<SubscriptionDetailReply>(`getSubscription id=${id}`))
-      );
-  }
-
-  handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logService.error(error);
-      return of(result as T);
-    };
+    return this.http.get<SubscriptionDetailReply>(url, this.authService.getHttpOptions());
   }
 }

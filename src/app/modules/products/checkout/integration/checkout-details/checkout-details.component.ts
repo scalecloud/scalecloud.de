@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { QuantityComponent } from '../../../subscription-card/quantity/quantity.component';
-import { CheckoutProductReply } from './checkout-product-reply';
-import { CheckoutProductRequest } from './checkout-product-request';
+import { CheckoutProductReply, CheckoutProductRequest } from './checkout-product';
 import { CheckoutProductService } from './checkout-product.service';
 import { CurrencyPipe } from '@angular/common';
 import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';

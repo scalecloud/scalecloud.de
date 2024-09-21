@@ -19,17 +19,7 @@ export class CancelStateService {
 
   getCancelState(id: string): Observable<CancelStateReply> {
     const url = `${this.url}/${id}/cancel-state`;
-    return this.http.get<CancelStateReply>(url, this.authService.getHttpOptions())
-      .pipe(
-        tap(_ => this.logService.info(`fetched subscription id=${id}`)),
-        catchError(this.handleError<CancelStateReply>(`CancelStateReply id=${id}`))
-      );
+    return this.http.get<CancelStateReply>(url, this.authService.getHttpOptions());
   }
 
-  handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logService.error(error);
-      return of(result as T);
-    };
-  }
 }
