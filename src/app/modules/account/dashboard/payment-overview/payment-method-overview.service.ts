@@ -15,23 +15,10 @@ export class PaymentMethodOverviewService {
 
   constructor(
     private http: HttpClient,
-    private snackBarService: SnackBarService,
     private authService: AuthService,
-    private logService: LogService,
-    ) { }
+  ) { }
 
   getPaymentMethodOverview(): Observable<PaymentMethodOverviewReply> {
-    return this.http.post<PaymentMethodOverviewReply>(this.url, null, this.authService.getHttpOptions())
-      .pipe(
-        catchError(this.handleError<PaymentMethodOverviewReply>('getPaymentMethodOverview'))
-      );
-  }
-
-  handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logService.error(error);
-      this.snackBarService.error(`Could not get default payment method. Please try again.`);
-      return of(result as T);
-    };
+    return this.http.post<PaymentMethodOverviewReply>(this.url, null, this.authService.getHttpOptions());
   }
 }

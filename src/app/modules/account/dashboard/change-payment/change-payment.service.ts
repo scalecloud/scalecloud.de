@@ -15,23 +15,11 @@ export class ChangePaymentService {
 
   constructor(
     private http: HttpClient,
-    private snackBarService: SnackBarService,
     private authService: AuthService,
-    private logService: LogService,
     ) { }
 
   getChangePaymentSetupIntent(): Observable<ChangePaymentReply> {
-    return this.http.post<ChangePaymentReply>(this.url, null, this.authService.getHttpOptions())
-      .pipe(
-        catchError(this.handleError<ChangePaymentReply>('getChangePaymentSetupIntent'))
-      );
+    return this.http.post<ChangePaymentReply>(this.url, null, this.authService.getHttpOptions());
   }
 
-  handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logService.error(error);
-      this.snackBarService.error(`Could not change payment method. Please try again.`);
-      return of(result as T);
-    };
-  }
 }
