@@ -5,10 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { SeatsService } from '../seats/seats.service';
-import { ListInvoicesReply, ListInvoicesRequest } from './invoices';
+import { Invoice, ListInvoicesReply, ListInvoicesRequest } from './invoices';
 import { InvoicesService } from './invoices.service';
 
 @Component({
@@ -34,7 +32,6 @@ export class InvoicesComponent implements OnInit {
     private invoiceService: InvoicesService,
     private logService: LogService,
     private snackBarService: SnackBarService,
-    private returnUrlService: ReturnUrlService,
     private permissionService: PermissionService,
     private route: ActivatedRoute,
   ) { }
@@ -80,6 +77,7 @@ export class InvoicesComponent implements OnInit {
           .subscribe({
             next: reply => {
               this.reply = reply;
+              this.snackBarService.info('created:' + reply.invoices[0].created );
               this.serviceStatus = ServiceStatus.Success;
             },
             error: error => {
@@ -93,6 +91,21 @@ export class InvoicesComponent implements OnInit {
     });
   }
 
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.pageIndex = e.pageIndex;
+    this.getInvoices();
+  }
+
+  open(invoice: Invoice): void {
+    let url = invoice.hosted_invoice_url
+    if (url) {
+      window.open(url, '_blank');
+    }
+    else {
+      this.snackBarService.error('Could not download invoice, please contact support');
+    }
+  }
 
   getSubscriptionID(): string {
     return this.route.snapshot.paramMap.get('subscriptionID') || '';
