@@ -55,7 +55,7 @@ import { AddSeatComponent } from 'src/app/modules/account/dashboard/subscription
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SeatDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component';
 import { ConfirmOwnerTransferComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/confirm-owner-transfer/confirm-owner-transfer.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -65,6 +65,7 @@ import { ConfirmCancelSubscriptionComponent } from 'src/app/modules/account/dash
 import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/resume-subscription/confirm-resume-subscription/confirm-resume-subscription.component';
 import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/resume-subscription/resume-subscription.component';
 import { ServiceErrorInterceptorService } from 'src/app/shared/interceptors/service-error-interceptor.service';
+import { InvoicesComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/invoices/invoices.component';
 
 @NgModule({
     declarations: [
@@ -102,6 +103,7 @@ import { ServiceErrorInterceptorService } from 'src/app/shared/interceptors/serv
         SeatDetailComponent,
         ConfirmOwnerTransferComponent,
         BillingPortalComponent,
+        InvoicesComponent,
         CheckoutComponent,
         CheckoutDetailsComponent,
         StatusComponent,
@@ -132,9 +134,9 @@ import { ServiceErrorInterceptorService } from 'src/app/shared/interceptors/serv
         MatTooltipModule,
         MatPaginatorModule,
         NgxSkeletonLoaderModule,
-        ], providers: [
-            provideHttpClient(withInterceptorsFromDi()),
-            { provide: HTTP_INTERCEPTORS, useClass: ServiceErrorInterceptorService, multi: true }
-        ]
+    ], providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        { provide: HTTP_INTERCEPTORS, useClass: ServiceErrorInterceptorService, multi: true }
+    ]
 })
 export class DefaultModule { }
