@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { Invoice, ListInvoicesReply, ListInvoicesRequest } from './invoices';
+import { Invoice, InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from './invoices';
 import { InvoicesService } from './invoices.service';
 
 @Component({
@@ -77,7 +77,6 @@ export class InvoicesComponent implements OnInit {
           .subscribe({
             next: reply => {
               this.reply = reply;
-              this.snackBarService.info('created:' + reply.invoices[0].created );
               this.serviceStatus = ServiceStatus.Success;
             },
             error: error => {
@@ -109,6 +108,36 @@ export class InvoicesComponent implements OnInit {
 
   getSubscriptionID(): string {
     return this.route.snapshot.paramMap.get('subscriptionID') || '';
+  }
+
+  getStatusColor(status: InvoiceStatus): string {
+    switch (status) {
+      case InvoiceStatus.Paid:
+        return 'lightgreen';
+      case InvoiceStatus.Open:
+        return 'lightblue';
+      case InvoiceStatus.Draft:
+        return 'lightgray';
+      case InvoiceStatus.Uncollectible:
+        return 'red';
+      case InvoiceStatus.Void:
+        return 'lightgray';
+    }
+  }
+
+  getBorderColor(status: InvoiceStatus): string {
+    switch (status) {
+      case InvoiceStatus.Paid:
+        return 'darkgreen';
+      case InvoiceStatus.Open:
+        return 'darkblue';
+      case InvoiceStatus.Draft:
+        return 'darkgray';
+      case InvoiceStatus.Uncollectible:
+        return 'darkred';
+      case InvoiceStatus.Void:
+        return 'darkgray';
+    }
   }
 
 }

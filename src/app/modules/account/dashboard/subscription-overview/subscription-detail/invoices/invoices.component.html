@@ -26,7 +26,10 @@
                     {{invoice.created * 1000 | date: 'dd.MM.yyyy'}}
                     <span class="total-spacing">{{invoice.total | currency: invoice.currency.toUpperCase() : 'symbol' :
                         '1.0-0'}}</span>
-                    {{invoice.status}}
+                    <mat-chip class="status-chip"
+                        [ngStyle]="{'background-color': getStatusColor(invoice.status), 'border-color': getBorderColor(invoice.status)}">
+                        <b>{{invoice.status | titlecase}}</b>
+                    </mat-chip>
                 </button>
             </mat-list-item>
             }
