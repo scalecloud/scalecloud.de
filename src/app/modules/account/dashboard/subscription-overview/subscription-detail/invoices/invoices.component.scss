@@ -20,3 +20,28 @@ mat-card-title {
     border-width: 1px;
     border-style: solid;
 }
+
+.status-draft {
+    background-color: lightgray !important;
+    border-color: darkgray !important;
+}
+
+.status-open {
+    background-color: lightblue !important;
+    border-color: darkblue !important;
+}
+
+.status-paid {
+    background-color: lightgreen !important;
+    border-color: darkgreen !important;
+}
+
+.status-uncollectible {
+    background-color: red !important;
+    border-color: darkred !important;
+}
+
+.status-void {
+    background-color: lightgray !important;
+    border-color: darkgray !important;
+}

@@ -16,6 +16,7 @@ import { InvoicesService } from './invoices.service';
 })
 export class InvoicesComponent implements OnInit {
   reply: ListInvoicesReply | null;
+  InvoiceStatus = InvoiceStatus; 
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
@@ -108,36 +109,6 @@ export class InvoicesComponent implements OnInit {
 
   getSubscriptionID(): string {
     return this.route.snapshot.paramMap.get('subscriptionID') || '';
-  }
-
-  getStatusColor(status: InvoiceStatus): string {
-    switch (status) {
-      case InvoiceStatus.Paid:
-        return 'lightgreen';
-      case InvoiceStatus.Open:
-        return 'lightblue';
-      case InvoiceStatus.Draft:
-        return 'lightgray';
-      case InvoiceStatus.Uncollectible:
-        return 'red';
-      case InvoiceStatus.Void:
-        return 'lightgray';
-    }
-  }
-
-  getBorderColor(status: InvoiceStatus): string {
-    switch (status) {
-      case InvoiceStatus.Paid:
-        return 'darkgreen';
-      case InvoiceStatus.Open:
-        return 'darkblue';
-      case InvoiceStatus.Draft:
-        return 'darkgray';
-      case InvoiceStatus.Uncollectible:
-        return 'darkred';
-      case InvoiceStatus.Void:
-        return 'darkgray';
-    }
   }
 
 }
