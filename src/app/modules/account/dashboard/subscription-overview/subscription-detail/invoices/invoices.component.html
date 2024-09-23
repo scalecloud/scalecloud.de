@@ -23,8 +23,11 @@
             @for (invoice of reply.invoices; track $index) {
             <mat-list-item>
                 <button class="open-button" mat-button (click)="open(invoice)" matTooltip="Download invoice">
-                    {{invoice.created * 1000 | date: 'dd.MM.yyyy'}} {{invoice.total | currency: invoice.currency}} | {{invoice.status}}
-                  </button>
+                    {{invoice.created * 1000 | date: 'dd.MM.yyyy'}}
+                    <span class="total-spacing">{{invoice.total | currency: invoice.currency.toUpperCase() : 'symbol' :
+                        '1.0-0'}}</span>
+                    {{invoice.status}}
+                </button>
             </mat-list-item>
             }
         </mat-list>
