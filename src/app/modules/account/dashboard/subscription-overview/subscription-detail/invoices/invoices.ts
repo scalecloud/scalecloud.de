@@ -10,7 +10,6 @@ export interface Invoice {
 
 export interface ListInvoicesRequest {
     subscriptionID: string;
-    pageIndex: number;
     pageSize: number;
     startingAfter?: string;
     endingBefore?: string;
@@ -19,7 +18,6 @@ export interface ListInvoicesRequest {
 export interface ListInvoicesReply {
     subscriptionID: string;
     invoices: Invoice[];
-    pageIndex: number;
     totalResults: number;
 }
 

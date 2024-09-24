@@ -41,7 +41,7 @@
         </mat-list>
         @if( reply.totalResults > pageSize ) {
         <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="reply.totalResults" [pageSize]="pageSize"
-            [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize" [pageIndex]="reply.pageIndex"
+            [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize" [pageIndex]="pageIndex"
             aria-label="Select page">
         </mat-paginator>
         }

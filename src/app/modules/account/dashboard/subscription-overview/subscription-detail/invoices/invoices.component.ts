@@ -71,7 +71,6 @@ export class InvoicesComponent implements OnInit {
       } else {
         let request: ListInvoicesRequest = {
           subscriptionID: subscriptionID,
-          pageIndex: this.pageIndex,
           pageSize: this.pageSize,
           startingAfter: startingAfter,
           endingBefore: endingBefore
