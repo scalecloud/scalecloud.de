@@ -62,7 +62,7 @@ export class InvoicesComponent implements OnInit {
     }
   }
 
-  getInvoices(): void {
+  getInvoices(startingAfter?: string, endingBefore?: string): void {
     this.serviceStatus = ServiceStatus.Loading;
     this.authService.waitForAuth().then(() => {
       const subscriptionID = this.getSubscriptionID();
@@ -72,7 +72,9 @@ export class InvoicesComponent implements OnInit {
         let request: ListInvoicesRequest = {
           subscriptionID: subscriptionID,
           pageIndex: this.pageIndex,
-          pageSize: this.pageSize
+          pageSize: this.pageSize,
+          startingAfter: startingAfter,
+          endingBefore: endingBefore
         };
         this.invoiceService.getInvoices(request)
           .subscribe({
@@ -93,8 +95,18 @@ export class InvoicesComponent implements OnInit {
 
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
+    const previousPageIndex = this.pageIndex;
     this.pageIndex = e.pageIndex;
-    this.getInvoices();
+  
+    if (this.pageIndex > previousPageIndex) {
+      // Navigating to the right
+      const lastInvoice = this.reply?.invoices[this.reply.invoices.length - 1];
+      this.getInvoices(lastInvoice?.invoiceID, null);
+    } else if (this.pageIndex < previousPageIndex) {
+      // Navigating to the left
+      const firstInvoice = this.reply?.invoices[0];
+      this.getInvoices(null, firstInvoice?.invoiceID);
+    }
   }
 
   open(invoice: Invoice): void {

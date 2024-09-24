@@ -12,6 +12,8 @@ export interface ListInvoicesRequest {
     subscriptionID: string;
     pageIndex: number;
     pageSize: number;
+    startingAfter?: string;
+    endingBefore?: string;
 }
 
 export interface ListInvoicesReply {

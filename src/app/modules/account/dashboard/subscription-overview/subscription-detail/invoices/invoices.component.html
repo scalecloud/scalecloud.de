@@ -24,7 +24,7 @@
             <mat-list-item>
                 <button class="open-button" mat-button (click)="open(invoice)" matTooltip="Download invoice">
                     {{invoice.created * 1000 | date: 'dd.MM.yyyy'}}
-                    <span class="total-spacing">{{invoice.total | currency: invoice.currency.toUpperCase() : 'symbol' :
+                    <span class="total-spacing">{{invoice.total / 100 | currency: invoice.currency.toUpperCase() : 'symbol' :
                         '1.0-0'}}</span>
                      <mat-chip class="status-chip" [ngClass]="{
                         'status-draft': invoice.status === InvoiceStatus.Draft,
