@@ -18,34 +18,35 @@
         <mat-icon>receipt</mat-icon> Invoices
     </mat-card-title>
     <mat-divider></mat-divider>
-    <mat-card-content>
-        <mat-list>
-            @for (invoice of reply.invoices; track $index) {
-            <mat-list-item>
-                <button class="open-button" mat-button (click)="open(invoice)" matTooltip="Download invoice">
-                    {{invoice.created * 1000 | date: 'dd.MM.yyyy'}}
-                    <span class="total-spacing">{{invoice.total / 100 | currency: invoice.currency.toUpperCase() : 'symbol' :
-                        '1.0-0'}}</span>
-                     <mat-chip class="status-chip" [ngClass]="{
-                        'status-draft': invoice.status === InvoiceStatus.Draft,
-                        'status-open': invoice.status === InvoiceStatus.Open,
-                        'status-paid': invoice.status === InvoiceStatus.Paid,
-                        'status-uncollectible': invoice.status === InvoiceStatus.Uncollectible,
-                        'status-void': invoice.status === InvoiceStatus.Void
-                      }">
-                        <b>{{invoice.status | titlecase}}</b>
-                      </mat-chip>
-                </button>
-            </mat-list-item>
-            }
-        </mat-list>
-        @if( reply.totalResults > pageSize ) {
-        <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="reply.totalResults" [pageSize]="pageSize"
-            [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize" [pageIndex]="pageIndex"
-            aria-label="Select page">
-        </mat-paginator>
+    <div class="invoice-list">
+        @for (invoice of reply.invoices; track $index) {
+        <div class="invoice-row" (click)="open(invoice)">
+            <div class="invoice-column first-column">
+                {{invoice.created * 1000 | date: 'dd.MM.yyyy'}}
+            </div>
+            <div class="invoice-column total-spacing">
+                {{invoice.total / 100 | currency: invoice.currency.toUpperCase() : 'symbol' : '1.0-0'}}
+            </div>
+            <div class="invoice-column last-column">
+                <mat-chip class="status-chip" [ngClass]="{
+                            'status-draft': invoice.status === InvoiceStatus.Draft,
+                            'status-open': invoice.status === InvoiceStatus.Open,
+                            'status-paid': invoice.status === InvoiceStatus.Paid,
+                            'status-uncollectible': invoice.status === InvoiceStatus.Uncollectible,
+                            'status-void': invoice.status === InvoiceStatus.Void
+                          }">
+                    <b>{{invoice.status | titlecase}}</b>
+                </mat-chip>
+            </div>
+        </div>
         }
-    </mat-card-content>
+    </div>
+    @if( reply.totalResults > pageSize ) {
+    <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="reply.totalResults" [pageSize]="pageSize"
+        [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize" [pageIndex]="pageIndex"
+        aria-label="Select page">
+    </mat-paginator>
+    }
     }
 </mat-card>
 @if ( serviceStatus === ServiceStatus.Error ) {
