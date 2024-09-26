@@ -84,6 +84,7 @@
         </mat-list>
     </mat-card-content>
     }
+    <app-cancel-state class="actions" (reloadSubscriptionDetailEvent)="reloadSubscriptionDetail()"></app-cancel-state>
 </mat-card>
 @if ( serviceStatus === ServiceStatus.Error ) {
 <app-loading-failed></app-loading-failed>

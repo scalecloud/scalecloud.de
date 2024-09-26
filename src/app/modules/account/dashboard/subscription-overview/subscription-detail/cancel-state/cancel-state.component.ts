@@ -52,7 +52,7 @@ export class CancelStateComponent implements OnInit {
     }
 
     try {
-      const hasPermission = await this.permissionService.isAdministrator(subscriptionID);
+      const hasPermission = await this.permissionService.isBilling(subscriptionID);
       if (hasPermission) {
         this.getCancelState();
       } else {

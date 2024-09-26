@@ -1,5 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { SubscriptionDetailCardComponent } from './subscription-detail-card/subscription-detail-card.component';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-subscription-detail',
@@ -7,13 +6,5 @@ import { SubscriptionDetailCardComponent } from './subscription-detail-card/subs
   styleUrls: ['./subscription-detail.component.scss']
 })
 export class SubscriptionDetailComponent {
-
-  @ViewChild(SubscriptionDetailCardComponent) subscriptionDetailCard: SubscriptionDetailCardComponent;
-
-  reloadSubscriptionDetailEvent() {
-    if (this.subscriptionDetailCard) {
-      this.subscriptionDetailCard.reloadSubscriptionDetail();
-    }
-  }
 
 }
