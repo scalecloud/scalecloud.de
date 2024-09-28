@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CheckoutCreateSubscriptionReply } from '../../integration/checkout-create-subscription';
+import { CheckoutCreateSubscriptionReply } from '../../checkout-create-subscription';
 
 @Component({
   selector: 'app-trailing',

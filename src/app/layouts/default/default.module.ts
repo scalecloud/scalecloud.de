@@ -29,8 +29,8 @@ import { PasswordStrengthComponent } from 'src/app/modules/account/register/pass
 import { PasswordMatchComponent } from 'src/app/modules/account/register/password-match/password-match.component';
 import { TermsComponent } from 'src/app/modules/footer/terms/terms.component';
 import { QuantityComponent } from 'src/app/modules/products/subscription-card/quantity/quantity.component';
-import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/integration/checkout-details/checkout-details.component';
-import { CheckoutComponent } from 'src/app/modules/products/checkout/integration/checkout.component';
+import { CheckoutDetailsComponent } from 'src/app/modules/products/checkout/checkout-details/checkout-details.component';
+import { CheckoutComponent } from 'src/app/modules/products/checkout/checkout.component';
 import { StatusComponent } from 'src/app/modules/products/checkout/status/status.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

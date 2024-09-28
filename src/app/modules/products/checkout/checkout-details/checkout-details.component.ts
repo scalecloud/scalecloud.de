@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { QuantityComponent } from '../../../subscription-card/quantity/quantity.component';
+import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
 import { CheckoutProductReply, CheckoutProductRequest } from './checkout-product';
 import { CheckoutProductService } from './checkout-product.service';
 import { CurrencyPipe } from '@angular/common';

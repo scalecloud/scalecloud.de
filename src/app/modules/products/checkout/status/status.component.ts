@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { CheckoutCreateSubscriptionReply } from '../integration/checkout-create-subscription';
+import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription';
 
 
 @Component({

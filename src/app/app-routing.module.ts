@@ -13,7 +13,7 @@ import { PrivacyComponent } from './modules/footer/privacy/privacy.component';
 import { TermsComponent } from './modules/footer/terms/terms.component';
 import { HomeComponent } from './modules/main/home/home.component';
 import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
-import { CheckoutComponent } from './modules/products/checkout/integration/checkout.component';
+import { CheckoutComponent } from './modules/products/checkout/checkout.component';
 import { StatusComponent } from './modules/products/checkout/status/status.component';
 import { NextcloudComponent } from './modules/products/nextcloud/nextcloud.component';
 import { SynologyComponent } from './modules/products/synology/synology.component';
