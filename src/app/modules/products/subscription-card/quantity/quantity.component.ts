@@ -15,6 +15,20 @@ export class QuantityComponent {
     private snackBarService: SnackBarService,
   ) { }
 
+  increment(): void {
+    let currentValue = this.quantityValidator.value;
+    if (currentValue < 999) {
+      this.quantityValidator.setValue(currentValue + 1);
+    }
+  }
+  
+  decrement(): void {
+    let currentValue = this.quantityValidator.value;
+    if (currentValue > 1) {
+      this.quantityValidator.setValue(currentValue - 1);
+    }
+  }
+
   formatLabel(value: number) {
     return value;
   }

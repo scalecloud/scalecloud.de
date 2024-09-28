@@ -1,2 +1,6 @@
-<input matInput type="number" min="1" max="999" required [formControl]="quantityValidator">
-<div *ngIf="checkValidators()"></div>
+<div class="quantity-container">
+    <button type="button" (click)="decrement()" [disabled]="quantityValidator.value <= 1">-</button>
+    <input matInput type="number" min="1" max="999" required [formControl]="quantityValidator">
+    <button type="button" (click)="increment()" [disabled]="quantityValidator.value >= 999">+</button>
+  </div>
+  <div *ngIf="checkValidators()"></div>
