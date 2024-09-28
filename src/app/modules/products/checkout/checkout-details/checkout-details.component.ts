@@ -39,8 +39,7 @@ export class CheckoutDetailsComponent implements OnInit {
       const productID = this.getParamMapProductID();
       if (!productID) {
         this.logService.error("productID is undefined");
-      }
-      else {
+      } else {
         let checkoutProductRequest: CheckoutProductRequest = {
           productID: productID
         };
@@ -61,16 +60,7 @@ export class CheckoutDetailsComponent implements OnInit {
     });
   }
 
-  getParamMapQuantity(): number {
-    let quantity = 1;
-    const queryParamMap = this.route.snapshot.queryParamMap;
-    if (queryParamMap.has('quantity')) {
-      quantity = Number(queryParamMap.get('quantity'));
-    } else {
-      this.logService.error("Could not get quantity from queryParamMap.");
-    }
-    return quantity;
-  }
+ 
 
   getParamMapProductID(): string | undefined {
     let productID: string | null | undefined = "";
@@ -93,12 +83,6 @@ export class CheckoutDetailsComponent implements OnInit {
       quantity: this.getQuantity(),
     }
     this.startSubscriptionEvent.emit(checkoutIntegrationRequest);
-  }
-
-  setQuantity(quantity: number): void {
-    if (this.quantityComponent) {
-      this.quantityComponent.setQuantity(quantity);
-    }
   }
 
   getIsTrialIncluded(): boolean {

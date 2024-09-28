@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
@@ -7,13 +8,28 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
   templateUrl: './quantity.component.html',
   styleUrls: ['./quantity.component.scss']
 })
-export class QuantityComponent {
+export class QuantityComponent implements OnInit {
 
   quantityValidator = new UntypedFormControl(1, [Validators.required, Validators.min(1)]);
 
   constructor(
     private snackBarService: SnackBarService,
+    private route: ActivatedRoute,
   ) { }
+
+
+  ngOnInit(): void {
+    this.setQuantity(this.getParamMapQuantity());
+  }
+
+  getParamMapQuantity(): number {
+    let quantity = 1;
+    const queryParamMap = this.route.snapshot.queryParamMap;
+    if (queryParamMap.has('quantity')) {
+      quantity = Number(queryParamMap.get('quantity'));
+    }
+    return quantity;
+  }
 
   increment(): void {
     let currentValue = this.quantityValidator.value;
