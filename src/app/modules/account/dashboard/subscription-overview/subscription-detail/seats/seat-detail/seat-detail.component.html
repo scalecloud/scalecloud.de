@@ -7,8 +7,14 @@
             @if ( loading ) {
             <ngx-skeleton-loader [theme]="{height: '1.5rem', width: '80%'}" />
             } @else {
-            <div class="flex-container">
-                  <mat-icon>person</mat-icon>{{seatDetailReply?.selectedSeat?.email}}
+            <div class="center-icon">
+                  <mat-icon *ngIf="seatDetailReply?.selectedSeat?.emailVerified" class="verified-icon"
+                        matTooltip="E-Mail is verified">check_circle</mat-icon>
+                  <mat-icon *ngIf="!seatDetailReply?.selectedSeat?.emailVerified" class="not-verified-icon"
+                        matTooltip="E-Mail is not verified">mail</mat-icon>
+                  <span matTooltip="{{ seatDetailReply?.selectedSeat?.email }}">
+                        {{ seatDetailReply?.selectedSeat?.email }}
+                  </span>
             </div>
             }
       </mat-card-subtitle>

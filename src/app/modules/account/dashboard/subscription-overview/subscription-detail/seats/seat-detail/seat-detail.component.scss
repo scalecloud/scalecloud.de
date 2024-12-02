@@ -22,3 +22,19 @@ mat-card-subtitle {
 .flex-item {
     padding: 0.5rem;
 }
+
+.center-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.verified-icon {
+    color: green;
+    margin-right: 0.5rem;
+}
+
+.not-verified-icon {
+    color: red;
+    margin-right: 0.5rem;
+}
