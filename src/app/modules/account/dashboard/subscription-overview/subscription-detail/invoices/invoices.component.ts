@@ -16,7 +16,7 @@ import { InvoicesService } from './invoices.service';
 })
 export class InvoicesComponent implements OnInit {
   reply: ListInvoicesReply | null;
-  InvoiceStatus = InvoiceStatus; 
+  InvoiceStatus = InvoiceStatus;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
@@ -96,7 +96,7 @@ export class InvoicesComponent implements OnInit {
     this.pageEvent = e;
     const previousPageIndex = this.pageIndex;
     this.pageIndex = e.pageIndex;
-  
+
     if (this.pageIndex > previousPageIndex) {
       // Navigating to the right
       const lastInvoice = this.reply?.invoices[this.reply.invoices.length - 1];
@@ -105,6 +105,12 @@ export class InvoicesComponent implements OnInit {
       // Navigating to the left
       const firstInvoice = this.reply?.invoices[0];
       this.getInvoices(null, firstInvoice?.invoiceID);
+    }
+  }
+
+  handleKeyDown(event: KeyboardEvent, invoice: any) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      this.open(invoice);
     }
   }
 

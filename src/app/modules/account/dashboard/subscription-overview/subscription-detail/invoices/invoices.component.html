@@ -20,7 +20,7 @@
     <mat-divider></mat-divider>
     <div class="invoice-list">
         @for (invoice of reply.invoices; track $index) {
-        <div class="invoice-row" (click)="open(invoice)">
+        <div class="invoice-row" (click)="open(invoice)" (keydown)="handleKeyDown($event, invoice)" tabindex="0">
             <div class="invoice-column first-column">
                 {{invoice.created * 1000 | date: 'dd.MM.yyyy'}}
             </div>
