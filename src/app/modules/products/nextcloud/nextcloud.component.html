@@ -41,6 +41,7 @@
     <div class="flex-item" *ngFor="let nextcloudProduct of nextcloudProducts">
         <app-subscription-card [nextcloudProduct]="nextcloudProduct"></app-subscription-card>
     </div>
+    <p class="disclaimer">*Each account is eligible for a single trial user per product category. We reserve the right to limit the availability of trials.</p>
 </div>
 }
 @if ( serviceStatus === ServiceStatus.Error ) {

@@ -23,11 +23,13 @@
                     <ng-container *ngIf="getIsTrialIncluded(); then trial; else noTrial">
                     </ng-container>
                     <ng-template #trial>
-                        {{getTrialDays()}}&nbsp;days trial
+                        {{getTrialDays()}}&nbsp;days trial*
                     </ng-template>
                     <ng-template #noTrial>
                         <div class="no-trial">
-                            {{getTrialDays()}}&nbsp;days trial
+                            <s>
+                                {{getTrialDays()}}&nbsp;days trial*
+                            </s>
                         </div>
                     </ng-template>
                 </div>
