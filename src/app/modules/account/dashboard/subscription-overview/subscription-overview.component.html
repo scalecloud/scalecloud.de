@@ -1,6 +1,6 @@
 <div class="flex-container">
     <div class="flex-item">
-        <mat-card routerLink="/dashboard/subscription/{{getID()}}">
+        <mat-card>
             <mat-card-title>
                 {{getProductName()}}
             </mat-card-title>
@@ -8,24 +8,22 @@
             <mat-divider></mat-divider>
             <mat-card-content>
                 <mat-list>
-                    <mat-list-item>
+                    <mat-list-item matTooltip="ID of the subscription.">
                         <div class="icon-text">
                             <mat-icon>numbers</mat-icon>
                             {{getID()}}
                         </div>
                     </mat-list-item>
-                    <mat-list-item>
+                    <mat-list-item matTooltip="Total amount of storage available in the subscription.">
                         <div class="icon-text">
                             <mat-icon>cloud</mat-icon>
-                            {{getStorageAmount()}} TB
+                            Storage: {{getTotalStorageAmount()}} TB
                         </div>
                     </mat-list-item>
-                    <mat-list-item>
+                    <mat-list-item matTooltip="Total amount of users available in the subscription.">
                         <div class="icon-text">
-                            <mat-icon>
-                                person
-                            </mat-icon>
-                            {{getUserCount()}}
+                            <mat-icon>person</mat-icon>
+                            Users: {{getUserCount()}}
                         </div>
                     </mat-list-item>
                 </mat-list>

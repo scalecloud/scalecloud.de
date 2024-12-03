@@ -26,6 +26,10 @@ export class SubscriptionOverviewComponent {
     return this.subscriptionOverview?.storageAmount || 0;
   }
 
+  getTotalStorageAmount(): number {
+    return this.getStorageAmount() * this.getUserCount();
+  }
+
   getUserCount(): number {
     return this.subscriptionOverview?.userCount || 0;
   }
