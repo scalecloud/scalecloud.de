@@ -117,7 +117,8 @@ export class InvoicesComponent implements OnInit {
   open(invoice: Invoice): void {
     let url = invoice.invoice_pdf
     if (url) {
-      window.open(url, '_blank');
+      this.snackBarService.infoDuration('Downloading invoice', 2);
+      window.open(url, '_self');
     }
     else {
       this.snackBarService.error('Could not download invoice, please contact support');
