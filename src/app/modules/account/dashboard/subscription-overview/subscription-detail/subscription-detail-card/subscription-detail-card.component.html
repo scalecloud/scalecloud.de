@@ -71,10 +71,20 @@
                     </div>
                 </mat-list-item>
             </div>
-            <div *ngIf="isCancelAtPeriodEnd()">
-                <mat-list-item matTooltip="The date when the subscription will be canceled.">
+            <div *ngIf="!isCancelAtPeriodEnd()">
+                <mat-list-item matTooltip="The date when the subscription will be automatically renewed.">
                     <div class="icon-text">
                         <mat-icon>
+                            autorenew
+                        </mat-icon>
+                        Renewal: {{getCurrentPeriodEnd() * 1000 | date }}
+                    </div>
+                </mat-list-item>
+            </div>
+            <div *ngIf="isCancelAtPeriodEnd()">
+                <mat-list-item matTooltip="The date when the subscription will end.">
+                    <div class="icon-text">
+                        <mat-icon class="termination-date">
                             event_busy
                         </mat-icon>
                         Termination date: {{getCancelAt() * 1000 | date }}

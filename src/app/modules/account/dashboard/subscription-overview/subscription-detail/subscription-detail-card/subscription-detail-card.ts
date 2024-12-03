@@ -11,4 +11,5 @@ export interface SubscriptionDetailReply {
     cancel_at: number;
     status: string;
     trial_end: number;
+    current_period_end: number;
 }

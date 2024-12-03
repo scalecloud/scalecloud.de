@@ -141,4 +141,8 @@ export class SubscriptionDetailCardComponent implements OnInit {
     return this.reply?.cancel_at || 0;
   }
 
+  getCurrentPeriodEnd(): number {
+    return this.reply?.current_period_end || 0;
+  }
+
 }
