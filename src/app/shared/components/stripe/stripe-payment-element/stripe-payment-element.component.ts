@@ -43,8 +43,22 @@ export class StripePaymentElementComponent {
       };
 
       this.elements = this.stripeElement.elements(options);
-      const paymentElement = this.elements.create('payment');
-      paymentElement.mount('#payment-element');
+      const addressElement = this.elements.create('payment');
+      addressElement.mount('#payment-element');
+
+      const paymentElement = this.elements.create("address", {
+        mode: "billing",
+        blockPoBox: true,
+        fields: {
+          phone: 'always',
+        },
+        validation: {
+          phone: {
+            required: 'always',
+          },
+        },
+      });
+      paymentElement.mount('#address-element');
 
       paymentElement.on('ready', () => {
         this.serviceStatus = ServiceStatus.Success;
