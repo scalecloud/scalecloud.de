@@ -16,8 +16,4 @@ export class PaymentChangedSucceededComponent {
     this.returnUrlService.openReturnURL("/dashboard");
   }
 
-  getReturnUrlName(): string {
-    return this.returnUrlService.getReturnUrlButtonName("Return");
-  }
-
 }

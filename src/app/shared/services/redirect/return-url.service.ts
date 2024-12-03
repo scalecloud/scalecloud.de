@@ -53,21 +53,10 @@ export class ReturnUrlService {
       const queryString = new URLSearchParams(queryParams as any).toString();
       continueUrl = domain + specifiedRoute + "?" + queryString;
     }
-    if( continueUrl === this.baseURL ) {
+    if (continueUrl === this.baseURL) {
       this.logService.error('getSpecifiedUrlWithReturnUrl failed: ' + continueUrl);
     }
     return continueUrl;
-  }
-
-  public getReturnUrlButtonName(defaultButtonName: string): string {
-    const returnUrl = this.getReturnUrlDecoded();
-    if (returnUrl) {
-      const url = new URL(returnUrl);
-      const pathSegments = url.pathname.split('/');
-      const lastSegment = pathSegments[pathSegments.length - 1];
-      defaultButtonName = lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).toLowerCase();
-    }
-    return defaultButtonName;
   }
 
   public getReturnUrlDecoded(): string {
@@ -82,7 +71,7 @@ export class ReturnUrlService {
         continueUrl = domain + decodedReturnUrl;
       }
     }
-    if( continueUrl === this.baseURL ) {
+    if (continueUrl === this.baseURL) {
       this.logService.error('getReturnUrlDecoded failed: ' + continueUrl);
     }
     return continueUrl;
