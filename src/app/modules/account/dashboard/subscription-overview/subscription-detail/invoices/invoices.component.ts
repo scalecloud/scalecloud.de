@@ -115,7 +115,7 @@ export class InvoicesComponent implements OnInit {
   }
 
   open(invoice: Invoice): void {
-    let url = invoice.hosted_invoice_url
+    let url = invoice.invoice_pdf
     if (url) {
       window.open(url, '_blank');
     }

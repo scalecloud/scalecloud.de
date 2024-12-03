@@ -5,7 +5,7 @@ export interface Invoice {
     total: number;
     currency: string;
     status: InvoiceStatus;
-    hosted_invoice_url: string;
+    invoice_pdf: string;
 }
 
 export interface ListInvoicesRequest {
