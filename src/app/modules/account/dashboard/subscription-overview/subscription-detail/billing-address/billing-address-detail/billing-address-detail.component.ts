@@ -115,7 +115,7 @@ export class BillingAddressDetailComponent {
     return this.reply?.address?.state || '';
   }
 
-  getCounty(): string {
+  getCountyCode(): string {
     return this.reply?.address?.country || '';
   }
 

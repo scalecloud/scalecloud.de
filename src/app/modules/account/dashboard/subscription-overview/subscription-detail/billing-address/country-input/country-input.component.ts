@@ -11,7 +11,7 @@ import { _filter, countriesDE } from './countries';
 })
 export class CountryInputComponent implements OnInit {
 
-  @Input() initialCountry: string = '';
+  @Input() initialCountryCode: string = '';
   @Input() disableInput: boolean = true;
 
   private _formBuilder = inject(FormBuilder);
@@ -22,8 +22,8 @@ export class CountryInputComponent implements OnInit {
   selectedCountry: { code: string, name: string } | null = null;
 
   ngOnInit() {
-    if (this.initialCountry) {
-      const initialCountryObj = countriesDE.find(country => country.code === this.initialCountry);
+    if (this.initialCountryCode) {
+      const initialCountryObj = countriesDE.find(country => country.code === this.initialCountryCode);
       if (initialCountryObj) {
         this.countryControl.setValue(initialCountryObj.name);
         this.selectedCountry = initialCountryObj;

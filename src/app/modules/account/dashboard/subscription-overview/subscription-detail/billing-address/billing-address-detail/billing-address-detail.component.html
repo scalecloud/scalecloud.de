@@ -46,7 +46,7 @@
                     <mat-label>Name</mat-label>
                     <input matInput [disabled]="!editMode" [value]="getName()">
                 </mat-form-field>
-                <app-country-input [initialCountry]="getCounty()" [disableInput]="!editMode"></app-country-input>
+                <app-country-input [initialCountryCode]="getCountyCode()" [disableInput]="!editMode"></app-country-input>
                 <mat-form-field class="full-width">
                     <mat-label>Address line 1</mat-label>
                     <input matInput [disabled]="!editMode" [value]="getLine1()">
