@@ -2,7 +2,7 @@
     @if (serviceStatus === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
     <mat-card-title>
-        <mat-icon>receipt</mat-icon> Invoices
+        <mat-icon class="title-icon">receipt</mat-icon>Invoices
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
@@ -15,7 +15,7 @@
     }
     @if (serviceStatus === ServiceStatus.Success) {
     <mat-card-title>
-        <mat-icon>receipt</mat-icon> Invoices
+        <mat-icon class="title-icon">receipt</mat-icon>Invoices
     </mat-card-title>
     <mat-divider></mat-divider>
     <div class="invoice-list">

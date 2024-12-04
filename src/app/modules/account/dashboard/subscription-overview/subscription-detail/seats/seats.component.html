@@ -2,7 +2,7 @@
     @if (serviceStatus === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
     <mat-card-title>
-        <mat-icon>manage_accounts</mat-icon> Users
+        <mat-icon class="title-icon">manage_accounts</mat-icon>Users
     </mat-card-title>
     <mat-card-subtitle>
         <ngx-skeleton-loader [theme]="{height: '1rem', width: '80%'}" />
@@ -22,7 +22,7 @@
 
     @if (serviceStatus === ServiceStatus.Success) {
     <mat-card-title>
-        <mat-icon>manage_accounts</mat-icon> Users
+        <mat-icon class="title-icon">manage_accounts</mat-icon>Users
     </mat-card-title>
     <mat-card-subtitle>
         Used {{getUsedSeats()}}/{{getMaxSeats()}}

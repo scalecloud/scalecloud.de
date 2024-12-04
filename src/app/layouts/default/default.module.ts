@@ -66,6 +66,7 @@ import { ConfirmResumeSubscriptionComponent } from 'src/app/modules/account/dash
 import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/cancel-state/resume-subscription/resume-subscription.component';
 import { ServiceErrorInterceptorService } from 'src/app/shared/interceptors/service-error-interceptor.service';
 import { InvoicesComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/invoices/invoices.component';
+import { BillingAddressDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component';
 
 @NgModule({
     declarations: [
@@ -104,6 +105,7 @@ import { InvoicesComponent } from 'src/app/modules/account/dashboard/subscriptio
         ConfirmOwnerTransferComponent,
         BillingPortalComponent,
         InvoicesComponent,
+        BillingAddressDetailComponent,
         CheckoutComponent,
         CheckoutDetailsComponent,
         StatusComponent,
