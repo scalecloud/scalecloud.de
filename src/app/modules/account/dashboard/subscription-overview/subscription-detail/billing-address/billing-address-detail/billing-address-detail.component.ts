@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-billing-address-detail',
@@ -21,6 +22,8 @@ export class BillingAddressDetailComponent {
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
   editMode = false;
+
+  countryControl = new FormControl();
 
   constructor(
     public authService: AuthService,

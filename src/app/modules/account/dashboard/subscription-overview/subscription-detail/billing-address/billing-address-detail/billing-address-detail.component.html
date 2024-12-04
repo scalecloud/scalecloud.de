@@ -41,66 +41,48 @@
         </mat-card-title>
         <mat-divider></mat-divider>
         <mat-card-content>
-            <mat-list>
-                <mat-list-item matTooltip="Name">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">person</mat-icon>
-                        {{ getName() }}
-                    </div>
-                </mat-list-item>
-                <mat-list-item matTooltip="Address Line 1">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">home</mat-icon>
-                        {{ getLine1() }}
-                    </div>
-                </mat-list-item>
-                @if( getLine2() ) {                
-                <mat-list-item matTooltip="Address Line 2">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">home</mat-icon>
-                        {{ getLine2() }}
-                    </div>
-                </mat-list-item>
-                }
-                <mat-list-item matTooltip="Postal Code">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">markunread_mailbox</mat-icon>
-                        {{ getPostalCode() }}
-                    </div>
-                </mat-list-item>
-                <mat-list-item matTooltip="City">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">location_city</mat-icon>
-                        {{ getCity() }}
-                    </div>
-                </mat-list-item>
-                <mat-list-item matTooltip="State">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">map</mat-icon>
-                        {{ getState() }}
-                    </div>
-                </mat-list-item>
-                <mat-list-item matTooltip="Country">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">flag</mat-icon>
-                        {{ getCounty() }}
-                    </div>
-                </mat-list-item>
-                <mat-list-item matTooltip="Phone">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">phone</mat-icon>
-                        {{ getPhone() }}
-                    </div>
-                </mat-list-item>
-            </mat-list>
+            <form class="form">
+                <mat-form-field class="full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput [disabled]="!editMode" [value]="getName()">
+                </mat-form-field>
+                <app-country-input [initialCountry]="getCounty()" [disableInput]="!editMode"></app-country-input>
+                <mat-form-field class="full-width">
+                    <mat-label>Address line 1</mat-label>
+                    <input matInput [disabled]="!editMode" [value]="getLine1()">
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Address line 2</mat-label>
+                    <input matInput [disabled]="!editMode" [value]="getLine2()"
+                        placeholder="Number of the flat/apartment unit etc. (optional)">
+                </mat-form-field>
+                <table class="full-width" cellspacing="0">
+                    <tr>
+                        <td class="postal-width">
+                            <mat-form-field class="full-width">
+                                <mat-label>Postal Code</mat-label>
+                                <input matInput [disabled]="!editMode" [value]="getPostalCode()">
+                            </mat-form-field>
+                        </td>
+                        <td class="city-width">
+                            <mat-form-field class="full-width">
+                                <mat-label>City</mat-label>
+                                <input matInput [disabled]="!editMode" [value]="getCity()">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+                <mat-form-field class="full-width">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput [disabled]="!editMode" [value]="getPhone()">
+                </mat-form-field>
+            </form>
         </mat-card-content>
         <mat-card-actions>
             @if( editMode ) {
-                <button (click)="update()" mat-stroked-button
-                color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
+            <button (click)="update()" mat-stroked-button color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
             } @else {
-                <button (click)="edit()" mat-stroked-button
-                color="primary"><mat-icon>edit</mat-icon>Edit</button>
+            <button (click)="edit()" mat-stroked-button color="primary"><mat-icon>edit</mat-icon>Edit</button>
             }
         </mat-card-actions>
     </ng-container>

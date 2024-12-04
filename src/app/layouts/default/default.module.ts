@@ -67,6 +67,8 @@ import { ResumeSubscriptionComponent } from 'src/app/modules/account/dashboard/s
 import { ServiceErrorInterceptorService } from 'src/app/shared/interceptors/service-error-interceptor.service';
 import { InvoicesComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/invoices/invoices.component';
 import { BillingAddressDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component';
+import { CountryInputComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/billing-address/country-input/country-input.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
     declarations: [
@@ -117,6 +119,7 @@ import { BillingAddressDetailComponent } from 'src/app/modules/account/dashboard
         PaymentChangedRequiresPaymentMethodComponent,
         ConfirmResumeSubscriptionComponent,
         ConfirmCancelSubscriptionComponent,
+        CountryInputComponent,
     ], imports: [CommonModule,
         RouterModule,
         SharedModule,
@@ -136,6 +139,7 @@ import { BillingAddressDetailComponent } from 'src/app/modules/account/dashboard
         MatTooltipModule,
         MatPaginatorModule,
         NgxSkeletonLoaderModule,
+        MatAutocompleteModule,
     ], providers: [
         provideHttpClient(withInterceptorsFromDi()),
         { provide: HTTP_INTERCEPTORS, useClass: ServiceErrorInterceptorService, multi: true }

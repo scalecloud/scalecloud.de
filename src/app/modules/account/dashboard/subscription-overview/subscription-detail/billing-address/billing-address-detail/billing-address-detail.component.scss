@@ -10,6 +10,10 @@ mat-card-title {
     padding-right: 1rem;
 }
 
+mat-card-content {
+    margin-top: 1rem;
+}
+
 .icon-text {
     display: flex;
 }
@@ -25,4 +29,22 @@ mat-card-title {
 button {
     font-size: 1.2rem;
     width: 100%;
+}
+
+.form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.postal-width {
+   padding-right: 0.5rem;
+}
+
+.city-width {
+    padding-left: 0.5rem;
 }
