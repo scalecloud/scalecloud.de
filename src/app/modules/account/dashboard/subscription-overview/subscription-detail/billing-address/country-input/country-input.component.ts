@@ -5,6 +5,7 @@ import { _filter, Country } from '../country/countries';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
 import { Language } from '../country/Language';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class CountryInputComponent implements OnInit {
 
   constructor(
     private countryService: CountryService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private snackBarService: SnackBarService
   ) { }
 
   ngOnInit() {
@@ -76,5 +78,20 @@ export class CountryInputComponent implements OnInit {
 
   getSelectedCountryCode(): string {
     return this.selectedCountryCode;
+  }
+
+  validateCountry() {
+    const countryName = this.countryControl.value;
+    const country = this.languageService.getLanguage() === Language.EN
+      ? this.countryService.getCountries().find(c => c.nameEN === countryName)
+      : this.countryService.getCountries().find(c => c.nameDE === countryName);
+
+    if (!country) {
+      this.countryControl.setErrors({ invalidCountry: true });
+      this.selectedCountryCode = '';
+      this.snackBarService.error('Invalid country');
+    } else {
+      this.selectedCountryCode = country.code;
+    }
   }
 }
