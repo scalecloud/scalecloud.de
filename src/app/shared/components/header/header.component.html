@@ -1,35 +1,33 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-        <button mat-icon-button (click)="toggleSideBar()">
+        <button mat-button class="large-button" (click)="toggleSideBar()">
             <mat-icon>menu</mat-icon>
         </button>
-        <a routerLink="/">
+        <button mat-button class="large-button" routerLink="/">
             <img src="assets/img/logo/logo-white-48.png" alt="ScaleCloud.de">
             ScaleCloud.de
-        </a>
+        </button>
         <span class="fill-remaining-space"></span>
-        <div>
-            <div *ngIf="authService.getUser(); else login">
-                <button mat-icon-button [matMenuTriggerFor]="menu">
-                    <mat-icon>person_outline</mat-icon>
+        <div *ngIf="authService.getUser(); else login">
+            <button mat-button class="large-button" routerLink="/dashboard">
+                <mat-icon class="large-icon">dashboard</mat-icon>
+                Dashboard
+            </button>
+            <button mat-button class="large-button" [matMenuTriggerFor]="menu">
+                <mat-icon class="large-icon">person</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="authService.signOut()">
+                    <mat-icon>logout</mat-icon>
+                    Logout
                 </button>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item routerLink="/dashboard">
-                        <mat-icon>dashboard</mat-icon>
-                        Dashboard
-                    </button>
-                    <button mat-menu-item (click)="authService.signOut()">
-                        <mat-icon>logout</mat-icon>
-                        Logout
-                    </button>
-                </mat-menu>
-            </div>
-            <ng-template #login>
-                <button mat-stroked-button routerLink="/login">
-                    <mat-icon>login</mat-icon>
-                    Login
-                </button>
-            </ng-template>
+            </mat-menu>
         </div>
+        <ng-template #login>
+            <button mat-button class="large-button" routerLink="/login">
+                <mat-icon>login</mat-icon>
+                Login
+            </button>
+        </ng-template>
     </mat-toolbar-row>
 </mat-toolbar>
