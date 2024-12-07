@@ -1,7 +1,7 @@
 import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
-import { _filter } from './countries';
+import { _filter, Country } from './countries';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
 import { Language } from '../country/Language';
@@ -20,7 +20,7 @@ export class CountryInputComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
 
   countryControl = new FormControl();
-  filteredCountries: Observable<{ code: string, nameDE: string, nameEN: string }[]>;
+  filteredCountries: Observable<Country[]>;
 
   selectedCountryCode: string;
 
@@ -58,7 +58,7 @@ export class CountryInputComponent implements OnInit {
     }
   }
 
-  private _filter(value: string): { code: string, nameDE: string, nameEN: string }[] {
+  private _filter(value: string): Country[] {
     const filterValue = value.toLowerCase();
     return this.countryService.getCountries().filter(country =>
       country.nameEN.toLowerCase().includes(filterValue) ||
@@ -70,7 +70,7 @@ export class CountryInputComponent implements OnInit {
     this.selectedCountryCode = this.countryService.getCountryCode(this.languageService.getLanguage(), countryName);
   }
 
-  getCountryName(country: { code: string, nameDE: string, nameEN: string }): string {
+  getCountryName(country: Country): string {
     return this.languageService.getLanguage() === Language.EN ? country.nameEN : country.nameDE;
   }
 

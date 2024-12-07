@@ -6,6 +6,12 @@ export const _filter = (opt: string[], value: string): string[] => {
     return opt.filter(item => item.toLowerCase().includes(filterValue));
 };
 
+export interface Country {
+    code: string;
+    nameDE: string;
+    nameEN: string;
+}
+
 export const countries = [
     { code: 'AF', nameDE: 'Afghanistan', nameEN: 'Afghanistan' },
     { code: 'EG', nameDE: 'Ägypten', nameEN: 'Egypt' },
