@@ -8,6 +8,9 @@
             ScaleCloud.de
         </button>
         <span class="fill-remaining-space"></span>
+        @if(isLoading) {
+            <mat-spinner class="auth-loading" diameter="30"></mat-spinner>
+        } @else {
         <div *ngIf="authService.getUser(); else login">
             <button mat-button routerLink="/dashboard">
                 <mat-icon>dashboard</mat-icon>
@@ -29,5 +32,6 @@
                 Login
             </button>
         </ng-template>
+        }
     </mat-toolbar-row>
 </mat-toolbar>

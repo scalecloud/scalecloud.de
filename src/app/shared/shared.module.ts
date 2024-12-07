@@ -17,6 +17,7 @@ import { LoadingFailedComponent } from './components/loading-failed/loading-fail
 import { SnackBarProgressComponent } from './services/snackbar/snack-bar-progress/snack-bar-progress.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatSnackBarModule,
     MatCardModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     NgxSkeletonLoaderModule,
   ],
   exports: [

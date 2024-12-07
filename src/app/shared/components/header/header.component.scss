@@ -37,3 +37,7 @@ button {
 .logo-icon {
     height: 2rem;
 }
+
+.mat-mdc-progress-spinner {
+    --mdc-circular-progress-active-indicator-color: white;
+}
