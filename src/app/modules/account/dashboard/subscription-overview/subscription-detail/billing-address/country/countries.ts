@@ -12,7 +12,7 @@ export interface Country {
     nameEN: string;
 }
 
-export const countries = [
+export const countries: Country[] = [
     { code: 'AF', nameDE: 'Afghanistan', nameEN: 'Afghanistan' },
     { code: 'EG', nameDE: 'Ägypten', nameEN: 'Egypt' },
     { code: 'AX', nameDE: 'Ålandinseln', nameEN: 'Åland Islands' },

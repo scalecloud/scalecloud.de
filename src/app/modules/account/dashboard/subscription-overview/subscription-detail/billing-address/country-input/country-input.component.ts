@@ -1,7 +1,7 @@
 import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
-import { _filter, Country } from './countries';
+import { _filter, Country } from '../country/countries';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
 import { Language } from '../country/Language';

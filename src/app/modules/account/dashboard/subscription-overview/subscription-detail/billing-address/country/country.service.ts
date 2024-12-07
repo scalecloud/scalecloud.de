@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { countries, Country } from '../country-input/countries';
+import { countries, Country } from './countries';
 import { Language } from './Language';
 
 @Injectable({
