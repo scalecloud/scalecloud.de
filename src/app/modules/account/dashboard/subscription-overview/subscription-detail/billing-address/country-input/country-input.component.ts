@@ -1,7 +1,10 @@
-import { Component, effect, inject, Input, OnInit, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { Observable, startWith, map } from 'rxjs';
-import { _filter, countriesDE } from './countries';
+import { map, Observable, startWith } from 'rxjs';
+import { _filter } from './countries';
+import { CountryService } from '../country/country.service';
+import { LanguageService } from '../country/language.service';
+import { Language } from '../country/Language';
 
 
 @Component({
@@ -17,23 +20,32 @@ export class CountryInputComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
 
   countryControl = new FormControl();
-  filteredCountries: Observable<{ code: string, name: string }[]>;
+  filteredCountries: Observable<{ code: string, nameDE: string, nameEN: string }[]>;
 
-  selectedCountry: { code: string, name: string } | null = null;
+  selectedCountryCode: string;
+
+  constructor(
+    private countryService: CountryService,
+    private languageService: LanguageService
+  ) { }
 
   ngOnInit() {
+    this.filteredCountries = this.countryControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+
     if (this.initialCountryCode) {
-      const initialCountryObj = countriesDE.find(country => country.code === this.initialCountryCode);
-      if (initialCountryObj) {
-        this.countryControl.setValue(initialCountryObj.name);
-        this.selectedCountry = initialCountryObj;
+      const initialCountry = this.countryService.getCountry(this.languageService.getLanguage(), this.initialCountryCode);
+      if (initialCountry) {
+        this.countryControl.setValue(initialCountry);
+        this.selectedCountryCode = this.initialCountryCode;
       }
     }
 
-    this.filteredCountries = this.countryControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterCountries(value || '')),
-    );
+    if (this.disableInput) {
+      this.countryControl.disable();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -46,13 +58,23 @@ export class CountryInputComponent implements OnInit {
     }
   }
 
-  private _filterCountries(value: string): { code: string, name: string }[] {
+  private _filter(value: string): { code: string, nameDE: string, nameEN: string }[] {
     const filterValue = value.toLowerCase();
-    return countriesDE.filter(country => country.name.toLowerCase().includes(filterValue));
+    return this.countryService.getCountries().filter(country =>
+      country.nameEN.toLowerCase().includes(filterValue) ||
+      country.nameDE.toLowerCase().includes(filterValue)
+    );
   }
 
   onCountrySelected(countryName: string) {
-    this.selectedCountry = countriesDE.find(country => country.name === countryName) || null;
-    console.log('Selected country:', this.selectedCountry);
+    this.selectedCountryCode = this.countryService.getCountryCode(this.languageService.getLanguage(), countryName);
+  }
+
+  getCountryName(country: { code: string, nameDE: string, nameEN: string }): string {
+    return this.languageService.getLanguage() === Language.EN ? country.nameEN : country.nameDE;
+  }
+
+  getSelectedCountryCode(): string {
+    return this.selectedCountryCode;
   }
 }

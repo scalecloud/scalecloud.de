@@ -69,6 +69,7 @@ import { InvoicesComponent } from 'src/app/modules/account/dashboard/subscriptio
 import { BillingAddressDetailComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component';
 import { CountryInputComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/billing-address/country-input/country-input.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { BillingAddressOverviewComponent } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-overview/billing-address-overview.component';
 
 @NgModule({
     declarations: [
@@ -107,6 +108,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         ConfirmOwnerTransferComponent,
         BillingPortalComponent,
         InvoicesComponent,
+        BillingAddressOverviewComponent,
         BillingAddressDetailComponent,
         CheckoutComponent,
         CheckoutDetailsComponent,
