@@ -40,7 +40,6 @@ export class PaymentOverviewComponent implements OnInit {
           },
           error: error => {
             this.serviceStatus = ServiceStatus.Error;
-            this.snackBarService.error(error);
           }
         });
     }).catch((error) => {

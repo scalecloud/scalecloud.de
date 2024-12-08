@@ -65,7 +65,7 @@ export class StripePaymentElementComponent {
       });
 
       paymentElement.on('error', (event: any) => {
-        this.serviceStatus = ServiceStatus.Error; // Update service status on error
+        this.serviceStatus = ServiceStatus.Error;
         this.snackBarService.error("Error loading Stripe: " + event.error.message);
       });
 

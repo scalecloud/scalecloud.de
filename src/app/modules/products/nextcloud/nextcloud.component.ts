@@ -36,7 +36,6 @@ export class NextcloudComponent implements OnInit {
         },
         error: error => {
           this.serviceStatus = ServiceStatus.Error;
-          this.snackBarService.error(error);
         }
       });
   }

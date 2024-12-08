@@ -10,21 +10,22 @@ export class ServiceErrorInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'An unknown error occurred!';
-        if (error.error instanceof ErrorEvent) {
-          // Client-side error
-          errorMessage = `Error: ${error.error.message}`;
-        } else {
+        let errorMessage = 'An unknown error occurred! Please try again later.';
+        let backendError = '';
+        if( error.error.error ) {
+          backendError = error.error.error;
+        }
+        if (error.status) {
           // Server-side error
           switch (error.status) {
             case 0:
               errorMessage = 'Unable to connect to the server. Please try again later.';
               break;
             case 403:
-              errorMessage = 'You do not have permission to access this resource.';
+              errorMessage = 'You do not have permission to access this resource. Backend: ' + backendError;
               break;
             case 404:
-              errorMessage = 'The requested resource was not found.';
+              errorMessage = 'The requested resource was not found. Backend: ' + backendError;
               break;
             case 408:
               errorMessage = 'The request timed out. Please try again later.';
@@ -33,8 +34,8 @@ export class ServiceErrorInterceptorService implements HttpInterceptor {
               errorMessage = 'You have made too many requests. Please wait and try again later.';
               break;
             case 500:
-              errorMessage = 'An internal server error occurred. Please try again later.';
-              break;
+              errorMessage = 'An internal server error occurred. Please try again later. Backend: ' + backendError;
+               break;
             case 502:
               errorMessage = 'Bad gateway. Please try again later.';
               break;
@@ -42,7 +43,7 @@ export class ServiceErrorInterceptorService implements HttpInterceptor {
               errorMessage = 'The service is currently unavailable. Please try again later.';
               break;
             default:
-              errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+              errorMessage = 'An internal server error occurred. Please try again later. Backend: ' + backendError;
               break;
           }
         }
