@@ -133,10 +133,6 @@ export class BillingAddressDetailComponent {
     return this.reply?.address?.city || '';
   }
 
-  getState(): string {
-    return this.reply?.address?.state || '';
-  }
-
   getCountyCode(): string {
     return this.reply?.address?.country || '';
   }
@@ -163,7 +159,6 @@ export class BillingAddressDetailComponent {
           line1: this.f.line1.value,
           line2: this.f.line2.value,
           postal_code: this.f.postalCode.value,
-          state: ''
         };
         let updateBillingAddressRequest: UpdateBillingAddressRequest = {
           subscriptionID: this.getSubscriptionID(),

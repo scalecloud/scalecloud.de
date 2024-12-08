@@ -111,10 +111,6 @@ export class BillingAddressOverviewComponent {
     return this.reply?.address?.city || '';
   }
 
-  getState(): string {
-    return this.reply?.address?.state || '';
-  }
-
   getCountyCode(): string {
     return this.reply?.address?.country || '';
   }
