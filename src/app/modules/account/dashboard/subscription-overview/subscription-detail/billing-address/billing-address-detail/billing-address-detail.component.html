@@ -41,19 +41,21 @@
         </mat-card-title>
         <mat-divider></mat-divider>
         <mat-card-content>
-            <form class="form">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <mat-form-field class="full-width">
                     <mat-label>Name</mat-label>
-                    <input matInput [disabled]="!editMode" [value]="getName()">
+                    <input matInput formControlName="name">
+                    <mat-error *ngIf="submitted && f.name.errors?.required">Name is required</mat-error>
                 </mat-form-field>
-                <app-country-input [initialCountryCode]="getCountyCode()" [disableInput]="!editMode"></app-country-input>
+                <app-country-input formControlName="country" [initialCountryCode]="getCountyCode()"></app-country-input>
                 <mat-form-field class="full-width">
                     <mat-label>Address line 1</mat-label>
-                    <input matInput [disabled]="!editMode" [value]="getLine1()">
+                    <input matInput formControlName="line1">
+                    <mat-error *ngIf="submitted && f.line1.errors?.required">Address line 1 is required</mat-error>
                 </mat-form-field>
                 <mat-form-field class="full-width">
                     <mat-label>Address line 2</mat-label>
-                    <input matInput [disabled]="!editMode" [value]="getLine2()"
+                    <input matInput formControlName="line2"
                         placeholder="Number of the flat/apartment unit etc. (optional)">
                 </mat-form-field>
                 <table class="full-width" cellspacing="0">
@@ -61,30 +63,34 @@
                         <td class="postal-width">
                             <mat-form-field class="full-width">
                                 <mat-label>Postal Code</mat-label>
-                                <input matInput [disabled]="!editMode" [value]="getPostalCode()">
+                                <input matInput formControlName="postalCode">
+                                <mat-error *ngIf="submitted && f.postalCode.errors?.required">Postal Code is
+                                    required</mat-error>
                             </mat-form-field>
                         </td>
                         <td class="city-width">
                             <mat-form-field class="full-width">
                                 <mat-label>City</mat-label>
-                                <input matInput [disabled]="!editMode" [value]="getCity()">
+                                <input matInput formControlName="city">
+                                <mat-error *ngIf="submitted && f.city.errors?.required">City is required</mat-error>
                             </mat-form-field>
                         </td>
                     </tr>
                 </table>
                 <mat-form-field class="full-width">
                     <mat-label>Phone Number</mat-label>
-                    <input matInput [disabled]="!editMode" [value]="getPhone()">
+                    <input matInput formControlName="phone">
+                    <mat-error *ngIf="submitted && f.phone.errors?.required">Phone Number is required</mat-error>
+                    <mat-error *ngIf="submitted && f.phone.errors?.pattern">Invalid Phone Number</mat-error>
                 </mat-form-field>
+                <mat-card-actions>
+                    <button type="submit" mat-stroked-button [disabled]="!form.valid"
+                        color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
+                    <button type="button" (click)="cancel()" mat-stroked-button
+                        color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
+                </mat-card-actions>
             </form>
         </mat-card-content>
-        <mat-card-actions>
-            @if( editMode ) {
-            <button (click)="update()" mat-stroked-button color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
-            } @else {
-            <button (click)="edit()" mat-stroked-button color="primary"><mat-icon>edit</mat-icon>Edit</button>
-            }
-        </mat-card-actions>
     </ng-container>
     <ng-container *ngIf="serviceStatus === ServiceStatus.Error">
         <app-loading-failed></app-loading-failed>

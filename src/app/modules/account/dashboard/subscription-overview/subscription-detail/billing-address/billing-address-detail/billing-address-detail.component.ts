@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-billing-address-detail',
@@ -21,11 +21,11 @@ export class BillingAddressDetailComponent {
   reply: BillingAddressReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
-  editMode = false;
-
-  countryControl = new FormControl();
+  form: UntypedFormGroup;
+  submitted = false;
 
   constructor(
+    private formBuilder: UntypedFormBuilder,
     public authService: AuthService,
     private permissionService: PermissionService,
     private service: BillingAddressService,
@@ -36,7 +36,20 @@ export class BillingAddressDetailComponent {
   ) { }
 
   ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      name: ['', Validators.required],
+      country: ['', Validators.required],
+      line1: ['', Validators.required],
+      line2: [''],
+      postalCode: ['', Validators.required],
+      city: ['', Validators.required],
+      phone: ['', Validators.required]
+    });
     this.checkPermissions();
+  }
+
+  get f() {
+    return this.form.controls;
   }
 
   getSubscriptionID(): string {
@@ -77,6 +90,15 @@ export class BillingAddressDetailComponent {
           .subscribe({
             next: reply => {
               this.reply = reply;
+              this.form.patchValue({
+                name: this.getName(),
+                country: this.getCountyCode(),
+                line1: this.getLine1(),
+                line2: this.getLine2(),
+                postalCode: this.getPostalCode(),
+                city: this.getCity(),
+                phone: this.getPhone()
+              });
               this.serviceStatus = ServiceStatus.Success;
             },
             error: error => {
@@ -122,12 +144,15 @@ export class BillingAddressDetailComponent {
     return this.reply?.phone || '';
   }
 
-  edit(): void {
-    this.editMode = true;
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.form.invalid) {
+      return;
+    }
   }
 
-  update(): void {
-    this.editMode = false;
+  cancel(): void {
+    this.returnUrlService.openReturnURL("/dashboard");
   }
 
 }

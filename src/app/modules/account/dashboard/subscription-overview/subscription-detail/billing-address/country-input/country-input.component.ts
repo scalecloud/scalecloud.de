@@ -16,9 +16,6 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 export class CountryInputComponent implements OnInit {
 
   @Input() initialCountryCode: string = '';
-  @Input() disableInput: boolean = true;
-
-  private _formBuilder = inject(FormBuilder);
 
   countryControl = new FormControl();
   filteredCountries: Observable<Country[]>;
@@ -42,20 +39,6 @@ export class CountryInputComponent implements OnInit {
       if (initialCountry) {
         this.countryControl.setValue(initialCountry);
         this.selectedCountryCode = this.initialCountryCode;
-      }
-    }
-
-    if (this.disableInput) {
-      this.countryControl.disable();
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['disableInput']) {
-      if (this.disableInput) {
-        this.countryControl.disable();
-      } else {
-        this.countryControl.enable();
       }
     }
   }
