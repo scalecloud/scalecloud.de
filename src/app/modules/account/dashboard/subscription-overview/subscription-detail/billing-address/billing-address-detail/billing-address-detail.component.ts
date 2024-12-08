@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { BillingAddressReply, BillingAddressRequest } from '../billing-address-model';
+import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
@@ -18,7 +18,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 })
 export class BillingAddressDetailComponent {
 
-  
+
   reply: BillingAddressReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
@@ -150,7 +150,41 @@ export class BillingAddressDetailComponent {
     if (this.form.invalid) {
       return;
     }
-    // Handle form submission
+    
+    this.authService.waitForAuth().then(() => {
+      const subscriptionID = this.getSubscriptionID();
+      if (!subscriptionID) {
+        this.snackBarService.error('Currently not possible update billing address. Please try again later.');
+        this.returnUrlService.openReturnURL('/dashboard');
+      } else {
+        let address: Address = {
+          city: this.f.city.value,
+          country: this.f.country.value,
+          line1: this.f.line1.value,
+          line2: this.f.line2.value,
+          postal_code: this.f.postalCode.value,
+          state: ''
+        };
+        let updateBillingAddressRequest: UpdateBillingAddressRequest = {
+          subscriptionID: this.getSubscriptionID(),
+          name: this.f.name.value,
+          address: address,
+          phone: this.f.phone.value,
+        };
+        this.service.updateBillingAddress(updateBillingAddressRequest)
+          .subscribe(reply => {
+            if (reply.subscriptionID) {
+              this.snackBarService.info(`Billing address updated.`);
+              this.returnUrlService.openReturnURL('/dashboard');
+            }
+            else {
+              this.snackBarService.error(`Could not update billing address. Please retry.`);
+            }
+          });
+      }
+    }).catch((error) => {
+      this.logService.error("waitForAuth failed: " + error);
+    });
   }
 
   cancel(): void {
