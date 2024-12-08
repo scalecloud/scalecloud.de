@@ -56,26 +56,19 @@
                 </mat-form-field>
                 <mat-form-field class="full-width">
                     <mat-label>Address line 2</mat-label>
-                    <input matInput formControlName="line2" placeholder="Number of the flat/apartment unit etc. (optional)">
+                    <input matInput formControlName="line2"
+                        placeholder="Number of the flat/apartment unit etc. (optional)">
                 </mat-form-field>
-                <table class="full-width" cellspacing="0">
-                    <tr>
-                        <td class="postal-width">
-                            <mat-form-field class="full-width">
-                                <mat-label>Postal Code</mat-label>
-                                <input matInput formControlName="postalCode">
-                                <mat-error *ngIf="submitted && f.postalCode.errors?.required">Postal Code is required</mat-error>
-                            </mat-form-field>
-                        </td>
-                        <td class="city-width">
-                            <mat-form-field class="full-width">
-                                <mat-label>City</mat-label>
-                                <input matInput formControlName="city">
-                                <mat-error *ngIf="submitted && f.city.errors?.required">City is required</mat-error>
-                            </mat-form-field>
-                        </td>
-                    </tr>
-                </table>
+                <mat-form-field class="full-width">
+                    <mat-label>Postal Code</mat-label>
+                    <input matInput formControlName="postalCode">
+                    <mat-error *ngIf="submitted && f.postalCode.errors?.required">Postal Code is required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>City</mat-label>
+                    <input matInput formControlName="city">
+                    <mat-error *ngIf="submitted && f.city.errors?.required">City is required</mat-error>
+                </mat-form-field>
                 <mat-form-field class="full-width">
                     <mat-label>Phone Number</mat-label>
                     <input matInput formControlName="phone">
@@ -83,8 +76,10 @@
                     <mat-error *ngIf="submitted && f.phone.errors?.pattern">Invalid Phone Number</mat-error>
                 </mat-form-field>
                 <mat-card-actions>
-                    <button class="update-button" type="submit" mat-flat-button [disabled]="!form.valid" color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
-                    <button class="cancel-button" type="button" (click)="cancel()" mat-stroked-button color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
+                    <button class="update-button" type="submit" mat-flat-button [disabled]="!form.valid"
+                        color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
+                    <button class="cancel-button" type="button" (click)="cancel()" mat-stroked-button
+                        color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
                 </mat-card-actions>
             </form>
         </mat-card-content>
