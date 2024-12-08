@@ -83,8 +83,8 @@
                     <mat-error *ngIf="submitted && f.phone.errors?.pattern">Invalid Phone Number</mat-error>
                 </mat-form-field>
                 <mat-card-actions>
-                    <button type="submit" mat-stroked-button [disabled]="!form.valid" color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
-                    <button type="button" (click)="cancel()" mat-stroked-button color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
+                    <button class="update-button" type="submit" mat-flat-button [disabled]="!form.valid" color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
+                    <button class="cancel-button" type="button" (click)="cancel()" mat-stroked-button color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
                 </mat-card-actions>
             </form>
         </mat-card-content>

@@ -5,4 +5,13 @@
             {{ getCountryName(country) }}
         </mat-option>
     </mat-autocomplete>
+    @if (countryControl.hasError('required')) {
+    <mat-error>
+        Country is required
+    </mat-error>
+    }@else if (countryControl.hasError('invalidCountry')) {
+    <mat-error>
+        Invalid country
+    </mat-error>
+    }
 </mat-form-field>

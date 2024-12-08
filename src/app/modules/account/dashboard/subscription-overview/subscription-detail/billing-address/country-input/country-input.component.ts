@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { _filter, Country } from '../country/countries';
 import { CountryService } from '../country/country.service';
@@ -17,7 +17,7 @@ export class CountryInputComponent implements OnInit {
 
   @Input() initialCountryCode: string = '';
 
-  countryControl = new FormControl();
+  countryControl = new FormControl('', [Validators.required]);
   filteredCountries: Observable<Country[]>;
 
   constructor(
@@ -64,9 +64,8 @@ export class CountryInputComponent implements OnInit {
     const countryName = this.countryControl.value;
     const countryCode = this.countryService.getCountryCode(this.languageService.getLanguage(), countryName);
 
-    if (!countryCode) {
+   if (!countryCode) {
       this.countryControl.setErrors({ invalidCountry: true });
-      this.snackBarService.error('Invalid country');
     }
   }
 }
