@@ -60,7 +60,7 @@ export class BillingAddressDetailComponent {
       }
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
-      this.snackBarService.error('An error occurred while checking permissions.');
+      this.snackBarService.error(error);
     }
   }
 
@@ -82,6 +82,7 @@ export class BillingAddressDetailComponent {
             },
             error: error => {
               this.serviceStatus = ServiceStatus.Error;
+              this.snackBarService.error(error);
             }
           });
       }

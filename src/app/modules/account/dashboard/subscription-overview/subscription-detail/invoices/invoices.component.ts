@@ -59,6 +59,7 @@ export class InvoicesComponent implements OnInit {
       }
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
+      this.snackBarService.error('An error occurred while checking permissions.');
     }
   }
 
@@ -83,6 +84,7 @@ export class InvoicesComponent implements OnInit {
             },
             error: error => {
               this.serviceStatus = ServiceStatus.Error;
+              this.snackBarService.error(error);
             }
           });
       }

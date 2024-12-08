@@ -82,6 +82,7 @@ export class BillingAddressOverviewComponent {
             },
             error: error => {
               this.serviceStatus = ServiceStatus.Error;
+              this.snackBarService.error(error);
             }
           });
       }

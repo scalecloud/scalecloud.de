@@ -6,6 +6,7 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 import { PaymentOverviewComponent } from './payment-overview/payment-overview.component';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { LastCountService } from './subscription-overview/LastCount/last-count.service';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +25,7 @@ export class DashboardComponent implements OnInit {
     private subscriptionOverviewService: SubscriptionOverviewService,
     private logService: LogService,
     public lastCountService: LastCountService,
+    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class DashboardComponent implements OnInit {
           },
           error: error => {
             this.serviceStatus = ServiceStatus.Error;
+            this.snackBarService.error(error);
           }
         });
     }).catch((error) => {

@@ -59,6 +59,7 @@ export class SeatsComponent implements OnInit {
       }
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
+      this.snackBarService.error('An error occurred while checking permissions.');
     }
   }
 
@@ -82,6 +83,7 @@ export class SeatsComponent implements OnInit {
             },
             error: error => {
               this.serviceStatus = ServiceStatus.Error;
+              this.snackBarService.error(error);
             }
           });
       }
