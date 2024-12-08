@@ -48,6 +48,7 @@
                     <mat-error *ngIf="submitted && f.name.errors?.required">Name is required</mat-error>
                 </mat-form-field>
                 <app-country-input formControlName="country" [initialCountryCode]="getCountyCode()"></app-country-input>
+                <mat-error *ngIf="submitted && f.country.errors?.required">Country is required</mat-error>
                 <mat-form-field class="full-width">
                     <mat-label>Address line 1</mat-label>
                     <input matInput formControlName="line1">
@@ -55,8 +56,7 @@
                 </mat-form-field>
                 <mat-form-field class="full-width">
                     <mat-label>Address line 2</mat-label>
-                    <input matInput formControlName="line2"
-                        placeholder="Number of the flat/apartment unit etc. (optional)">
+                    <input matInput formControlName="line2" placeholder="Number of the flat/apartment unit etc. (optional)">
                 </mat-form-field>
                 <table class="full-width" cellspacing="0">
                     <tr>
@@ -64,8 +64,7 @@
                             <mat-form-field class="full-width">
                                 <mat-label>Postal Code</mat-label>
                                 <input matInput formControlName="postalCode">
-                                <mat-error *ngIf="submitted && f.postalCode.errors?.required">Postal Code is
-                                    required</mat-error>
+                                <mat-error *ngIf="submitted && f.postalCode.errors?.required">Postal Code is required</mat-error>
                             </mat-form-field>
                         </td>
                         <td class="city-width">
@@ -84,10 +83,8 @@
                     <mat-error *ngIf="submitted && f.phone.errors?.pattern">Invalid Phone Number</mat-error>
                 </mat-form-field>
                 <mat-card-actions>
-                    <button type="submit" mat-stroked-button [disabled]="!form.valid"
-                        color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
-                    <button type="button" (click)="cancel()" mat-stroked-button
-                        color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
+                    <button type="submit" mat-stroked-button [disabled]="!form.valid" color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
+                    <button type="button" (click)="cancel()" mat-stroked-button color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
                 </mat-card-actions>
             </form>
         </mat-card-content>

@@ -21,14 +21,14 @@ export class CountryService {
     return language === Language.EN ? country.nameEN : country.nameDE;
   }
 
-  getCountryCode(language: Language, name: string): string {
+  getCountryCode(language: Language, name: string): string | undefined {
     const country = language === Language.EN
       ? countries.find(c => c.nameEN === name)
       : countries.find(c => c.nameDE === name);
 
     if (!country) {
       this.logService.error(`Country with name ${name} not found`);
-      return name;
+      return undefined;
     }
     return country.code;
   }

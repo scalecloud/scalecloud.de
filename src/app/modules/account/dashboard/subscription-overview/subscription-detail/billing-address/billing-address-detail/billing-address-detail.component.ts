@@ -18,6 +18,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 })
 export class BillingAddressDetailComponent {
 
+  
   reply: BillingAddressReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
@@ -149,6 +150,7 @@ export class BillingAddressDetailComponent {
     if (this.form.invalid) {
       return;
     }
+    // Handle form submission
   }
 
   cancel(): void {

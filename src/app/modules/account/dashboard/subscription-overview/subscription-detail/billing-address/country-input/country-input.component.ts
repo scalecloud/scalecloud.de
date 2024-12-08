@@ -1,5 +1,5 @@
-import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { _filter, Country } from '../country/countries';
 import { CountryService } from '../country/country.service';
@@ -20,8 +20,6 @@ export class CountryInputComponent implements OnInit {
   countryControl = new FormControl();
   filteredCountries: Observable<Country[]>;
 
-  selectedCountryCode: string;
-
   constructor(
     private countryService: CountryService,
     private languageService: LanguageService,
@@ -38,7 +36,6 @@ export class CountryInputComponent implements OnInit {
       const initialCountry = this.countryService.getCountry(this.languageService.getLanguage(), this.initialCountryCode);
       if (initialCountry) {
         this.countryControl.setValue(initialCountry);
-        this.selectedCountryCode = this.initialCountryCode;
       }
     }
   }
@@ -52,7 +49,7 @@ export class CountryInputComponent implements OnInit {
   }
 
   onCountrySelected(countryName: string) {
-    this.selectedCountryCode = this.countryService.getCountryCode(this.languageService.getLanguage(), countryName);
+    this.countryControl.setValue(countryName);
   }
 
   getCountryName(country: Country): string {
@@ -60,21 +57,16 @@ export class CountryInputComponent implements OnInit {
   }
 
   getSelectedCountryCode(): string {
-    return this.selectedCountryCode;
+    return this.countryService.getCountryCode(this.languageService.getLanguage(), this.countryControl.value);
   }
 
   validateCountry() {
     const countryName = this.countryControl.value;
-    const country = this.languageService.getLanguage() === Language.EN
-      ? this.countryService.getCountries().find(c => c.nameEN === countryName)
-      : this.countryService.getCountries().find(c => c.nameDE === countryName);
+    const countryCode = this.countryService.getCountryCode(this.languageService.getLanguage(), countryName);
 
-    if (!country) {
+    if (!countryCode) {
       this.countryControl.setErrors({ invalidCountry: true });
-      this.selectedCountryCode = '';
       this.snackBarService.error('Invalid country');
-    } else {
-      this.selectedCountryCode = country.code;
     }
   }
 }
