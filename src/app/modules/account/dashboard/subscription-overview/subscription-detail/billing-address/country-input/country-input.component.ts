@@ -62,10 +62,16 @@ export class CountryInputComponent implements OnInit {
 
   validateCountry() {
     const countryName = this.countryControl.value;
-    const countryCode = this.countryService.getCountryCode(this.languageService.getLanguage(), countryName);
 
-   if (!countryCode) {
-      this.countryControl.setErrors({ invalidCountry: true });
+    if (!countryName) {
+      this.countryControl.setErrors({ required: true });
+    } else {
+      const countryCode = this.countryService.getCountryCode(this.languageService.getLanguage(), countryName);
+      if (!countryCode) {
+        this.countryControl.setErrors({ invalidCountry: true });
+      } else {
+        this.countryControl.setErrors(null);
+      }
     }
   }
 }
