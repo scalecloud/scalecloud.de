@@ -21,16 +21,16 @@ export class VerifyEMailGuard {
       this.ngZone.run(() => {
         this.router.navigate(['/dashboard']);
       });
-      canActivate = false; // Prevent navigation to the current route because we're redirecting.
+      canActivate = false;
     }
     else if (!(await this.authService.isLoggedIn(true)) && !(await this.authService.isLoggedInNotVerified(true))) {
       this.ngZone.run(() => {
         this.router.navigate(['/login']);
       });
-      canActivate = false; // Prevent navigation to the current route because we're redirecting.
+      canActivate = false;
     }
 
-    return canActivate; // Single point of return
+    return canActivate;
   }
 
 }
