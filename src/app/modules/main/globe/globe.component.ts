@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import createGlobe from 'cobe';
 
 @Component({
-  selector: 'app-globe',
-  templateUrl: './globe.component.html',
-  styleUrls: ['./globe.component.scss']
+    selector: 'app-globe',
+    templateUrl: './globe.component.html',
+    styleUrls: ['./globe.component.scss'],
+    standalone: false
 })
 export class GlobeComponent implements OnInit {
   // https://github.com/shuding/cobe

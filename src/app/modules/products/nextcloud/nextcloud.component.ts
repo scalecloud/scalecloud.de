@@ -6,9 +6,10 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
-  selector: 'app-nextcloud',
-  templateUrl: './nextcloud.component.html',
-  styleUrls: ['./nextcloud.component.scss']
+    selector: 'app-nextcloud',
+    templateUrl: './nextcloud.component.html',
+    styleUrls: ['./nextcloud.component.scss'],
+    standalone: false
 })
 export class NextcloudComponent implements OnInit {
 

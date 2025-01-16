@@ -4,9 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
-  selector: 'app-quantity',
-  templateUrl: './quantity.component.html',
-  styleUrls: ['./quantity.component.scss']
+    selector: 'app-quantity',
+    templateUrl: './quantity.component.html',
+    styleUrls: ['./quantity.component.scss'],
+    standalone: false
 })
 export class QuantityComponent implements OnInit {
 

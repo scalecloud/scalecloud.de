@@ -6,9 +6,10 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: false
 })
 export class LoginComponent {
   email = new UntypedFormControl('', [Validators.required, Validators.email]);

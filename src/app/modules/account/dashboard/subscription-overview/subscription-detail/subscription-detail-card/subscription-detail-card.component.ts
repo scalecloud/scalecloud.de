@@ -9,9 +9,10 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
-  selector: 'app-subscription-detail-card',
-  templateUrl: './subscription-detail-card.component.html',
-  styleUrls: ['./subscription-detail-card.component.scss']
+    selector: 'app-subscription-detail-card',
+    templateUrl: './subscription-detail-card.component.html',
+    styleUrls: ['./subscription-detail-card.component.scss'],
+    standalone: false
 })
 export class SubscriptionDetailCardComponent implements OnInit {
 

@@ -9,9 +9,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmCancelSubscriptionComponent } from './confirm-cancel-subscription/confirm-cancel-subscription.component';
 
 @Component({
-  selector: 'app-cancel-subscription',
-  templateUrl: './cancel-subscription.component.html',
-  styleUrls: ['./cancel-subscription.component.scss']
+    selector: 'app-cancel-subscription',
+    templateUrl: './cancel-subscription.component.html',
+    styleUrls: ['./cancel-subscription.component.scss'],
+    standalone: false
 })
 export class CancelSubscriptionComponent {
 

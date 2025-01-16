@@ -4,9 +4,10 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
-  selector: 'app-verify-email',
-  templateUrl: './verify-email.component.html',
-  styleUrls: ['./verify-email.component.scss']
+    selector: 'app-verify-email',
+    templateUrl: './verify-email.component.html',
+    styleUrls: ['./verify-email.component.scss'],
+    standalone: false
 })
 export class VerifyEmailComponent implements OnInit {
   clicked = false;

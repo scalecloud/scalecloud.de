@@ -9,9 +9,10 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 
 @Component({
-  selector: 'app-change-payment',
-  templateUrl: './change-payment.component.html',
-  styleUrls: ['./change-payment.component.scss']
+    selector: 'app-change-payment',
+    templateUrl: './change-payment.component.html',
+    styleUrls: ['./change-payment.component.scss'],
+    standalone: false
 })
 export class ChangePaymentComponent {
   @ViewChild(StripePaymentElementComponent) stripePaymentElementComponent: StripePaymentElementComponent | undefined;

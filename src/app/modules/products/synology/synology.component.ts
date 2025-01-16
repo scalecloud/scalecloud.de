@@ -6,9 +6,10 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
-  selector: 'app-synology',
-  templateUrl: './synology.component.html',
-  styleUrls: ['./synology.component.scss']
+    selector: 'app-synology',
+    templateUrl: './synology.component.html',
+    styleUrls: ['./synology.component.scss'],
+    standalone: false
 })
 export class SynologyComponent implements OnInit {
 

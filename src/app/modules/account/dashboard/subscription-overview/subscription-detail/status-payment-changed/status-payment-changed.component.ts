@@ -7,9 +7,10 @@ import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/str
 declare const Stripe: any;
 
 @Component({
-  selector: 'app-status-payment-changed',
-  templateUrl: './status-payment-changed.component.html',
-  styleUrls: ['./status-payment-changed.component.scss']
+    selector: 'app-status-payment-changed',
+    templateUrl: './status-payment-changed.component.html',
+    styleUrls: ['./status-payment-changed.component.scss'],
+    standalone: false
 })
 export class StatusPaymentChangedComponent implements OnInit  {
 

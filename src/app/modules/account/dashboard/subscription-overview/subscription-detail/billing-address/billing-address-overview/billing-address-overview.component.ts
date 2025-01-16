@@ -12,9 +12,10 @@ import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
 
 @Component({
-  selector: 'app-billing-address-overview',
-  templateUrl: './billing-address-overview.component.html',
-  styleUrl: './billing-address-overview.component.scss'
+    selector: 'app-billing-address-overview',
+    templateUrl: './billing-address-overview.component.html',
+    styleUrl: './billing-address-overview.component.scss',
+    standalone: false
 })
 export class BillingAddressOverviewComponent {
 

@@ -9,9 +9,10 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 
 
 @Component({
-  selector: 'app-country-input',
-  templateUrl: './country-input.component.html',
-  styleUrl: './country-input.component.scss'
+    selector: 'app-country-input',
+    templateUrl: './country-input.component.html',
+    styleUrl: './country-input.component.scss',
+    standalone: false
 })
 export class CountryInputComponent implements OnInit {
 

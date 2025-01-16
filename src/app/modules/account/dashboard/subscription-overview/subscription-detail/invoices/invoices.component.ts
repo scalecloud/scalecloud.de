@@ -10,9 +10,10 @@ import { Invoice, InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from '
 import { InvoicesService } from './invoices.service';
 
 @Component({
-  selector: 'app-invoices',
-  templateUrl: './invoices.component.html',
-  styleUrl: './invoices.component.scss'
+    selector: 'app-invoices',
+    templateUrl: './invoices.component.html',
+    styleUrl: './invoices.component.scss',
+    standalone: false
 })
 export class InvoicesComponent implements OnInit {
   reply: ListInvoicesReply | null;

@@ -4,9 +4,10 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 import { BillingPortalService } from './billing-portal.service';
 
 @Component({
-  selector: 'app-billing-portal',
-  templateUrl: './billing-portal.component.html',
-  styleUrls: ['./billing-portal.component.scss']
+    selector: 'app-billing-portal',
+    templateUrl: './billing-portal.component.html',
+    styleUrls: ['./billing-portal.component.scss'],
+    standalone: false
 })
 export class BillingPortalComponent {
 

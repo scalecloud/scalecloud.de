@@ -10,9 +10,10 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 import { RoleDescriptions, Role } from 'src/app/shared/roles/roles';
 
 @Component({
-  selector: 'app-add-seat',
-  templateUrl: './add-seat.component.html',
-  styleUrl: './add-seat.component.scss'
+    selector: 'app-add-seat',
+    templateUrl: './add-seat.component.html',
+    styleUrl: './add-seat.component.scss',
+    standalone: false
 })
 export class AddSeatComponent {
 

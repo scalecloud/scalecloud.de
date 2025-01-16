@@ -6,9 +6,10 @@ import { SynologyProduct } from '../synology/synology-product';
 import { QuantityComponent } from './quantity/quantity.component';
 
 @Component({
-  selector: 'app-subscription-card',
-  templateUrl: './subscription-card.component.html',
-  styleUrls: ['./subscription-card.component.scss']
+    selector: 'app-subscription-card',
+    templateUrl: './subscription-card.component.html',
+    styleUrls: ['./subscription-card.component.scss'],
+    standalone: false
 })
 export class SubscriptionCardComponent {
 

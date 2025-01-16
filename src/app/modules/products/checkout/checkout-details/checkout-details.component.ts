@@ -11,9 +11,10 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
-  selector: 'app-checkout-details',
-  templateUrl: './checkout-details.component.html',
-  styleUrls: ['./checkout-details.component.scss']
+    selector: 'app-checkout-details',
+    templateUrl: './checkout-details.component.html',
+    styleUrls: ['./checkout-details.component.scss'],
+    standalone: false
 })
 export class CheckoutDetailsComponent implements OnInit {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;

@@ -8,9 +8,10 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
 declare const Stripe: any;
 
 @Component({
-  selector: 'app-stripe-payment-element',
-  templateUrl: './stripe-payment-element.component.html',
-  styleUrls: ['./stripe-payment-element.component.scss']
+    selector: 'app-stripe-payment-element',
+    templateUrl: './stripe-payment-element.component.html',
+    styleUrls: ['./stripe-payment-element.component.scss'],
+    standalone: false
 })
 export class StripePaymentElementComponent {
   ServiceStatus = ServiceStatus;

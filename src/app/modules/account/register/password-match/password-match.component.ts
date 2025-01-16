@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-password-match',
-  templateUrl: './password-match.component.html',
-  styleUrls: ['./password-match.component.scss']
+    selector: 'app-password-match',
+    templateUrl: './password-match.component.html',
+    styleUrls: ['./password-match.component.scss'],
+    standalone: false
 })
 export class PasswordMatchComponent {
   @Input() password: string | undefined;

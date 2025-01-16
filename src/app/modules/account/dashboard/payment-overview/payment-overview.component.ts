@@ -8,9 +8,10 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
-  selector: 'app-payment-overview',
-  templateUrl: './payment-overview.component.html',
-  styleUrls: ['./payment-overview.component.scss']
+    selector: 'app-payment-overview',
+    templateUrl: './payment-overview.component.html',
+    styleUrls: ['./payment-overview.component.scss'],
+    standalone: false
 })
 export class PaymentOverviewComponent implements OnInit {
   reply: PaymentMethodOverviewReply | undefined;

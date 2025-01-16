@@ -2,9 +2,10 @@ import { Component, Signal } from '@angular/core';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 
 @Component({
-  selector: 'app-default',
-  templateUrl: './default.component.html',
-  styleUrls: ['./default.component.scss']
+    selector: 'app-default',
+    templateUrl: './default.component.html',
+    styleUrls: ['./default.component.scss'],
+    standalone: false
 })
 export class DefaultComponent {
   isExpanded = true;

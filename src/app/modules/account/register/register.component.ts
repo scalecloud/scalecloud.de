@@ -6,9 +6,10 @@ import { PasswordStrengthComponent } from './password-strength/password-strength
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
+    standalone: false
 })
 export class RegisterComponent {
 

@@ -11,9 +11,10 @@ import { PermissionService } from 'src/app/shared/services/permission/permission
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-seats',
-  templateUrl: './seats.component.html',
-  styleUrls: ['./seats.component.scss']
+    selector: 'app-seats',
+    templateUrl: './seats.component.html',
+    styleUrls: ['./seats.component.scss'],
+    standalone: false
 })
 export class SeatsComponent implements OnInit {
   seatListReply: ListSeatReply | null;

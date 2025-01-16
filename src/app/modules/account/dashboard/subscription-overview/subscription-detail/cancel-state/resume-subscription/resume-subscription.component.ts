@@ -9,9 +9,10 @@ import { ResumeSubscriptionService } from './resume-subscription.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
 
 @Component({
-  selector: 'app-resume-subscription',
-  templateUrl: './resume-subscription.component.html',
-  styleUrls: ['./resume-subscription.component.scss']
+    selector: 'app-resume-subscription',
+    templateUrl: './resume-subscription.component.html',
+    styleUrls: ['./resume-subscription.component.scss'],
+    standalone: false
 })
 export class ResumeSubscriptionComponent {
 
