@@ -23,12 +23,12 @@ export class CancelStateComponent implements OnInit {
 
 
   constructor(
-    public authService: AuthService,
-    private cancelStateService: CancelStateService,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private permissionService: PermissionService,
-    private route: ActivatedRoute,
+    private readonly authService: AuthService,
+    private readonly cancelStateService: CancelStateService,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly permissionService: PermissionService,
+    private readonly route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
