@@ -50,7 +50,6 @@ export class ChangePaymentComponent {
 
   changePaymentMethod(): void {
     if (this.stripePaymentElementComponent) {
-      const ret = this.returnUrlService.getReturnUrlDecoded();
       const returnUrl = this.returnUrlService.getSpecifiedUrlWithReturnUrl('/dashboard/change-payment/status');
       this.logService.info("returnUrl: " + returnUrl);
       const submitStripePayment: SubmitStripePayment = {
