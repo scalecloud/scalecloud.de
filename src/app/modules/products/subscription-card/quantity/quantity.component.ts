@@ -14,8 +14,8 @@ export class QuantityComponent implements OnInit {
   quantityValidator = new UntypedFormControl(1, [Validators.required, Validators.min(1)]);
 
   constructor(
-    private snackBarService: SnackBarService,
-    private route: ActivatedRoute,
+    private readonly snackBarService: SnackBarService,
+    private readonly route: ActivatedRoute,
   ) { }
 
 

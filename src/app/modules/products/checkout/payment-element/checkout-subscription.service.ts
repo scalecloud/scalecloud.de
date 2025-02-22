@@ -12,8 +12,8 @@ export class CheckoutSubscriptionService {
   private url = 'http://localhost:15000/checkout-integration/create-checkout-subscription';
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
     ) { }
 
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): Observable<CheckoutCreateSubscriptionReply> {

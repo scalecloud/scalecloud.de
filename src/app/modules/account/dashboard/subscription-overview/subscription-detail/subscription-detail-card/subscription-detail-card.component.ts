@@ -21,12 +21,12 @@ export class SubscriptionDetailCardComponent implements OnInit {
   serviceStatus = ServiceStatus.Initializing;
 
   constructor(
-    public authService: AuthService,
-    private permissionService: PermissionService,
-    private subscriptionDetailCardServiceService: SubscriptionDetailCardServiceService,
-    private route: ActivatedRoute,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
+    private readonly authService: AuthService,
+    private readonly permissionService: PermissionService,
+    private readonly subscriptionDetailCardServiceService: SubscriptionDetailCardServiceService,
+    private readonly route: ActivatedRoute,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {

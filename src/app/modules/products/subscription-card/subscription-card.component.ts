@@ -1,6 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { LogService } from 'src/app/shared/services/log/log.service';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
 import { QuantityComponent } from './quantity/quantity.component';
@@ -19,8 +18,7 @@ export class SubscriptionCardComponent {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
 
   constructor(
-    private logService: LogService,
-    private router: Router
+    private readonly router: Router
   ) { }
 
   openCheckoutIntegration(): void {

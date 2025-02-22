@@ -1,17 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { LogService } from '../services/log/log.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterGuard {
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    private ngZone: NgZone,
-    private logService: LogService,
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly ngZone: NgZone
   ) { }
 
   async canActivate(

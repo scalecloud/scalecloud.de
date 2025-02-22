@@ -21,9 +21,9 @@ export class StripePaymentElementComponent {
   initStripePayment: InitStripePayment | undefined;
 
   constructor(
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private stripeKeyService: StripeKeyService
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly stripeKeyService: StripeKeyService
   ) { }
 
   initPaymentElement(initStripePayment: InitStripePayment): void {

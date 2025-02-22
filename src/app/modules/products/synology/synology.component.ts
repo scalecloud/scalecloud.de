@@ -3,7 +3,6 @@ import { SynologyProduct } from './synology-product';
 import { ProductType } from '../product-model';
 import { ProductService } from '../product/product.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
     selector: 'app-synology',
@@ -19,8 +18,7 @@ export class SynologyComponent implements OnInit {
   serviceStatus = ServiceStatus.Initializing;
 
   constructor(
-    private productService: ProductService,
-    private snackBarService: SnackBarService,
+    private readonly productService: ProductService,
   ) { }
 
   ngOnInit(): void {

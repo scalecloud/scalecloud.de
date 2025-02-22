@@ -16,9 +16,9 @@ export class LoginComponent {
   password = new UntypedFormControl('', [Validators.required]);
 
   constructor(
-    public auth: AuthService,
-    private returnUrlService: ReturnUrlService,
-    private logService: LogService,
+    private readonly auth: AuthService,
+    private readonly returnUrlService: ReturnUrlService,
+    private readonly logService: LogService,
   ) { }
 
   login(): void {

@@ -13,7 +13,7 @@ export class SnackBarProgressComponent implements OnInit {
 
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: any,
-    private snackBarRef: MatSnackBarRef<SnackBarProgressComponent>
+    private readonly snackBarRef: MatSnackBarRef<SnackBarProgressComponent>
   ) {}
 
   ngOnInit() {

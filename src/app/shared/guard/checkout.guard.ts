@@ -8,10 +8,10 @@ import { LogService } from '../services/log/log.service';
 })
 export class CheckoutGuard {
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    private ngZone: NgZone,
-    private logService: LogService,
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly ngZone: NgZone,
+    private readonly logService: LogService,
   ) { }
 
   async canActivate(

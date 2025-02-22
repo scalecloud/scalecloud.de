@@ -7,8 +7,8 @@ import { LogService } from '../services/log/log.service';
 @Injectable()
 export class ServiceErrorInterceptorService implements HttpInterceptor {
   constructor(
-    private snackBarService: SnackBarService,
-    private logService: LogService
+    private readonly snackBarService: SnackBarService,
+    private readonly logService: LogService
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

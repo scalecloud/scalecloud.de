@@ -17,11 +17,11 @@ export class AuthService {
   private token: string | null | undefined = undefined;
 
   constructor(
-    private afAuth: AngularFireAuth,
-    private router: Router,
-    private snackBarService: SnackBarService,
-    private logService: LogService,
-    private returnUrlService: ReturnUrlService,
+    private readonly afAuth: AngularFireAuth,
+    private readonly router: Router,
+    private readonly snackBarService: SnackBarService,
+    private readonly logService: LogService,
+    private readonly returnUrlService: ReturnUrlService,
   ) {
     this.afAuth.useDeviceLanguage();
     this.subscribeToUser();

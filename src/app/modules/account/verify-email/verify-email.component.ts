@@ -17,9 +17,9 @@ export class VerifyEmailComponent implements OnInit {
   isProceedToCheckoutLoading = false;
 
   constructor(
-    public authService: AuthService,
-    private returnUrlService: ReturnUrlService,
-    private snackBarService: SnackBarService
+    public readonly authService: AuthService,
+    private readonly returnUrlService: ReturnUrlService,
+    private readonly snackBarService: SnackBarService
   ) { }
 
   ngOnInit(): void {

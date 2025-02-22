@@ -21,9 +21,9 @@ export class PermissionService {
   loadingPermissions: WritableSignal<boolean> = signal(false);
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private logService: LogService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
+    private readonly logService: LogService,
   ) { }
 
   async isOwner(subscriptionID: string): Promise<boolean> {

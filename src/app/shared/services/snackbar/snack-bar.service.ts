@@ -11,9 +11,9 @@ export class SnackBarService {
   private defaultDuration = 8;
 
   constructor(
-    public snackBar: MatSnackBar,
-    private zone: NgZone,
-    private logService: LogService
+    private readonly snackBar: MatSnackBar,
+    private readonly zone: NgZone,
+    private readonly logService: LogService
   ) { }
 
   info(message: string) {

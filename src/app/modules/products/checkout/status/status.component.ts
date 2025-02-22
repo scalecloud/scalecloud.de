@@ -20,10 +20,10 @@ export class StatusComponent implements OnInit {
   trialing: boolean = false;
 
   constructor(
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private route: ActivatedRoute,
-    private authService: AuthService
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly route: ActivatedRoute,
+    private readonly authService: AuthService
   ) { }
 
   ngOnInit(): void {

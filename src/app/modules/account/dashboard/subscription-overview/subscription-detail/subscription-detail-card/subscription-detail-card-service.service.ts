@@ -11,8 +11,9 @@ export class SubscriptionDetailCardServiceService {
 
   private url = 'http://localhost:15000/dashboard/subscription';
 
-  constructor(private http: HttpClient,
-    private authService: AuthService,
+  constructor(
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
   ) { }
 
   getSubscriptionDetail(id: string): Observable<SubscriptionDetailReply> {

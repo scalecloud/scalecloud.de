@@ -20,9 +20,9 @@ export class RegisterComponent {
   submitted = false;
 
   constructor(
-    private formBuilder: UntypedFormBuilder, 
-    public authService: AuthService,
-    private returnUrlService: ReturnUrlService,
+    private readonly formBuilder: UntypedFormBuilder, 
+    private readonly authService: AuthService,
+    private readonly returnUrlService: ReturnUrlService,
     ) {
     this.form = this.formBuilder.group(
       {

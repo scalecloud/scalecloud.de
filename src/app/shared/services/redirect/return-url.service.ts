@@ -11,11 +11,11 @@ export class ReturnUrlService {
   private readonly baseURL: string = 'https://www.scalecloud.de';
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private logService: LogService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly logService: LogService,
     @Inject(DOCUMENT) private document: Document,
-    private location: Location,
+    private readonly location: Location,
   ) { }
 
   public openUrlKeepReturnUrl(url: string) {

@@ -10,7 +10,7 @@ export class StripeKeyService {
   readonly publicKeyLive: string = ""
 
   constructor(
-    private logService: LogService
+    private readonly logService: LogService
   ) { }
 
   getPublicKey(): string | undefined {

@@ -20,11 +20,11 @@ export class CheckoutComponent {
   productID: string | undefined;
 
   constructor(
-    private logService: LogService,
-    private router: Router,
-    private snackBarService: SnackBarService,
-    private authService: AuthService,
-    private checkoutSubscriptionService: CheckoutSubscriptionService
+    private readonly logService: LogService,
+    private readonly router: Router,
+    private readonly snackBarService: SnackBarService,
+    private readonly authService: AuthService,
+    private readonly checkoutSubscriptionService: CheckoutSubscriptionService
   ) { }
 
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): void {
