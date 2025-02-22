@@ -26,10 +26,10 @@ export class StatusPaymentChangedComponent implements OnInit  {
   requires_payment_method: boolean = false;
 
   constructor(
-    private logService: LogService,
-    private route: ActivatedRoute,
-    private authService: AuthService,
-    private stripeKeyService: StripeKeyService
+    private readonly logService: LogService,
+    private readonly route: ActivatedRoute,
+    private readonly authService: AuthService,
+    private readonly stripeKeyService: StripeKeyService
   ) { }
 
   ngOnInit(): void {

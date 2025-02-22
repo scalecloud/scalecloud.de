@@ -22,11 +22,11 @@ export class DashboardComponent implements OnInit {
   serviceStatus = ServiceStatus.Initializing;
 
   constructor(
-    public authService: AuthService,
-    private subscriptionOverviewService: SubscriptionOverviewService,
-    private logService: LogService,
-    public lastCountService: LastCountService,
-    private snackBarService: SnackBarService,
+    private readonly authService: AuthService,
+    private readonly subscriptionOverviewService: SubscriptionOverviewService,
+    private readonly logService: LogService,
+    public readonly lastCountService: LastCountService,
+    private readonly snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {

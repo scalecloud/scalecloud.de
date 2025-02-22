@@ -30,12 +30,12 @@ export class InvoicesComponent implements OnInit {
   pageEvent: PageEvent;
 
   constructor(
-    public authService: AuthService,
-    private invoiceService: InvoicesService,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private permissionService: PermissionService,
-    private route: ActivatedRoute,
+    private readonly authService: AuthService,
+    private readonly invoiceService: InvoicesService,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly permissionService: PermissionService,
+    private readonly route: ActivatedRoute,
   ) { }
 
 

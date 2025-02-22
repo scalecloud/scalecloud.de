@@ -12,8 +12,8 @@ export class ChangePaymentService {
   private url = 'http://localhost:15000/dashboard/get-change-payment-setup-intent';
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
     ) { }
 
   getChangePaymentSetupIntent(): Observable<ChangePaymentReply> {

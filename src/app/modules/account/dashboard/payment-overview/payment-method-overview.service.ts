@@ -12,8 +12,8 @@ export class PaymentMethodOverviewService {
   private url = 'http://localhost:15000/dashboard/get-payment-method-overview';
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
   ) { }
 
   getPaymentMethodOverview(): Observable<PaymentMethodOverviewReply> {

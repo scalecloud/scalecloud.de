@@ -30,13 +30,13 @@ export class SeatsComponent implements OnInit {
   pageEvent: PageEvent;
 
   constructor(
-    public authService: AuthService,
-    private seatService: SeatsService,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private returnUrlService: ReturnUrlService,
-    private permissionService: PermissionService,
-    private route: ActivatedRoute,
+    private readonly authService: AuthService,
+    private readonly seatService: SeatsService,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly returnUrlService: ReturnUrlService,
+    private readonly permissionService: PermissionService,
+    private readonly route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {

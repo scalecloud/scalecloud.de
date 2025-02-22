@@ -25,14 +25,14 @@ export class BillingAddressDetailComponent implements OnInit {
   submitted = false;
 
   constructor(
-    private formBuilder: UntypedFormBuilder,
-    public authService: AuthService,
-    private permissionService: PermissionService,
-    private service: BillingAddressService,
-    private route: ActivatedRoute,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private returnUrlService: ReturnUrlService,
+    private readonly formBuilder: UntypedFormBuilder,
+    private readonly authService: AuthService,
+    private readonly permissionService: PermissionService,
+    private readonly service: BillingAddressService,
+    private readonly route: ActivatedRoute,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly returnUrlService: ReturnUrlService,
   ) { }
 
   ngOnInit(): void {

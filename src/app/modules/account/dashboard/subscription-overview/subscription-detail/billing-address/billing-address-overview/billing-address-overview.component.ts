@@ -26,14 +26,14 @@ export class BillingAddressOverviewComponent {
 
   constructor(
     public authService: AuthService,
-    private permissionService: PermissionService,
-    private service: BillingAddressService,
-    private route: ActivatedRoute,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private returnUrlService: ReturnUrlService,
-    private countryService: CountryService,
-    private languageService: LanguageService
+    private readonly permissionService: PermissionService,
+    private readonly service: BillingAddressService,
+    private readonly route: ActivatedRoute,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly returnUrlService: ReturnUrlService,
+    private readonly countryService: CountryService,
+    private readonly languageService: LanguageService
   ) { }
 
   ngOnInit(): void {

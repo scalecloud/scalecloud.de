@@ -4,17 +4,17 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 import { BillingPortalService } from './billing-portal.service';
 
 @Component({
-    selector: 'app-billing-portal',
-    templateUrl: './billing-portal.component.html',
-    styleUrls: ['./billing-portal.component.scss'],
-    standalone: false
+  selector: 'app-billing-portal',
+  templateUrl: './billing-portal.component.html',
+  styleUrls: ['./billing-portal.component.scss'],
+  standalone: false
 })
 export class BillingPortalComponent {
 
   constructor(
-    public authService: AuthService,
-    private billingPortalService: BillingPortalService,
-    private logService: LogService
+    private readonly authService: AuthService,
+    private readonly billingPortalService: BillingPortalService,
+    private readonly logService: LogService
   ) { }
 
   openBillingPortal(): void {

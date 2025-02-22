@@ -21,8 +21,8 @@ export class CountryInputComponent implements OnInit {
   filteredCountries: Observable<Country[]>;
 
   constructor(
-    private countryService: CountryService,
-    private languageService: LanguageService
+    private readonly countryService: CountryService,
+    private readonly languageService: LanguageService
   ) { }
 
   ngOnInit() {

@@ -19,12 +19,12 @@ export class ResumeSubscriptionComponent {
   @Output() reloadSubscriptionDetail = new EventEmitter();
 
   constructor(
-    public authService: AuthService,
-    private resumeSubscriptionService: ResumeSubscriptionService,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private route: ActivatedRoute,
-    public dialog: MatDialog
+    private readonly authService: AuthService,
+    private readonly resumeSubscriptionService: ResumeSubscriptionService,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly route: ActivatedRoute,
+    private readonly dialog: MatDialog
   ) { }
 
   openConfirmDialog() {

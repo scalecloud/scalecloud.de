@@ -28,13 +28,13 @@ export class SeatDetailComponent {
   Roles = Role;
 
   constructor(
-    private authService: AuthService,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private seatDetailService: SeatDetailService,
-    private returnUrlService: ReturnUrlService,
-    private route: ActivatedRoute,
-    private dialog: MatDialog,
+    private readonly authService: AuthService,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly seatDetailService: SeatDetailService,
+    private readonly returnUrlService: ReturnUrlService,
+    private readonly route: ActivatedRoute,
+    private readonly dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {

@@ -12,8 +12,8 @@ export class CancelSubscriptionService {
   private url = 'http://localhost:15000/dashboard/cancel-subscription';
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
   ) { }
 
   cancelSubscription(iSubscriptionCancelRequest: ISubscriptionCancelRequest): Observable<ISubscriptionCancelReply> {

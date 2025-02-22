@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
 import { CancelStateReply } from './cancel-state';
 
 @Injectable({
@@ -12,9 +11,9 @@ export class CancelStateService {
 
   private url = 'http://localhost:15000/dashboard/subscription';
 
-  constructor(private http: HttpClient,
-    private logService: LogService,
-    private authService: AuthService,
+  constructor(
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
   ) { }
 
   getCancelState(id: string): Observable<CancelStateReply> {

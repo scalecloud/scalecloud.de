@@ -19,10 +19,10 @@ export class ChangePaymentComponent {
   subscriptionSetupIntentReply: ChangePaymentReply | undefined;
 
   constructor(
-    public authService: AuthService,
-    private logService: LogService,
-    private changePaymentService: ChangePaymentService,
-    private returnUrlService: ReturnUrlService,
+    private readonly authService: AuthService,
+    private readonly logService: LogService,
+    private readonly changePaymentService: ChangePaymentService,
+    private readonly returnUrlService: ReturnUrlService,
   ) { }
 
   ngOnInit(): void {

@@ -13,8 +13,8 @@ export class BillingAddressService {
   private urlUpdateBillingAddress = 'http://localhost:15000/dashboard/subscription/update-billing-address';
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
   ) { }
 
   getBillingAddress(request: BillingAddressRequest): Observable<BillingAddressReply> {

@@ -9,7 +9,7 @@ import { Language } from './Language';
 export class CountryService {
 
   constructor(
-    private logService: LogService
+    private readonly logService: LogService
   ) { }
 
   getCountry(language: Language, code: string): string {

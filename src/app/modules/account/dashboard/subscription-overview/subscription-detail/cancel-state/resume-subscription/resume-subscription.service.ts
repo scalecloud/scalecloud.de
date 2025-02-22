@@ -12,8 +12,8 @@ export class ResumeSubscriptionService {
   private url = 'http://localhost:15000/dashboard/resume-subscription';
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
     ) { }
 
   resumeSubscription(iSubscriptionResumeRequest: ISubscriptionResumeRequest): Observable<ISubscriptionResumeReply> {

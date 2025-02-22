@@ -12,8 +12,8 @@ export class SeatsService {
   private url = 'http://localhost:15000/dashboard/subscription/list-seats';
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
   ) { }
 
   getListSeats(listSeatRequest: ListSeatRequest): Observable<ListSeatReply> {

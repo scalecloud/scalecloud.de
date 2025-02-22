@@ -26,12 +26,12 @@ export class AddSeatComponent {
   selectedRoles: Role[] = [];
 
   constructor(
-    private authService: AuthService,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private addSeatService: AddSeatService,
-    private returnUrlService: ReturnUrlService,
-    private route: ActivatedRoute,
+    private readonly authService: AuthService,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly addSeatService: AddSeatService,
+    private readonly returnUrlService: ReturnUrlService,
+    private readonly route: ActivatedRoute,
   ) { }
 
   addSeat(): void {

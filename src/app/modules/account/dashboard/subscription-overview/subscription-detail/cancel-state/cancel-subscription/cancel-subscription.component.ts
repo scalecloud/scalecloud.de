@@ -19,12 +19,12 @@ export class CancelSubscriptionComponent {
   @Output() reloadSubscriptionDetail = new EventEmitter();
 
   constructor(
-    public authService: AuthService,
-    private cancelSubscriptionService: CancelSubscriptionService,
-    private logService: LogService,
-    private snackBarService: SnackBarService,
-    private route: ActivatedRoute,
-    public dialog: MatDialog
+    private readonly authService: AuthService,
+    private readonly cancelSubscriptionService: CancelSubscriptionService,
+    private readonly logService: LogService,
+    private readonly snackBarService: SnackBarService,
+    private readonly route: ActivatedRoute,
+    private readonly dialog: MatDialog
   ) { }
 
   openConfirmDialog() {

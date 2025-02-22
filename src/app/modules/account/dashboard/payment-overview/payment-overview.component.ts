@@ -19,11 +19,11 @@ export class PaymentOverviewComponent implements OnInit {
   serviceStatus = ServiceStatus.Initializing;
 
   constructor(
-    private subscriptionPaymentMethodService: PaymentMethodOverviewService,
-    private authService: AuthService,
-    private logService: LogService,
-    private returnUrlService: ReturnUrlService,
-    private snackBarService: SnackBarService,
+    private readonly subscriptionPaymentMethodService: PaymentMethodOverviewService,
+    private readonly authService: AuthService,
+    private readonly logService: LogService,
+    private readonly returnUrlService: ReturnUrlService,
+    private readonly snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {

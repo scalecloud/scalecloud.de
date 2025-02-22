@@ -13,8 +13,8 @@ export class SeatDetailService {
   private urlUpdateSeatDetail = 'http://localhost:15000/dashboard/subscription/update-seat';
   private urlDeleteSeat = 'http://localhost:15000/dashboard/subscription/delete-seat';
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
   ) { }
 
   getSeat(seatDetailRequest: SeatDetailRequest): Observable<SeatDetailReply> {

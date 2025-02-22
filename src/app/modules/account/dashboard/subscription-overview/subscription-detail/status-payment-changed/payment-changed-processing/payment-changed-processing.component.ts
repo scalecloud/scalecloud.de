@@ -10,7 +10,7 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 export class PaymentChangedProcessingComponent {
 
   constructor(
-    private returnUrlService: ReturnUrlService,
+    private readonly returnUrlService: ReturnUrlService,
   ) { }
 
   openReturnUrl(): void {

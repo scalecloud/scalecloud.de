@@ -11,8 +11,8 @@ export class AddSeatService {
 
   private url = 'http://localhost:15000/dashboard/subscription/add-seat';
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
   ) { }
 
   addSeat(addSeatRequest: AddSeatRequest): Observable<AddSeatReply> {
