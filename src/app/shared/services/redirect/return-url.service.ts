@@ -14,7 +14,7 @@ export class ReturnUrlService {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly logService: LogService,
-    @Inject(DOCUMENT) private document: Document,
+    @Inject(DOCUMENT) private readonly document: Document,
     private readonly location: Location,
   ) { }
 

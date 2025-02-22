@@ -12,8 +12,8 @@ export class CheckoutProductService {
   private readonly url = 'http://localhost:15000/checkout-integration/get-checkout-product';
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
   ) { }
 
   getCheckoutProduct(checkoutProductRequest: CheckoutProductRequest): Observable<CheckoutProductReply> {
