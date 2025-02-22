@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-billing-address-detail',
@@ -16,8 +16,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
   templateUrl: './billing-address-detail.component.html',
   styleUrl: './billing-address-detail.component.scss'
 })
-export class BillingAddressDetailComponent {
-
+export class BillingAddressDetailComponent implements OnInit {
 
   reply: BillingAddressReply | undefined;
   ServiceStatus = ServiceStatus;
@@ -51,6 +50,10 @@ export class BillingAddressDetailComponent {
 
   get f() {
     return this.form.controls;
+  }
+
+  onCountryControlReceived(countryControl: FormControl) {
+    this.form.setControl('country', countryControl);
   }
 
   getSubscriptionID(): string {

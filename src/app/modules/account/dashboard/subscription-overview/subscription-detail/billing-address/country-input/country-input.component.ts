@@ -1,12 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { _filter, Country } from '../country/countries';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
 import { Language } from '../country/Language';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-
 
 @Component({
     selector: 'app-country-input',
@@ -17,14 +15,14 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 export class CountryInputComponent implements OnInit {
 
   @Input() initialCountryCode: string = '';
+  @Output() countryControlEmitter = new EventEmitter<FormControl>();
 
   countryControl = new FormControl('', [Validators.required]);
   filteredCountries: Observable<Country[]>;
 
   constructor(
     private countryService: CountryService,
-    private languageService: LanguageService,
-    private snackBarService: SnackBarService
+    private languageService: LanguageService
   ) { }
 
   ngOnInit() {
@@ -39,6 +37,8 @@ export class CountryInputComponent implements OnInit {
         this.countryControl.setValue(initialCountry);
       }
     }
+
+    this.countryControlEmitter.emit(this.countryControl);
   }
 
   private _filter(value: string): Country[] {

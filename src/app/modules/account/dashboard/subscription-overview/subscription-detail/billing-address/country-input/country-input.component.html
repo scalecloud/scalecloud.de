@@ -1,4 +1,5 @@
 <mat-form-field class="full-width">
+    <mat-label>Country</mat-label>
     <input matInput type="text" [formControl]="countryControl" [matAutocomplete]="auto" (blur)="validateCountry()">
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCountrySelected($event.option.value)">
         <mat-option *ngFor="let country of filteredCountries | async" [value]="getCountryName(country)">

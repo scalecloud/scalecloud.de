@@ -28,9 +28,6 @@
                 <mat-list-item>
                     <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
                 </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
             </mat-list>
         </mat-card-content>
     </ng-container>
@@ -47,8 +44,7 @@
                     <input matInput formControlName="name">
                     <mat-error *ngIf="submitted && f.name.errors?.required">Name is required</mat-error>
                 </mat-form-field>
-                <app-country-input formControlName="country" [initialCountryCode]="getCountyCode()"></app-country-input>
-                <mat-error *ngIf="submitted && f.country.errors?.required">Country is required</mat-error>
+                <app-country-input [initialCountryCode]="getCountyCode()" (countryControlEmitter)="onCountryControlReceived($event)"></app-country-input>
                 <mat-form-field class="full-width">
                     <mat-label>Address line 1</mat-label>
                     <input matInput formControlName="line1">
@@ -76,7 +72,7 @@
                     <mat-error *ngIf="submitted && f.phone.errors?.pattern">Invalid Phone Number</mat-error>
                 </mat-form-field>
                 <mat-card-actions>
-                    <button class="update-button" type="submit" mat-flat-button [disabled]="!form.valid"
+                    <button class="update-button" type="submit" mat-flat-button
                         color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
                     <button class="cancel-button" type="button" (click)="cancel()" mat-stroked-button
                         color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
