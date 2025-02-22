@@ -9,7 +9,7 @@ import { SubscriptionDetailReply } from './subscription-detail-card';
 })
 export class SubscriptionDetailCardServiceService {
 
-  private url = 'http://localhost:15000/dashboard/subscription';
+  private readonly url = 'http://localhost:15000/dashboard/subscription';
 
   constructor(
     private readonly http: HttpClient,

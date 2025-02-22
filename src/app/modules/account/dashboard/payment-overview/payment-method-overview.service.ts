@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class PaymentMethodOverviewService {
 
-  private url = 'http://localhost:15000/dashboard/get-payment-method-overview';
+  private readonly url = 'http://localhost:15000/dashboard/get-payment-method-overview';
 
   constructor(
     private readonly http: HttpClient,

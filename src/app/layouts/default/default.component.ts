@@ -14,7 +14,9 @@ export class DefaultComponent {
   showSubSubMenu: boolean = false;
   isLoading: Signal<boolean>;
 
-  constructor(private permissionService: PermissionService) {
+  constructor(
+    private readonly permissionService: PermissionService
+  ) {
     this.isLoading = this.permissionService.loadingPermissions;
   }
 

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class ResumeSubscriptionService {
 
-  private url = 'http://localhost:15000/dashboard/resume-subscription';
+  private readonly url = 'http://localhost:15000/dashboard/resume-subscription';
 
   constructor(
     private readonly http: HttpClient,

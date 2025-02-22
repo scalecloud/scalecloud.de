@@ -9,7 +9,7 @@ import { IBillingPortal } from './billing-portal';
 })
 export class BillingPortalService {
 
-  private url = 'http://localhost:15000/dashboard/billing-portal';
+  private readonly url = 'http://localhost:15000/dashboard/billing-portal';
 
   constructor(
     private readonly http: HttpClient,

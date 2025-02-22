@@ -9,7 +9,7 @@ import { ChangePaymentReply } from './change-payment';
 })
 export class ChangePaymentService {
 
-  private url = 'http://localhost:15000/dashboard/get-change-payment-setup-intent';
+  private readonly url = 'http://localhost:15000/dashboard/get-change-payment-setup-intent';
 
   constructor(
     private readonly http: HttpClient,

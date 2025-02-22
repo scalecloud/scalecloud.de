@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class SeatsService {
 
-  private url = 'http://localhost:15000/dashboard/subscription/list-seats';
+  private readonly url = 'http://localhost:15000/dashboard/subscription/list-seats';
 
   constructor(
     private readonly http: HttpClient,

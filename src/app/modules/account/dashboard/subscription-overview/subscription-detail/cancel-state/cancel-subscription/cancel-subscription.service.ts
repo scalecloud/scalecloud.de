@@ -9,7 +9,7 @@ import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscrip
 })
 export class CancelSubscriptionService {
 
-  private url = 'http://localhost:15000/dashboard/cancel-subscription';
+  private readonly url = 'http://localhost:15000/dashboard/cancel-subscription';
 
   constructor(
     private readonly http: HttpClient,

@@ -9,7 +9,7 @@ import { CheckoutProductReply, CheckoutProductRequest } from './checkout-product
 })
 export class CheckoutProductService {
 
-  private url = 'http://localhost:15000/checkout-integration/get-checkout-product';
+  private readonly url = 'http://localhost:15000/checkout-integration/get-checkout-product';
 
   constructor(
     private http: HttpClient,

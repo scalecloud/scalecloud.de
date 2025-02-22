@@ -5,7 +5,6 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
     selector: 'app-payment-overview',
@@ -22,8 +21,7 @@ export class PaymentOverviewComponent implements OnInit {
     private readonly subscriptionPaymentMethodService: PaymentMethodOverviewService,
     private readonly authService: AuthService,
     private readonly logService: LogService,
-    private readonly returnUrlService: ReturnUrlService,
-    private readonly snackBarService: SnackBarService,
+    private readonly returnUrlService: ReturnUrlService
   ) { }
 
   ngOnInit(): void {

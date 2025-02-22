@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class InvoicesService {
 
-  private url = 'http://localhost:15000/dashboard/subscription/invoices';
+  private readonly url = 'http://localhost:15000/dashboard/subscription/invoices';
 
   constructor(
     private readonly http: HttpClient,

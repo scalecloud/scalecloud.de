@@ -9,7 +9,7 @@ import { CancelStateReply } from './cancel-state';
 })
 export class CancelStateService {
 
-  private url = 'http://localhost:15000/dashboard/subscription';
+  private readonly url = 'http://localhost:15000/dashboard/subscription';
 
   constructor(
     private readonly http: HttpClient,

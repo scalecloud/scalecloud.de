@@ -8,7 +8,7 @@ import { ProductTiersReply, ProductType } from '../product-model';
 })
 export class ProductService {
 
-  private url = 'http://localhost:15000/product/tiers';
+  private readonly url = 'http://localhost:15000/product/tiers';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

@@ -10,8 +10,7 @@ import { ISubscriptionOverview } from './subscription-overview';
 })
 export class SubscriptionOverviewService {
 
-  // private url = 'api.scalecloud.de/dashboard/subscriptions';
-  private url = 'http://localhost:15000/dashboard/subscriptions';
+  private readonly url = 'http://localhost:15000/dashboard/subscriptions';
 
   constructor(
     private readonly http: HttpClient,

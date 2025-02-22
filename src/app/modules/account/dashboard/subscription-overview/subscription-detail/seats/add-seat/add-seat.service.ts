@@ -9,7 +9,7 @@ import { AddSeatRequest, AddSeatReply } from '../seats';
 })
 export class AddSeatService {
 
-  private url = 'http://localhost:15000/dashboard/subscription/add-seat';
+  private readonly url = 'http://localhost:15000/dashboard/subscription/add-seat';
   constructor(
     private readonly http: HttpClient,
     private readonly authService: AuthService,

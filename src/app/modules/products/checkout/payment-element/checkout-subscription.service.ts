@@ -9,7 +9,7 @@ import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } fr
 })
 export class CheckoutSubscriptionService {
 
-  private url = 'http://localhost:15000/checkout-integration/create-checkout-subscription';
+  private readonly url = 'http://localhost:15000/checkout-integration/create-checkout-subscription';
 
   constructor(
     private readonly http: HttpClient,
