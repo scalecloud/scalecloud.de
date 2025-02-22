@@ -8,7 +8,7 @@ import { SnackBarProgressComponent } from './snack-bar-progress/snack-bar-progre
 })
 export class SnackBarService {
 
-  private defaultDuration = 8;
+  private readonly defaultDuration = 8;
 
   constructor(
     private readonly snackBar: MatSnackBar,

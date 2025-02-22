@@ -7,7 +7,7 @@ import { Language } from './Language';
 })
 export class LanguageService {
 
-  private languageSubject = new BehaviorSubject<Language>(Language.EN);
+  private readonly languageSubject = new BehaviorSubject<Language>(Language.EN);
   language$ = this.languageSubject.asObservable();
 
   setLanguage(language: Language) {

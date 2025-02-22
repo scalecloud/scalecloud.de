@@ -8,7 +8,6 @@ import { CurrencyPipe } from '@angular/common';
 import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
     selector: 'app-checkout-details',
@@ -24,12 +23,11 @@ export class CheckoutDetailsComponent implements OnInit {
   serviceStatus = ServiceStatus.Initializing;
 
   constructor(
-    private logService: LogService,
-    private checkoutProductService: CheckoutProductService,
-    private authService: AuthService,
-    private currencyPipe: CurrencyPipe,
-    private route: ActivatedRoute,
-    private snackBarService: SnackBarService,
+    private readonly logService: LogService,
+    private readonly checkoutProductService: CheckoutProductService,
+    private readonly authService: AuthService,
+    private readonly currencyPipe: CurrencyPipe,
+    private readonly route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
