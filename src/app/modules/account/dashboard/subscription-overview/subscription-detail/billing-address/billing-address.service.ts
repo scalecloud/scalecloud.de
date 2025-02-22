@@ -9,8 +9,8 @@ import { Observable } from 'rxjs/internal/Observable';
 })
 export class BillingAddressService {
 
-  private urlBillingAddress = 'http://localhost:15000/dashboard/subscription/billing-address';
-  private urlUpdateBillingAddress = 'http://localhost:15000/dashboard/subscription/update-billing-address';
+  private readonly urlBillingAddress = 'http://localhost:15000/dashboard/subscription/billing-address';
+  private readonly urlUpdateBillingAddress = 'http://localhost:15000/dashboard/subscription/update-billing-address';
 
   constructor(
     private readonly http: HttpClient,

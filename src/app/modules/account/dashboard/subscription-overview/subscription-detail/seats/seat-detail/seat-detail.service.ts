@@ -9,9 +9,9 @@ import { SeatDetailRequest, SeatDetailReply, UpdateSeatDetailRequest, UpdateSeat
 })
 export class SeatDetailService {
 
-  private urlGetSeat = 'http://localhost:15000/dashboard/subscription/seat-detail';
-  private urlUpdateSeatDetail = 'http://localhost:15000/dashboard/subscription/update-seat';
-  private urlDeleteSeat = 'http://localhost:15000/dashboard/subscription/delete-seat';
+  private readonly urlGetSeat = 'http://localhost:15000/dashboard/subscription/seat-detail';
+  private readonly urlUpdateSeatDetail = 'http://localhost:15000/dashboard/subscription/update-seat';
+  private readonly urlDeleteSeat = 'http://localhost:15000/dashboard/subscription/delete-seat';
   constructor(
     private readonly http: HttpClient,
     private readonly authService: AuthService,

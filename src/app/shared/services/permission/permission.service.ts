@@ -15,9 +15,9 @@ interface CacheEntry {
   providedIn: 'root'
 })
 export class PermissionService {
-  private urlPermission = 'http://localhost:15000/dashboard/subscription/permission';
-  private cache: Map<string, CacheEntry> = new Map();
-  private cacheDuration = 60000; // 1 minute in milliseconds
+  private readonly urlPermission = 'http://localhost:15000/dashboard/subscription/permission';
+  private readonly cache: Map<string, CacheEntry> = new Map();
+  private readonly cacheDuration = 60000; // 1 minute in milliseconds
   loadingPermissions: WritableSignal<boolean> = signal(false);
 
   constructor(
