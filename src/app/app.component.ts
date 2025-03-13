@@ -8,8 +8,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'scalecloud';
-
-  public throwTestError(): void {
-    throw new Error("Sentry Test Error");
-  }
 }
