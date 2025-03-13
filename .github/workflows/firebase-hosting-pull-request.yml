@@ -9,7 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm i && npx ng build --configuration "production"
+      - run: npm i
+      - run: npx ng build --configuration "production"
+      - name: Upload source maps to Sentry
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: npm run sentry:sourcemaps
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

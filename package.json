@@ -2,12 +2,13 @@
   "name": "scalecloud",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
+    "ng": "ng && npm run sentry:sourcemaps && npm run sentry:sourcemaps",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
     "lint": "nx lint",
-    "e2e": "nx e2e"
+    "e2e": "nx e2e",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org scalecloudde --project scalecloud ./dist/scalecloud && sentry-cli sourcemaps upload --org scalecloudde --project scalecloud ./dist/scalecloud"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +24,9 @@
     "@angular/platform-browser-dynamic": "^19.2.1",
     "@angular/router": "^19.2.1",
     "@firebase/logger": "^0.4.4",
+    "@sentry/angular": "^9.5.0",
+    "@sentry/cli": "^2.42.3",
+    "@sentry/tracing": "^7.120.3",
     "angular-in-memory-web-api": "^0.19.0",
     "cobe": "^0.6.3",
     "firebase": "^11.4.0",

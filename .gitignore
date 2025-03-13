@@ -51,3 +51,6 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+# Sentry Config File
+.sentryclirc
