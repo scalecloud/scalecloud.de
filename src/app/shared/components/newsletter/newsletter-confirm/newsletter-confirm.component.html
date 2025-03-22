@@ -1,1 +1,31 @@
-<p>newsletter-confirm works!</p>
+<mat-card>
+    @if (serviceStatus === ServiceStatus.Loading) {
+    <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-title>
+        Confirming E-Mail
+    </mat-card-title>
+    <mat-card-subtitle>
+        Please wait while we confirm your E-Mail for the newsletter.
+    </mat-card-subtitle>
+    <mat-card-content>
+        <ngx-skeleton-loader [theme]="{height: '2rem', width: '100%'}" />
+    </mat-card-content>
+    }
+    @if (serviceStatus === ServiceStatus.Success) {
+    <mat-card-title>
+        E-Mail for Newsletter Confirmed
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        Thank you for subscribing to our newsletter. You will receive the latest updates on our products and services.
+    </mat-card-content>
+    <mat-card-actions>
+        <button routerLink="/" mat-raised-button color="primary">
+            Home
+        </button>
+    </mat-card-actions>
+    }
+</mat-card>
+@if ( serviceStatus === ServiceStatus.Error ) {
+<app-loading-failed></app-loading-failed>
+}

@@ -66,8 +66,8 @@ const routes: Routes = [{
   // ForgotPasswordGuard
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [ForgotPasswordGuard] },
   // Newsletter
-  { path: 'newsletter/confirm/:uid', component: NewsletterConfirmComponent },
-  { path: 'newsletter/unsubscribe/:uid', component: NewsletterUnsubscribeComponent },
+  { path: 'newsletter/confirm/:newsletterUUID', component: NewsletterConfirmComponent },
+  { path: 'newsletter/unsubscribe/:newsletterUUID', component: NewsletterUnsubscribeComponent },
   // PageNotFound
   { path: '**', component: PageNotFoundComponent }
   ]
