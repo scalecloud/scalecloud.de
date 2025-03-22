@@ -2,18 +2,18 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
-import { SnackBarService } from '../../services/snackbar/snack-bar.service';
-import { NewsletterService } from './newsletter.service';
-import { NewsletterSubscribeReplyStatus, NewsletterSubscribeRequest } from './newsletter';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { NewsletterService } from '../newsletter.service';
+import { NewsletterSubscribeReplyStatus, NewsletterSubscribeRequest } from '../newsletter';
 
 @Component({
-  selector: 'app-newsletter',
-  templateUrl: './newsletter.component.html',
-  styleUrl: './newsletter.component.scss',
+  selector: 'app-newsletter-subscribe',
+  templateUrl: './newsletter-subscribe.component.html',
+  styleUrl: './newsletter-subscribe.component.scss',
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsletterComponent {
+export class NewsletterSubscribeComponent {
   readonly email = new FormControl('', [Validators.required, Validators.email]);
   errorMessage = signal('');
   send: boolean = true;
@@ -59,4 +59,3 @@ export class NewsletterComponent {
     }
   }
 }
-
