@@ -18,11 +18,16 @@ import { SnackBarProgressComponent } from './services/snackbar/snack-bar-progres
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NewsletterComponent } from './components/newsletter/newsletter.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
+    NewsletterComponent,
     SidebarComponent,
     StripePaymentElementComponent,
     LoadingFailedComponent,
@@ -36,6 +41,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatMenuModule,
     MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     MatSnackBarModule,
     MatCardModule,
@@ -46,6 +55,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   exports: [
     HeaderComponent,
     FooterComponent,
+    NewsletterComponent,
     SidebarComponent,
     StripePaymentElementComponent,
     LoadingFailedComponent,

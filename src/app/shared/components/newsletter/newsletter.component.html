@@ -1,0 +1,30 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <mat-icon class="titel-icon">mail</mat-icon>Newsletter
+        </mat-card-title>
+        <mat-card-subtitle>Be the first to know when we <b>launch</b> and get exclusive updates on our latest <b>offers</b>.</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <form (ngSubmit)="subscribeToNewsletter()" class="newsletter-form">
+            <mat-form-field appearance="outline" class="email-field">
+                <mat-label>Enter your E-Mail</mat-label>
+                <input  matInput placeholder="pat@example.com" [formControl]="email"
+                (blur)="updateErrorMessage()"
+                    required />
+                <mat-error *ngIf="email.invalid">{{ errorMessage() }}</mat-error>
+                <button mat-icon-button matSuffix (click)="email.reset()" *ngIf="email.value">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <button mat-flat-button color="primary" type="submit" [disabled]="email.invalid">
+                Subscribe
+                <mat-icon>send</mat-icon>
+            </button>
+            <p class="privacy-disclaimer">
+                By subscribing, you agree to our
+                <a routerLink="/privacy-policy">Privacy Policy</a>.
+            </p>
+        </form>
+    </mat-card-content>
+</mat-card>
