@@ -29,6 +29,8 @@ import { CheckoutGuard } from './shared/guard/checkout.guard';
 import { AddSeatComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component';
 import { SeatDetailComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component';
 import { BillingAddressDetailComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component';
+import { NewsletterConfirmComponent } from './shared/components/newsletter/newsletter-confirm/newsletter-confirm.component';
+import { NewsletterUnsubscribeComponent } from './shared/components/newsletter/newsletter-unsubscribe/newsletter-unsubscribe.component';
 
 const routes: Routes = [{
   path: '', component: DefaultComponent,
@@ -63,6 +65,9 @@ const routes: Routes = [{
   { path: 'verify-email-address', component: VerifyEmailComponent, canActivate: [VerifyEMailGuard] },
   // ForgotPasswordGuard
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [ForgotPasswordGuard] },
+  // Newsletter
+  { path: 'newsletter/confirm/:uid', component: NewsletterConfirmComponent },
+  { path: 'newsletter/unsubscribe/:uid', component: NewsletterUnsubscribeComponent },
   // PageNotFound
   { path: '**', component: PageNotFoundComponent }
   ]
