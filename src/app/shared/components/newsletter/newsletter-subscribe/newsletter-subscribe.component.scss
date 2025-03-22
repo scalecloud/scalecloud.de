@@ -16,8 +16,18 @@ mat-form-field {
     width: 100%;
 }
 
+.action-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button {
+    flex-shrink: 0;
+}
+
 .privacy-disclaimer {
-    text-align: center;
     font-size: 0.875rem;
     color: #555;
+    margin-left: 1rem;
 }
