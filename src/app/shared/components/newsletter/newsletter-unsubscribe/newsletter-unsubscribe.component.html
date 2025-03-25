@@ -1,1 +1,45 @@
-<p>newsletter-unsubscribe works!</p>
+<mat-card>
+    @if (serviceStatus === ServiceStatus.Loading) {
+    <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-title>
+        Unsubscribing E-Mail
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <p>Please wait while we unsubscribe your E-Mail from the newsletter.</p>
+        <mat-spinner></mat-spinner>
+    </mat-card-content>
+    }
+    @if (serviceStatus === ServiceStatus.Success) {
+    @if (reply?.unsubscribed) {
+    <mat-card-title>
+        <mat-icon class="icon-confirmed">notifications_off</mat-icon>E-Mail Unsubscribed
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <p>Your E-Mail was unsubscribed from the newsletter.</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button routerLink="/" mat-raised-button color="primary">
+            Home
+        </button>
+    </mat-card-actions>
+    } @else {
+    <mat-card-title>
+        <mat-icon class="icon-confirmed-failed">error</mat-icon>Unsubscribe Failed
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <p>We could not unsubscribe your E-Mail. Please try again or contact support for assistance.</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button routerLink="/" mat-raised-button color="primary">
+            Home
+        </button>
+    </mat-card-actions>
+    }
+    }
+</mat-card>
+@if (serviceStatus === ServiceStatus.Error) {
+<app-loading-failed></app-loading-failed>
+}
