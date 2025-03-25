@@ -29,8 +29,13 @@ export class NewsletterConfirmComponent implements OnInit {
   confirmNewsletter(): void {
     this.serviceStatus = ServiceStatus.Loading;
     let request: NewsletterConfirmRequest = {
-      uid: this.getNewsletterUUID(),
+      newsletterUUID: this.getNewsletterUUID(),
     };
+    if (request.newsletterUUID === '') {
+      this.serviceStatus = ServiceStatus.Error;
+      this.logService.error('newsletterUUID is empty current URL: ' + window.location.href);
+      return;
+    }
     this.newsletterService.confirmNewsletterEMail(request)
       .subscribe({
         next: reply => {
@@ -38,7 +43,7 @@ export class NewsletterConfirmComponent implements OnInit {
           this.serviceStatus = ServiceStatus.Success;
         },
         error: error => {
-          this.serviceStatus = ServiceStatus.Success;
+          this.serviceStatus = ServiceStatus.Error;
         }
       });
   }

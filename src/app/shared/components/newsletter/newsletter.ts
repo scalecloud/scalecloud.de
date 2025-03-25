@@ -19,7 +19,7 @@ export interface NewsletterSubscribeReply {
 }
 
 export interface NewsletterConfirmRequest {
-    uid: string;
+    newsletterUUID: string;
 }
 
 export interface NewsletterConfirmReply {
@@ -27,7 +27,7 @@ export interface NewsletterConfirmReply {
 }
 
 export interface NewsletterUnsubscribeRequest {
-    uid: string;
+    newsletterUUID: string;
 }
 
 export interface NewsletterUnsubscribeReply {
