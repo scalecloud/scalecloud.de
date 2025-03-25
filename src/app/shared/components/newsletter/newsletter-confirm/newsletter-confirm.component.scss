@@ -1,5 +1,8 @@
 mat-card {
     text-align: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    max-width: 40rem;
 }
 
 mat-card-title {
@@ -8,7 +11,24 @@ mat-card-title {
     padding-bottom: 0.5rem;
 }
 
-mat-card-subtitle {
-    margin-left: 1rem;
-    margin-right: 1rem;
+mat-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.5rem;
+}
+
+mat-card-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.icon-confirmed {
+    margin-right: 0.5rem;
+    color: green;
+}
+
+.icon-confirmed-failed {
+    margin-right: 0.5rem;
+    color: red;
 }

@@ -4,20 +4,33 @@
     <mat-card-title>
         Confirming E-Mail
     </mat-card-title>
-    <mat-card-subtitle>
-        Please wait while we confirm your E-Mail for the newsletter.
-    </mat-card-subtitle>
+    <mat-divider></mat-divider>
     <mat-card-content>
-        <ngx-skeleton-loader [theme]="{height: '2rem', width: '100%'}" />
+        <p>Please wait while we confirm your E-Mail for the newsletter.</p>
+        <mat-spinner></mat-spinner>
     </mat-card-content>
     }
     @if (serviceStatus === ServiceStatus.Success) {
+    @if (reply?.confirmed) {
     <mat-card-title>
-        E-Mail for Newsletter Confirmed
+        <mat-icon class="icon-confirmed">notifications</mat-icon>E-Mail Confirmed
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
-        Thank you for subscribing to our newsletter. You will receive the latest updates on our products and services.
+        <p>Your E-Mail was confirmed for the newsletter.</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button routerLink="/" mat-raised-button color="primary">
+            Home
+        </button>
+    </mat-card-actions>
+    } @else {
+    <mat-card-title>
+        <mat-icon class="icon-confirmed-failed">error</mat-icon>Confirmation Failed
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <p>We could not confirm your subscription. Please try again or contact support for assistance.</p>
     </mat-card-content>
     <mat-card-actions>
         <button routerLink="/" mat-raised-button color="primary">
@@ -25,7 +38,8 @@
         </button>
     </mat-card-actions>
     }
+    }
 </mat-card>
-@if ( serviceStatus === ServiceStatus.Error ) {
+@if (serviceStatus === ServiceStatus.Error) {
 <app-loading-failed></app-loading-failed>
 }

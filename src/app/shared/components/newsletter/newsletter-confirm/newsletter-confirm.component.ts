@@ -34,15 +34,11 @@ export class NewsletterConfirmComponent implements OnInit {
     this.newsletterService.confirmNewsletterEMail(request)
       .subscribe({
         next: reply => {
-          if (reply.confirmed) {
-            this.reply = reply;
-            this.serviceStatus = ServiceStatus.Success;
-          } else {
-            this.serviceStatus = ServiceStatus.Error;
-          }
+          this.reply = reply;
+          this.serviceStatus = ServiceStatus.Success;
         },
         error: error => {
-          this.serviceStatus = ServiceStatus.Error;
+          this.serviceStatus = ServiceStatus.Success;
         }
       });
   }
