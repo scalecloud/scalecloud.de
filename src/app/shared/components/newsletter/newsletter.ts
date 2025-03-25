@@ -1,12 +1,12 @@
 export enum NewsletterStatus {
-    SUBSCRIBED = 'SUBSCRIBED',
-    UNSUBSCRIBED = 'UNSUBSCRIBED',
-    CONFIRM_AWAITING = 'CONFIRM_AWAITING',
+    ACTIVE = 'active',
+    PENDING = 'pending',
+    BOUNCED = 'bounced',
 }
 
 export enum NewsletterSubscribeReplyStatus {
-    SUCCESS = 'SUCCESS',
-    INVALID_EMAIL = 'INVALID_EMAIL',
+    SUCCESS = 'success',
+    INVALID_EMAIL = 'invalid_email',
 }
 
 export interface NewsletterSubscribeRequest {
