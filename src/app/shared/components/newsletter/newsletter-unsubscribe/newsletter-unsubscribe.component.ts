@@ -24,17 +24,17 @@ export class NewsletterUnsubscribeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.confirmNewsletter();
+    this.unsubscribeNewsletter();
   }
 
-  confirmNewsletter(): void {
+  unsubscribeNewsletter(): void {
     this.serviceStatus = ServiceStatus.Loading;
     let request: NewsletterUnsubscribeRequest = {
-      newsletterUUID: this.getNewsletterUUID(),
+      unsubscribeToken: this.getUnsubscribeToken(),
     };
-    if (request.newsletterUUID === '') {
+    if (request.unsubscribeToken === '') {
       this.serviceStatus = ServiceStatus.Error;
-      this.logService.error('newsletterUUID is empty current URL: ' + window.location.href);
+      this.logService.error('unsubscribeToken is empty current URL: ' + window.location.href);
       return;
     }
     this.newsletterService.unsubscribeFromNewsletter(request)
@@ -49,8 +49,8 @@ export class NewsletterUnsubscribeComponent implements OnInit {
       });
   }
 
-  getNewsletterUUID(): string {
-    return this.route.snapshot.paramMap.get('newsletterUUID') || '';
+  getUnsubscribeToken(): string {
+    return this.route.snapshot.paramMap.get('unsubscribeToken') || '';
   }
 
 }

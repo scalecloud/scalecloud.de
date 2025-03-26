@@ -29,11 +29,11 @@ export class NewsletterConfirmComponent implements OnInit {
   confirmNewsletter(): void {
     this.serviceStatus = ServiceStatus.Loading;
     let request: NewsletterConfirmRequest = {
-      newsletterUUID: this.getNewsletterUUID(),
+      verificationToken: this.getVerificationToken(),
     };
-    if (request.newsletterUUID === '') {
+    if (request.verificationToken === '') {
       this.serviceStatus = ServiceStatus.Error;
-      this.logService.error('newsletterUUID is empty current URL: ' + window.location.href);
+      this.logService.error('verificationToken is empty current URL: ' + window.location.href);
       return;
     }
     this.newsletterService.confirmNewsletterEMail(request)
@@ -48,7 +48,7 @@ export class NewsletterConfirmComponent implements OnInit {
       });
   }
 
-  getNewsletterUUID(): string {
-    return this.route.snapshot.paramMap.get('newsletterUUID') || '';
+  getVerificationToken(): string {
+    return this.route.snapshot.paramMap.get('verificationToken') || '';
   }
 }
