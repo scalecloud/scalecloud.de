@@ -50,6 +50,8 @@ export class NewsletterSubscribeComponent {
             } else if ( reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.INVALID_EMAIL ) {
               this.snackBarService.error('The E-Mail address is invalid.');
               this.errorMessage.set('Not a valid E-Mail address.');
+            } else if ( reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.RATE_LIMIT ) {
+              this.snackBarService.warn('You have made too many requests. Please wait and try again later.');
             }
           },
           error: () => {

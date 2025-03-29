@@ -7,6 +7,7 @@ export enum NewsletterStatus {
 export enum NewsletterSubscribeReplyStatus {
     SUCCESS = 'success',
     INVALID_EMAIL = 'invalid_email',
+    RATE_LIMIT = 'rate_limited',
 }
 
 export interface NewsletterSubscribeRequest {
