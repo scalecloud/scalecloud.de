@@ -16,7 +16,6 @@ import { NewsletterSubscribeReplyStatus, NewsletterSubscribeRequest } from '../n
 export class NewsletterSubscribeComponent {
   readonly email = new FormControl('', [Validators.required, Validators.email]);
   errorMessage = signal('');
-  send: boolean = true;
 
   constructor(
     private readonly snackBarService: SnackBarService,
@@ -47,10 +46,11 @@ export class NewsletterSubscribeComponent {
           next: reply => {
             if (reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.SUCCESS) {
               this.snackBarService.info('Please check your E-Mail to confirm your newsletter subscription.');
-            } else if ( reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.INVALID_EMAIL ) {
+              this.email.disable();
+            } else if (reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.INVALID_EMAIL) {
               this.snackBarService.error('The E-Mail address is invalid.');
               this.errorMessage.set('Not a valid E-Mail address.');
-            } else if ( reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.RATE_LIMIT ) {
+            } else if (reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.RATE_LIMIT) {
               this.snackBarService.warn('You have made too many requests. Please wait and try again later.');
             }
           },
@@ -59,5 +59,11 @@ export class NewsletterSubscribeComponent {
           },
         });
     }
+  }
+
+  resetEMail() {
+    this.email.reset();
+    this.email.enable();
+    this.errorMessage.set('');
   }
 }
