@@ -31,6 +31,11 @@ export interface NewsletterUnsubscribeRequest {
     unsubscribeToken: string;
 }
 
+export enum NewsletterUnsubscribeReplyStatus {
+    UNSUBSCRIBED = 'unsubscribed',
+    NOTFOUND = 'not_found',
+}
+
 export interface NewsletterUnsubscribeReply {
-    unsubscribed: boolean;
+    newsletterUnsubscribeReplyStatus: NewsletterUnsubscribeReplyStatus;
 }

@@ -11,13 +11,26 @@
     </mat-card-content>
     }
     @if (serviceStatus === ServiceStatus.Success) {
-    @if (reply?.unsubscribed) {
+    @if (reply?.newsletterUnsubscribeReplyStatus === NewsletterUnsubscribeReplyStatus.UNSUBSCRIBED) {
     <mat-card-title>
         <mat-icon class="icon-confirmed">notifications_off</mat-icon>E-Mail Unsubscribed
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
         <p>Your E-Mail was unsubscribed from the newsletter.</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button routerLink="/" mat-raised-button color="primary">
+            Home
+        </button>
+    </mat-card-actions>
+    } @else if( reply?.newsletterUnsubscribeReplyStatus === NewsletterUnsubscribeReplyStatus.NOTFOUND) {
+    <mat-card-title>
+        <mat-icon class="icon-confirmed">notifications_off</mat-icon>Already Unsubscribed
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <p>We could not find your E-Mail in our database. You are not subscribed to our newsletter.</p>
     </mat-card-content>
     <mat-card-actions>
         <button routerLink="/" mat-raised-button color="primary">

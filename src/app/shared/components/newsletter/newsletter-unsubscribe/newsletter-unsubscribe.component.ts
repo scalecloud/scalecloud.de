@@ -3,7 +3,8 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { NewsletterService } from '../newsletter.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ActivatedRoute } from '@angular/router';
-import { NewsletterUnsubscribeReply, NewsletterUnsubscribeRequest } from '../newsletter';
+import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus, NewsletterUnsubscribeRequest } from '../newsletter';
+import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 @Component({
   selector: 'app-newsletter-unsubscribe',
@@ -14,6 +15,7 @@ import { NewsletterUnsubscribeReply, NewsletterUnsubscribeRequest } from '../new
 export class NewsletterUnsubscribeComponent implements OnInit {
 
   reply: NewsletterUnsubscribeReply | undefined;
+  NewsletterUnsubscribeReplyStatus = NewsletterUnsubscribeReplyStatus;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Loading;
 
@@ -21,6 +23,7 @@ export class NewsletterUnsubscribeComponent implements OnInit {
     private readonly newsletterService: NewsletterService,
     private readonly logService: LogService,
     private readonly route: ActivatedRoute,
+    private readonly snackbarservice: SnackBarService,
   ) { }
 
   ngOnInit(): void {
