@@ -15,7 +15,7 @@ export class CountryService {
   getCountry(language: Language, code: string): string {
     const country = countries.find(c => c.code === code);
     if (!country) {
-      this.logService.error(`Country with code ${code} not found`);
+      this.logService.warn(`Country with code "${code}" not found`);
       return code;
     }
     return language === Language.EN ? country.nameEN : country.nameDE;

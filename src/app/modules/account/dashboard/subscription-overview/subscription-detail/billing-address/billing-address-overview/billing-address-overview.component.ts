@@ -12,17 +12,19 @@ import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
 
 @Component({
-    selector: 'app-billing-address-overview',
-    templateUrl: './billing-address-overview.component.html',
-    styleUrl: './billing-address-overview.component.scss',
-    standalone: false
+  selector: 'app-billing-address-overview',
+  templateUrl: './billing-address-overview.component.html',
+  styleUrl: './billing-address-overview.component.scss',
+  standalone: false
 })
 export class BillingAddressOverviewComponent {
 
-  
+
   reply: BillingAddressReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
+
+  country: string = undefined;
 
   constructor(
     public authService: AuthService,
@@ -116,8 +118,11 @@ export class BillingAddressOverviewComponent {
     return this.reply?.address?.country || '';
   }
 
-  getCounty(): string {
-    return this.countryService.getCountry(this.languageService.getLanguage(), this.getCountyCode());
+  getCountry(): string {
+    if (this.country == undefined) {
+      this.country = this.countryService.getCountry(this.languageService.getLanguage(), this.getCountyCode());
+    }
+    return this.country;
   }
 
   getPhone(): string {
