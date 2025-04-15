@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -24,7 +24,7 @@ export class BillingAddressOverviewComponent {
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
-  country: string = undefined;
+  country = signal<string | null>(null);
 
   constructor(
     public authService: AuthService,
@@ -81,6 +81,8 @@ export class BillingAddressOverviewComponent {
           .subscribe({
             next: reply => {
               this.reply = reply;
+              const country = this.countryService.getCountry(this.languageService.getLanguage(), this.getCountyCode());
+              this.country.set(country);
               this.serviceStatus = ServiceStatus.Success;
             },
             error: error => {
@@ -116,13 +118,6 @@ export class BillingAddressOverviewComponent {
 
   getCountyCode(): string {
     return this.reply?.address?.country || '';
-  }
-
-  getCountry(): string {
-    if (this.country == undefined) {
-      this.country = this.countryService.getCountry(this.languageService.getLanguage(), this.getCountyCode());
-    }
-    return this.country;
   }
 
   getPhone(): string {
