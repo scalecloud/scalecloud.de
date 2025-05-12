@@ -9,7 +9,6 @@ Sentry.init({
   dsn: "https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784",
   integrations: [
     Sentry.browserTracingIntegration(),
-    Sentry.browserProfilingIntegration(),
     Sentry.replayIntegration()
   ],
   environment: environment.production ? 'production' : 'development',
