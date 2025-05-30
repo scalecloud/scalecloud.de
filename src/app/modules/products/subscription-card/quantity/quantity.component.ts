@@ -21,6 +21,16 @@ export class QuantityComponent implements OnInit {
 
   ngOnInit(): void {
     this.setQuantity(this.getParamMapQuantity());
+
+    this.quantityValidator.valueChanges.subscribe(value => {
+      if (value === null || value === undefined) return;
+      if (value < 1) {
+        this.quantityValidator.setValue(1, { emitEvent: false });
+      } else if (value > 999) {
+        this.quantityValidator.setValue(999, { emitEvent: false });
+        this.snackBarService.info('If you need more than 999 users, please contact support.');
+      }
+    });
   }
 
   getParamMapQuantity(): number {
@@ -60,16 +70,6 @@ export class QuantityComponent implements OnInit {
       ret = 1;
     }
     return ret;
-  }
-
-  checkValidators(): void {
-    if( this.quantityValidator.hasError('required') || this.quantityValidator.hasError('min') ) {
-      this.quantityValidator.setValue(1)
-    }
-    else if (this.quantityValidator.hasError('max')) {
-      this.quantityValidator.setValue(999)
-      this.snackBarService.info('If you need more than 999 users, please contact support.')
-    }
   }
 
 }
