@@ -1,53 +1,59 @@
 <app-titel-card [productType]="productType"></app-titel-card>
 @if (serviceStatus === ServiceStatus.Loading) {
-<div class="flex-container">
-    <div class="flex-item" *ngFor="let i of [0, 1, 2, 3]">
+  <div class="flex-container">
+    @for (i of [0, 1, 2, 3]; track i) {
+      <div class="flex-item">
         <mat-card>
-            <mat-progress-bar mode="query"></mat-progress-bar>
-            <div class="titel">
-                <mat-card-title>
-                    <ngx-skeleton-loader [theme]="{height: '2rem', width: '6rem'}" />
-                </mat-card-title>
-            </div>
-            <mat-divider></mat-divider>
-            <mat-card-content>
-                <mat-list>
-                    <mat-list-item>
-                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '12rem'}" />
-                    </mat-list-item>
-                    <mat-list-item>
-                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
-                    </mat-list-item>
-                    <mat-list-item>
-                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
-                    </mat-list-item>
-                    <mat-list-item>
-                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
-                    </mat-list-item>
-                    <mat-list-item>
-                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
-                    </mat-list-item>
-                    <mat-list-item>
-                        <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
-                    </mat-list-item>
-                </mat-list>
-            </mat-card-content>
+          <mat-progress-bar mode="query"></mat-progress-bar>
+          <div class="titel">
+            <mat-card-title>
+              <ngx-skeleton-loader [theme]="{height: '2rem', width: '6rem'}" />
+            </mat-card-title>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <mat-list>
+              <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '12rem'}" />
+              </mat-list-item>
+              <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+              </mat-list-item>
+              <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+              </mat-list-item>
+              <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+              </mat-list-item>
+              <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+              </mat-list-item>
+              <mat-list-item>
+                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
         </mat-card>
-    </div>
-</div>
+      </div>
+    }
+  </div>
 }
 @if (serviceStatus === ServiceStatus.Success) {
-<div class="flex-container">
-    <div class="flex-item" *ngFor="let nextcloudProduct of nextcloudProducts">
+  <div class="flex-container">
+    @for (nextcloudProduct of nextcloudProducts; track nextcloudProduct) {
+      <div class="flex-item">
         <app-subscription-card [nextcloudProduct]="nextcloudProduct"></app-subscription-card>
-    </div>
+      </div>
+    }
     <p class="disclaimer">*Each account is eligible for a single trial user per product category. We reserve the right to limit the availability of trials.</p>
-</div>
+  </div>
 }
 @if ( serviceStatus === ServiceStatus.Error ) {
-<div class="flex-container">
-    <div class="flex-item" *ngFor="let i of [0, 1, 2, 3]">
+  <div class="flex-container">
+    @for (i of [0, 1, 2, 3]; track i) {
+      <div class="flex-item">
         <app-loading-failed></app-loading-failed>
-    </div>
-</div>
+      </div>
+    }
+  </div>
 }

@@ -1,98 +1,98 @@
 <mat-card>
-    <ng-container *ngIf="serviceStatus === ServiceStatus.Loading">
-        <mat-progress-bar mode="query"></mat-progress-bar>
-        <mat-card-title>
-            <mat-icon class="title-icon">home</mat-icon>Billing Address
-        </mat-card-title>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-            <mat-list>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-            </mat-list>
-        </mat-card-content>
-    </ng-container>
+  @if (serviceStatus === ServiceStatus.Loading) {
+    <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-title>
+      <mat-icon class="title-icon">home</mat-icon>Billing Address
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  }
 
-    <ng-container *ngIf="serviceStatus === ServiceStatus.Success">
-        <mat-card-title>
-            <mat-icon class="title-icon">home</mat-icon>Billing Address
-        </mat-card-title>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-            <mat-list>
-                <mat-list-item matTooltip="Name">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">person</mat-icon>
-                        {{ getName() }}
-                    </div>
-                </mat-list-item>
-                <mat-list-item matTooltip="Address Line 1">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">home</mat-icon>
-                        {{ getLine1() }}
-                    </div>
-                </mat-list-item>
-                @if( getLine2() ) {
-                <mat-list-item matTooltip="Address Line 2">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">home</mat-icon>
-                        {{ getLine2() }}
-                    </div>
-                </mat-list-item>
-                }
-                <mat-list-item matTooltip="Postal Code">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">markunread_mailbox</mat-icon>
-                        {{ getPostalCode() }}
-                    </div>
-                </mat-list-item>
-                <mat-list-item matTooltip="City">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">location_city</mat-icon>
-                        {{ getCity() }}
-                    </div>
-                </mat-list-item>
-                <mat-list-item matTooltip="Country">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">flag</mat-icon>
-                        {{ country() }}
-                    </div>
-                </mat-list-item>
-                <mat-list-item matTooltip="Phone">
-                    <div class="icon-text">
-                        <mat-icon class="list-icon">phone</mat-icon>
-                        {{ getPhone() }}
-                    </div>
-                </mat-list-item>
-            </mat-list>
-        </mat-card-content>
-        <mat-card-actions>
-            <button (click)="edit()" mat-stroked-button color="primary"><mat-icon>edit</mat-icon>Edit</button>
-        </mat-card-actions>
-    </ng-container>
-    <ng-container *ngIf="serviceStatus === ServiceStatus.Error">
-        <app-loading-failed></app-loading-failed>
-    </ng-container>
+  @if (serviceStatus === ServiceStatus.Success) {
+    <mat-card-title>
+      <mat-icon class="title-icon">home</mat-icon>Billing Address
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item matTooltip="Name">
+          <div class="icon-text">
+            <mat-icon class="list-icon">person</mat-icon>
+            {{ getName() }}
+          </div>
+        </mat-list-item>
+        <mat-list-item matTooltip="Address Line 1">
+          <div class="icon-text">
+            <mat-icon class="list-icon">home</mat-icon>
+            {{ getLine1() }}
+          </div>
+        </mat-list-item>
+        @if( getLine2() ) {
+          <mat-list-item matTooltip="Address Line 2">
+            <div class="icon-text">
+              <mat-icon class="list-icon">home</mat-icon>
+              {{ getLine2() }}
+            </div>
+          </mat-list-item>
+        }
+        <mat-list-item matTooltip="Postal Code">
+          <div class="icon-text">
+            <mat-icon class="list-icon">markunread_mailbox</mat-icon>
+            {{ getPostalCode() }}
+          </div>
+        </mat-list-item>
+        <mat-list-item matTooltip="City">
+          <div class="icon-text">
+            <mat-icon class="list-icon">location_city</mat-icon>
+            {{ getCity() }}
+          </div>
+        </mat-list-item>
+        <mat-list-item matTooltip="Country">
+          <div class="icon-text">
+            <mat-icon class="list-icon">flag</mat-icon>
+            {{ country() }}
+          </div>
+        </mat-list-item>
+        <mat-list-item matTooltip="Phone">
+          <div class="icon-text">
+            <mat-icon class="list-icon">phone</mat-icon>
+            {{ getPhone() }}
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button (click)="edit()" mat-stroked-button color="primary"><mat-icon>edit</mat-icon>Edit</button>
+    </mat-card-actions>
+  }
+  @if (serviceStatus === ServiceStatus.Error) {
+    <app-loading-failed></app-loading-failed>
+  }
 </mat-card>

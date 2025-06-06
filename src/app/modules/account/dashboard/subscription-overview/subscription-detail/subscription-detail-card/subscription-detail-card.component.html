@@ -1,101 +1,107 @@
 <mat-card>
-    @if (serviceStatus === ServiceStatus.Loading) {
+  @if (serviceStatus === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
     <mat-card-title>
-        <ngx-skeleton-loader [theme]="{height: '2rem', width: '40%'}" />
+      <ngx-skeleton-loader [theme]="{height: '2rem', width: '40%'}" />
     </mat-card-title>
     <mat-card-subtitle>
-        <ngx-skeleton-loader [theme]="{height: '1rem', width: '40%'}" />
+      <ngx-skeleton-loader [theme]="{height: '1rem', width: '40%'}" />
     </mat-card-subtitle>
     <mat-divider></mat-divider>
     <mat-card-content>
-        <mat-list>
-            <mat-list-item>
-                <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}" />
-            </mat-list-item>
-            <mat-list-item>
-                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
-            </mat-list-item>
-            <mat-list-item>
-                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
-            </mat-list-item>
-            <mat-list-item>
-                <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
-            </mat-list-item>
-        </mat-list>
+      <mat-list>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}" />
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+        </mat-list-item>
+      </mat-list>
     </mat-card-content>
-    }
+  }
 
-    @if (serviceStatus === ServiceStatus.Success) {
+  @if (serviceStatus === ServiceStatus.Success) {
     <mat-card-title>
-        {{getProductName()}}
+      {{getProductName()}}
     </mat-card-title>
     <mat-card-subtitle>
-        {{getProductType()}}
+      {{getProductType()}}
     </mat-card-subtitle>
     <mat-divider></mat-divider>
     <mat-card-content>
-        <mat-list>
-            <mat-list-item matTooltip="ID of the subscription.">
-                <div class="icon-text">
-                    <mat-icon>numbers</mat-icon>
-                    {{getID()}}
-                </div>
+      <mat-list>
+        <mat-list-item matTooltip="ID of the subscription.">
+          <div class="icon-text">
+            <mat-icon>numbers</mat-icon>
+            {{getID()}}
+          </div>
+        </mat-list-item>
+        <mat-list-item matTooltip="Total amount of storage available in the subscription.">
+          <div class="icon-text">
+            <mat-icon>cloud</mat-icon>
+            Storage: {{getTotalStorageAmount()}} TB
+          </div>
+        </mat-list-item>
+        <mat-list-item matTooltip="Total amount of users available in the subscription.">
+          <div class="icon-text">
+            <mat-icon>person</mat-icon>
+            Users: {{getUserCount()}}
+          </div>
+        </mat-list-item>
+        <mat-list-item matTooltip="Monthly cost for all users in the subscription.">
+          <div class="icon-text">
+            <mat-icon>payments</mat-icon>
+            Cost: {{getTotalPricePerMonth() / 100 | currency:getCurrency() : 'symbol' : '1.0-0'}}
+            <span class="price-month">/month</span>
+          </div>
+        </mat-list-item>
+        @if (isTrailing()) {
+          <div>
+            <mat-list-item matTooltip="The date when the trial ends.">
+              <div class="icon-text">
+                <mat-icon>
+                  credit_card_off
+                </mat-icon>
+                Trial until: {{getTrailingEnd() * 1000 | date }}
+              </div>
             </mat-list-item>
-            <mat-list-item matTooltip="Total amount of storage available in the subscription.">
-                <div class="icon-text">
-                    <mat-icon>cloud</mat-icon>
-                    Storage: {{getTotalStorageAmount()}} TB
-                </div>
+          </div>
+        }
+        @if (!isCancelAtPeriodEnd()) {
+          <div>
+            <mat-list-item matTooltip="The date when the subscription will be automatically renewed.">
+              <div class="icon-text">
+                <mat-icon>
+                  autorenew
+                </mat-icon>
+                Renewal: {{getCurrentPeriodEnd() * 1000 | date }}
+              </div>
             </mat-list-item>
-            <mat-list-item matTooltip="Total amount of users available in the subscription.">
-                <div class="icon-text">
-                    <mat-icon>person</mat-icon>
-                    Users: {{getUserCount()}}
-                </div>
+          </div>
+        }
+        @if (isCancelAtPeriodEnd()) {
+          <div>
+            <mat-list-item matTooltip="The date when the subscription will end.">
+              <div class="icon-text">
+                <mat-icon class="termination-date">
+                  event_busy
+                </mat-icon>
+                Termination date: {{getCancelAt() * 1000 | date }}
+              </div>
             </mat-list-item>
-            <mat-list-item matTooltip="Monthly cost for all users in the subscription.">
-                <div class="icon-text">
-                    <mat-icon>payments</mat-icon>
-                    Cost: {{getTotalPricePerMonth() / 100 | currency:getCurrency() : 'symbol' : '1.0-0'}}
-                    <span class="price-month">/month</span>
-                </div>
-            </mat-list-item>
-            <div *ngIf="isTrailing()">
-                <mat-list-item matTooltip="The date when the trial ends.">
-                    <div class="icon-text">
-                        <mat-icon>
-                            credit_card_off
-                        </mat-icon>
-                        Trial until: {{getTrailingEnd() * 1000 | date }}
-                    </div>
-                </mat-list-item>
-            </div>
-            <div *ngIf="!isCancelAtPeriodEnd()">
-                <mat-list-item matTooltip="The date when the subscription will be automatically renewed.">
-                    <div class="icon-text">
-                        <mat-icon>
-                            autorenew
-                        </mat-icon>
-                        Renewal: {{getCurrentPeriodEnd() * 1000 | date }}
-                    </div>
-                </mat-list-item>
-            </div>
-            <div *ngIf="isCancelAtPeriodEnd()">
-                <mat-list-item matTooltip="The date when the subscription will end.">
-                    <div class="icon-text">
-                        <mat-icon class="termination-date">
-                            event_busy
-                        </mat-icon>
-                        Termination date: {{getCancelAt() * 1000 | date }}
-                    </div>
-                </mat-list-item>
-            </div>
-        </mat-list>
+          </div>
+        }
+      </mat-list>
     </mat-card-content>
-    }
-    <app-cancel-state class="actions" (reloadSubscriptionDetailEvent)="reloadSubscriptionDetail()"></app-cancel-state>
+  }
+  <app-cancel-state class="actions" (reloadSubscriptionDetailEvent)="reloadSubscriptionDetail()"></app-cancel-state>
 </mat-card>
 @if ( serviceStatus === ServiceStatus.Error ) {
-<app-loading-failed></app-loading-failed>
+  <app-loading-failed></app-loading-failed>
 }

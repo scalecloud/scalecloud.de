@@ -1,7 +1,7 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, DOCUMENT } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { LogService } from '../log/log.service';
-import { DOCUMENT, Location } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'

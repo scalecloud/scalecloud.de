@@ -1,86 +1,98 @@
 <mat-card>
-    <ng-container *ngIf="serviceStatus === ServiceStatus.Loading">
-        <mat-progress-bar mode="query"></mat-progress-bar>
-        <mat-card-title>
-            <mat-icon class="title-icon">home</mat-icon>Billing Address
-        </mat-card-title>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-            <mat-list>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-                <mat-list-item>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
-                </mat-list-item>
-            </mat-list>
-        </mat-card-content>
-    </ng-container>
+  @if (serviceStatus === ServiceStatus.Loading) {
+    <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-title>
+      <mat-icon class="title-icon">home</mat-icon>Billing Address
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{height: '1rem', width: '16rem'}"></ngx-skeleton-loader>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  }
 
-    <ng-container *ngIf="serviceStatus === ServiceStatus.Success">
-        <mat-card-title>
-            <mat-icon class="title-icon">home</mat-icon>Billing Address
-        </mat-card-title>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                <mat-form-field class="full-width">
-                    <mat-label>Name</mat-label>
-                    <input matInput formControlName="name">
-                    <mat-error *ngIf="submitted && f.name.errors?.required">Name is required</mat-error>
-                </mat-form-field>
-                <app-country-input [initialCountryCode]="getCountyCode()" (countryControlEmitter)="onCountryControlReceived($event)"></app-country-input>
-                <mat-form-field class="full-width">
-                    <mat-label>Address line 1</mat-label>
-                    <input matInput formControlName="line1">
-                    <mat-error *ngIf="submitted && f.line1.errors?.required">Address line 1 is required</mat-error>
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                    <mat-label>Address line 2</mat-label>
-                    <input matInput formControlName="line2"
-                        placeholder="Number of the flat/apartment unit etc. (optional)">
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                    <mat-label>Postal Code</mat-label>
-                    <input matInput formControlName="postalCode">
-                    <mat-error *ngIf="submitted && f.postalCode.errors?.required">Postal Code is required</mat-error>
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                    <mat-label>City</mat-label>
-                    <input matInput formControlName="city">
-                    <mat-error *ngIf="submitted && f.city.errors?.required">City is required</mat-error>
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                    <mat-label>Phone Number</mat-label>
-                    <input matInput formControlName="phone">
-                    <mat-error *ngIf="submitted && f.phone.errors?.required">Phone Number is required</mat-error>
-                    <mat-error *ngIf="submitted && f.phone.errors?.pattern">Invalid Phone Number</mat-error>
-                </mat-form-field>
-                <mat-card-actions>
-                    <button class="update-button" type="submit" mat-flat-button
-                        color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
-                    <button class="cancel-button" type="button" (click)="cancel()" mat-stroked-button
-                        color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
-                </mat-card-actions>
+  @if (serviceStatus === ServiceStatus.Success) {
+    <mat-card-title>
+      <mat-icon class="title-icon">home</mat-icon>Billing Address
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name">
+          @if (submitted && f.name.errors?.required) {
+            <mat-error>Name is required</mat-error>
+          }
+        </mat-form-field>
+        <app-country-input [initialCountryCode]="getCountyCode()" (countryControlEmitter)="onCountryControlReceived($event)"></app-country-input>
+        <mat-form-field class="full-width">
+          <mat-label>Address line 1</mat-label>
+          <input matInput formControlName="line1">
+          @if (submitted && f.line1.errors?.required) {
+            <mat-error>Address line 1 is required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Address line 2</mat-label>
+          <input matInput formControlName="line2"
+            placeholder="Number of the flat/apartment unit etc. (optional)">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Postal Code</mat-label>
+            <input matInput formControlName="postalCode">
+            @if (submitted && f.postalCode.errors?.required) {
+              <mat-error>Postal Code is required</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city">
+            @if (submitted && f.city.errors?.required) {
+              <mat-error>City is required</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone">
+            @if (submitted && f.phone.errors?.required) {
+              <mat-error>Phone Number is required</mat-error>
+            }
+            @if (submitted && f.phone.errors?.pattern) {
+              <mat-error>Invalid Phone Number</mat-error>
+            }
+          </mat-form-field>
+          <mat-card-actions>
+            <button class="update-button" type="submit" mat-flat-button
+              color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
+              <button class="cancel-button" type="button" (click)="cancel()" mat-stroked-button
+                color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
+              </mat-card-actions>
             </form>
-        </mat-card-content>
-    </ng-container>
-    <ng-container *ngIf="serviceStatus === ServiceStatus.Error">
-        <app-loading-failed></app-loading-failed>
-    </ng-container>
-</mat-card>
+          </mat-card-content>
+        }
+        @if (serviceStatus === ServiceStatus.Error) {
+          <app-loading-failed></app-loading-failed>
+        }
+      </mat-card>

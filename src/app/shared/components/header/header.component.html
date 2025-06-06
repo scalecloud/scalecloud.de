@@ -1,37 +1,38 @@
 <mat-toolbar color="primary">
-    <mat-toolbar-row>
-        <button mat-icon-button (click)="toggleSideBar()">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <button mat-button routerLink="/">
-            <img class="logo-icon" src="assets/img/logo/logo-white-48.png" alt="ScaleCloud.de">
-            ScaleCloud.de
-        </button>
-        <span class="fill-remaining-space"></span>
-        @if(isLoading) {
-            <mat-spinner class="auth-loading" diameter="30"></mat-spinner>
-        } @else {
-        <div *ngIf="authService.getUser(); else login">
-            <button mat-button routerLink="/dashboard">
-                <mat-icon>dashboard</mat-icon>
-                Dashboard
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="toggleSideBar()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button mat-button routerLink="/">
+      <img class="logo-icon" src="assets/img/logo/logo-white-48.png" alt="ScaleCloud.de">
+      ScaleCloud.de
+    </button>
+    <span class="fill-remaining-space"></span>
+    @if(isLoading) {
+      <mat-spinner class="auth-loading" diameter="30"></mat-spinner>
+    } @else {
+      @if (authService.getUser()) {
+        <div>
+          <button mat-button routerLink="/dashboard">
+            <mat-icon>dashboard</mat-icon>
+            Dashboard
+          </button>
+          <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>person</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="authService.signOut()">
+              <mat-icon>logout</mat-icon>
+              Logout
             </button>
-            <button mat-button [matMenuTriggerFor]="menu">
-                <mat-icon>person</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="authService.signOut()">
-                    <mat-icon>logout</mat-icon>
-                    Logout
-                </button>
-            </mat-menu>
+          </mat-menu>
         </div>
-        <ng-template #login>
-            <button mat-button routerLink="/login">
-                <mat-icon>login</mat-icon>
-                Login
-            </button>
-        </ng-template>
-        }
-    </mat-toolbar-row>
+      } @else {
+        <button mat-button routerLink="/login">
+          <mat-icon>login</mat-icon>
+          Login
+        </button>
+      }
+    }
+  </mat-toolbar-row>
 </mat-toolbar>

@@ -1,33 +1,37 @@
 <mat-card>
-      <mat-card-content>
-            <div class="flex-container">
-                  <p>No account yet?</p>
-                  <div class="flex-item">
-                        <button (click)="openUrlKeepReturnUrl()" mat-stroked-button>Register</button>
-                  </div>
-            </div>
-      </mat-card-content>
+  <mat-card-content>
+    <div class="flex-container">
+      <p>No account yet?</p>
+      <div class="flex-item">
+        <button (click)="openUrlKeepReturnUrl()" mat-stroked-button>Register</button>
+      </div>
+    </div>
+  </mat-card-content>
 </mat-card>
 <mat-card>
-      <mat-card-title>Login</mat-card-title>
-      <mat-card-content>
-            <mat-form-field appearance="fill">
-                  <mat-label>E-Mail:</mat-label>
-                  <input type="email" matInput placeholder="E-Mail" [formControl]="email" required>
-                  <mat-error *ngIf="email.invalid">{{getErrorMessageEMail()}}</mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                  <mat-label>Password:</mat-label>
-                  <input type="password" matInput placeholder="Password" [formControl]="password" required>
-                  <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
-            </mat-form-field>
-            <div class="flex-container">
-                  <div class="flex-item">
-                        <button (click)="login()" mat-raised-button color="primary">Login</button>
-                  </div>
-                  <div class="flex-item">
-                        <button routerLink="/forgot-password" mat-stroked-button>Forgot Password</button>
-                  </div>
-            </div>
-      </mat-card-content>
+  <mat-card-title>Login</mat-card-title>
+  <mat-card-content>
+    <mat-form-field appearance="fill">
+      <mat-label>E-Mail:</mat-label>
+      <input type="email" matInput placeholder="E-Mail" [formControl]="email" required>
+      @if (email.invalid) {
+        <mat-error>{{getErrorMessageEMail()}}</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Password:</mat-label>
+      <input type="password" matInput placeholder="Password" [formControl]="password" required>
+      @if (password.invalid) {
+        <mat-error>{{getErrorMessagePassword()}}</mat-error>
+      }
+    </mat-form-field>
+    <div class="flex-container">
+      <div class="flex-item">
+        <button (click)="login()" mat-raised-button color="primary">Login</button>
+      </div>
+      <div class="flex-item">
+        <button routerLink="/forgot-password" mat-stroked-button>Forgot Password</button>
+      </div>
+    </div>
+  </mat-card-content>
 </mat-card>

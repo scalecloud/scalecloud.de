@@ -1,39 +1,45 @@
 <div class="flex-container">
-    @if(serviceStatus === ServiceStatus.Loading) {
-    <div *ngFor="let _ of [].constructor(lastCountService.getLastSubscriptionOverviewCount)">
+  @if(serviceStatus === ServiceStatus.Loading) {
+    @for (_ of [].constructor(lastCountService.getLastSubscriptionOverviewCount); track _) {
+      <div>
         <div class="flex-item">
-            <mat-card>
-                <mat-progress-bar mode="query"></mat-progress-bar>
-                <mat-card-title>
-                    <ngx-skeleton-loader [theme]="{height: '2rem', width: '40%'}" />
-                </mat-card-title>
-                <mat-card-subtitle>
-                    <ngx-skeleton-loader [theme]="{height: '1rem', width: '40%'}" />
-                </mat-card-subtitle>
-                <mat-divider></mat-divider>
-                <mat-card-content>
-                    <mat-list>
-                        <mat-list-item>
-                            <ngx-skeleton-loader [theme]="{height: '1rem', width: '18rem'}" />
-                        </mat-list-item>
-                        <mat-list-item>
-                            <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
-                        </mat-list-item>
-                        <mat-list-item>
-                            <ngx-skeleton-loader [theme]="{height: '2rem', width: '100%'}" />
-                        </mat-list-item>
-                    </mat-list>
-                </mat-card-content>
-            </mat-card>
+          <mat-card>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <mat-card-title>
+              <ngx-skeleton-loader [theme]="{height: '2rem', width: '40%'}" />
+            </mat-card-title>
+            <mat-card-subtitle>
+              <ngx-skeleton-loader [theme]="{height: '1rem', width: '40%'}" />
+            </mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <mat-list>
+                <mat-list-item>
+                  <ngx-skeleton-loader [theme]="{height: '1rem', width: '18rem'}" />
+                </mat-list-item>
+                <mat-list-item>
+                  <ngx-skeleton-loader [theme]="{height: '1rem', width: '100%'}" />
+                </mat-list-item>
+                <mat-list-item>
+                  <ngx-skeleton-loader [theme]="{height: '2rem', width: '100%'}" />
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
         </div>
-    </div>
+      </div>
     }
-    <div class="flex-item" *ngFor="let subscriptionOverview of reply">
-        <app-subscription-overview [subscriptionOverview]="subscriptionOverview"></app-subscription-overview>
+  }
+  @for (subscriptionOverview of reply; track subscriptionOverview) {
+    <div class="flex-item">
+      <app-subscription-overview [subscriptionOverview]="subscriptionOverview"></app-subscription-overview>
     </div>
-    <div *ngIf="serviceStatus === ServiceStatus.Error">
-        <div class="flex-item">
-            <app-loading-failed></app-loading-failed>
-        </div>
+  }
+  @if (serviceStatus === ServiceStatus.Error) {
+    <div>
+      <div class="flex-item">
+        <app-loading-failed></app-loading-failed>
+      </div>
     </div>
+  }
 </div>

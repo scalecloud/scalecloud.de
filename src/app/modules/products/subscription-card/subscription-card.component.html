@@ -1,56 +1,55 @@
-<mat-card *ngIf="nextcloudProduct != undefined || synologyProduct != undefined">
+@if (nextcloudProduct != undefined || synologyProduct != undefined) {
+  <mat-card>
     <mat-card-title>
-        {{getName()}}
+      {{getName()}}
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
-        <mat-list>
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>cloud</mat-icon>
-                    {{getStorageAmount() * getQuantity() }}{{getStorageUnit()}}
-                </div>
-            </mat-list-item>
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>height</mat-icon>
-                    Scalable
-                </div>
-            </mat-list-item>
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>event_available</mat-icon>
-                    <ng-container *ngIf="getIsTrialIncluded(); then trial; else noTrial">
-                    </ng-container>
-                    <ng-template #trial>
-                        {{getTrialDays()}}&nbsp;days trial*
-                    </ng-template>
-                    <ng-template #noTrial>
-                        <div class="no-trial">
-                            <s>
-                                {{getTrialDays()}}&nbsp;days trial*
-                            </s>
-                        </div>
-                    </ng-template>
-                </div>
-            </mat-list-item>
-            <mat-list-item>
-                <div class="icon-text">
-                    <div class="user-count">
-                        <mat-icon>person</mat-icon>
-                        <mat-label class="user">User:</mat-label>
-                    </div>
-                    <app-quantity></app-quantity>
-                </div>
-            </mat-list-item>
-            <mat-divider></mat-divider>
-        </mat-list>
+      <mat-list>
+        <mat-list-item>
+          <div class="icon-text">
+            <mat-icon>cloud</mat-icon>
+            {{getStorageAmount() * getQuantity() }}{{getStorageUnit()}}
+          </div>
+        </mat-list-item>
+        <mat-list-item>
+          <div class="icon-text">
+            <mat-icon>height</mat-icon>
+            Scalable
+          </div>
+        </mat-list-item>
+        <mat-list-item>
+          <div class="icon-text">
+            <mat-icon>event_available</mat-icon>
+            @if (getIsTrialIncluded()) {
+              {{getTrialDays()}}&nbsp;days trial*
+            } @else {
+              <div class="no-trial">
+                <s>
+                  {{getTrialDays()}}&nbsp;days trial*
+                </s>
+              </div>
+            }
+          </div>
+        </mat-list-item>
+        <mat-list-item>
+          <div class="icon-text">
+            <div class="user-count">
+              <mat-icon>person</mat-icon>
+              <mat-label class="user">User:</mat-label>
+            </div>
+            <app-quantity></app-quantity>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
     </mat-card-content>
     <mat-card-subtitle>
-        {{getPricePerMonth() * getQuantity() | currency:'EUR' : 'symbol' : '1.0-0'}}
-        <span class="price-month">/month</span>
+      {{getPricePerMonth() * getQuantity() | currency:'EUR' : 'symbol' : '1.0-0'}}
+      <span class="price-month">/month</span>
     </mat-card-subtitle>
     <mat-card-actions>
-        <button (click)="openCheckoutIntegration()" mat-stroked-button color="primary">SUBSCRIBE</button>
+      <button (click)="openCheckoutIntegration()" mat-stroked-button color="primary">SUBSCRIBE</button>
     </mat-card-actions>
-</mat-card>
+  </mat-card>
+}
