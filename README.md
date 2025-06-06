@@ -8,7 +8,7 @@ ScaleCloud.de offers affordable, secure, and scalable cloud storage.
 ## 🔨 Tech Stack  
 
 ### **Frontend**
-- ⚡ **[Angular 19](https://angular.io/)**
+- ⚡ **[Angular 20](https://angular.io/)**
 - 🎨 **[Material UI](https://material.angular.io/)**
 - 🐳 **[Docker](https://www.docker.com/)**
 - 🤖 **[Jenkins](https://www.jenkins.io/)**
