@@ -1,37 +1,63 @@
-# ☁️ ScaleCloud.de  
+# ScaleCloud.de  
 **Website under development: [www.scalecloud.de](https://www.scalecloud.de)**  
 
-ScaleCloud.de offers affordable, secure, and scalable cloud storage.
+ScaleCloud.de offers affordable cloud storage.
 
 ---
 
-## 🔨 Tech Stack  
+## Tech Stack  
 
 ### **Frontend**
-- ⚡ **[Angular 20](https://angular.io/)**
-- 🎨 **[Material UI](https://material.angular.io/)**
-- 🐳 **[Docker](https://www.docker.com/)**
-- 🤖 **[Jenkins](https://www.jenkins.io/)**
-- 🤖 **[GitHub Actions](https://github.com/features/actions)**
-- 💳 **[Stripe](https://stripe.com/)**
-- 🔥 **[Firebase](https://firebase.google.com/)**
-- 🎫 **[Jira Cloud](https://www.atlassian.com/software/jira)**  
+- Angular 20 (Material UI)
+- Docker / Kubernetes
+- Jenkins / GitHub Actions
+- Stripe
+- Firebase
+- Jira  
 
 ### **Backend**  
-🔗 **[ScaleCloud API](https://github.com/scalecloud/scalecloud.de-api)**  
+ **[ScaleCloud API](https://github.com/scalecloud/scalecloud.de-api)**  
 
 ---
 
-## 📊 SonarCloud Code Quality  
+## SonarCloud Code Quality  
 
-| Metric                  | Status |
-|-------------------------|--------|
-| 🐞 Bugs                 | ![Bugs](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=bugs) |
-| ⚠️ Code Smells         | ![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=code_smells) |
-| 🔁 Duplicated Lines    | ![Duplicated Lines](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=duplicated_lines_density) |
-| 📜 Lines of Code       | ![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=ncloc) |
-| 🔧 Maintainability    | ![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=sqale_rating) |
-| 🚦 Quality Gate Status | ![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=alert_status) |
-| 🛡️ Security Rating   | ![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=security_rating) |
-| 🏗️ Technical Debt    | ![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=sqale_index) |
-| 🕵️ Vulnerabilities  | ![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=vulnerabilities) |
+<table>
+  <thead>
+    <tr>
+      <th align="left">Category</th>
+      <th align="center">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Quality</td>
+      <td align="center">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=alert_status&style=for-the-badge" alt="Quality Gate" />
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=bugs&style=flat-square" alt="Bugs" />
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=code_smells&style=flat-square" alt="Code Smells" />
+      </td>
+    </tr>
+    <tr>
+      <td>Security</td>
+      <td align="center">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=security_rating&style=flat-square" alt="Security Rating" />
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=vulnerabilities&style=flat-square" alt="Vulnerabilities" />
+      </td>
+    </tr>
+    <tr>
+      <td>Maintainability</td>
+      <td align="center">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=sqale_rating&style=flat-square" alt="Maintainability" />
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=sqale_index&style=flat-square" alt="Technical Debt" />
+      </td>
+    </tr>
+    <tr>
+      <td>Reliability & Size</td>
+      <td align="center">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=duplicated_lines_density&style=flat-square" alt="Duplicated Lines" />
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=ncloc&style=flat-square" alt="Lines of Code" />
+      </td>
+    </tr>
+  </tbody>
+</table>
