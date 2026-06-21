@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ChangePaymentReply } from './change-payment';
@@ -12,6 +12,7 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
     selector: 'app-change-payment',
     templateUrl: './change-payment.component.html',
     styleUrls: ['./change-payment.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ChangePaymentComponent {

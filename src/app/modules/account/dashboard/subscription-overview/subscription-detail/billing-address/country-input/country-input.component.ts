@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { Country } from '../country/countries';
@@ -10,6 +10,7 @@ import { Language } from '../country/Language';
     selector: 'app-country-input',
     templateUrl: './country-input.component.html',
     styleUrl: './country-input.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CountryInputComponent implements OnInit {

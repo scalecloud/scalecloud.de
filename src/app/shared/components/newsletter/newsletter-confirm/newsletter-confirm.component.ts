@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { NewsletterConfirmReply, NewsletterConfirmRequest } from '../newsletter';
 import { NewsletterService } from '../newsletter.service';
@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-newsletter-confirm',
   templateUrl: './newsletter-confirm.component.html',
   styleUrl: './newsletter-confirm.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class NewsletterConfirmComponent implements OnInit {

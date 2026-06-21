@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
@@ -13,6 +13,7 @@ import { InvoicesService } from './invoices.service';
     selector: 'app-invoices',
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class InvoicesComponent implements OnInit {

@@ -15,7 +15,7 @@ import { ContactComponent } from 'src/app/modules/footer/contact/contact.compone
 import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
 import { TitelCardComponent } from 'src/app/modules/products/titel-card/titel-card.component';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { LoginComponent } from 'src/app/modules/account/login/login.component';
 import { RegisterComponent } from 'src/app/modules/account/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -143,7 +143,7 @@ import { BillingAddressOverviewComponent } from 'src/app/modules/account/dashboa
         NgxSkeletonLoaderModule,
         MatAutocompleteModule,
     ], providers: [
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         { provide: HTTP_INTERCEPTORS, useClass: ServiceErrorInterceptorService, multi: true }
     ]
 })

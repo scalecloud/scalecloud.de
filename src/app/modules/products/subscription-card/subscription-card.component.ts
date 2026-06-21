@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
@@ -8,6 +8,7 @@ import { QuantityComponent } from './quantity/quantity.component';
     selector: 'app-subscription-card',
     templateUrl: './subscription-card.component.html',
     styleUrls: ['./subscription-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SubscriptionCardComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
@@ -7,6 +7,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
     selector: 'app-quantity',
     templateUrl: './quantity.component.html',
     styleUrls: ['./quantity.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class QuantityComponent implements OnInit {

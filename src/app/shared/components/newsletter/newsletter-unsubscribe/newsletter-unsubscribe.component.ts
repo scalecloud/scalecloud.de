@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { NewsletterService } from '../newsletter.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -10,6 +10,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
   selector: 'app-newsletter-unsubscribe',
   templateUrl: './newsletter-unsubscribe.component.html',
   styleUrl: './newsletter-unsubscribe.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class NewsletterUnsubscribeComponent implements OnInit {

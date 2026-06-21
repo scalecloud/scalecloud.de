@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -12,6 +12,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
     selector: 'app-subscription-detail-card',
     templateUrl: './subscription-detail-card.component.html',
     styleUrls: ['./subscription-detail-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SubscriptionDetailCardComponent implements OnInit {

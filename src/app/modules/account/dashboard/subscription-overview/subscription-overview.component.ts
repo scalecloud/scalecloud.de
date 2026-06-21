@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ISubscriptionOverview } from './subscription-overview';
 
 @Component({
     selector: 'app-subscription-overview',
     templateUrl: './subscription-overview.component.html',
     styleUrls: ['./subscription-overview.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SubscriptionOverviewComponent {

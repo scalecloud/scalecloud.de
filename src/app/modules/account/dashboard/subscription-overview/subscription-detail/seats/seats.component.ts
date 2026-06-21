@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
     selector: 'app-seats',
     templateUrl: './seats.component.html',
     styleUrls: ['./seats.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SeatsComponent implements OnInit {

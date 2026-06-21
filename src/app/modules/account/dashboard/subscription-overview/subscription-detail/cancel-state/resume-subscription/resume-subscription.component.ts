@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -12,6 +12,7 @@ import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscrip
     selector: 'app-resume-subscription',
     templateUrl: './resume-subscription.component.html',
     styleUrls: ['./resume-subscription.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ResumeSubscriptionComponent {

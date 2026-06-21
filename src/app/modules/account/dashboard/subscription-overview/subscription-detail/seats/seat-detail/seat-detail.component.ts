@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleDescriptions } from 'src/app/shared/roles/roles';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -14,6 +14,7 @@ import { ConfirmOwnerTransferComponent } from './confirm-owner-transfer/confirm-
   selector: 'app-seat-detail',
   standalone: false,
   templateUrl: './seat-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './seat-detail.component.scss'
 })
 export class SeatDetailComponent {

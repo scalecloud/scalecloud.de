@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { BillingPortalService } from './billing-portal.service';
@@ -7,6 +7,7 @@ import { BillingPortalService } from './billing-portal.service';
   selector: 'app-billing-portal',
   templateUrl: './billing-portal.component.html',
   styleUrls: ['./billing-portal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class BillingPortalComponent {

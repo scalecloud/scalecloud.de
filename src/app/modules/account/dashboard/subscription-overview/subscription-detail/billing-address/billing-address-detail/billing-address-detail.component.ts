@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -14,6 +14,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl } from '@
   selector: 'app-billing-address-detail',
   standalone: false,
   templateUrl: './billing-address-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './billing-address-detail.component.scss'
 })
 export class BillingAddressDetailComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -12,6 +12,7 @@ import { CancelStateService } from './cancel-state.service';
   selector: 'app-cancel-state',
   standalone: false,
   templateUrl: './cancel-state.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './cancel-state.component.scss'
 })
 export class CancelStateComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -15,6 +15,7 @@ import { LanguageService } from '../country/language.service';
   selector: 'app-billing-address-overview',
   templateUrl: './billing-address-overview.component.html',
   styleUrl: './billing-address-overview.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class BillingAddressOverviewComponent {

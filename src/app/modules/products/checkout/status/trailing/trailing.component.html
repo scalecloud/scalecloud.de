@@ -17,7 +17,7 @@
             <mat-list-item>
                 <div class="icon-text">
                     <mat-icon>credit_card_off</mat-icon>
-                    Your trial will run until {{checkoutCreateSubscriptionReply?.trialEnd * 1000 | date}}
+                    Your trial will run until {{$safeNavigationMigration(checkoutCreateSubscriptionReply?.trialEnd) * 1000 | date}}
                 </div>
             </mat-list-item>
             }

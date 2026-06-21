@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
@@ -10,6 +10,7 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
     selector: 'app-payment-overview',
     templateUrl: './payment-overview.component.html',
     styleUrls: ['./payment-overview.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PaymentOverviewComponent implements OnInit {

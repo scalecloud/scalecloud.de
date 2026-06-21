@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
@@ -13,6 +13,7 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
     selector: 'app-checkout-details',
     templateUrl: './checkout-details.component.html',
     styleUrls: ['./checkout-details.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CheckoutDetailsComponent implements OnInit {

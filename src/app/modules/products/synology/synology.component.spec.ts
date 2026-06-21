@@ -7,7 +7,7 @@ import { SynologyComponent } from './synology.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatCard, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SynologyComponent', () => {
   let component: SynologyComponent;
@@ -39,7 +39,7 @@ describe('SynologyComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
     imports: [],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 });
     fixture = TestBed.createComponent(SynologyComponent);
     component = fixture.componentInstance;

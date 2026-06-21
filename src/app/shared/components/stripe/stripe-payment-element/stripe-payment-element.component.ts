@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
@@ -11,6 +11,7 @@ declare const Stripe: any;
     selector: 'app-stripe-payment-element',
     templateUrl: './stripe-payment-element.component.html',
     styleUrls: ['./stripe-payment-element.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class StripePaymentElementComponent {

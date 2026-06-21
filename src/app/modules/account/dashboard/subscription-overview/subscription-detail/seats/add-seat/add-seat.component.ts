@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { AddSeatRequest } from '../seats';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -13,6 +13,7 @@ import { RoleDescriptions, Role } from 'src/app/shared/roles/roles';
     selector: 'app-add-seat',
     templateUrl: './add-seat.component.html',
     styleUrl: './add-seat.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddSeatComponent {

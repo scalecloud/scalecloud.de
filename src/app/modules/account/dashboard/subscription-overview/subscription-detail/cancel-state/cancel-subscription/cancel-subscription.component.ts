@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
@@ -12,6 +12,7 @@ import { ConfirmCancelSubscriptionComponent } from './confirm-cancel-subscriptio
     selector: 'app-cancel-subscription',
     templateUrl: './cancel-subscription.component.html',
     styleUrls: ['./cancel-subscription.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CancelSubscriptionComponent {

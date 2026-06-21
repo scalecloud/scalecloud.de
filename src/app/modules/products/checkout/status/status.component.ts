@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -10,6 +10,7 @@ import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription
     selector: 'app-status',
     templateUrl: './status.component.html',
     styleUrls: ['./status.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class StatusComponent implements OnInit {

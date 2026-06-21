@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-confirm-cancel-subscription',
     templateUrl: './confirm-cancel-subscription.component.html',
     styleUrls: ['./confirm-cancel-subscription.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ConfirmCancelSubscriptionComponent {

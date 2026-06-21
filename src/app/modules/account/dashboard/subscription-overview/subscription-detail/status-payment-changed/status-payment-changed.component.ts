@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -10,6 +10,7 @@ declare const Stripe: any;
     selector: 'app-status-payment-changed',
     templateUrl: './status-payment-changed.component.html',
     styleUrls: ['./status-payment-changed.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class StatusPaymentChangedComponent implements OnInit  {

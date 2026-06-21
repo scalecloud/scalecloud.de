@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SynologyProduct } from './synology-product';
 import { ProductType } from '../product-model';
 import { ProductService } from '../product/product.service';
@@ -8,6 +8,7 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
     selector: 'app-synology',
     templateUrl: './synology.component.html',
     styleUrls: ['./synology.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SynologyComponent implements OnInit {
