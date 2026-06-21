@@ -8,12 +8,12 @@ ScaleCloud.de offers affordable cloud storage.
 ## Tech Stack  
 
 ### **Frontend**
-- Angular 20 (Material UI)
+- Angular 22 (Material UI)
 - Docker / Kubernetes
 - Jenkins / GitHub Actions
 - Stripe
 - Firebase
-- Jira  
+- Jira
 
 ### **Backend**  
  **[ScaleCloud API](https://github.com/scalecloud/scalecloud.de-api)**  
