@@ -26,7 +26,7 @@
     "@sentry/angular": "^10.25.0",
     "@sentry/cli": "^2.58.2",
     "@sentry/tracing": "^7.120.4",
-    "angular-in-memory-web-api": "^0.20.0",
+    "angular-in-memory-web-api": "^0.21.0",
     "cobe": "^0.6.5",
     "firebase": "^11.10.0",
     "ngx-skeleton-loader": "^13.0.0",
