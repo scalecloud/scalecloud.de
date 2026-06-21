@@ -36,5 +36,6 @@
         "^production"
       ]
     }
-  }
+  },
+  "analytics": false
 }
