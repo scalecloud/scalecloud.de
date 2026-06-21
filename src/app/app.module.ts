@@ -4,45 +4,36 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DefaultModule } from './layouts/default/default.module';
-import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { environment } from '../environments/environment';
-import { ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { providePerformance, getPerformance } from '@angular/fire/performance';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFireModule } from '@angular/fire/compat';
 import { CurrencyPipe } from '@angular/common';
 import { Router } from "@angular/router";
 import * as Sentry from "@sentry/angular";
 
+// Firebase JS SDK
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getAnalytics } from 'firebase/analytics';
+import { getPerformance } from 'firebase/performance';
+
+// Firebase einmalig initialisieren (Singleton)
+const firebaseApp = initializeApp(environment.firebaseConfig);
+export const auth = getAuth(firebaseApp);
+export const analytics = getAnalytics(firebaseApp);
+export const perf = getPerformance(firebaseApp);
+
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     DefaultModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAnalyticsModule,
-  // provideFirebaseApp(() => initializeApp(environment.firebase)),
-  // provideAnalytics(() => getAnalytics()),
-    AngularFireAuthModule,
   ],
   providers: [
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
-    providePerformance(() => getPerformance()),
     CurrencyPipe,
-    ScreenTrackingService,
-    UserTrackingService,
     {
       provide: ErrorHandler,
-      useValue: Sentry.createErrorHandler({
-        showDialog: false,
-      }),
+      useValue: Sentry.createErrorHandler({ showDialog: false }),
     },
     {
       provide: Sentry.TraceService,

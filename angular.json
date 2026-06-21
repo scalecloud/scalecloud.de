@@ -119,16 +119,6 @@
               "devServerTarget": "scalecloud:serve:production"
             }
           }
-        },
-        "deploy": {
-          "builder": "@angular/fire:deploy",
-          "options": {
-            "prerender": false,
-            "ssr": false,
-            "buildTarget": "scalecloud:build:production",
-            "firebaseProject": "scalecloud-de",
-            "firebaseHostingSite": "scalecloud"
-          }
         }
       }
     }

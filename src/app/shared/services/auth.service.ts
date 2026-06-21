@@ -1,14 +1,22 @@
-
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { User } from 'firebase/auth';
 import { Router } from '@angular/router';
 import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
 import { ReturnUrlService } from './redirect/return-url.service';
-import { Observable, firstValueFrom } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { timeout } from 'rxjs/operators';
+
+import {
+  Auth,
+  User,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signOut,
+} from 'firebase/auth';
+import { auth } from '../../app.module';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -17,13 +25,11 @@ export class AuthService {
   private token: string | null | undefined = undefined;
 
   constructor(
-    private readonly afAuth: AngularFireAuth,
     private readonly router: Router,
     private readonly snackBarService: SnackBarService,
     private readonly logService: LogService,
     private readonly returnUrlService: ReturnUrlService,
   ) {
-    this.afAuth.useDeviceLanguage();
     this.subscribeToUser();
     this.subscribeToToken();
   }
@@ -41,16 +47,32 @@ export class AuthService {
   }
 
   getUserObservable(): Observable<User | null> {
-    return this.afAuth.user;
+    return new Observable((subscriber) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        subscriber.next(user);
+      }, (error) => subscriber.error(error));
+      return () => unsubscribe();
+    });
   }
 
   getTokenObservable(): Observable<string | null> {
-    return this.afAuth.idToken;
+    // Gibt bei jedem Auth-State-Wechsel ein frisches Token aus
+    return new Observable((subscriber) => {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const token = await user.getIdToken();
+          subscriber.next(token);
+        } else {
+          subscriber.next(null);
+        }
+      }, (error) => subscriber.error(error));
+      return () => unsubscribe();
+    });
   }
 
   async getUserPromise(): Promise<User | null> {
     await this.authStateReady();
-    return this.afAuth.currentUser;
+    return auth.currentUser;
   }
 
   async getTokenPromise(): Promise<string> {
@@ -67,21 +89,11 @@ export class AuthService {
     }
   }
 
-  setUser(user: User | null) {
-    this.user = user;
-  }
+  setUser(user: User | null) { this.user = user; }
+  getUser(): User | null { return this.user; }
 
-  getUser(): User | null {
-    return this.user;
-  }
-
-  setToken(token: string | null) {
-    this.token = token;
-  }
-
-  getToken(): string | null {
-    return this.token;
-  }
+  setToken(token: string | null) { this.token = token; }
+  getToken(): string | null { return this.token; }
 
   getHttpOptions() {
     return {
@@ -92,8 +104,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string): Promise<void> {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
+    return signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         this.setUser(result.user);
         this.returnUrlService.openReturnURL('/dashboard');
@@ -104,8 +115,7 @@ export class AuthService {
   }
 
   register(email: string, password: string) {
-    this.afAuth
-      .createUserWithEmailAndPassword(email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         this.setUser(result.user);
         this.sendVerificationMail();
@@ -116,19 +126,19 @@ export class AuthService {
   }
 
   sendVerificationMail() {
-    let actionCodeSettings = {
+    const actionCodeSettings = {
       url: this.returnUrlService.getReturnUrlDecoded(),
     };
-    this.afAuth.currentUser.then((user) => {
-      user.sendEmailVerification(actionCodeSettings)
-        .then(() => {
-          this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
-          this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
-        })
-        .catch((error) => {
-          this.snackBarService.error(error.message);
-        });
-    })
+    const user = auth.currentUser;
+    if (!user) {
+      this.snackBarService.error('No user logged in.');
+      return;
+    }
+    sendEmailVerification(user, actionCodeSettings)
+      .then(() => {
+        this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
+        this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
+      })
       .catch((error) => {
         this.snackBarService.error(error.message);
       });
@@ -136,8 +146,7 @@ export class AuthService {
 
   async forgotPassword(passwordResetEmail: string): Promise<boolean> {
     let result = false;
-    await this.afAuth
-      .sendPasswordResetEmail(passwordResetEmail)
+    await sendPasswordResetEmail(auth, passwordResetEmail)
       .then(() => {
         result = true;
         this.snackBarService.infoDuration('Please check your E-Mail for further instructions.', 30);
@@ -149,40 +158,48 @@ export class AuthService {
   }
 
   async reloadUser(): Promise<void> {
-    if (this.getUser()) {
-      await this.getUser().reload()
-        .catch((error) => {
-          this.logService.error(error.message);
-        });
-    }
-    else {
-      this.logService.error("Could not reload user, because user is null.");
+    const user = this.getUser();
+    if (user) {
+      await user.reload().catch((error) => {
+        this.logService.error(error.message);
+      });
+    } else {
+      this.logService.error('Could not reload user, because user is null.');
     }
   }
 
   async authStateReady(): Promise<void> {
-    const timeoutDuration = 4000; // 4 seconds
+    const timeoutDuration = 4000;
 
     if (this.getUser() === undefined) {
-      await firstValueFrom(this.getUserObservable().pipe(timeout(timeoutDuration)));
+      await new Promise<void>((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error('Auth state timeout')), timeoutDuration);
+        const unsub = onAuthStateChanged(auth, (user) => {
+          clearTimeout(timer);
+          unsub();
+          this.setUser(user);
+          resolve();
+        });
+      }).catch((err) => this.logService.warn(err.message));
     }
+
     if (this.getToken() === undefined) {
-      await firstValueFrom(this.getTokenObservable().pipe(timeout(timeoutDuration)));
-    }
-    if (this.getUser() === undefined) {
-      this.logService.warn("User should not be undefined.");
-    }
-    if (this.getToken() === undefined) {
-      this.logService.warn("Token should not be undefined.");
+      const user = auth.currentUser;
+      if (user) {
+        const token = await user.getIdToken();
+        this.setToken(token);
+      } else {
+        this.setToken(null);
+      }
     }
   }
 
   async waitForAuth(): Promise<void> {
     await this.authStateReady();
     await new Promise<void>((resolve) => {
-      const subscription = this.getUserObservable().subscribe((user) => {
+      const unsub = onAuthStateChanged(auth, (user) => {
         if (user) {
-          subscription.unsubscribe();
+          unsub();
           resolve();
         }
       });
@@ -190,23 +207,19 @@ export class AuthService {
   }
 
   async isLoggedIn(waitAuthStateReady: boolean): Promise<boolean> {
-    if (waitAuthStateReady) {
-      await this.authStateReady();
-    }
-    let user = this.getUser();
-    return user && user?.emailVerified;
+    if (waitAuthStateReady) await this.authStateReady();
+    const user = this.getUser();
+    return !!(user && user.emailVerified);
   }
 
   async isLoggedInNotVerified(waitAuthStateReady: boolean): Promise<boolean> {
-    if (waitAuthStateReady) {
-      await this.authStateReady();
-    }
+    if (waitAuthStateReady) await this.authStateReady();
     const user = this.getUser();
-    return user && !user?.emailVerified;
+    return !!(user && !user.emailVerified);
   }
 
   async signOut() {
-    await this.afAuth.signOut();
+    await signOut(auth);
     this.router.navigate(['/']);
   }
 }
