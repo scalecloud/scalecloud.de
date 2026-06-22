@@ -40,8 +40,6 @@
     "@angular-devkit/schematics": "^22.0.3",
     "@angular/cli": "^22.0.3",
     "@angular/compiler-cli": "^22.0.2",
-    "@nrwl/angular": "19.8.4",
-    "@nrwl/workspace": "19.8.4",
     "@schematics/angular": "^22.0.3",
     "@types/jasmine": "^6.0.0",
     "@types/node": "^26.0.0",
