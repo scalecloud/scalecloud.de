@@ -3,7 +3,7 @@
 ##
 ## Build
 ##
-FROM node:26.3.1 AS build
+FROM node:24.17.0 AS build
 
 WORKDIR /build
 
@@ -15,5 +15,4 @@ RUN npm install --ignore-scripts && npm run ng build scalecloud
 ## Deploy
 ##
 FROM nginx:latest AS deploy
-
-COPY --from=build /build/dist/scalecloud /usr/share/nginx/html
+COPY --from=build /build/dist/scalecloud/browser /usr/share/nginx/html
