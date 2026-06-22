@@ -9,8 +9,7 @@ WORKDIR /build
 
 COPY ./ ./
 
-RUN npm install --ignore-scripts && npm run ng build scalecloud
-
+RUN npm install --ignore-scripts && npx ng build scalecloud --configuration production
 ##
 ## Deploy
 ##
