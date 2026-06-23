@@ -1,4 +1,4 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+/* To learn more about this file see: https://angular.dev/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -10,13 +10,14 @@
     "strict": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": false,
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "es2020",
+    "module": "ES2022",
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
