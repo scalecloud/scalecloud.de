@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import createGlobe from 'cobe';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import createGlobe, { type Globe } from 'cobe';
 
 @Component({
     selector: 'app-globe',
@@ -8,9 +8,13 @@ import createGlobe from 'cobe';
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class GlobeComponent implements OnInit {
-  // https://github.com/shuding/cobe
-  public globeSize: any;
+export class GlobeComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('cobeCanvas', { static: false })
+  private canvasRef!: ElementRef<HTMLCanvasElement>;
+
+  public globeSize = 0;
+  private globe?: Globe;
+  private animationFrameId?: number;
 
   ngOnInit(): void {
     let innerHeight = window.innerHeight;
@@ -30,19 +34,26 @@ export class GlobeComponent implements OnInit {
     this.showGlobe();
   }
 
+  ngOnDestroy(): void {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+    }
+
+    this.globe?.destroy();
+  }
+
   setGlobeSize() {
-    let styles = {
-      'width': this.globeSize + 'px',
-      'height': this.globeSize + 'px',
+    return {
+      width: `${this.globeSize}px`,
+      height: `${this.globeSize}px`,
     };
-    return styles;
   }
 
   showGlobe() {
-    let phi = 0;
-    let canvas = <HTMLCanvasElement>document.getElementById("cobe");
+    let phi = 4;
+    const canvas = this.canvasRef.nativeElement;
 
-    createGlobe(canvas, {
+    this.globe = createGlobe(canvas, {
       devicePixelRatio: 2,
       width: this.globeSize * 2,
       height: this.globeSize * 2,
@@ -54,16 +65,23 @@ export class GlobeComponent implements OnInit {
       mapBrightness: 6,
       baseColor: [0.3, 0.3, 0.3],
       markerColor: [236, 0, 0],
+      markerElevation: 0.01,
       glowColor: [1, 1, 1],
       markers: [
-        { location: [54.7945644, 9.397062], size: 0.05 }
+        { location: [54.7945644, 9.397062], size: 0.02 },
       ],
-      onRender: (state) => {
-        // Called on every animation frame.
-        // `state` will be an empty object, return updated params.
-        state.phi = phi
-        phi += 0.001
-      },
-    })
+    });
+
+    const animate = () => {
+      if (!this.globe) {
+        return;
+      }
+
+      this.globe.update({ phi });
+      phi += 0.001;
+      this.animationFrameId = requestAnimationFrame(animate);
+    };
+
+    this.animationFrameId = requestAnimationFrame(animate);
   }
 }
