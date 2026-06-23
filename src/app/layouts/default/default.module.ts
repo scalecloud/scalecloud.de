@@ -10,7 +10,6 @@ import { NextcloudComponent } from 'src/app/modules/products/nextcloud/nextcloud
 import { SynologyComponent } from 'src/app/modules/products/synology/synology.component';
 import { PrivacyComponent } from 'src/app/modules/footer/privacy/privacy.component';
 import { ImprintComponent } from 'src/app/modules/footer/imprint/imprint.component';
-import { LegalComponent } from 'src/app/modules/footer/legal/legal.component';
 import { ContactComponent } from 'src/app/modules/footer/contact/contact.component';
 import { MatIconModule } from '@angular/material/icon';
 import { SubscriptionCardComponent } from 'src/app/modules/products/subscription-card/subscription-card.component';
@@ -82,7 +81,6 @@ import { BillingAddressOverviewComponent } from 'src/app/modules/account/dashboa
         SynologyComponent,
         PrivacyComponent,
         ImprintComponent,
-        LegalComponent,
         TermsComponent,
         ContactComponent,
         LoginComponent,

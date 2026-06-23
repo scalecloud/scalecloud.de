@@ -8,7 +8,6 @@ import { RegisterComponent } from './modules/account/register/register.component
 import { VerifyEmailComponent } from './modules/account/verify-email/verify-email.component';
 import { ContactComponent } from './modules/footer/contact/contact.component';
 import { ImprintComponent } from './modules/footer/imprint/imprint.component';
-import { LegalComponent } from './modules/footer/legal/legal.component';
 import { PrivacyComponent } from './modules/footer/privacy/privacy.component';
 import { TermsComponent } from './modules/footer/terms/terms.component';
 import { HomeComponent } from './modules/main/home/home.component';
@@ -46,7 +45,7 @@ const routes: Routes = [{
   // Footer
   { path: 'privacy-policy', component: PrivacyComponent },
   { path: 'imprint', component: ImprintComponent },
-  { path: 'legal', component: LegalComponent },
+  { path: 'legal', loadComponent: () => import('./modules/footer/legal/legal.component').then(m => m.LegalComponent) },
   { path: 'terms', component: TermsComponent },
   { path: 'contact', component: ContactComponent },
   // AuthGuard
