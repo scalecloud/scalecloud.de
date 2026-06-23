@@ -1,40 +1,39 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@firebase/logger';
-import * as Sentry from "@sentry/angular";
-import { SeverityLevel } from '@sentry/types';
+import { captureMessage, captureException } from '@sentry/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogService {
-  logger: Logger;
-
-  constructor() {
-    this.logger = new Logger(`Logger`);
-  }
+  private readonly logger = new Logger('Logger');
 
   debug(message: string): void {
     this.logger.debug(message);
-    Sentry.captureMessage(message, 'debug' as SeverityLevel);
+    captureMessage(message, 'debug');
   }
 
   log(message: string): void {
     this.logger.log(message);
-    Sentry.captureMessage(message, 'log' as SeverityLevel);
+    captureMessage(message, 'log');
   }
 
   info(message: string): void {
     this.logger.info(message);
-    Sentry.captureMessage(message, 'info' as SeverityLevel);
+    captureMessage(message, 'info');
   }
 
   warn(message: string): void {
     this.logger.warn(message);
-    Sentry.captureMessage(message, 'warning' as SeverityLevel);
+    captureMessage(message, 'warning');
   }
 
-  error(message: string): void {
+  error(message: string, error?: Error | unknown): void {
     this.logger.error(message);
-    Sentry.captureException(new Error(message));
+    if (error) {
+      captureException(error);
+    } else {
+      captureMessage(message, 'error');
+    }
   }
 }
