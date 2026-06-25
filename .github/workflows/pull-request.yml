@@ -1,4 +1,5 @@
 name: Pull Request Checks
+
 on: pull_request
 
 jobs:
@@ -7,11 +8,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
       - name: Install dependencies
         run: npm i
 
       - name: Build
-        run: npx ng build scalecloud --configuration production
+        run: npm run build:prod
+
+      - name: Lint
+        run: npm run lint
 
       - name: Test
-        run: npx ng test --watch=false --browsers=ChromeHeadless
+        run: npm test
