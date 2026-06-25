@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmOwnerTransferComponent } from './confirm-owner-transfer.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('ConfirmOwnerTransferComponent', () => {
   let component: ConfirmOwnerTransferComponent;

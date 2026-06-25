@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { PermissionService } from './permission.service';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('PermissionService', () => {
   let service: PermissionService;

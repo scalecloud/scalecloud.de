@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VerifyEmailComponent } from './verify-email.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('VerifyEmailComponent', () => {
   let component: VerifyEmailComponent;

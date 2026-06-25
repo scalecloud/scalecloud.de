@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('PaymentMethodOverviewService', () => {
   let service: PaymentMethodOverviewService;

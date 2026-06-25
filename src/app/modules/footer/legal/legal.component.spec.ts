@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LegalComponent } from './legal.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('LegalComponent', () => {
   let component: LegalComponent;

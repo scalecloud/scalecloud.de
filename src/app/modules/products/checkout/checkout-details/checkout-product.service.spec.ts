@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CheckoutProductService } from './checkout-product.service';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('CheckoutProductService', () => {
   let service: CheckoutProductService;

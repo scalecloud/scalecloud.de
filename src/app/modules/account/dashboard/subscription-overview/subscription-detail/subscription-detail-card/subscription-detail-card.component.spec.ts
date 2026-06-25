@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubscriptionDetailCardComponent } from './subscription-detail-card.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('SubscriptionDetailCardComponent', () => {
   let component: SubscriptionDetailCardComponent;

@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 
 
 import { SubscriptionCardComponent } from './subscription-card.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('SubscriptionCardComponent', () => {
   let component: SubscriptionCardComponent;

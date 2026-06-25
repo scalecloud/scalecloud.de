@@ -8,6 +8,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatCard, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('SynologyComponent', () => {
   let component: SynologyComponent;

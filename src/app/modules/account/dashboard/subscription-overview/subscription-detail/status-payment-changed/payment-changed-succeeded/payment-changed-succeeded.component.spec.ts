@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentChangedSucceededComponent } from './payment-changed-succeeded.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('PaymentChangedSucceededComponent', () => {
   let component: PaymentChangedSucceededComponent;

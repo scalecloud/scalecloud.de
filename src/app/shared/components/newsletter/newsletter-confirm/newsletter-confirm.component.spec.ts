@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewsletterConfirmComponent } from './newsletter-confirm.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('NewsletterConfirmComponent', () => {
   let component: NewsletterConfirmComponent;

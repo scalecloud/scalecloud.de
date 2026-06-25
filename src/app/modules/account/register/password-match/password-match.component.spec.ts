@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PasswordMatchComponent } from './password-match.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('PasswordMatchComponent', () => {
   let component: PasswordMatchComponent;

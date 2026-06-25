@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActiveComponent } from './active.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('ActiveComponent', () => {
   let component: ActiveComponent;

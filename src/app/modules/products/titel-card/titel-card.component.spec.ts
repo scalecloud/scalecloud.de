@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDivider } from '@angular/material/divider';
 import { TitelCardComponent } from './titel-card.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('TitelCardComponent', () => {
   let component: TitelCardComponent;

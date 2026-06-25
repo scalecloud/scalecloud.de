@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDivider } from '@angular/material/divider';
 
 import { ImprintComponent } from './imprint.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('ImprintComponent', () => {
   let component: ImprintComponent;

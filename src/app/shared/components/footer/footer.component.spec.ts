@@ -4,6 +4,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { FooterComponent } from './footer.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;

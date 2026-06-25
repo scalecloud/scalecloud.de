@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BillingPortalComponent } from './billing-portal.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('BillingPortalComponent', () => {
   let component: BillingPortalComponent;

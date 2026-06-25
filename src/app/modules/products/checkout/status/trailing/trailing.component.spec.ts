@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrailingComponent } from './trailing.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('TrailingComponent', () => {
   let component: TrailingComponent;

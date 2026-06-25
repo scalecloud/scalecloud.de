@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PasswordStrengthComponent } from './password-strength.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('PasswordStrengthComponent', () => {
   let component: PasswordStrengthComponent;

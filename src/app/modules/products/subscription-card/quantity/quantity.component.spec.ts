@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QuantityComponent } from './quantity.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('QuantityComponent', () => {
   let component: QuantityComponent;

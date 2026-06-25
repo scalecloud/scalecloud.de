@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CountryInputComponent } from './country-input.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('CountryInputComponent', () => {
   let component: CountryInputComponent;

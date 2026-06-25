@@ -4,6 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatNavList } from '@angular/material/list';
 
 import { SidebarComponent } from './sidebar.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;

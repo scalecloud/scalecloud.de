@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewsletterSubscribeComponent } from './newsletter-subscribe.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('NewsletterSubscribeComponent', () => {
   let component: NewsletterSubscribeComponent;

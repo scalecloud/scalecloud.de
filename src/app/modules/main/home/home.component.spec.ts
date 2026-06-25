@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDivider } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { HomeComponent } from './home.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

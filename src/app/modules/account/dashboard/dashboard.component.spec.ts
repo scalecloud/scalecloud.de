@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;

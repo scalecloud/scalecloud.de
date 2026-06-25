@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { BillingPortalService } from './billing-portal.service';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('BillingPortalService', () => {
   let service: BillingPortalService;

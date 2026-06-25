@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResumeSubscriptionComponent } from './resume-subscription.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('ResumeSubscriptionComponent', () => {
   let component: ResumeSubscriptionComponent;

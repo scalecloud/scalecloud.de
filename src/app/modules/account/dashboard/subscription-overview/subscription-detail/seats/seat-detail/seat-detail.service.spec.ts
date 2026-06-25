@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SeatDetailService } from './seat-detail.service';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('SeatDetailService', () => {
   let service: SeatDetailService;

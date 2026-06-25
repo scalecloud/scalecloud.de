@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DashboardGuard } from './dashboard.guard';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('DashboardGuard', () => {
   let guard: DashboardGuard;

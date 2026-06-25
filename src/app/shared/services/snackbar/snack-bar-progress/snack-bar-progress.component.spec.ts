@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SnackBarProgressComponent } from './snack-bar-progress.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('SnackBarProgressComponent', () => {
   let component: SnackBarProgressComponent;

@@ -4,6 +4,7 @@ import { MatMenu } from '@angular/material/menu';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 
 import { HeaderComponent } from './header.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;

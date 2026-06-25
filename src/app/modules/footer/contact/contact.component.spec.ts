@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContactComponent } from './contact.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('ContactComponent', () => {
   let component: ContactComponent;

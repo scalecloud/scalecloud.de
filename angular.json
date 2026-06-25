@@ -22,7 +22,9 @@
             },
             "browser": "src/main.ts",
             "index": "src/index.html",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets/img/logo/favicon.png",
@@ -85,7 +87,19 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "include": ["src/**/*.spec.ts"]
+            "include": [
+              "src/**/*.spec.ts"
+            ]
+          }
+        },
+        "test-ui": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "include": [
+              "src/**/*.spec.ts"
+            ],
+            "runnerConfig": "vitest.config.ui.ts"
           }
         },
         "lint": {
@@ -102,7 +116,9 @@
   },
   "cli": {
     "analytics": false,
-    "schematicCollections": ["angular-eslint"]
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   },
   "schematics": {
     "@schematics/angular:component": {

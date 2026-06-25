@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PrivacyComponent } from './privacy.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('PrivacyComponent', () => {
   let component: PrivacyComponent;

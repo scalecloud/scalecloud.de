@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ProductService } from './product.service';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('ProductService', () => {
   let service: ProductService;
