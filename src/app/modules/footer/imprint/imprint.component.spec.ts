@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDivider } from '@angular/material/divider';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { ImprintComponent } from './imprint.component';
 import { describe, beforeEach, it, expect } from 'vitest';
@@ -10,12 +11,9 @@ describe('ImprintComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        ImprintComponent,
-        MatDivider
-      ]
-    })
-      .compileComponents();
+      declarations: [ImprintComponent],
+      imports: [RouterTestingModule, MatDividerModule]
+    }).compileComponents();
   });
 
   beforeEach(() => {

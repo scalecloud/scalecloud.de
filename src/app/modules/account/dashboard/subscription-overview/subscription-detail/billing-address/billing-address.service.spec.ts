@@ -1,17 +1,44 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { BillingAddressService } from './billing-address.service';
-import { describe, beforeEach, it, expect } from 'vitest';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 describe('BillingAddressService', () => {
   let service: BillingAddressService;
+  let httpTestingController: HttpTestingController;
+  const authServiceMock = { getHttpOptions: vi.fn().mockReturnValue({}) };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [{ provide: AuthService, useValue: authServiceMock }]
+    });
     service = TestBed.inject(BillingAddressService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should post billing address request', () => {
+    const request = { subscriptionID: '123' };
+    const response = { name: 'Test User', address: { line1: 'Street 1', line2: '', postal_code: '12345', city: 'Test City', country: 'DE' }, phone: '+4912345678' };
+
+    service.getBillingAddress(request).subscribe((reply) => {
+      expect(reply).toEqual(response);
+    });
+
+    const req = httpTestingController.expectOne('http://localhost:15000/dashboard/subscription/billing-address');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(request);
+    expect(req.request.headers.keys()).toEqual([]);
+    req.flush(response);
   });
 });
