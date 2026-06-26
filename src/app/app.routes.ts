@@ -1,34 +1,13 @@
 import { Routes } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
-import { DashboardComponent } from './modules/account/dashboard/dashboard.component';
-import { ForgotPasswordComponent } from './modules/account/forgot-password/forgot-password.component';
-import { LoginComponent } from './modules/account/login/login.component';
-import { RegisterComponent } from './modules/account/register/register.component';
-import { VerifyEmailComponent } from './modules/account/verify-email/verify-email.component';
-import { ContactComponent } from './modules/footer/contact/contact.component';
-import { ImprintComponent } from './modules/footer/imprint/imprint.component';
-import { PrivacyComponent } from './modules/footer/privacy/privacy.component';
-import { TermsComponent } from './modules/footer/terms/terms.component';
 import { HomeComponent } from './modules/main/home/home.component';
 import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
-import { CheckoutComponent } from './modules/products/checkout/checkout.component';
-import { StatusComponent } from './modules/products/checkout/status/status.component';
-import { NextcloudComponent } from './modules/products/nextcloud/nextcloud.component';
-import { SynologyComponent } from './modules/products/synology/synology.component';
 import { DashboardGuard } from './shared/guard/dashboard.guard';
-import { ForgotPasswordGuard } from './shared/guard/forgot-password.guard';
+import { CheckoutGuard } from './shared/guard/checkout.guard';
 import { LoginGuard } from './shared/guard/login.guard';
 import { RegisterGuard } from './shared/guard/register.guard';
+import { ForgotPasswordGuard } from './shared/guard/forgot-password.guard';
 import { VerifyEMailGuard } from './shared/guard/verify-email.guard';
-import { SubscriptionDetailComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component';
-import { ChangePaymentComponent } from './modules/account/dashboard/change-payment/change-payment.component';
-import { StatusPaymentChangedComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/status-payment-changed.component';
-import { CheckoutGuard } from './shared/guard/checkout.guard';
-import { AddSeatComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component';
-import { SeatDetailComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component';
-import { BillingAddressDetailComponent } from './modules/account/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component';
-import { NewsletterConfirmComponent } from './shared/components/newsletter/newsletter-confirm/newsletter-confirm.component';
-import { NewsletterUnsubscribeComponent } from './shared/components/newsletter/newsletter-unsubscribe/newsletter-unsubscribe.component';
 
 export const routes: Routes = [
   {
@@ -39,37 +18,111 @@ export const routes: Routes = [
         path: '',
         component: HomeComponent
       },
-      { path: 'nextcloud', component: NextcloudComponent },
-      { path: 'synology', component: SynologyComponent },
-      // Checkout
-      { path: 'checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
-      { path: 'checkout/status', component: StatusComponent },
-      // Footer
-      { path: 'privacy-policy', component: PrivacyComponent },
-      { path: 'imprint', component: ImprintComponent },
-      { path: 'legal', loadComponent: () => import('./modules/footer/legal/legal.component').then(m => m.LegalComponent) },
-      { path: 'terms', component: TermsComponent },
-      { path: 'contact', component: ContactComponent },
-      // AuthGuard
-      { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
-      { path: 'dashboard/subscription/:subscriptionID', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
-      { path: 'dashboard/subscription/:subscriptionID/add-seat', component: AddSeatComponent, canActivate: [DashboardGuard] },
-      { path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail', component: SeatDetailComponent, canActivate: [DashboardGuard] },
-      { path: 'dashboard/subscription/:subscriptionID/billing-address', component: BillingAddressDetailComponent, canActivate: [DashboardGuard] },
-      { path: 'dashboard/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
-      { path: 'dashboard/change-payment/status', component: StatusPaymentChangedComponent },
-      // LoginGuard
-      { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
-      // RegisterGuard
-      { path: 'register', component: RegisterComponent, canActivate: [RegisterGuard] },
-      // VerifyEmailGuard
-      { path: 'verify-email-address', component: VerifyEmailComponent, canActivate: [VerifyEMailGuard] },
-      // ForgotPasswordGuard
-      { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [ForgotPasswordGuard] },
-      // Newsletter
-      { path: 'newsletter/confirm/:verificationToken', component: NewsletterConfirmComponent },
-      { path: 'newsletter/unsubscribe/:unsubscribeToken', component: NewsletterUnsubscribeComponent },
-      // PageNotFound
+      // Products - Lazy Loaded
+      {
+        path: 'nextcloud',
+        loadComponent: () => import('./modules/products/nextcloud/nextcloud.component').then(m => m.NextcloudComponent)
+      },
+      {
+        path: 'synology',
+        loadComponent: () => import('./modules/products/synology/synology.component').then(m => m.SynologyComponent)
+      },
+      {
+        path: 'checkout',
+        canActivate: [CheckoutGuard],
+        loadComponent: () => import('./modules/products/checkout/checkout.component').then(m => m.CheckoutComponent)
+      },
+      {
+        path: 'checkout/status',
+        loadComponent: () => import('./modules/products/checkout/status/status.component').then(m => m.StatusComponent)
+      },
+      // Account/Dashboard - Lazy Loaded
+      {
+        path: 'dashboard',
+        canActivate: [DashboardGuard],
+        loadComponent: () => import('./modules/account/dashboard/dashboard.component').then(m => m.DashboardComponent)
+      },
+      {
+        path: 'dashboard/subscription/:subscriptionID',
+        canActivate: [DashboardGuard],
+        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component').then(m => m.SubscriptionDetailComponent)
+      },
+      {
+        path: 'dashboard/subscription/:subscriptionID/add-seat',
+        canActivate: [DashboardGuard],
+        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component').then(m => m.AddSeatComponent)
+      },
+      {
+        path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail',
+        canActivate: [DashboardGuard],
+        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component').then(m => m.SeatDetailComponent)
+      },
+      {
+        path: 'dashboard/subscription/:subscriptionID/billing-address',
+        canActivate: [DashboardGuard],
+        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component').then(m => m.BillingAddressDetailComponent)
+      },
+      {
+        path: 'dashboard/change-payment',
+        canActivate: [DashboardGuard],
+        loadComponent: () => import('./modules/account/dashboard/change-payment/change-payment.component').then(m => m.ChangePaymentComponent)
+      },
+      {
+        path: 'dashboard/change-payment/status',
+        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/status-payment-changed.component').then(m => m.StatusPaymentChangedComponent)
+      },
+      // Auth - Lazy Loaded
+      {
+        path: 'login',
+        canActivate: [LoginGuard],
+        loadComponent: () => import('./modules/account/login/login.component').then(m => m.LoginComponent)
+      },
+      {
+        path: 'register',
+        canActivate: [RegisterGuard],
+        loadComponent: () => import('./modules/account/register/register.component').then(m => m.RegisterComponent)
+      },
+      {
+        path: 'verify-email-address',
+        canActivate: [VerifyEMailGuard],
+        loadComponent: () => import('./modules/account/verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
+      },
+      {
+        path: 'forgot-password',
+        canActivate: [ForgotPasswordGuard],
+        loadComponent: () => import('./modules/account/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
+      },
+      // Footer - Lazy Loaded
+      {
+        path: 'privacy-policy',
+        loadComponent: () => import('./modules/footer/privacy/privacy.component').then(m => m.PrivacyComponent)
+      },
+      {
+        path: 'imprint',
+        loadComponent: () => import('./modules/footer/imprint/imprint.component').then(m => m.ImprintComponent)
+      },
+      {
+        path: 'terms',
+        loadComponent: () => import('./modules/footer/terms/terms.component').then(m => m.TermsComponent)
+      },
+      {
+        path: 'contact',
+        loadComponent: () => import('./modules/footer/contact/contact.component').then(m => m.ContactComponent)
+      },
+      {
+        path: 'legal',
+        loadComponent: () => import('./modules/footer/legal/legal.component').then(m => m.LegalComponent)
+      },
+      // Newsletter - Lazy Loaded
+      {
+        path: 'newsletter/confirm/:verificationToken',
+        loadComponent: () => import('./shared/components/newsletter/newsletter-confirm/newsletter-confirm.component').then(m => m.NewsletterConfirmComponent)
+      },
+      {
+        path: 'newsletter/unsubscribe/:unsubscribeToken',
+        loadComponent: () => import('./shared/components/newsletter/newsletter-unsubscribe/newsletter-unsubscribe.component').then(m => m.NewsletterUnsubscribeComponent)
+      },
+      // Wildcard
       { path: '**', component: PageNotFoundComponent }
     ]
   }
