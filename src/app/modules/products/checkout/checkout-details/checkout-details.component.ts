@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
@@ -26,19 +26,22 @@ import { LoadingFailedComponent } from '../../../../shared/components/loading-fa
     imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, QuantityComponent, MatCardSubtitle, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class CheckoutDetailsComponent implements OnInit {
+  private readonly logService = inject(LogService);
+  private readonly checkoutProductService = inject(CheckoutProductService);
+  private readonly authService = inject(AuthService);
+  private readonly currencyPipe = inject(CurrencyPipe);
+  private readonly route = inject(ActivatedRoute);
+
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
   @Output() startSubscriptionEvent = new EventEmitter<CheckoutCreateSubscriptionRequest>();
   reply: CheckoutProductReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
-  constructor(
-    private readonly logService: LogService,
-    private readonly checkoutProductService: CheckoutProductService,
-    private readonly authService: AuthService,
-    private readonly currencyPipe: CurrencyPipe,
-    private readonly route: ActivatedRoute
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.initCheckoutProduct();

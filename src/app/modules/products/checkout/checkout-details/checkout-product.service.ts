@@ -9,13 +9,16 @@ import { API_URL } from 'src/app/core/config/api.token';
   providedIn: 'root'
 })
 export class CheckoutProductService {
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
+
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/checkout-integration/get-checkout-product`;
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   getCheckoutProduct(checkoutProductRequest: CheckoutProductRequest): Observable<CheckoutProductReply> {
     return this.http.post<CheckoutProductReply>(this.url, checkoutProductRequest, this.authService.getHttpOptions());

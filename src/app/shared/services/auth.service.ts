@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
@@ -11,17 +11,20 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly router = inject(Router);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly logService = inject(LogService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly firebaseService = inject(FirebaseService);
+
 
   private user: User | null | undefined = undefined;
   private token: string | null | undefined = undefined;
 
-  constructor(
-    private readonly router: Router,
-    private readonly snackBarService: SnackBarService,
-    private readonly logService: LogService,
-    private readonly returnUrlService: ReturnUrlService,
-    private readonly firebaseService: FirebaseService,
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.subscribeToUser();
     this.subscribeToToken();
   }

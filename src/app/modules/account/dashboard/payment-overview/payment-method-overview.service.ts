@@ -9,14 +9,17 @@ import { API_URL } from 'src/app/core/config/api.token';
   providedIn: 'root'
 })
 export class PaymentMethodOverviewService {
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
+
 
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/get-payment-method-overview`;
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   getPaymentMethodOverview(): Observable<PaymentMethodOverviewReply> {
     return this.http.post<PaymentMethodOverviewReply>(this.url, null, this.authService.getHttpOptions());

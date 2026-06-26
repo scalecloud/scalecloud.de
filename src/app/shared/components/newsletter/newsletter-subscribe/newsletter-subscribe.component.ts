@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
@@ -37,13 +37,16 @@ import { RouterLink } from '@angular/router';
     ],
 })
 export class NewsletterSubscribeComponent {
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly newsletterService = inject(NewsletterService);
+
   readonly email = new FormControl('', [Validators.required, Validators.email]);
   errorMessage = signal('');
 
-  constructor(
-    private readonly snackBarService: SnackBarService,
-    private readonly newsletterService: NewsletterService,
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     merge(this.email.statusChanges, this.email.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());

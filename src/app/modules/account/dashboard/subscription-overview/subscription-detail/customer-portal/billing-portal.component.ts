@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { BillingPortalService } from './billing-portal.service';
@@ -16,12 +16,15 @@ import { MatButton } from '@angular/material/button';
     imports: [MatCard, MatCardTitle, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
 })
 export class BillingPortalComponent {
+  private readonly authService = inject(AuthService);
+  private readonly billingPortalService = inject(BillingPortalService);
+  private readonly logService = inject(LogService);
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly billingPortalService: BillingPortalService,
-    private readonly logService: LogService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+
+  constructor() { }
 
   openBillingPortal(): void {
     this.billingPortalService.getBillingPortal()

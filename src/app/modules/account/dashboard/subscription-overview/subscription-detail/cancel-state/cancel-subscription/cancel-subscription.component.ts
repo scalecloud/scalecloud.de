@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
@@ -18,17 +18,20 @@ import { MatIcon } from '@angular/material/icon';
   imports: [MatButton, MatIcon],
 })
 export class CancelSubscriptionComponent {
+  private readonly authService = inject(AuthService);
+  private readonly cancelSubscriptionService = inject(CancelSubscriptionService);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly dialog = inject(MatDialog);
+
 
   @Output() reloadSubscriptionDetail = new EventEmitter<void>();
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly cancelSubscriptionService: CancelSubscriptionService,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly route: ActivatedRoute,
-    private readonly dialog: MatDialog,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   openConfirmDialog(): void {
     const dialogRef = this.dialog.open(ConfirmCancelSubscriptionComponent);

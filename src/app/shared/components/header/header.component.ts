@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatIconButton, MatButton } from '@angular/material/button';
@@ -15,10 +15,15 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
     imports: [MatToolbar, MatToolbarRow, MatIconButton, MatIcon, MatButton, RouterLink, MatProgressSpinner, MatMenuTrigger, MatMenu, MatMenuItem]
 })
 export class HeaderComponent implements OnInit {
+  authService = inject(AuthService);
+
   @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
   isLoading = true;
 
-  constructor(public authService: AuthService) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit() {
     this.authService.getUserObservable().subscribe({

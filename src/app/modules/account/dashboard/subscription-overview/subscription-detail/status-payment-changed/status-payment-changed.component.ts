@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -17,6 +17,11 @@ declare const Stripe: any;
     imports: [PaymentChangedSucceededComponent, PaymentChangedProcessingComponent, PaymentChangedRequiresPaymentMethodComponent]
 })
 export class StatusPaymentChangedComponent implements OnInit  {
+  private readonly logService = inject(LogService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+  private readonly stripeKeyService = inject(StripeKeyService);
+
 
   setup_intent: string | undefined;
   setup_intent_client_secret: string | undefined;
@@ -29,12 +34,10 @@ export class StatusPaymentChangedComponent implements OnInit  {
   processing: boolean = false;
   requires_payment_method: boolean = false;
 
-  constructor(
-    private readonly logService: LogService,
-    private readonly route: ActivatedRoute,
-    private readonly authService: AuthService,
-    private readonly stripeKeyService: StripeKeyService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.checkPaymentIntentStatus();

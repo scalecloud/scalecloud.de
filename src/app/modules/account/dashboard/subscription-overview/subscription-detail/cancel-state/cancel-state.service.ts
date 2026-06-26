@@ -9,13 +9,16 @@ import { API_URL } from 'src/app/core/config/api.token';
   providedIn: 'root'
 })
 export class CancelStateService {
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
+
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/subscription`;
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   getCancelState(id: string): Observable<CancelStateReply> {
     const url = `${this.url}/${id}/cancel-state`;

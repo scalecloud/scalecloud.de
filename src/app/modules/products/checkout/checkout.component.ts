@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
@@ -17,17 +17,20 @@ import { PaymentOverviewComponent as PaymentOverviewComponent_1 } from '../../ac
     imports: [PaymentOverviewComponent_1, CheckoutDetailsComponent]
 })
 export class CheckoutComponent {
+  private readonly logService = inject(LogService);
+  private readonly router = inject(Router);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly authService = inject(AuthService);
+  private readonly checkoutSubscriptionService = inject(CheckoutSubscriptionService);
+
   @ViewChild(PaymentOverviewComponent) paymentOverviewComponent: PaymentOverviewComponent | undefined;
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
   productID: string | undefined;
 
-  constructor(
-    private readonly logService: LogService,
-    private readonly router: Router,
-    private readonly snackBarService: SnackBarService,
-    private readonly authService: AuthService,
-    private readonly checkoutSubscriptionService: CheckoutSubscriptionService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): void {
     this.authService.waitForAuth().then(() => {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -21,21 +21,24 @@ import { LoadingFailedComponent } from '../../../../../../shared/components/load
     imports: [MatProgressBar, NgxSkeletonLoaderComponent, ResumeSubscriptionComponent, CancelSubscriptionComponent, LoadingFailedComponent]
 })
 export class CancelStateComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly cancelStateService = inject(CancelStateService);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly route = inject(ActivatedRoute);
+
 
   @Output() reloadSubscriptionDetailEvent = new EventEmitter();
   ServiceStatus = ServiceStatus;
   reply: CancelStateReply | null;
   serviceStatus = ServiceStatus.Initializing;
 
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly cancelStateService: CancelStateService,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly permissionService: PermissionService,
-    private readonly route: ActivatedRoute,
-  ) { }
+
+  constructor() { }
 
   ngOnInit(): void {
     this.checkPermissions();

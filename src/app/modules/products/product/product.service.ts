@@ -8,6 +8,8 @@ import { API_URL } from 'src/app/core/config/api.token';
   providedIn: 'root'
 })
 export class ProductService {
+  private readonly http = inject(HttpClient);
+
 
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/product/tiers`;
@@ -16,9 +18,10 @@ export class ProductService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(
-    private readonly http: HttpClient,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
 
   getProductTiers(productType: ProductType): Observable<ProductTiersReply> {

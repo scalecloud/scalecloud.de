@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { MatProgressBar } from '@angular/material/progress-bar';
 
@@ -10,13 +10,16 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     imports: [MatProgressBar]
 })
 export class SnackBarProgressComponent implements OnInit {
+  data = inject(MAT_SNACK_BAR_DATA);
+  private readonly snackBarRef = inject<MatSnackBarRef<SnackBarProgressComponent>>(MatSnackBarRef);
+
   progress = 100;
   private currentIntervalId: any;
 
-  constructor(
-    @Inject(MAT_SNACK_BAR_DATA) public data: any,
-    private readonly snackBarRef: MatSnackBarRef<SnackBarProgressComponent>
-  ) {}
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {}
 
   ngOnInit() {
     this.snackBarRef.afterOpened().subscribe(

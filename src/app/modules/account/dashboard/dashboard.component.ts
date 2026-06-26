@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
@@ -23,19 +23,22 @@ import { LoadingFailedComponent } from '../../../shared/components/loading-faile
     imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionOverviewComponent, LoadingFailedComponent]
 })
 export class DashboardComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly subscriptionOverviewService = inject(SubscriptionOverviewService);
+  private readonly logService = inject(LogService);
+  readonly lastCountService = inject(LastCountService);
+  private readonly snackBarService = inject(SnackBarService);
+
 
   @ViewChild(PaymentOverviewComponent) paymentOverviewComponent: PaymentOverviewComponent | undefined;
   reply: ISubscriptionOverview[] = [];
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly subscriptionOverviewService: SubscriptionOverviewService,
-    private readonly logService: LogService,
-    public readonly lastCountService: LastCountService,
-    private readonly snackBarService: SnackBarService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.getSubscriptionsOverview();

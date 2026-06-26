@@ -9,14 +9,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CancelSubscriptionService {
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
+
 
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/cancel-subscription`;
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   cancelSubscription(iSubscriptionCancelRequest: ISubscriptionCancelRequest): Observable<ISubscriptionCancelReply> {
     return this.http.post<ISubscriptionCancelReply>(this.url, iSubscriptionCancelRequest, this.authService.getHttpOptions());

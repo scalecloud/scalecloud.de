@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
@@ -19,15 +19,18 @@ import { CurrencyPipe } from '@angular/common';
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, QuantityComponent, MatCardSubtitle, MatCardActions, MatButton, CurrencyPipe]
 })
 export class SubscriptionCardComponent {
+  private readonly router = inject(Router);
+
 
   @Input() nextcloudProduct: NextcloudProduct | undefined;
   @Input() synologyProduct: SynologyProduct | undefined;
 
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
 
-  constructor(
-    private readonly router: Router
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   openCheckoutIntegration(): void {
     const productID = this.getProductID();

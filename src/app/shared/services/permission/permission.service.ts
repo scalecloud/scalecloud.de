@@ -16,17 +16,20 @@ interface CacheEntry {
   providedIn: 'root'
 })
 export class PermissionService {
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
+  private readonly logService = inject(LogService);
+
   private readonly apiUrl = inject(API_URL);
   private readonly urlPermission = `${this.apiUrl}/dashboard/subscription/permission`;
   private readonly cache: Map<string, CacheEntry> = new Map();
   private readonly cacheDuration = 60000; // 1 minute in milliseconds
   loadingPermissions: WritableSignal<boolean> = signal(false);
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService,
-    private readonly logService: LogService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   async isOwner(subscriptionID: string): Promise<boolean> {
     return this.hasPermission(subscriptionID, Role.Owner);

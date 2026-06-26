@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -26,19 +26,22 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
     imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatTooltip, MatIcon, CancelStateComponent, LoadingFailedComponent, CurrencyPipe, DatePipe]
 })
 export class SubscriptionDetailCardComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly subscriptionDetailCardServiceService = inject(SubscriptionDetailCardServiceService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+
 
   reply: SubscriptionDetailReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly permissionService: PermissionService,
-    private readonly subscriptionDetailCardServiceService: SubscriptionDetailCardServiceService,
-    private readonly route: ActivatedRoute,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.checkPermissions();

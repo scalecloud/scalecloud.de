@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
@@ -14,10 +14,13 @@ import { MatButton } from '@angular/material/button';
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
 })
 export class PaymentChangedSucceededComponent {
+  private readonly returnUrlService = inject(ReturnUrlService);
 
-  constructor(
-    private readonly returnUrlService: ReturnUrlService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+
+  constructor() { }
 
   openReturnUrl(): void {
     this.returnUrlService.openReturnURL("/dashboard");

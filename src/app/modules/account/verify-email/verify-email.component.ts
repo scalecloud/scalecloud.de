@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
@@ -15,17 +15,20 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     imports: [MatCard, MatCardTitle, MatCardContent, MatButton, MatIcon, MatProgressSpinner]
 })
 export class VerifyEmailComponent implements OnInit {
+  readonly authService = inject(AuthService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly snackBarService = inject(SnackBarService);
+
   clicked = false;
   defaultDisabledSecounds = 30;
   secounds = 0;
 
   isProceedToCheckoutLoading = false;
 
-  constructor(
-    public readonly authService: AuthService,
-    private readonly returnUrlService: ReturnUrlService,
-    private readonly snackBarService: SnackBarService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.disableButtonForSeconds();

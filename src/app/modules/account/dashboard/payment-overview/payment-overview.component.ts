@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
@@ -22,16 +22,19 @@ import { LoadingFailedComponent } from '../../../../shared/components/loading-fa
     imports: [MatCard, MatProgressBar, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatIcon, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class PaymentOverviewComponent implements OnInit {
+  private readonly subscriptionPaymentMethodService = inject(PaymentMethodOverviewService);
+  private readonly authService = inject(AuthService);
+  private readonly logService = inject(LogService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+
   reply: PaymentMethodOverviewReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
-  constructor(
-    private readonly subscriptionPaymentMethodService: PaymentMethodOverviewService,
-    private readonly authService: AuthService,
-    private readonly logService: LogService,
-    private readonly returnUrlService: ReturnUrlService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.initPaymentMethodOverview();

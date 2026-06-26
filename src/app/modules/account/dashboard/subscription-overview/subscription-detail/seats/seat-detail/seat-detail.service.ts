@@ -9,14 +9,17 @@ import { API_URL } from 'src/app/core/config/api.token';
   providedIn: 'root'
 })
 export class SeatDetailService {
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
+
   private readonly apiUrl = inject(API_URL);
   private readonly urlGetSeat = `${this.apiUrl}/dashboard/subscription/seat-detail`;
   private readonly urlUpdateSeatDetail = `${this.apiUrl}/dashboard/subscription/update-seat`;
   private readonly urlDeleteSeat = `${this.apiUrl}/dashboard/subscription/delete-seat`;
-  constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService,
-  ) { }
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+  constructor() { }
 
   getSeat(seatDetailRequest: SeatDetailRequest): Observable<SeatDetailReply> {
     return this.http.post<SeatDetailReply>(this.urlGetSeat, seatDetailRequest, this.authService.getHttpOptions());

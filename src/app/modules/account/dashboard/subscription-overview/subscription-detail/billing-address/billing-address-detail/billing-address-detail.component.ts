@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -29,6 +29,15 @@ import { LoadingFailedComponent } from '../../../../../../../shared/components/l
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, CountryInputComponent, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class BillingAddressDetailComponent implements OnInit {
+  private readonly formBuilder = inject(UntypedFormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly service = inject(BillingAddressService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+
 
   reply: BillingAddressReply | undefined;
   ServiceStatus = ServiceStatus;
@@ -36,16 +45,10 @@ export class BillingAddressDetailComponent implements OnInit {
   form: UntypedFormGroup;
   submitted = false;
 
-  constructor(
-    private readonly formBuilder: UntypedFormBuilder,
-    private readonly authService: AuthService,
-    private readonly permissionService: PermissionService,
-    private readonly service: BillingAddressService,
-    private readonly route: ActivatedRoute,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly returnUrlService: ReturnUrlService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({

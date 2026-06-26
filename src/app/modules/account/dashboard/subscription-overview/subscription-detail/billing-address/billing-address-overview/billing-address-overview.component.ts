@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -28,6 +28,16 @@ import { LoadingFailedComponent } from '../../../../../../../shared/components/l
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatTooltip, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class BillingAddressOverviewComponent {
+  authService = inject(AuthService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly service = inject(BillingAddressService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly countryService = inject(CountryService);
+  private readonly languageService = inject(LanguageService);
+
 
 
   reply: BillingAddressReply | undefined;
@@ -36,17 +46,10 @@ export class BillingAddressOverviewComponent {
 
   country = signal<string | null>(null);
 
-  constructor(
-    public authService: AuthService,
-    private readonly permissionService: PermissionService,
-    private readonly service: BillingAddressService,
-    private readonly route: ActivatedRoute,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly returnUrlService: ReturnUrlService,
-    private readonly countryService: CountryService,
-    private readonly languageService: LanguageService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.checkPermissions();

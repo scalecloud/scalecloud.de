@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { NewsletterService } from '../newsletter.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -33,18 +33,21 @@ import { LoadingFailedComponent } from '../../loading-failed/loading-failed.comp
     ],
 })
 export class NewsletterUnsubscribeComponent implements OnInit {
+  private readonly newsletterService = inject(NewsletterService);
+  private readonly logService = inject(LogService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly snackbarservice = inject(SnackBarService);
+
 
   reply: NewsletterUnsubscribeReply | undefined;
   NewsletterUnsubscribeReplyStatus = NewsletterUnsubscribeReplyStatus;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Loading;
 
-  constructor(
-    private readonly newsletterService: NewsletterService,
-    private readonly logService: LogService,
-    private readonly route: ActivatedRoute,
-    private readonly snackbarservice: SnackBarService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.unsubscribeNewsletter();

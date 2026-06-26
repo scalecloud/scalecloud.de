@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -18,17 +18,20 @@ import { MatIcon } from '@angular/material/icon';
     imports: [MatButton, MatIcon]
 })
 export class ResumeSubscriptionComponent {
+  private readonly authService = inject(AuthService);
+  private readonly resumeSubscriptionService = inject(ResumeSubscriptionService);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly dialog = inject(MatDialog);
+
 
   @Output() reloadSubscriptionDetail = new EventEmitter();
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly resumeSubscriptionService: ResumeSubscriptionService,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly route: ActivatedRoute,
-    private readonly dialog: MatDialog
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   openConfirmDialog() {
     const dialogRef = this.dialog.open(ConfirmResumeSubscriptionComponent);

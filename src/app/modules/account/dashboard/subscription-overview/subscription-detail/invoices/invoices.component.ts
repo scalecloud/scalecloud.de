@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
@@ -26,6 +26,13 @@ import { LoadingFailedComponent } from '../../../../../../shared/components/load
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatChip, NgClass, MatPaginator, LoadingFailedComponent, TitleCasePipe, CurrencyPipe, DatePipe]
 })
 export class InvoicesComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly invoiceService = inject(InvoicesService);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly route = inject(ActivatedRoute);
+
   reply: ListInvoicesReply | null;
   InvoiceStatus = InvoiceStatus;
   ServiceStatus = ServiceStatus;
@@ -39,14 +46,10 @@ export class InvoicesComponent implements OnInit {
 
   pageEvent: PageEvent;
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly invoiceService: InvoicesService,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly permissionService: PermissionService,
-    private readonly route: ActivatedRoute,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -27,6 +27,14 @@ import { LoadingFailedComponent } from '../../../../../../shared/components/load
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatCardSubtitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatCardActions, MatButton, MatListItem, MatTooltip, MatPaginator, LoadingFailedComponent]
 })
 export class SeatsComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly seatService = inject(SeatsService);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly permissionService = inject(PermissionService);
+  private readonly route = inject(ActivatedRoute);
+
   seatListReply: ListSeatReply | null;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
@@ -39,15 +47,10 @@ export class SeatsComponent implements OnInit {
 
   pageEvent: PageEvent;
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly seatService: SeatsService,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly returnUrlService: ReturnUrlService,
-    private readonly permissionService: PermissionService,
-    private readonly route: ActivatedRoute,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.checkPermissions();

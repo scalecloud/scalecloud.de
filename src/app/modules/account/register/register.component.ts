@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PasswordMatchComponent } from './password-match/password-match.component';
@@ -18,6 +18,10 @@ import { NgClass } from '@angular/common';
     imports: [MatCard, MatCardContent, MatButton, FormsModule, ReactiveFormsModule, MatCardTitle, MatFormField, MatLabel, MatInput, NgClass, MatError, PasswordStrengthComponent, PasswordMatchComponent]
 })
 export class RegisterComponent {
+  private readonly formBuilder = inject(UntypedFormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+
 
   @ViewChild(PasswordStrengthComponent) passwordStrength: PasswordStrengthComponent | undefined;
   @ViewChild(PasswordMatchComponent) passwordMatch: PasswordMatchComponent | undefined;
@@ -25,11 +29,10 @@ export class RegisterComponent {
   form: UntypedFormGroup;
   submitted = false;
 
-  constructor(
-    private readonly formBuilder: UntypedFormBuilder, 
-    private readonly authService: AuthService,
-    private readonly returnUrlService: ReturnUrlService,
-    ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.form = this.formBuilder.group(
       {
         email: ['', [Validators.required, Validators.email]],

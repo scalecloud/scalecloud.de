@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -18,14 +18,17 @@ import { RouterLink } from '@angular/router';
     imports: [MatCard, MatCardContent, MatButton, MatCardTitle, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, RouterLink]
 })
 export class LoginComponent {
+  private readonly auth = inject(AuthService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly logService = inject(LogService);
+
   email = new UntypedFormControl('', [Validators.required, Validators.email]);
   password = new UntypedFormControl('', [Validators.required]);
 
-  constructor(
-    private readonly auth: AuthService,
-    private readonly returnUrlService: ReturnUrlService,
-    private readonly logService: LogService,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   login(): void {
     if (this.isEmailInvalid() || this.isPasswordInvalid()) {

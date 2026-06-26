@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { Country } from '../country/countries';
@@ -18,6 +18,9 @@ import { AsyncPipe } from '@angular/common';
     imports: [MatFormField, MatLabel, MatInput, FormsModule, MatAutocompleteTrigger, ReactiveFormsModule, MatAutocomplete, MatOption, MatError, AsyncPipe]
 })
 export class CountryInputComponent implements OnInit {
+  private readonly countryService = inject(CountryService);
+  private readonly languageService = inject(LanguageService);
+
 
   @Input() initialCountryCode: string = '';
   @Output() countryControlEmitter = new EventEmitter<FormControl>();
@@ -25,10 +28,10 @@ export class CountryInputComponent implements OnInit {
   countryControl = new FormControl('', [Validators.required]);
   filteredCountries: Observable<Country[]>;
 
-  constructor(
-    private readonly countryService: CountryService,
-    private readonly languageService: LanguageService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit() {
     this.filteredCountries = this.countryControl.valueChanges.pipe(

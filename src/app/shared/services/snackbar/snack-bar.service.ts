@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LogService } from '../log/log.service';
 import { SnackBarProgressComponent } from './snack-bar-progress/snack-bar-progress.component';
@@ -7,14 +7,17 @@ import { SnackBarProgressComponent } from './snack-bar-progress/snack-bar-progre
   providedIn: 'root'
 })
 export class SnackBarService {
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly zone = inject(NgZone);
+  private readonly logService = inject(LogService);
+
 
   private readonly defaultDuration = 8;
 
-  constructor(
-    private readonly snackBar: MatSnackBar,
-    private readonly zone: NgZone,
-    private readonly logService: LogService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   info(message: string) {
     this.infoDuration(message, this.defaultDuration);

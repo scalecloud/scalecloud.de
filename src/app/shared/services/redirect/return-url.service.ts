@@ -1,4 +1,4 @@
-import { Inject, Injectable, DOCUMENT } from '@angular/core';
+import { Injectable, DOCUMENT, inject } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { LogService } from '../log/log.service';
 import { Location } from '@angular/common';
@@ -7,16 +7,19 @@ import { Location } from '@angular/common';
   providedIn: 'root'
 })
 export class ReturnUrlService {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly logService = inject(LogService);
+  private readonly document = inject<Document>(DOCUMENT);
+  private readonly location = inject(Location);
+
 
   private readonly baseURL: string = 'https://www.scalecloud.de';
 
-  constructor(
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly logService: LogService,
-    @Inject(DOCUMENT) private readonly document: Document,
-    private readonly location: Location,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   public openUrlKeepReturnUrl(url: string) {
     const returnURL = this.route.snapshot.queryParamMap.get('returnUrl');

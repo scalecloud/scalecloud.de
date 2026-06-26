@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
@@ -16,15 +16,18 @@ import { RouterLink } from '@angular/router';
     imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, MatButton, RouterLink]
 })
 export class ForgotPasswordComponent {
+  authService = inject(AuthService);
+  snackBarService = inject(SnackBarService);
+
   email = new UntypedFormControl('', [Validators.required, Validators.email]);
   clicked = false;
   defaultDisabledSecounds = 60;
   secounds = 0;
 
-  constructor(
-    public authService: AuthService,
-    public snackBarService: SnackBarService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   async forgotPassword(): Promise<void> {
     if (this.isEmailInvalid()) {

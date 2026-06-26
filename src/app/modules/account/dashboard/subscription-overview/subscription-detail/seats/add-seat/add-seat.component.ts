@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AddSeatRequest } from '../seats';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -23,6 +23,13 @@ import { MatButton } from '@angular/material/button';
     imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, MatChipListbox, MatChipOption, MatTooltip, MatButton]
 })
 export class AddSeatComponent {
+  private readonly authService = inject(AuthService);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly addSeatService = inject(AddSeatService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly route = inject(ActivatedRoute);
+
 
   email = new UntypedFormControl('', [Validators.required, Validators.email]);
 
@@ -32,14 +39,10 @@ export class AddSeatComponent {
   Roles = Role;
   selectedRoles: Role[] = [];
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly addSeatService: AddSeatService,
-    private readonly returnUrlService: ReturnUrlService,
-    private readonly route: ActivatedRoute,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   addSeat(): void {
     this.authService.waitForAuth().then(() => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
@@ -12,13 +12,16 @@ import { MatInput } from '@angular/material/input';
     imports: [MatInput, FormsModule, ReactiveFormsModule]
 })
 export class QuantityComponent implements OnInit {
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly route = inject(ActivatedRoute);
+
 
   quantityValidator = new UntypedFormControl(1, [Validators.required, Validators.min(1)]);
 
-  constructor(
-    private readonly snackBarService: SnackBarService,
-    private readonly route: ActivatedRoute,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
 
   ngOnInit(): void {

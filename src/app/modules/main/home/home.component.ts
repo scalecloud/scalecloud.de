@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { GlobeComponent } from '../globe/globe.component';
 import { MatDivider } from '@angular/material/divider';
@@ -14,10 +14,13 @@ import { NewsletterSubscribeComponent } from '../../../shared/components/newslet
     imports: [GlobeComponent, MatDivider, MatButton, RouterLink, NewsletterSubscribeComponent]
 })
 export class HomeComponent implements OnInit {
+  snackBarService = inject(SnackBarService);
 
-  constructor(
-    public snackBarService: SnackBarService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+
+  constructor() { }
 
   ngOnInit(): void {
     this.snackBarService.errorDuration("This Website is currently under construction. Please come back later.", 30);

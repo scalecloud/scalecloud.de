@@ -8,6 +8,8 @@ import { API_URL } from 'src/app/core/config/api.token';
   providedIn: 'root'
 })
 export class NewsletterService {
+  private readonly http = inject(HttpClient);
+
   private readonly apiUrl = inject(API_URL);
   private readonly urlSubscribe = `${this.apiUrl}/newsletter/subscribe`;
   private readonly urlConfirm = `${this.apiUrl}/newsletter/confirm`;
@@ -17,9 +19,10 @@ export class NewsletterService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(
-    private readonly http: HttpClient,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   subscribeToNewsletter(request: NewsletterSubscribeRequest): Observable<NewsletterSubscribeReply> {
     return this.http.post<NewsletterSubscribeReply>(this.urlSubscribe, request, this.httpOptions);

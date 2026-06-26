@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { countries, Country } from './countries';
 import { Language } from './Language';
@@ -7,10 +7,13 @@ import { Language } from './Language';
   providedIn: 'root'
 })
 export class CountryService {
+  private readonly logService = inject(LogService);
 
-  constructor(
-    private readonly logService: LogService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+
+  constructor() { }
 
   getCountry(language: Language, code: string): string {
     const country = countries.find(c => c.code === code);

@@ -1,4 +1,4 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatButton } from '@angular/material/button';
@@ -11,11 +11,16 @@ import { MatButton } from '@angular/material/button';
     imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose]
 })
 export class ConfirmOwnerTransferComponent {
+  dialogRef = inject<MatDialogRef<ConfirmOwnerTransferComponent>>(MatDialogRef);
+  data = inject<{
+    email: string;
+}>(MAT_DIALOG_DATA);
 
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmOwnerTransferComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { email: string }
-  ) {}
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+
+  constructor() {}
 
   onNoClick(): void {
     this.dialogRef.close();

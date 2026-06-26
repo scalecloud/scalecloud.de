@@ -1,4 +1,4 @@
-import { Component, Signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Signal, ChangeDetectionStrategy, inject } from '@angular/core';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -15,15 +15,18 @@ import { FooterComponent } from '../../shared/components/footer/footer.component
     imports: [HeaderComponent, MatProgressBar, MatDrawerContainer, MatDrawer, SidebarComponent, MatDrawerContent, RouterOutlet, FooterComponent]
 })
 export class DefaultComponent {
+  private readonly permissionService = inject(PermissionService);
+
   isExpanded = true;
   showSubmenu: boolean = false;
   isShowing = false;
   showSubSubMenu: boolean = false;
   isLoading: Signal<boolean>;
 
-  constructor(
-    private readonly permissionService: PermissionService
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.isLoading = this.permissionService.loadingPermissions;
   }
 

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
@@ -22,17 +22,20 @@ declare const Stripe: any;
     imports: [MatCard, MatProgressBar, MatCardSubtitle, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, NgClass, FormsModule, LoadingFailedComponent]
 })
 export class StripePaymentElementComponent {
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly stripeKeyService = inject(StripeKeyService);
+
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Loading;
   stripeElement: any;
   elements: any;
   initStripePayment: InitStripePayment | undefined;
 
-  constructor(
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly stripeKeyService: StripeKeyService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   initPaymentElement(initStripePayment: InitStripePayment): void {
     // Your Stripe public key

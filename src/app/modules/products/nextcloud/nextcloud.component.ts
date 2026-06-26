@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { NextcloudProduct } from './nextcloud-product';
 import { ProductType } from '../product-model';
 import { ProductService } from '../product/product.service';
@@ -20,15 +20,18 @@ import { LoadingFailedComponent } from '../../../shared/components/loading-faile
     imports: [TitelCardComponent, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCardComponent, LoadingFailedComponent]
 })
 export class NextcloudComponent implements OnInit {
+  private readonly productService = inject(ProductService);
+
 
   productType = ProductType.Nextcloud;
   nextcloudProducts: NextcloudProduct[] = [];
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
-  constructor(
-    private readonly productService: ProductService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.getNextcloudProducts();

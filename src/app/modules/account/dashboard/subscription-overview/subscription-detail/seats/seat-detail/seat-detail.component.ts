@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleDescriptions } from 'src/app/shared/roles/roles';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -27,6 +27,14 @@ import { MatButton } from '@angular/material/button';
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatCardSubtitle, NgxSkeletonLoaderComponent, MatTooltip, MatCardContent, MatLabel, MatChipListbox, FormsModule, ReactiveFormsModule, MatChipOption, MatButton]
 })
 export class SeatDetailComponent {
+  private readonly authService = inject(AuthService);
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly seatDetailService = inject(SeatDetailService);
+  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly dialog = inject(MatDialog);
+
 
   seatDetailReply: SeatDetailReply | null;
   seatWithUpdates: Seat | null;
@@ -37,15 +45,10 @@ export class SeatDetailComponent {
   roleDescriptions = RoleDescriptions;
   Roles = Role;
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly seatDetailService: SeatDetailService,
-    private readonly returnUrlService: ReturnUrlService,
-    private readonly route: ActivatedRoute,
-    private readonly dialog: MatDialog,
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.getSeatDetail();

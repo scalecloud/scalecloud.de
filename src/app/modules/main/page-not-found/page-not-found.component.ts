@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
@@ -13,11 +13,14 @@ import { MatButton } from '@angular/material/button';
     imports: [MatCard, MatCardTitle, MatCardContent, MatList, MatCardActions, MatButton, RouterLink]
 })
 export class PageNotFoundComponent implements OnInit {
+  private readonly router = inject(Router);
+  private readonly logService = inject(LogService);
 
-  constructor(
-    private readonly router: Router,
-    private readonly logService: LogService
-  ) {}
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+
+  constructor() {}
 
   ngOnInit(): void {
     this.logService.error('Page not found: ' + this.router.url);

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -16,18 +16,21 @@ import { TrailingComponent } from './trailing/trailing.component';
     imports: [ActiveComponent, TrailingComponent]
 })
 export class StatusComponent implements OnInit {
+  private readonly logService = inject(LogService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+
 
   checkoutCreateSubscriptionReply: CheckoutCreateSubscriptionReply;
 
   active: boolean = false;
   trialing: boolean = false;
 
-  constructor(
-    private readonly logService: LogService,
-    private readonly snackBarService: SnackBarService,
-    private readonly route: ActivatedRoute,
-    private readonly authService: AuthService
-  ) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.checkPaymentIntentStatus();
