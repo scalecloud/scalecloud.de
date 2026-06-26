@@ -1,69 +1,90 @@
 import { TestBed } from '@angular/core/testing';
 import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { ForgotPasswordGuard } from './forgot-password.guard';
+import { forgotPasswordGuard } from './forgot-password.guard';
 import { AuthService } from '../services/auth.service';
-import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
-describe('ForgotPasswordGuard', () => {
-  let guard: ForgotPasswordGuard;
-  const routerMock = { navigate: vi.fn() };
-  const ngZoneMock = { run: vi.fn((fn: () => void) => fn()) };
-  const authServiceMock = {
-    isLoggedIn: vi.fn().mockResolvedValue(false),
-    isLoggedInNotVerified: vi.fn().mockResolvedValue(false)
-  };
+const mockRouter = { navigate: vi.fn() };
+const mockAuthService = {
+  isLoggedIn: vi.fn(),
+  isLoggedInNotVerified: vi.fn(),
+};
+
+function runGuard(): Promise<boolean> {
+  return TestBed.runInInjectionContext(() =>
+    forgotPasswordGuard({} as any, {} as any) as Promise<boolean>
+  );
+}
+
+describe('forgotPasswordGuard', () => {
+  let ngZone: NgZone;
 
   beforeEach(() => {
+    vi.clearAllMocks();
+
     TestBed.configureTestingModule({
       providers: [
-        ForgotPasswordGuard,
-        { provide: Router, useValue: routerMock },
-        { provide: NgZone, useValue: ngZoneMock },
-        { provide: AuthService, useValue: authServiceMock }
-      ]
+        { provide: Router, useValue: mockRouter },
+        { provide: AuthService, useValue: mockAuthService },
+      ],
     });
-    guard = TestBed.inject(ForgotPasswordGuard);
+
+    ngZone = TestBed.inject(NgZone);
+    vi.spyOn(ngZone, 'run').mockImplementation((fn: () => unknown) => fn());
   });
 
-  afterEach(() => {
-    vi.clearAllMocks();
+  describe('when the user is fully logged in and verified', () => {
+    beforeEach(() => {
+      mockAuthService.isLoggedIn.mockResolvedValue(true);
+      mockAuthService.isLoggedInNotVerified.mockResolvedValue(false);
+    });
+
+    it('redirects to /dashboard', async () => {
+      await runGuard();
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard']);
+    });
+
+    it('blocks activation', async () => {
+      expect(await runGuard()).toBe(false);
+    });
+
+    it('does not check verification status when already logged in', async () => {
+      await runGuard();
+      expect(mockAuthService.isLoggedInNotVerified).not.toHaveBeenCalled();
+    });
   });
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
+  describe('when the user is logged in but unverified', () => {
+    beforeEach(() => {
+      mockAuthService.isLoggedIn.mockResolvedValue(false);
+      mockAuthService.isLoggedInNotVerified.mockResolvedValue(true);
+    });
+
+    it('redirects to /verify-email-address', async () => {
+      await runGuard();
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/verify-email-address']);
+    });
+
+    it('blocks activation', async () => {
+      expect(await runGuard()).toBe(false);
+    });
   });
 
-  it('should allow activation when user is not authenticated', async () => {
-    authServiceMock.isLoggedIn.mockResolvedValue(false);
-    authServiceMock.isLoggedInNotVerified.mockResolvedValue(false);
+  describe('when the user is not logged in and not pending verification (the forgot-password page is intended for them)', () => {
+    beforeEach(() => {
+      mockAuthService.isLoggedIn.mockResolvedValue(false);
+      mockAuthService.isLoggedInNotVerified.mockResolvedValue(false);
+    });
 
-    const result = await guard.canActivate({} as any, {} as any);
+    it('allows activation', async () => {
+      expect(await runGuard()).toBe(true);
+    });
 
-    expect(result).toBe(true);
-    expect(routerMock.navigate).not.toHaveBeenCalled();
-  });
-
-  it('should redirect to dashboard when user is logged in', async () => {
-    authServiceMock.isLoggedIn.mockResolvedValue(true);
-    authServiceMock.isLoggedInNotVerified.mockResolvedValue(false);
-
-    const result = await guard.canActivate({} as any, {} as any);
-
-    expect(result).toBe(false);
-    expect(ngZoneMock.run).toHaveBeenCalled();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/dashboard']);
-  });
-
-  it('should redirect to verify email when user is logged in but not verified', async () => {
-    authServiceMock.isLoggedIn.mockResolvedValue(false);
-    authServiceMock.isLoggedInNotVerified.mockResolvedValue(true);
-
-    const result = await guard.canActivate({} as any, {} as any);
-
-    expect(result).toBe(false);
-    expect(ngZoneMock.run).toHaveBeenCalled();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/verify-email-address']);
+    it('does not redirect anywhere', async () => {
+      await runGuard();
+      expect(mockRouter.navigate).not.toHaveBeenCalled();
+    });
   });
 });
