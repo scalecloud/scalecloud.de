@@ -1,23 +1,27 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { API_URL } from 'src/app/core/config/api.token';
+
 import { ChangePaymentReply } from './change-payment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChangePaymentService {
+  private readonly apiUrl = inject(API_URL);
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
 
-  private readonly url = 'http://localhost:15000/dashboard/get-change-payment-setup-intent';
-
-  constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService,
-    ) { }
+  private readonly url = `${this.apiUrl}/dashboard/get-change-payment-setup-intent`;
 
   getChangePaymentSetupIntent(): Observable<ChangePaymentReply> {
-    return this.http.post<ChangePaymentReply>(this.url, null, this.authService.getHttpOptions());
+    return this.http.post<ChangePaymentReply>(
+      this.url,
+      null,
+      this.authService.getHttpOptions(),
+    );
   }
-
 }
