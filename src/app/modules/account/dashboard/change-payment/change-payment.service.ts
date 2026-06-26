@@ -15,11 +15,9 @@ export class ChangePaymentService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
 
-  private readonly url = `${this.apiUrl}/dashboard/get-change-payment-setup-intent`;
-
   getChangePaymentSetupIntent(): Observable<ChangePaymentReply> {
     return this.http.post<ChangePaymentReply>(
-      this.url,
+      `${this.apiUrl}/dashboard/get-change-payment-setup-intent`,
       null,
       this.authService.getHttpOptions(),
     );
