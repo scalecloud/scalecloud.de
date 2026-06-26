@@ -1,14 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductTiersReply, ProductType } from '../product-model';
+import { API_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  private readonly url = 'http://localhost:15000/product/tiers';
+  private readonly apiUrl = inject(API_URL);
+  private readonly url = `${this.apiUrl}/product/tiers`;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

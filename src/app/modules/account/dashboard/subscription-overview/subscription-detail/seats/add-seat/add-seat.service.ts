@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { AddSeatRequest, AddSeatReply } from '../seats';
+import { API_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddSeatService {
-
-  private readonly url = 'http://localhost:15000/dashboard/subscription/add-seat';
+  private readonly apiUrl = inject(API_URL);
+  private readonly url = `${this.apiUrl}/dashboard/subscription/add-seat`;
   constructor(
     private readonly http: HttpClient,
     private readonly authService: AuthService,

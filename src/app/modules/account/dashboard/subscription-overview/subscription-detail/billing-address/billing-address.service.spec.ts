@@ -4,6 +4,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { BillingAddressService } from './billing-address.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
+import { API_URL } from 'src/app/core/config/api.token';
+import { environment } from 'src/environments/environment';
 
 describe('BillingAddressService', () => {
   let service: BillingAddressService;
@@ -13,7 +15,10 @@ describe('BillingAddressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{ provide: AuthService, useValue: authServiceMock }]
+      providers: [
+        { provide: API_URL, useValue: environment.apiUrl },
+        { provide: AuthService, useValue: authServiceMock }
+      ]
     });
     service = TestBed.inject(BillingAddressService);
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -35,7 +40,7 @@ describe('BillingAddressService', () => {
       expect(reply).toEqual(response);
     });
 
-    const req = httpTestingController.expectOne('http://localhost:15000/dashboard/subscription/billing-address');
+    const req = httpTestingController.expectOne(`${environment.apiUrl}/dashboard/subscription/billing-address`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(request);
     expect(req.request.headers.keys()).toEqual([]);

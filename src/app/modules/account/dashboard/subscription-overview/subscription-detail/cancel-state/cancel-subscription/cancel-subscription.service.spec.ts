@@ -6,8 +6,10 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { CancelSubscriptionService } from './cancel-subscription.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
+import { API_URL } from 'src/app/core/config/api.token';
+import { environment } from 'src/environments/environment';
 
-const EXPECTED_URL = 'http://localhost:15000/dashboard/cancel-subscription';
+const EXPECTED_URL = `${environment.apiUrl}/dashboard/cancel-subscription`;
 
 const MOCK_HTTP_OPTIONS = { headers: { Authorization: 'Bearer test-token' } };
 
@@ -36,6 +38,7 @@ describe('CancelSubscriptionService', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        { provide: API_URL, useValue: environment.apiUrl },
         { provide: AuthService, useValue: mockAuthService },
       ],
     });

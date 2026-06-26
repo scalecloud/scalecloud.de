@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
 import { Observable } from 'rxjs';
+import { API_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResumeSubscriptionService {
-
-  private readonly url = 'http://localhost:15000/dashboard/resume-subscription';
+  private readonly apiUrl = inject(API_URL);
+  private readonly url = `${this.apiUrl}/dashboard/resume-subscription`;
 
   constructor(
     private readonly http: HttpClient,

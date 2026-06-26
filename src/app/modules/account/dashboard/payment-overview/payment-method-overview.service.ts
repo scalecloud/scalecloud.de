@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { Observable } from 'rxjs';
+import { API_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentMethodOverviewService {
 
-  private readonly url = 'http://localhost:15000/dashboard/get-payment-method-overview';
+  private readonly apiUrl = inject(API_URL);
+  private readonly url = `${this.apiUrl}/dashboard/get-payment-method-overview`;
 
   constructor(
     private readonly http: HttpClient,

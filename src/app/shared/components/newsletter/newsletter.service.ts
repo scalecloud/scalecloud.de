@@ -1,16 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NewsletterConfirmReply, NewsletterConfirmRequest, NewsletterSubscribeReply, NewsletterSubscribeRequest, NewsletterUnsubscribeReply, NewsletterUnsubscribeRequest } from './newsletter';
+import { API_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewsletterService {
-
-  private readonly urlSubscribe = 'http://localhost:15000/newsletter/subscribe';
-  private readonly urlConfirm = 'http://localhost:15000/newsletter/confirm';
-  private readonly urlUnsubscribe = 'http://localhost:15000/newsletter/unsubscribe';
+  private readonly apiUrl = inject(API_URL);
+  private readonly urlSubscribe = `${this.apiUrl}/newsletter/subscribe`;
+  private readonly urlConfirm = `${this.apiUrl}/newsletter/confirm`;
+  private readonly urlUnsubscribe = `${this.apiUrl}/newsletter/unsubscribe`;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

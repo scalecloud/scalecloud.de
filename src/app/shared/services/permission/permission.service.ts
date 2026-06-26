@@ -1,10 +1,11 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import { inject, Injectable, WritableSignal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { LogService } from '../log/log.service';
 import { Role } from '../../roles/roles';
 import { PermissionReply, PermissionRequest } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seats';
+import { API_URL } from 'src/app/core/config/api.token';
 
 interface CacheEntry {
   data: PermissionReply;
@@ -15,7 +16,8 @@ interface CacheEntry {
   providedIn: 'root'
 })
 export class PermissionService {
-  private readonly urlPermission = 'http://localhost:15000/dashboard/subscription/permission';
+  private readonly apiUrl = inject(API_URL);
+  private readonly urlPermission = `${this.apiUrl}/dashboard/subscription/permission`;
   private readonly cache: Map<string, CacheEntry> = new Map();
   private readonly cacheDuration = 60000; // 1 minute in milliseconds
   loadingPermissions: WritableSignal<boolean> = signal(false);

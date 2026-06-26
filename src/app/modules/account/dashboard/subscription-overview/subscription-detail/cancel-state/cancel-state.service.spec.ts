@@ -6,9 +6,11 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { CancelStateService } from './cancel-state.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CancelStateReply } from './cancel-state';
+import { API_URL } from 'src/app/core/config/api.token';
+import { environment } from 'src/environments/environment';
 
 const SUBSCRIPTION_ID = 'sub-abc-123';
-const BASE_URL        = 'http://localhost:15000/dashboard/subscription';
+const BASE_URL        = `${environment.apiUrl}/dashboard/subscription`;
 const EXPECTED_URL    = `${BASE_URL}/${SUBSCRIPTION_ID}/cancel-state`;
 
 const MOCK_HTTP_OPTIONS = { headers: { Authorization: 'Bearer test-token' } };
@@ -33,6 +35,7 @@ describe('CancelStateService', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        { provide: API_URL, useValue: environment.apiUrl },
         { provide: AuthService, useValue: mockAuthService },
       ],
     });

@@ -1,16 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { BillingAddressReply, BillingAddressRequest, UpdateBillingAddressReply, UpdateBillingAddressRequest } from './billing-address-model';
 import { Observable } from 'rxjs/internal/Observable';
+import { API_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BillingAddressService {
-
-  private readonly urlBillingAddress = 'http://localhost:15000/dashboard/subscription/billing-address';
-  private readonly urlUpdateBillingAddress = 'http://localhost:15000/dashboard/subscription/update-billing-address';
+  private readonly apiUrl = inject(API_URL);
+  private readonly urlBillingAddress = `${this.apiUrl}/dashboard/subscription/billing-address`;
+  private readonly urlUpdateBillingAddress = `${this.apiUrl}/dashboard/subscription/update-billing-address`;
 
   constructor(
     private readonly http: HttpClient,

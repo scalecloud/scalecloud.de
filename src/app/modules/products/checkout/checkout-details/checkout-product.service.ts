@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CheckoutProductReply, CheckoutProductRequest } from './checkout-product';
+import { API_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CheckoutProductService {
-
-  private readonly url = 'http://localhost:15000/checkout-integration/get-checkout-product';
+  private readonly apiUrl = inject(API_URL);
+  private readonly url = `${this.apiUrl}/checkout-integration/get-checkout-product`;
 
   constructor(
     private readonly http: HttpClient,

@@ -9,6 +9,8 @@ import { vi, describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { ChangePaymentService } from './change-payment.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ChangePaymentReply } from './change-payment';
+import { API_URL } from 'src/app/core/config/api.token';
+import { environment } from 'src/environments/environment';
 
 describe(ChangePaymentService.name, () => {
   let service: ChangePaymentService;
@@ -26,6 +28,10 @@ describe(ChangePaymentService.name, () => {
         ChangePaymentService,
         provideHttpClient(),
         provideHttpClientTesting(),
+        {
+          provide: API_URL,
+          useValue: environment.apiUrl,
+        },
         {
           provide: AuthService,
           useValue: {
@@ -55,7 +61,7 @@ describe(ChangePaymentService.name, () => {
     });
 
     const req = httpMock.expectOne(
-      'http://localhost:15000/dashboard/get-change-payment-setup-intent',
+      `${environment.apiUrl}/dashboard/get-change-payment-setup-intent`,
     );
 
     expect(req.request.method).toBe('POST');
