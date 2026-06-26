@@ -11,15 +11,15 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: 'app-cancel-subscription',
-    templateUrl: './cancel-subscription.component.html',
-    styleUrls: ['./cancel-subscription.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatButton, MatIcon]
+  selector: 'app-cancel-subscription',
+  templateUrl: './cancel-subscription.component.html',
+  styleUrl: './cancel-subscription.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatButton, MatIcon],
 })
 export class CancelSubscriptionComponent {
 
-  @Output() reloadSubscriptionDetail = new EventEmitter();
+  @Output() reloadSubscriptionDetail = new EventEmitter<void>();
 
   constructor(
     private readonly authService: AuthService,
@@ -27,13 +27,13 @@ export class CancelSubscriptionComponent {
     private readonly logService: LogService,
     private readonly snackBarService: SnackBarService,
     private readonly route: ActivatedRoute,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
   ) { }
 
-  openConfirmDialog() {
+  openConfirmDialog(): void {
     const dialogRef = this.dialog.open(ConfirmCancelSubscriptionComponent);
-    dialogRef.afterClosed().subscribe(cancel => {
-      if (cancel) {
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
         this.cancelSubscription();
       }
     });
@@ -41,27 +41,25 @@ export class CancelSubscriptionComponent {
 
   cancelSubscription(): void {
     const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
-    if (subscriptionID == null) {
+    if (!subscriptionID) {
       this.logService.error('CancelSubscriptionComponent.cancelSubscription: id is null');
-    } else {
-
-      const iSubscriptionCancelRequest: ISubscriptionCancelRequest = {
-        subscriptionID: subscriptionID
-      }
-
-      this.cancelSubscriptionService.cancelSubscription(iSubscriptionCancelRequest).subscribe(
-        (iSubscriptionCancelReply: ISubscriptionCancelReply) => {
-          if (iSubscriptionCancelReply == null) {
-            this.logService.error('CancelSubscriptionComponent.cancelSubscription: iSubscriptionCancelReply is null');
-          }
-          else if (iSubscriptionCancelReply.cancel_at_period_end) {
-            let date = new Date(iSubscriptionCancelReply.cancel_at * 1000);
-            this.snackBarService.info(`Your Subscription will cancel at: ` + date);
-            this.reloadSubscriptionDetail.emit();
-          }
-        });
+      return;
     }
+
+    const request: ISubscriptionCancelRequest = { subscriptionID };
+
+    this.cancelSubscriptionService.cancelSubscription(request).subscribe({
+      next: (reply: ISubscriptionCancelReply) => {
+        if (!reply) {
+          this.logService.error('CancelSubscriptionComponent.cancelSubscription: reply is null');
+          return;
+        }
+        if (reply.cancel_at_period_end) {
+          const date = new Date(reply.cancel_at * 1000);
+          this.snackBarService.info(`Your Subscription will cancel at: ${date}`);
+          this.reloadSubscriptionDetail.emit();
+        }
+      },
+    });
   }
-
 }
-
