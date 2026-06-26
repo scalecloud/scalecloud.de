@@ -1,36 +1,24 @@
-import { Injectable, NgZone } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { inject, NgZone } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class DashboardGuard {
-  constructor(
-    public authService: AuthService,
-    public router: Router,
-    public ngZone: NgZone
-  ) { }
+export const dashboardGuard: CanActivateFn = async (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const ngZone = inject(NgZone);
 
-  async canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Promise<boolean> {
-    let canActivate = true;
-
-    if (await this.authService.isLoggedInNotVerified(true)) {
-      this.ngZone.run(() => {
-        this.router.navigate(['/verify-email-address']);
-      });
-      canActivate = false; // Prevent navigation to the current route because we're redirecting.
-    }
-    else if (!(await this.authService.isLoggedIn(true))) {
-      this.ngZone.run(() => {
-        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-      });
-      canActivate = false; // Prevent navigation to the current route because we're redirecting.
-    }
-
-    return canActivate; // Single point of return
+  if (await authService.isLoggedInNotVerified(true)) {
+    ngZone.run(() => {
+      router.navigate(['/verify-email-address']);
+    });
+    return false;
+  }
+  else if (!(await authService.isLoggedIn(true))) {
+    ngZone.run(() => {
+      router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+    });
+    return false;
   }
 
+  return true;
 }

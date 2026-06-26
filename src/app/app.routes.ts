@@ -2,12 +2,12 @@ import { Routes } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
 import { HomeComponent } from './modules/main/home/home.component';
 import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
-import { DashboardGuard } from './shared/guard/dashboard.guard';
-import { CheckoutGuard } from './shared/guard/checkout.guard';
-import { LoginGuard } from './shared/guard/login.guard';
-import { RegisterGuard } from './shared/guard/register.guard';
-import { ForgotPasswordGuard } from './shared/guard/forgot-password.guard';
-import { VerifyEMailGuard } from './shared/guard/verify-email.guard';
+import { dashboardGuard } from './shared/guard/dashboard.guard';
+import { checkoutGuard } from './shared/guard/checkout.guard';
+import { loginGuard } from './shared/guard/login.guard';
+import { registerGuard } from './shared/guard/register.guard';
+import { forgotPasswordGuard } from './shared/guard/forgot-password.guard';
+import { verifyEMailGuard } from './shared/guard/verify-email.guard';
 
 export const routes: Routes = [
   {
@@ -18,7 +18,6 @@ export const routes: Routes = [
         path: '',
         component: HomeComponent
       },
-      // Products - Lazy Loaded
       {
         path: 'nextcloud',
         loadComponent: () => import('./modules/products/nextcloud/nextcloud.component').then(m => m.NextcloudComponent)
@@ -29,7 +28,7 @@ export const routes: Routes = [
       },
       {
         path: 'checkout',
-        canActivate: [CheckoutGuard],
+        canActivate: [checkoutGuard],
         loadComponent: () => import('./modules/products/checkout/checkout.component').then(m => m.CheckoutComponent)
       },
       {
@@ -39,32 +38,32 @@ export const routes: Routes = [
       // Account/Dashboard - Lazy Loaded
       {
         path: 'dashboard',
-        canActivate: [DashboardGuard],
+        canActivate: [dashboardGuard],
         loadComponent: () => import('./modules/account/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID',
-        canActivate: [DashboardGuard],
+        canActivate: [dashboardGuard],
         loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component').then(m => m.SubscriptionDetailComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/add-seat',
-        canActivate: [DashboardGuard],
+        canActivate: [dashboardGuard],
         loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component').then(m => m.AddSeatComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail',
-        canActivate: [DashboardGuard],
+        canActivate: [dashboardGuard],
         loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component').then(m => m.SeatDetailComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/billing-address',
-        canActivate: [DashboardGuard],
+        canActivate: [dashboardGuard],
         loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component').then(m => m.BillingAddressDetailComponent)
       },
       {
         path: 'dashboard/change-payment',
-        canActivate: [DashboardGuard],
+        canActivate: [dashboardGuard],
         loadComponent: () => import('./modules/account/dashboard/change-payment/change-payment.component').then(m => m.ChangePaymentComponent)
       },
       {
@@ -74,22 +73,22 @@ export const routes: Routes = [
       // Auth - Lazy Loaded
       {
         path: 'login',
-        canActivate: [LoginGuard],
+        canActivate: [loginGuard],
         loadComponent: () => import('./modules/account/login/login.component').then(m => m.LoginComponent)
       },
       {
         path: 'register',
-        canActivate: [RegisterGuard],
+        canActivate: [registerGuard],
         loadComponent: () => import('./modules/account/register/register.component').then(m => m.RegisterComponent)
       },
       {
         path: 'verify-email-address',
-        canActivate: [VerifyEMailGuard],
+        canActivate: [verifyEMailGuard],
         loadComponent: () => import('./modules/account/verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
       },
       {
         path: 'forgot-password',
-        canActivate: [ForgotPasswordGuard],
+        canActivate: [forgotPasswordGuard],
         loadComponent: () => import('./modules/account/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
       },
       // Footer - Lazy Loaded

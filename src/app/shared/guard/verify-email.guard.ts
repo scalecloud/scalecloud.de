@@ -1,36 +1,24 @@
-import { Injectable, NgZone } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { inject, NgZone } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class VerifyEMailGuard {
-  constructor(
-    public authService: AuthService,
-    public router: Router,
-    public ngZone: NgZone
-  ) { }
+export const verifyEMailGuard: CanActivateFn = async (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const ngZone = inject(NgZone);
 
-  async canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Promise<boolean> {
-    let canActivate = true;
-
-    if (await this.authService.isLoggedIn(true)) {
-      this.ngZone.run(() => {
-        this.router.navigate(['/dashboard']);
-      });
-      canActivate = false;
-    }
-    else if (!(await this.authService.isLoggedIn(true)) && !(await this.authService.isLoggedInNotVerified(true))) {
-      this.ngZone.run(() => {
-        this.router.navigate(['/login']);
-      });
-      canActivate = false;
-    }
-
-    return canActivate;
+  if (await authService.isLoggedIn(true)) {
+    ngZone.run(() => {
+      router.navigate(['/dashboard']);
+    });
+    return false;
+  }
+  else if (!(await authService.isLoggedIn(true)) && !(await authService.isLoggedInNotVerified(true))) {
+    ngZone.run(() => {
+      router.navigate(['/login']);
+    });
+    return false;
   }
 
+  return true;
 }
