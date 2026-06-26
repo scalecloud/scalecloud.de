@@ -10,5 +10,6 @@ export const environment = {
     measurementId: "G-ZRHPQGG8LB"
   },
   production: false,
-  apiUrl: 'http://localhost:15000'
+  apiUrl: 'http://localhost:15000',
+  stripePublicKey: "pk_test_51Gv4psA86yrbtIQrTHaoHoe5ssyYqEYd6N9Uc8xxodxLFDb19cV5ORUqAeH3Y09sghwvN52lzNt111GIxw7W8sLo00TyE22PC3"
 };
