@@ -8,8 +8,10 @@ import { Router } from '@angular/router';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
+import { serviceErrorInterceptor } from './app/shared/interceptors/service-error-interceptor.service';
 
 Sentry.init({
   dsn: "https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784",
@@ -33,6 +35,7 @@ bootstrapApplication(AppComponent, {
     providers: [
         provideRouter(routes),
         provideAnimations(),
+        provideHttpClient(withInterceptors([serviceErrorInterceptor])),
         CurrencyPipe,
         {
             provide: ErrorHandler,
