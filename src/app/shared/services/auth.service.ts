@@ -4,19 +4,10 @@ import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
 import { ReturnUrlService } from './redirect/return-url.service';
 import { Observable } from 'rxjs';
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
 import { HttpHeaders } from '@angular/common/http';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
-import {
-  Auth,
-  User,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  signOut,
-} from 'firebase/auth';
-import { auth } from '../../app.module';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -29,6 +20,7 @@ export class AuthService {
     private readonly snackBarService: SnackBarService,
     private readonly logService: LogService,
     private readonly returnUrlService: ReturnUrlService,
+    private readonly firebaseService: FirebaseService,
   ) {
     this.subscribeToUser();
     this.subscribeToToken();
@@ -48,7 +40,7 @@ export class AuthService {
 
   getUserObservable(): Observable<User | null> {
     return new Observable((subscriber) => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
+      const unsubscribe = onAuthStateChanged(this.firebaseService.auth, (user) => {
         subscriber.next(user);
       }, (error) => subscriber.error(error));
       return () => unsubscribe();
@@ -58,7 +50,7 @@ export class AuthService {
   getTokenObservable(): Observable<string | null> {
     // Gibt bei jedem Auth-State-Wechsel ein frisches Token aus
     return new Observable((subscriber) => {
-      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      const unsubscribe = onAuthStateChanged(this.firebaseService.auth, async (user) => {
         if (user) {
           const token = await user.getIdToken();
           subscriber.next(token);
@@ -72,7 +64,7 @@ export class AuthService {
 
   async getUserPromise(): Promise<User | null> {
     await this.authStateReady();
-    return auth.currentUser;
+    return this.firebaseService.auth.currentUser;
   }
 
   async getTokenPromise(): Promise<string> {
@@ -104,7 +96,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string): Promise<void> {
-    return signInWithEmailAndPassword(auth, email, password)
+    return signInWithEmailAndPassword(this.firebaseService.auth, email, password)
       .then((result) => {
         this.setUser(result.user);
         this.returnUrlService.openReturnURL('/dashboard');
@@ -115,7 +107,7 @@ export class AuthService {
   }
 
   register(email: string, password: string) {
-    createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(this.firebaseService.auth, email, password)
       .then((result) => {
         this.setUser(result.user);
         this.sendVerificationMail();
@@ -129,7 +121,7 @@ export class AuthService {
     const actionCodeSettings = {
       url: this.returnUrlService.getReturnUrlDecoded(),
     };
-    const user = auth.currentUser;
+    const user = this.firebaseService.auth.currentUser;
     if (!user) {
       this.snackBarService.error('No user logged in.');
       return;
@@ -146,7 +138,7 @@ export class AuthService {
 
   async forgotPassword(passwordResetEmail: string): Promise<boolean> {
     let result = false;
-    await sendPasswordResetEmail(auth, passwordResetEmail)
+    await sendPasswordResetEmail(this.firebaseService.auth, passwordResetEmail)
       .then(() => {
         result = true;
         this.snackBarService.infoDuration('Please check your E-Mail for further instructions.', 30);
@@ -174,7 +166,7 @@ export class AuthService {
     if (this.getUser() === undefined) {
       await new Promise<void>((resolve, reject) => {
         const timer = setTimeout(() => reject(new Error('Auth state timeout')), timeoutDuration);
-        const unsub = onAuthStateChanged(auth, (user) => {
+        const unsub = onAuthStateChanged(this.firebaseService.auth, (user) => {
           clearTimeout(timer);
           unsub();
           this.setUser(user);
@@ -184,7 +176,7 @@ export class AuthService {
     }
 
     if (this.getToken() === undefined) {
-      const user = auth.currentUser;
+      const user = this.firebaseService.auth.currentUser;
       if (user) {
         const token = await user.getIdToken();
         this.setToken(token);
@@ -197,7 +189,7 @@ export class AuthService {
   async waitForAuth(): Promise<void> {
     await this.authStateReady();
     await new Promise<void>((resolve) => {
-      const unsub = onAuthStateChanged(auth, (user) => {
+      const unsub = onAuthStateChanged(this.firebaseService.auth, (user) => {
         if (user) {
           unsub();
           resolve();
@@ -219,7 +211,7 @@ export class AuthService {
   }
 
   async signOut() {
-    await signOut(auth);
+    await signOut(this.firebaseService.auth);
     this.router.navigate(['/']);
   }
 }
