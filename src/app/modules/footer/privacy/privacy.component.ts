@@ -4,7 +4,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     selector: 'app-privacy',
     templateUrl: './privacy.component.html',
     styleUrls: ['./privacy.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PrivacyComponent {
 

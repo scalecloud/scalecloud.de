@@ -13,7 +13,7 @@ import { PaymentOverviewComponent as PaymentOverviewComponent_1 } from '../../ac
     selector: 'app-checkout',
     templateUrl: './checkout.component.html',
     styleUrls: ['./checkout.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [PaymentOverviewComponent_1, CheckoutDetailsComponent]
 })
 export class CheckoutComponent {

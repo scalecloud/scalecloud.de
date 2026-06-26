@@ -10,7 +10,7 @@ import { BillingPortalComponent } from './customer-portal/billing-portal.compone
     selector: 'app-subscription-detail',
     templateUrl: './subscription-detail.component.html',
     styleUrls: ['./subscription-detail.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [SubscriptionDetailCardComponent, SeatsComponent, PaymentOverviewComponent, InvoicesComponent, BillingAddressOverviewComponent, BillingPortalComponent]
 })
 export class SubscriptionDetailComponent {

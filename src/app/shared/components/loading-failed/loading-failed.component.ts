@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 @Component({
     selector: 'app-loading-failed',
     templateUrl: './loading-failed.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './loading-failed.component.scss',
     imports: [MatCard, MatCardHeader, MatCardTitle, MatIcon, MatCardContent]
 })

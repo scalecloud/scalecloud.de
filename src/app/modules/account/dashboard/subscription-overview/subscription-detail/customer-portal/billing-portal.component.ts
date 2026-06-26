@@ -12,7 +12,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-billing-portal',
     templateUrl: './billing-portal.component.html',
     styleUrls: ['./billing-portal.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
 })
 export class BillingPortalComponent {

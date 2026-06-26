@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
     selector: 'app-password-strength',
     templateUrl: './password-strength.component.html',
     styleUrls: ['./password-strength.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatIcon]
 })
 export class PasswordStrengthComponent {

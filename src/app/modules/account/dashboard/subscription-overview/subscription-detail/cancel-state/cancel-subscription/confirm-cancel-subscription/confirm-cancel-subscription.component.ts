@@ -7,7 +7,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-confirm-cancel-subscription',
     templateUrl: './confirm-cancel-subscription.component.html',
     styleUrls: ['./confirm-cancel-subscription.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose]
 })
 export class ConfirmCancelSubscriptionComponent {

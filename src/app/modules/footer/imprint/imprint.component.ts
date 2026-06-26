@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
     selector: 'app-imprint',
     templateUrl: './imprint.component.html',
     styleUrls: ['./imprint.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatDivider, RouterLink]
 })
 export class ImprintComponent {

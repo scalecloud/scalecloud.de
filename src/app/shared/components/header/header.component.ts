@@ -11,7 +11,7 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatToolbar, MatToolbarRow, MatIconButton, MatIcon, MatButton, RouterLink, MatProgressSpinner, MatMenuTrigger, MatMenu, MatMenuItem]
 })
 export class HeaderComponent implements OnInit {

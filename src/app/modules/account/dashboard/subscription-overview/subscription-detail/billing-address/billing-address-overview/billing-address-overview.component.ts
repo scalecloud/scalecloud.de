@@ -24,7 +24,7 @@ import { LoadingFailedComponent } from '../../../../../../../shared/components/l
     selector: 'app-billing-address-overview',
     templateUrl: './billing-address-overview.component.html',
     styleUrl: './billing-address-overview.component.scss',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatTooltip, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class BillingAddressOverviewComponent {

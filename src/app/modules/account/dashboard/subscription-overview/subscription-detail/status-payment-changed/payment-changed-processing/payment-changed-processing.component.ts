@@ -10,7 +10,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-payment-changed-processing',
     templateUrl: './payment-changed-processing.component.html',
     styleUrls: ['./payment-changed-processing.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
 })
 export class PaymentChangedProcessingComponent {

@@ -8,7 +8,7 @@ import { MatDivider } from '@angular/material/divider';
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatNavList, MatListItem, RouterLinkActive, RouterLink, MatIcon, MatDivider, MatListSubheaderCssMatStyler]
 })
 export class SidebarComponent {

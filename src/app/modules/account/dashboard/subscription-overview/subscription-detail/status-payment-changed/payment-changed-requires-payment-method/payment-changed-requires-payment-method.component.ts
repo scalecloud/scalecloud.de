@@ -10,7 +10,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-payment-changed-requires-payment-method',
     templateUrl: './payment-changed-requires-payment-method.component.html',
     styleUrls: ['./payment-changed-requires-payment-method.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
 })
 export class PaymentChangedRequiresPaymentMethodComponent {

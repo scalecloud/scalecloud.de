@@ -13,7 +13,7 @@ declare const Stripe: any;
     selector: 'app-status-payment-changed',
     templateUrl: './status-payment-changed.component.html',
     styleUrls: ['./status-payment-changed.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [PaymentChangedSucceededComponent, PaymentChangedProcessingComponent, PaymentChangedRequiresPaymentMethodComponent]
 })
 export class StatusPaymentChangedComponent implements OnInit  {

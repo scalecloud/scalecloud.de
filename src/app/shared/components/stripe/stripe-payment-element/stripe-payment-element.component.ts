@@ -18,7 +18,7 @@ declare const Stripe: any;
     selector: 'app-stripe-payment-element',
     templateUrl: './stripe-payment-element.component.html',
     styleUrls: ['./stripe-payment-element.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatProgressBar, MatCardSubtitle, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, NgClass, FormsModule, LoadingFailedComponent]
 })
 export class StripePaymentElementComponent {

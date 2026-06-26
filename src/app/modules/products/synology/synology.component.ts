@@ -16,7 +16,7 @@ import { LoadingFailedComponent } from '../../../shared/components/loading-faile
     selector: 'app-synology',
     templateUrl: './synology.component.html',
     styleUrls: ['./synology.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [TitelCardComponent, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCardComponent, LoadingFailedComponent]
 })
 export class SynologyComponent implements OnInit {

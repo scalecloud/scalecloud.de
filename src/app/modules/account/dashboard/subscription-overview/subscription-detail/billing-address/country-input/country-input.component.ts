@@ -14,7 +14,7 @@ import { AsyncPipe } from '@angular/common';
     selector: 'app-country-input',
     templateUrl: './country-input.component.html',
     styleUrl: './country-input.component.scss',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatFormField, MatLabel, MatInput, FormsModule, MatAutocompleteTrigger, ReactiveFormsModule, MatAutocomplete, MatOption, MatError, AsyncPipe]
 })
 export class CountryInputComponent implements OnInit {

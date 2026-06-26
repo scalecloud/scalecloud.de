@@ -8,7 +8,7 @@ import { MatInput } from '@angular/material/input';
     selector: 'app-quantity',
     templateUrl: './quantity.component.html',
     styleUrls: ['./quantity.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatInput, FormsModule, ReactiveFormsModule]
 })
 export class QuantityComponent implements OnInit {

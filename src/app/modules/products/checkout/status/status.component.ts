@@ -12,7 +12,7 @@ import { TrailingComponent } from './trailing/trailing.component';
     selector: 'app-status',
     templateUrl: './status.component.html',
     styleUrls: ['./status.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [ActiveComponent, TrailingComponent]
 })
 export class StatusComponent implements OnInit {

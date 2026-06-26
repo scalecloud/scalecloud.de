@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
     selector: 'app-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatDivider, RouterLink]
 })
 export class FooterComponent {

@@ -11,7 +11,7 @@ import { FooterComponent } from '../../shared/components/footer/footer.component
     selector: 'app-default',
     templateUrl: './default.component.html',
     styleUrls: ['./default.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [HeaderComponent, MatProgressBar, MatDrawerContainer, MatDrawer, SidebarComponent, MatDrawerContent, RouterOutlet, FooterComponent]
 })
 export class DefaultComponent {

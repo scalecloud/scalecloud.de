@@ -19,7 +19,7 @@ import { LoadingFailedComponent } from '../../../shared/components/loading-faile
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionOverviewComponent, LoadingFailedComponent]
 })
 export class DashboardComponent implements OnInit {

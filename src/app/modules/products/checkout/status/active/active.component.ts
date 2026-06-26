@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
     selector: 'app-active',
     templateUrl: './active.component.html',
     styleUrl: './active.component.scss',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton, RouterLink]
 })
 export class ActiveComponent {

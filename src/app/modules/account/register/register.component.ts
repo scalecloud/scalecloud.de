@@ -14,7 +14,7 @@ import { NgClass } from '@angular/common';
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardContent, MatButton, FormsModule, ReactiveFormsModule, MatCardTitle, MatFormField, MatLabel, MatInput, NgClass, MatError, PasswordStrengthComponent, PasswordMatchComponent]
 })
 export class RegisterComponent {

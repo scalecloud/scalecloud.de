@@ -22,7 +22,7 @@ import { LoadingFailedComponent } from '../../../../shared/components/loading-fa
     selector: 'app-checkout-details',
     templateUrl: './checkout-details.component.html',
     styleUrls: ['./checkout-details.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, QuantityComponent, MatCardSubtitle, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class CheckoutDetailsComponent implements OnInit {

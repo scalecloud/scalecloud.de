@@ -9,7 +9,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-page-not-found',
     templateUrl: './page-not-found.component.html',
     styleUrls: ['./page-not-found.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatCardContent, MatList, MatCardActions, MatButton, RouterLink]
 })
 export class PageNotFoundComponent implements OnInit {

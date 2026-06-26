@@ -24,7 +24,7 @@ import { LoadingFailedComponent } from '../../../../../../../shared/components/l
 @Component({
     selector: 'app-billing-address-detail',
     templateUrl: './billing-address-detail.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './billing-address-detail.component.scss',
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, CountryInputComponent, MatCardActions, MatButton, LoadingFailedComponent]
 })

@@ -12,7 +12,7 @@ import { DatePipe } from '@angular/common';
     selector: 'app-trailing',
     templateUrl: './trailing.component.html',
     styleUrl: './trailing.component.scss',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton, RouterLink, DatePipe]
 })
 export class TrailingComponent {

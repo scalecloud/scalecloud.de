@@ -22,7 +22,7 @@ import { MatButton } from '@angular/material/button';
 @Component({
     selector: 'app-seat-detail',
     templateUrl: './seat-detail.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './seat-detail.component.scss',
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatCardSubtitle, NgxSkeletonLoaderComponent, MatTooltip, MatCardContent, MatLabel, MatChipListbox, FormsModule, ReactiveFormsModule, MatChipOption, MatButton]
 })

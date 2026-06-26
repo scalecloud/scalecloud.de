@@ -15,7 +15,7 @@ import { CurrencyPipe } from '@angular/common';
     selector: 'app-subscription-card',
     templateUrl: './subscription-card.component.html',
     styleUrls: ['./subscription-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, QuantityComponent, MatCardSubtitle, MatCardActions, MatButton, CurrencyPipe]
 })
 export class SubscriptionCardComponent {

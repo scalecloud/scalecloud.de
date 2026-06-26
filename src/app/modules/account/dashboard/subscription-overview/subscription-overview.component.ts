@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
     selector: 'app-subscription-overview',
     templateUrl: './subscription-overview.component.html',
     styleUrls: ['./subscription-overview.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatTooltip, MatIcon, MatCardActions, MatButton, RouterLink]
 })
 export class SubscriptionOverviewComponent {

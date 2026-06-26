@@ -15,7 +15,7 @@ import { MatIcon } from '@angular/material/icon';
     selector: 'app-change-payment',
     templateUrl: './change-payment.component.html',
     styleUrls: ['./change-payment.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [StripePaymentElementComponent_1, MatButton, MatIcon]
 })
 export class ChangePaymentComponent {

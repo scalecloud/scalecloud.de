@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
     selector: 'app-legal',
     templateUrl: './legal.component.html',
     styleUrls: ['./legal.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule]
 })
 export class LegalComponent {

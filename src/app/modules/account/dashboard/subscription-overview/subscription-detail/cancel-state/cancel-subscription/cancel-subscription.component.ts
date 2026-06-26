@@ -14,7 +14,7 @@ import { MatIcon } from '@angular/material/icon';
     selector: 'app-cancel-subscription',
     templateUrl: './cancel-subscription.component.html',
     styleUrls: ['./cancel-subscription.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatButton, MatIcon]
 })
 export class CancelSubscriptionComponent {

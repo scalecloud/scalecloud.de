@@ -6,7 +6,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     selector: 'app-snack-bar-progress',
     templateUrl: './snack-bar-progress.component.html',
     styleUrls: ['./snack-bar-progress.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatProgressBar]
 })
 export class SnackBarProgressComponent implements OnInit {

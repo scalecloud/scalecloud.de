@@ -11,7 +11,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     selector: 'app-verify-email',
     templateUrl: './verify-email.component.html',
     styleUrls: ['./verify-email.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatCardContent, MatButton, MatIcon, MatProgressSpinner]
 })
 export class VerifyEmailComponent implements OnInit {

@@ -19,7 +19,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-add-seat',
     templateUrl: './add-seat.component.html',
     styleUrl: './add-seat.component.scss',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, MatChipListbox, MatChipOption, MatTooltip, MatButton]
 })
 export class AddSeatComponent {

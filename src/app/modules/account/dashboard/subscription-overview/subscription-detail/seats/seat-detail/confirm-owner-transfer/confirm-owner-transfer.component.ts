@@ -7,7 +7,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-confirm-owner-transfer',
     templateUrl: './confirm-owner-transfer.component.html',
     styleUrl: './confirm-owner-transfer.component.scss',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose]
 })
 export class ConfirmOwnerTransferComponent {

@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
     selector: 'app-password-match',
     templateUrl: './password-match.component.html',
     styleUrls: ['./password-match.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatIcon]
 })
 export class PasswordMatchComponent {

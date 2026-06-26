@@ -17,7 +17,7 @@ import { LoadingFailedComponent } from '../../loading-failed/loading-failed.comp
     selector: 'app-newsletter-unsubscribe',
     templateUrl: './newsletter-unsubscribe.component.html',
     styleUrl: './newsletter-unsubscribe.component.scss',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatCard,
         MatProgressBar,

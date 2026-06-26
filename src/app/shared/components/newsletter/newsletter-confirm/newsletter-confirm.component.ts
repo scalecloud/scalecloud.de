@@ -16,7 +16,7 @@ import { LoadingFailedComponent } from '../../loading-failed/loading-failed.comp
     selector: 'app-newsletter-confirm',
     templateUrl: './newsletter-confirm.component.html',
     styleUrl: './newsletter-confirm.component.scss',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatCard,
         MatProgressBar,

@@ -16,7 +16,7 @@ import { LoadingFailedComponent } from '../../../shared/components/loading-faile
     selector: 'app-nextcloud',
     templateUrl: './nextcloud.component.html',
     styleUrls: ['./nextcloud.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [TitelCardComponent, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCardComponent, LoadingFailedComponent]
 })
 export class NextcloudComponent implements OnInit {

@@ -14,7 +14,7 @@ import { MatIcon } from '@angular/material/icon';
     selector: 'app-resume-subscription',
     templateUrl: './resume-subscription.component.html',
     styleUrls: ['./resume-subscription.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatButton, MatIcon]
 })
 export class ResumeSubscriptionComponent {

@@ -22,7 +22,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
     selector: 'app-subscription-detail-card',
     templateUrl: './subscription-detail-card.component.html',
     styleUrls: ['./subscription-detail-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatTooltip, MatIcon, CancelStateComponent, LoadingFailedComponent, CurrencyPipe, DatePipe]
 })
 export class SubscriptionDetailCardComponent implements OnInit {

@@ -6,7 +6,7 @@ import { MatDivider } from '@angular/material/divider';
     selector: 'app-titel-card',
     templateUrl: './titel-card.component.html',
     styleUrls: ['./titel-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatDivider]
 })
 export class TitelCardComponent {

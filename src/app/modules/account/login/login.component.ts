@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardContent, MatButton, MatCardTitle, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, RouterLink]
 })
 export class LoginComponent {

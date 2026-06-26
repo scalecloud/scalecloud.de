@@ -16,7 +16,7 @@ import { LoadingFailedComponent } from '../../../../../../shared/components/load
 @Component({
     selector: 'app-cancel-state',
     templateUrl: './cancel-state.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './cancel-state.component.scss',
     imports: [MatProgressBar, NgxSkeletonLoaderComponent, ResumeSubscriptionComponent, CancelSubscriptionComponent, LoadingFailedComponent]
 })

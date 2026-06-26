@@ -18,7 +18,7 @@ import { LoadingFailedComponent } from '../../../../shared/components/loading-fa
     selector: 'app-payment-overview',
     templateUrl: './payment-overview.component.html',
     styleUrls: ['./payment-overview.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatProgressBar, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatIcon, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class PaymentOverviewComponent implements OnInit {

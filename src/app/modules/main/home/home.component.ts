@@ -10,7 +10,7 @@ import { NewsletterSubscribeComponent } from '../../../shared/components/newslet
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [GlobeComponent, MatDivider, MatButton, RouterLink, NewsletterSubscribeComponent]
 })
 export class HomeComponent implements OnInit {

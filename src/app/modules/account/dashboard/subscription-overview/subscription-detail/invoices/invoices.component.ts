@@ -22,7 +22,7 @@ import { LoadingFailedComponent } from '../../../../../../shared/components/load
     selector: 'app-invoices',
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.scss',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatChip, NgClass, MatPaginator, LoadingFailedComponent, TitleCasePipe, CurrencyPipe, DatePipe]
 })
 export class InvoicesComponent implements OnInit {

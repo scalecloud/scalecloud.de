@@ -23,7 +23,7 @@ import { LoadingFailedComponent } from '../../../../../../shared/components/load
     selector: 'app-seats',
     templateUrl: './seats.component.html',
     styleUrls: ['./seats.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatCardSubtitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatCardActions, MatButton, MatListItem, MatTooltip, MatPaginator, LoadingFailedComponent]
 })
 export class SeatsComponent implements OnInit {

@@ -6,7 +6,7 @@ import { NgStyle } from '@angular/common';
     selector: 'app-globe',
     templateUrl: './globe.component.html',
     styleUrls: ['./globe.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [NgStyle]
 })
 export class GlobeComponent implements OnInit, AfterViewInit, OnDestroy {
