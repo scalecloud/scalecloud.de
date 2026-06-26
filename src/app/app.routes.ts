@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
 import { DashboardComponent } from './modules/account/dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './modules/account/forgot-password/forgot-password.component';
@@ -31,49 +30,47 @@ import { BillingAddressDetailComponent } from './modules/account/dashboard/subsc
 import { NewsletterConfirmComponent } from './shared/components/newsletter/newsletter-confirm/newsletter-confirm.component';
 import { NewsletterUnsubscribeComponent } from './shared/components/newsletter/newsletter-unsubscribe/newsletter-unsubscribe.component';
 
-const routes: Routes = [{
-  path: '', component: DefaultComponent,
-  children: [{
+export const routes: Routes = [
+  {
     path: '',
-    component: HomeComponent
-  },
-  { path: 'nextcloud', component: NextcloudComponent },
-  { path: 'synology', component: SynologyComponent },
-  // Checkout
-  { path: 'checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
-  { path: 'checkout/status', component: StatusComponent },
-  // Footer
-  { path: 'privacy-policy', component: PrivacyComponent },
-  { path: 'imprint', component: ImprintComponent },
-  { path: 'legal', loadComponent: () => import('./modules/footer/legal/legal.component').then(m => m.LegalComponent) },
-  { path: 'terms', component: TermsComponent },
-  { path: 'contact', component: ContactComponent },
-  // AuthGuard
-  { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/subscription/:subscriptionID', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/subscription/:subscriptionID/add-seat', component: AddSeatComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail', component: SeatDetailComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/subscription/:subscriptionID/billing-address', component: BillingAddressDetailComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
-  { path: 'dashboard/change-payment/status', component: StatusPaymentChangedComponent },
-  // LoginGuard
-  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
-  // RegisterGuard
-  { path: 'register', component: RegisterComponent, canActivate: [RegisterGuard] },
-  // VerifyEmailGuard
-  { path: 'verify-email-address', component: VerifyEmailComponent, canActivate: [VerifyEMailGuard] },
-  // ForgotPasswordGuard
-  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [ForgotPasswordGuard] },
-  // Newsletter
-  { path: 'newsletter/confirm/:verificationToken', component: NewsletterConfirmComponent },
-  { path: 'newsletter/unsubscribe/:unsubscribeToken', component: NewsletterUnsubscribeComponent },
-  // PageNotFound
-  { path: '**', component: PageNotFoundComponent }
-  ]
-}];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
+    component: DefaultComponent,
+    children: [
+      {
+        path: '',
+        component: HomeComponent
+      },
+      { path: 'nextcloud', component: NextcloudComponent },
+      { path: 'synology', component: SynologyComponent },
+      // Checkout
+      { path: 'checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
+      { path: 'checkout/status', component: StatusComponent },
+      // Footer
+      { path: 'privacy-policy', component: PrivacyComponent },
+      { path: 'imprint', component: ImprintComponent },
+      { path: 'legal', loadComponent: () => import('./modules/footer/legal/legal.component').then(m => m.LegalComponent) },
+      { path: 'terms', component: TermsComponent },
+      { path: 'contact', component: ContactComponent },
+      // AuthGuard
+      { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard] },
+      { path: 'dashboard/subscription/:subscriptionID', component: SubscriptionDetailComponent, canActivate: [DashboardGuard] },
+      { path: 'dashboard/subscription/:subscriptionID/add-seat', component: AddSeatComponent, canActivate: [DashboardGuard] },
+      { path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail', component: SeatDetailComponent, canActivate: [DashboardGuard] },
+      { path: 'dashboard/subscription/:subscriptionID/billing-address', component: BillingAddressDetailComponent, canActivate: [DashboardGuard] },
+      { path: 'dashboard/change-payment', component: ChangePaymentComponent, canActivate: [DashboardGuard] },
+      { path: 'dashboard/change-payment/status', component: StatusPaymentChangedComponent },
+      // LoginGuard
+      { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+      // RegisterGuard
+      { path: 'register', component: RegisterComponent, canActivate: [RegisterGuard] },
+      // VerifyEmailGuard
+      { path: 'verify-email-address', component: VerifyEmailComponent, canActivate: [VerifyEMailGuard] },
+      // ForgotPasswordGuard
+      { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [ForgotPasswordGuard] },
+      // Newsletter
+      { path: 'newsletter/confirm/:verificationToken', component: NewsletterConfirmComponent },
+      { path: 'newsletter/unsubscribe/:unsubscribeToken', component: NewsletterUnsubscribeComponent },
+      // PageNotFound
+      { path: '**', component: PageNotFoundComponent }
+    ]
+  }
+];

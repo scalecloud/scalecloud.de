@@ -1,15 +1,15 @@
-import { enableProdMode, provideZoneChangeDetection, ErrorHandler, APP_BOOTSTRAP_LISTENER, importProvidersFrom } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { enableProdMode, ErrorHandler, APP_BOOTSTRAP_LISTENER } from '@angular/core';
 import * as Sentry from "@sentry/angular";
 
 
 import { environment } from './environments/environment';
 import { CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { AppRoutingModule } from './app/app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
 
 Sentry.init({
   dsn: "https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784",
@@ -31,7 +31,8 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, AppRoutingModule, BrowserAnimationsModule),
+        provideRouter(routes),
+        provideAnimations(),
         CurrencyPipe,
         {
             provide: ErrorHandler,
