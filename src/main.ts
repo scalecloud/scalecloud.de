@@ -1,7 +1,6 @@
 import { enableProdMode, ErrorHandler, APP_BOOTSTRAP_LISTENER } from '@angular/core';
 import * as Sentry from "@sentry/angular";
 
-
 import { environment } from './environments/environment';
 import { CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -12,6 +11,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { serviceErrorInterceptor } from './app/shared/interceptors/service-error-interceptor.service';
+import { API_URL } from './app/core/config/api.token';
 
 Sentry.init({
   dsn: "https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784",
@@ -32,25 +32,29 @@ if (environment.production) {
 }
 
 bootstrapApplication(AppComponent, {
-    providers: [
-        provideRouter(routes),
-        provideAnimations(),
-        provideHttpClient(withInterceptors([serviceErrorInterceptor])),
-        CurrencyPipe,
-        {
-            provide: ErrorHandler,
-            useValue: Sentry.createErrorHandler({ showDialog: false }),
-        },
-        {
-            provide: Sentry.TraceService,
-            deps: [Router],
-        },
-        {
-            provide: APP_BOOTSTRAP_LISTENER,
-            useFactory: (traceService: Sentry.TraceService) => () => { },
-            deps: [Sentry.TraceService],
-            multi: true,
-        }
-    ]
+  providers: [
+    {
+      provide: API_URL,
+      useValue: environment.apiUrl,
+    },
+    provideRouter(routes),
+    provideAnimations(),
+    provideHttpClient(withInterceptors([serviceErrorInterceptor])),
+    CurrencyPipe,
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({ showDialog: false }),
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_BOOTSTRAP_LISTENER,
+      useFactory: (traceService: Sentry.TraceService) => () => { },
+      deps: [Sentry.TraceService],
+      multi: true,
+    },
+  ],
 })
   .catch((err) => console.error(err));
