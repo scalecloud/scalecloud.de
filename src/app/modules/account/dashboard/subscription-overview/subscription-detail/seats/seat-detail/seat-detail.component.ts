@@ -9,13 +9,22 @@ import { DeleteSeatRequest, Seat, SeatDetailReply, SeatDetailRequest, UpdateSeat
 import { SeatDetailService } from './seat-detail.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmOwnerTransferComponent } from './confirm-owner-transfer/confirm-owner-transfer.component';
+import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatIcon } from '@angular/material/icon';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatLabel } from '@angular/material/form-field';
+import { MatChipListbox, MatChipOption } from '@angular/material/chips';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-seat-detail',
-  standalone: false,
-  templateUrl: './seat-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './seat-detail.component.scss'
+    selector: 'app-seat-detail',
+    templateUrl: './seat-detail.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './seat-detail.component.scss',
+    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatCardSubtitle, NgxSkeletonLoaderComponent, MatTooltip, MatCardContent, MatLabel, MatChipListbox, FormsModule, ReactiveFormsModule, MatChipOption, MatButton]
 })
 export class SeatDetailComponent {
 

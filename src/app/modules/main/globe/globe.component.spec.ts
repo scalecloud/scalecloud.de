@@ -46,8 +46,8 @@ describe('GlobeComponent', () => {
         setWindowSize(1024, 768);
 
         await TestBed.configureTestingModule({
-            declarations: [GlobeComponent],
-        }).compileComponents();
+    imports: [GlobeComponent],
+}).compileComponents();
 
         fixture = TestBed.createComponent(GlobeComponent);
         component = fixture.componentInstance;

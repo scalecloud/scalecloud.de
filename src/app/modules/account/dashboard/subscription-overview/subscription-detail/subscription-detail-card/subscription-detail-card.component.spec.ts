@@ -9,8 +9,8 @@ describe('SubscriptionDetailCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SubscriptionDetailCardComponent ]
-    })
+    imports: [SubscriptionDetailCardComponent]
+})
     .compileComponents();
   });
 

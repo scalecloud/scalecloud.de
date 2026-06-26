@@ -5,17 +5,26 @@ import { LogService } from 'src/app/shared/services/log/log.service';
 import { ListSeatReply, ListSeatRequest, Seat } from './seats';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { PageEvent } from '@angular/material/paginator';
+import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { ActivatedRoute } from '@angular/router';
+import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatIcon } from '@angular/material/icon';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { LoadingFailedComponent } from '../../../../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-seats',
     templateUrl: './seats.component.html',
     styleUrls: ['./seats.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatCardSubtitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatCardActions, MatButton, MatListItem, MatTooltip, MatPaginator, LoadingFailedComponent]
 })
 export class SeatsComponent implements OnInit {
   seatListReply: ListSeatReply | null;

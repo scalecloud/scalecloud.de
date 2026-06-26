@@ -11,9 +11,8 @@ describe('ImprintComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ImprintComponent],
-      imports: [RouterTestingModule, MatDividerModule]
-    }).compileComponents();
+    imports: [RouterTestingModule, MatDividerModule, ImprintComponent]
+}).compileComponents();
   });
 
   beforeEach(() => {

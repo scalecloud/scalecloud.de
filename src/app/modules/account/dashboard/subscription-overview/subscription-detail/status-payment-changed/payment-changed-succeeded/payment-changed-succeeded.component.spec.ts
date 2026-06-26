@@ -9,8 +9,8 @@ describe('PaymentChangedSucceededComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PaymentChangedSucceededComponent]
-    });
+    imports: [PaymentChangedSucceededComponent]
+});
     fixture = TestBed.createComponent(PaymentChangedSucceededComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

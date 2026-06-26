@@ -1,17 +1,21 @@
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { Country } from '../country/countries';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
 import { Language } from '../country/Language';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-country-input',
     templateUrl: './country-input.component.html',
     styleUrl: './country-input.component.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatFormField, MatLabel, MatInput, FormsModule, MatAutocompleteTrigger, ReactiveFormsModule, MatAutocomplete, MatOption, MatError, AsyncPipe]
 })
 export class CountryInputComponent implements OnInit {
 

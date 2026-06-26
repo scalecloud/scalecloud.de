@@ -7,13 +7,18 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { CancelStateReply } from './cancel-state';
 import { CancelStateService } from './cancel-state.service';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { ResumeSubscriptionComponent } from './resume-subscription/resume-subscription.component';
+import { CancelSubscriptionComponent } from './cancel-subscription/cancel-subscription.component';
+import { LoadingFailedComponent } from '../../../../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
-  selector: 'app-cancel-state',
-  standalone: false,
-  templateUrl: './cancel-state.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './cancel-state.component.scss'
+    selector: 'app-cancel-state',
+    templateUrl: './cancel-state.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './cancel-state.component.scss',
+    imports: [MatProgressBar, NgxSkeletonLoaderComponent, ResumeSubscriptionComponent, CancelSubscriptionComponent, LoadingFailedComponent]
 })
 export class CancelStateComponent implements OnInit {
 

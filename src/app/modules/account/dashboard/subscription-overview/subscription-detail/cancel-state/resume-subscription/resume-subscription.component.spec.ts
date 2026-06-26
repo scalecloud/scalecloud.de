@@ -9,8 +9,8 @@ describe('ResumeSubscriptionComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ResumeSubscriptionComponent]
-    });
+    imports: [ResumeSubscriptionComponent]
+});
     fixture = TestBed.createComponent(ResumeSubscriptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

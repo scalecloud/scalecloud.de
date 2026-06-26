@@ -10,13 +10,22 @@ import { BillingAddressReply, BillingAddressRequest } from '../billing-address-m
 import { BillingAddressService } from '../billing-address.service';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
+import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatButton } from '@angular/material/button';
+import { LoadingFailedComponent } from '../../../../../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
-  selector: 'app-billing-address-overview',
-  templateUrl: './billing-address-overview.component.html',
-  styleUrl: './billing-address-overview.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false
+    selector: 'app-billing-address-overview',
+    templateUrl: './billing-address-overview.component.html',
+    styleUrl: './billing-address-overview.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatTooltip, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class BillingAddressOverviewComponent {
 

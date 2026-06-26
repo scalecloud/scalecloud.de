@@ -9,11 +9,9 @@ describe('TitelCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        TitelCardComponent,
-        MatDivider
-      ]
-    })
+    imports: [TitelCardComponent,
+        MatDivider]
+})
       .compileComponents();
   });
 

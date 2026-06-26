@@ -1,8 +1,13 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatButton } from '@angular/material/button';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
@@ -10,7 +15,7 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatCardContent, MatButton, MatCardTitle, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, RouterLink]
 })
 export class LoginComponent {
   email = new UntypedFormControl('', [Validators.required, Validators.email]);

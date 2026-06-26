@@ -9,8 +9,8 @@ describe('ConfirmResumeSubscriptionComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ConfirmResumeSubscriptionComponent]
-    });
+    imports: [ConfirmResumeSubscriptionComponent]
+});
     fixture = TestBed.createComponent(ConfirmResumeSubscriptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

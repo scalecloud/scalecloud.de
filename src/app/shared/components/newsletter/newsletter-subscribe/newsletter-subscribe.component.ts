@@ -1,17 +1,40 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { NewsletterService } from '../newsletter.service';
 import { NewsletterSubscribeReplyStatus, NewsletterSubscribeRequest } from '../newsletter';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-newsletter-subscribe',
-  templateUrl: './newsletter-subscribe.component.html',
-  styleUrl: './newsletter-subscribe.component.scss',
-  standalone: false,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-newsletter-subscribe',
+    templateUrl: './newsletter-subscribe.component.html',
+    styleUrl: './newsletter-subscribe.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatIcon,
+        MatCardSubtitle,
+        MatCardContent,
+        FormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        ReactiveFormsModule,
+        MatError,
+        MatIconButton,
+        MatSuffix,
+        MatButton,
+        RouterLink,
+    ],
 })
 export class NewsletterSubscribeComponent {
   readonly email = new FormControl('', [Validators.required, Validators.email]);

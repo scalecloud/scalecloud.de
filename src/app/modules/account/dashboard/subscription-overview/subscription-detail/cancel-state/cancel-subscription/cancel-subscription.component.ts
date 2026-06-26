@@ -7,13 +7,15 @@ import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscrip
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmCancelSubscriptionComponent } from './confirm-cancel-subscription/confirm-cancel-subscription.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-cancel-subscription',
     templateUrl: './cancel-subscription.component.html',
     styleUrls: ['./cancel-subscription.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatButton, MatIcon]
 })
 export class CancelSubscriptionComponent {
 

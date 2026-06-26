@@ -14,13 +14,13 @@ describe('ForgotPasswordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ForgotPasswordComponent],
-      providers: [
+    imports: [ForgotPasswordComponent],
+    providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: SnackBarService, useValue: snackBarServiceMock }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
+    ],
+    schemas: [NO_ERRORS_SCHEMA]
+}).compileComponents();
   });
 
   beforeEach(() => {

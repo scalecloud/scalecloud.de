@@ -1,12 +1,13 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import createGlobe, { type Globe } from 'cobe';
+import { NgStyle } from '@angular/common';
 
 @Component({
     selector: 'app-globe',
     templateUrl: './globe.component.html',
     styleUrls: ['./globe.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [NgStyle]
 })
 export class GlobeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('cobeCanvas', { static: false })

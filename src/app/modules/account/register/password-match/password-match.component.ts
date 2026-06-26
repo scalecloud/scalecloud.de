@@ -1,11 +1,12 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-password-match',
     templateUrl: './password-match.component.html',
     styleUrls: ['./password-match.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatIcon]
 })
 export class PasswordMatchComponent {
   @Input() password: string | undefined;

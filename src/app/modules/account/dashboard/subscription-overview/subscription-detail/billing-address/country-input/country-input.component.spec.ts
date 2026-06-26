@@ -28,20 +28,20 @@ describe('CountryInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CountryInputComponent],
-      imports: [
+    imports: [
         ReactiveFormsModule,
         NoopAnimationsModule,
         MatAutocompleteModule,
         MatFormFieldModule,
         MatInputModule,
-        MatOptionModule
-      ],
-      providers: [
+        MatOptionModule,
+        CountryInputComponent
+    ],
+    providers: [
         { provide: CountryService, useValue: countryServiceMock },
         { provide: LanguageService, useValue: languageServiceMock }
-      ]
-    }).compileComponents();
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(CountryInputComponent);
     component = fixture.componentInstance;

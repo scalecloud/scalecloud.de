@@ -8,14 +8,25 @@ import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { CountryInputComponent } from '../country-input/country-input.component';
+import { MatButton } from '@angular/material/button';
+import { LoadingFailedComponent } from '../../../../../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
-  selector: 'app-billing-address-detail',
-  standalone: false,
-  templateUrl: './billing-address-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './billing-address-detail.component.scss'
+    selector: 'app-billing-address-detail',
+    templateUrl: './billing-address-detail.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './billing-address-detail.component.scss',
+    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, CountryInputComponent, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class BillingAddressDetailComponent implements OnInit {
 

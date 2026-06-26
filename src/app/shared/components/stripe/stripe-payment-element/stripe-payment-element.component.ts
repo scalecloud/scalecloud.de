@@ -4,6 +4,13 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
 import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { MatCard, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatList, MatListItem } from '@angular/material/list';
+import { NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { LoadingFailedComponent } from '../../loading-failed/loading-failed.component';
 
 declare const Stripe: any;
 
@@ -12,7 +19,7 @@ declare const Stripe: any;
     templateUrl: './stripe-payment-element.component.html',
     styleUrls: ['./stripe-payment-element.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatProgressBar, MatCardSubtitle, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, NgClass, FormsModule, LoadingFailedComponent]
 })
 export class StripePaymentElementComponent {
   ServiceStatus = ServiceStatus;

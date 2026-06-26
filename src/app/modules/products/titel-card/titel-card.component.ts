@@ -1,12 +1,13 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ProductType } from '../product-model';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
     selector: 'app-titel-card',
     templateUrl: './titel-card.component.html',
     styleUrls: ['./titel-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatDivider]
 })
 export class TitelCardComponent {
 

@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
     selector: 'app-snack-bar-progress',
     templateUrl: './snack-bar-progress.component.html',
     styleUrls: ['./snack-bar-progress.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatProgressBar]
 })
 export class SnackBarProgressComponent implements OnInit {
   progress = 100;

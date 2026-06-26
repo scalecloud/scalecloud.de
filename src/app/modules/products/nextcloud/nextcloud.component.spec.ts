@@ -16,7 +16,8 @@ describe('NextcloudComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        MatListModule,
         NextcloudComponent,
         TitelCardComponent,
         MatDivider,
@@ -28,11 +29,8 @@ describe('NextcloudComponent', () => {
         MatCardTitle,
         MatCardContent,
         MatCardSubtitle
-      ],
-      imports: [
-        MatListModule
-      ]
-    })
+    ]
+})
       .compileComponents();
   });
 

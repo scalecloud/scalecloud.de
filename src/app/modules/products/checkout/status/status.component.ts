@@ -4,6 +4,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription';
+import { ActiveComponent } from './active/active.component';
+import { TrailingComponent } from './trailing/trailing.component';
 
 
 @Component({
@@ -11,7 +13,7 @@ import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription
     templateUrl: './status.component.html',
     styleUrls: ['./status.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [ActiveComponent, TrailingComponent]
 })
 export class StatusComponent implements OnInit {
 

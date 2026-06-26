@@ -9,8 +9,8 @@ describe('StripePaymentElementComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [StripePaymentElementComponent]
-    });
+    imports: [StripePaymentElementComponent]
+});
     fixture = TestBed.createComponent(StripePaymentElementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -5,13 +5,21 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { LoadingFailedComponent } from '../../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-payment-overview',
     templateUrl: './payment-overview.component.html',
     styleUrls: ['./payment-overview.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatProgressBar, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatIcon, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class PaymentOverviewComponent implements OnInit {
   reply: PaymentMethodOverviewReply | undefined;

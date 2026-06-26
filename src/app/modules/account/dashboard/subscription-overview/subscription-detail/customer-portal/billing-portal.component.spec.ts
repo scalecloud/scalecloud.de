@@ -9,8 +9,8 @@ describe('BillingPortalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BillingPortalComponent ]
-    })
+    imports: [BillingPortalComponent]
+})
     .compileComponents();
   });
 

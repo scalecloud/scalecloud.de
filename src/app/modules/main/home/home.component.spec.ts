@@ -10,14 +10,12 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        MatListModule,
         HomeComponent,
         MatDivider
-      ],
-      imports: [
-        MatListModule
-      ],
-    },
+    ],
+},
 
     )
       .compileComponents();

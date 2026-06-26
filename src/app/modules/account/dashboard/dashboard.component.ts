@@ -7,13 +7,20 @@ import { PaymentOverviewComponent } from './payment-overview/payment-overview.co
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { LastCountService } from './subscription-overview/LastCount/last-count.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { SubscriptionOverviewComponent } from './subscription-overview/subscription-overview.component';
+import { LoadingFailedComponent } from '../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionOverviewComponent, LoadingFailedComponent]
 })
 export class DashboardComponent implements OnInit {
 

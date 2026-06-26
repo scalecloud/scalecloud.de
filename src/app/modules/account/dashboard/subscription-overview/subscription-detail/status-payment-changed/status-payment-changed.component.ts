@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
+import { PaymentChangedSucceededComponent } from './payment-changed-succeeded/payment-changed-succeeded.component';
+import { PaymentChangedProcessingComponent } from './payment-changed-processing/payment-changed-processing.component';
+import { PaymentChangedRequiresPaymentMethodComponent } from './payment-changed-requires-payment-method/payment-changed-requires-payment-method.component';
 
 declare const Stripe: any;
 
@@ -11,7 +14,7 @@ declare const Stripe: any;
     templateUrl: './status-payment-changed.component.html',
     styleUrls: ['./status-payment-changed.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [PaymentChangedSucceededComponent, PaymentChangedProcessingComponent, PaymentChangedRequiresPaymentMethodComponent]
 })
 export class StatusPaymentChangedComponent implements OnInit  {
 

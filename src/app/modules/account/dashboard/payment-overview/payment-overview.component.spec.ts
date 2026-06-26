@@ -9,8 +9,8 @@ describe('PaymentOverviewComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PaymentOverviewComponent]
-    });
+    imports: [PaymentOverviewComponent]
+});
     fixture = TestBed.createComponent(PaymentOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

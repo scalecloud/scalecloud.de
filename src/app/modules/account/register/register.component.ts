@@ -1,16 +1,21 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PasswordMatchComponent } from './password-match/password-match.component';
 import { PasswordStrengthComponent } from './password-strength/password-strength.component';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatButton } from '@angular/material/button';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatCardContent, MatButton, FormsModule, ReactiveFormsModule, MatCardTitle, MatFormField, MatLabel, MatInput, NgClass, MatError, PasswordStrengthComponent, PasswordMatchComponent]
 })
 export class RegisterComponent {
 

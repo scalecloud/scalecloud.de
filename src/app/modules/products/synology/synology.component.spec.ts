@@ -16,7 +16,8 @@ describe('SynologyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        MatListModule,
         SynologyComponent,
         TitelCardComponent,
         MatDivider,
@@ -29,11 +30,8 @@ describe('SynologyComponent', () => {
         MatCardTitle,
         MatCardContent,
         MatCardSubtitle
-      ],
-      imports: [
-        MatListModule
-      ]
-    })
+    ]
+})
       .compileComponents();
   });
 

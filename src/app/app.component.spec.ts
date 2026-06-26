@@ -6,13 +6,11 @@ import { describe, beforeEach, it, expect } from 'vitest';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        RouterTestingModule,
         AppComponent
-      ],
-      imports: [
-        RouterTestingModule
-      ]
-    }).compileComponents();
+    ]
+}).compileComponents();
   });
 
   it('should create the app', () => {

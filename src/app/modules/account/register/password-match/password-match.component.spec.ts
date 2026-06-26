@@ -9,8 +9,8 @@ describe('PasswordMatchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PasswordMatchComponent ]
-    })
+    imports: [PasswordMatchComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(PasswordMatchComponent);

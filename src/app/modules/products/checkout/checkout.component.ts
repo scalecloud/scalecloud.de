@@ -7,13 +7,14 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CheckoutSubscriptionService } from './payment-element/checkout-subscription.service';
 import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
+import { PaymentOverviewComponent as PaymentOverviewComponent_1 } from '../../account/dashboard/payment-overview/payment-overview.component';
 
 @Component({
     selector: 'app-checkout',
     templateUrl: './checkout.component.html',
     styleUrls: ['./checkout.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [PaymentOverviewComponent_1, CheckoutDetailsComponent]
 })
 export class CheckoutComponent {
   @ViewChild(PaymentOverviewComponent) paymentOverviewComponent: PaymentOverviewComponent | undefined;

@@ -48,8 +48,8 @@ describe('BillingAddressOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BillingAddressOverviewComponent],
-      providers: [
+    imports: [BillingAddressOverviewComponent],
+    providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: PermissionService, useValue: permissionServiceMock },
         { provide: BillingAddressService, useValue: billingAddressServiceMock },
@@ -59,9 +59,9 @@ describe('BillingAddressOverviewComponent', () => {
         { provide: ReturnUrlService, useValue: returnUrlServiceMock },
         { provide: CountryService, useValue: countryServiceMock },
         { provide: LanguageService, useValue: languageServiceMock }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
+    ],
+    schemas: [NO_ERRORS_SCHEMA]
+}).compileComponents();
 
     fixture = TestBed.createComponent(BillingAddressOverviewComponent);
     component = fixture.componentInstance;

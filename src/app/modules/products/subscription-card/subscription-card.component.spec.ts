@@ -14,7 +14,8 @@ describe('SubscriptionCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        MatListModule,
         SubscriptionCardComponent,
         MatCard,
         MatIcon,
@@ -23,11 +24,8 @@ describe('SubscriptionCardComponent', () => {
         MatCardTitle,
         MatCardContent,
         MatCardSubtitle
-      ],
-      imports: [
-        MatListModule
-      ]
-    })
+    ]
+})
       .compileComponents();
   });
 

@@ -7,13 +7,23 @@ import { PermissionService } from 'src/app/shared/services/permission/permission
 import { SubscriptionDetailCardServiceService } from './subscription-detail-card-service.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { CancelStateComponent } from '../cancel-state/cancel-state.component';
+import { LoadingFailedComponent } from '../../../../../../shared/components/loading-failed/loading-failed.component';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-subscription-detail-card',
     templateUrl: './subscription-detail-card.component.html',
     styleUrls: ['./subscription-detail-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatTooltip, MatIcon, CancelStateComponent, LoadingFailedComponent, CurrencyPipe, DatePipe]
 })
 export class SubscriptionDetailCardComponent implements OnInit {
 

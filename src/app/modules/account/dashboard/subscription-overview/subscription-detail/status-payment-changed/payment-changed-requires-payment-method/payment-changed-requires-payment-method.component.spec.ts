@@ -9,8 +9,8 @@ describe('PaymentChangedRequiresPaymentMethodComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PaymentChangedRequiresPaymentMethodComponent]
-    });
+    imports: [PaymentChangedRequiresPaymentMethodComponent]
+});
     fixture = TestBed.createComponent(PaymentChangedRequiresPaymentMethodComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -8,13 +8,22 @@ import { CurrencyPipe } from '@angular/common';
 import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { MatCard, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatIcon } from '@angular/material/icon';
+import { MatLabel } from '@angular/material/form-field';
+import { MatButton } from '@angular/material/button';
+import { LoadingFailedComponent } from '../../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-checkout-details',
     templateUrl: './checkout-details.component.html',
     styleUrls: ['./checkout-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, QuantityComponent, MatCardSubtitle, MatCardActions, MatButton, LoadingFailedComponent]
 })
 export class CheckoutDetailsComponent implements OnInit {
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;

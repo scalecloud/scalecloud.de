@@ -3,13 +3,21 @@ import { SynologyProduct } from './synology-product';
 import { ProductType } from '../product-model';
 import { ProductService } from '../product/product.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { TitelCardComponent } from '../titel-card/titel-card.component';
+import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { SubscriptionCardComponent } from '../subscription-card/subscription-card.component';
+import { LoadingFailedComponent } from '../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-synology',
     templateUrl: './synology.component.html',
     styleUrls: ['./synology.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [TitelCardComponent, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCardComponent, LoadingFailedComponent]
 })
 export class SynologyComponent implements OnInit {
 

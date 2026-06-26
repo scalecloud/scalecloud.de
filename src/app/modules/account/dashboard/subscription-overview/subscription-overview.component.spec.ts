@@ -9,8 +9,8 @@ describe('SubscriptionOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SubscriptionOverviewComponent ]
-    })
+    imports: [SubscriptionOverviewComponent]
+})
     .compileComponents();
   });
 

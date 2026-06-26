@@ -1,14 +1,15 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-quantity',
     templateUrl: './quantity.component.html',
     styleUrls: ['./quantity.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatInput, FormsModule, ReactiveFormsModule]
 })
 export class QuantityComponent implements OnInit {
 

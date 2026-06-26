@@ -12,8 +12,8 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 
 @Component({
-  selector: 'app-stripe-payment-element',
-  template: ''
+    selector: 'app-stripe-payment-element',
+    template: ''
 })
 class StripePaymentElementStubComponent {
   serviceStatus = ServiceStatus.Success;
@@ -44,15 +44,15 @@ describe('ChangePaymentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ChangePaymentComponent, StripePaymentElementStubComponent],
-      providers: [
+    imports: [ChangePaymentComponent, StripePaymentElementStubComponent],
+    providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: ChangePaymentService, useValue: changePaymentServiceMock },
         { provide: LogService, useValue: logServiceMock },
         { provide: ReturnUrlService, useValue: returnUrlServiceMock }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
+    ],
+    schemas: [NO_ERRORS_SCHEMA]
+}).compileComponents();
 
     fixture = TestBed.createComponent(ChangePaymentComponent);
     component = fixture.componentInstance;

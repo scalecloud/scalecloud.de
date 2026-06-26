@@ -7,13 +7,15 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { ConfirmResumeSubscriptionComponent } from './confirm-resume-subscription/confirm-resume-subscription.component';
 import { ResumeSubscriptionService } from './resume-subscription.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-resume-subscription',
     templateUrl: './resume-subscription.component.html',
     styleUrls: ['./resume-subscription.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatButton, MatIcon]
 })
 export class ResumeSubscriptionComponent {
 

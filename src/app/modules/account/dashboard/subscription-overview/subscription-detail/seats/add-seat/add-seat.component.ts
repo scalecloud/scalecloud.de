@@ -6,15 +6,21 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { AddSeatService } from './add-seat.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ActivatedRoute } from '@angular/router';
-import { UntypedFormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoleDescriptions, Role } from 'src/app/shared/roles/roles';
+import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatChipListbox, MatChipOption } from '@angular/material/chips';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-add-seat',
     templateUrl: './add-seat.component.html',
     styleUrl: './add-seat.component.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, MatChipListbox, MatChipOption, MatTooltip, MatButton]
 })
 export class AddSeatComponent {
 

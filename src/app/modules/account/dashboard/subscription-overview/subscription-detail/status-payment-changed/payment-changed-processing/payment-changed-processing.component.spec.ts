@@ -9,8 +9,8 @@ describe('PaymentChangedProcessingComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PaymentChangedProcessingComponent]
-    });
+    imports: [PaymentChangedProcessingComponent]
+});
     fixture = TestBed.createComponent(PaymentChangedProcessingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

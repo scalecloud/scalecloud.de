@@ -9,8 +9,8 @@ describe('CancelSubscriptionComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CancelSubscriptionComponent]
-    });
+    imports: [CancelSubscriptionComponent]
+});
     fixture = TestBed.createComponent(CancelSubscriptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

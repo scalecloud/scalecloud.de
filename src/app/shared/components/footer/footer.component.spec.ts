@@ -12,15 +12,13 @@ describe('FooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        MatListModule,
+        MatSidenavModule,
         FooterComponent,
         MatDivider
-      ],
-      imports: [
-        MatListModule,
-        MatSidenavModule
-      ]
-    })
+    ]
+})
       .compileComponents();
   });
 

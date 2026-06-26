@@ -18,7 +18,10 @@ describe('DefaultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        RouterTestingModule,
+        MatListModule,
+        MatMenuModule,
         DefaultComponent,
         SidebarComponent,
         MatDivider,
@@ -31,14 +34,9 @@ describe('DefaultComponent', () => {
         MatToolbar,
         MatToolbarRow,
         MatIcon
-      ],
-      imports: [
-        RouterTestingModule,
-        MatListModule,
-        MatMenuModule
-      ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-    })
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
       .compileComponents();
   });
 

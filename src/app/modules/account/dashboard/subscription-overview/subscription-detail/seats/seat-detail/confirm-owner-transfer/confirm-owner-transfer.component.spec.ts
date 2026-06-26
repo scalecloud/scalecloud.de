@@ -14,13 +14,12 @@ describe('ConfirmOwnerTransferComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConfirmOwnerTransferComponent],
-      imports: [MatDialogModule, MatButtonModule, NoopAnimationsModule],
-      providers: [
+    imports: [MatDialogModule, MatButtonModule, NoopAnimationsModule, ConfirmOwnerTransferComponent],
+    providers: [
         { provide: MatDialogRef, useValue: dialogRefMock },
         { provide: MAT_DIALOG_DATA, useValue: dialogData }
-      ]
-    }).compileComponents();
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(ConfirmOwnerTransferComponent);
     component = fixture.componentInstance;

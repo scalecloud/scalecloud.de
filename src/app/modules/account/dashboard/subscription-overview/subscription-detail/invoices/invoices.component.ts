@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { PageEvent } from '@angular/material/paginator';
+import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -8,13 +8,22 @@ import { PermissionService } from 'src/app/shared/services/permission/permission
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { Invoice, InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from './invoices';
 import { InvoicesService } from './invoices.service';
+import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { MatChip } from '@angular/material/chips';
+import { NgClass, TitleCasePipe, CurrencyPipe, DatePipe } from '@angular/common';
+import { LoadingFailedComponent } from '../../../../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-invoices',
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatChip, NgClass, MatPaginator, LoadingFailedComponent, TitleCasePipe, CurrencyPipe, DatePipe]
 })
 export class InvoicesComponent implements OnInit {
   reply: ListInvoicesReply | null;

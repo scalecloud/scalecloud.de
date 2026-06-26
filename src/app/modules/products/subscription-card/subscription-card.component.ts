@@ -3,13 +3,20 @@ import { Router } from '@angular/router';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
 import { QuantityComponent } from './quantity/quantity.component';
+import { MatCard, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from '@angular/material/card';
+import { MatDivider } from '@angular/material/divider';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatIcon } from '@angular/material/icon';
+import { MatLabel } from '@angular/material/form-field';
+import { MatButton } from '@angular/material/button';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
     selector: 'app-subscription-card',
     templateUrl: './subscription-card.component.html',
     styleUrls: ['./subscription-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, QuantityComponent, MatCardSubtitle, MatCardActions, MatButton, CurrencyPipe]
 })
 export class SubscriptionCardComponent {
 
