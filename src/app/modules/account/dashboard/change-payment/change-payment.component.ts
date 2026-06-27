@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit, viewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ChangePaymentReply } from './change-payment';
@@ -24,7 +24,7 @@ export class ChangePaymentComponent implements OnInit {
   private readonly changePaymentService = inject(ChangePaymentService);
   private readonly returnUrlService = inject(ReturnUrlService);
 
-  @ViewChild(StripePaymentElementComponent) stripePaymentElementComponent: StripePaymentElementComponent | undefined;
+  readonly stripePaymentElementComponent = viewChild(StripePaymentElementComponent);
   subscriptionSetupIntentReply: ChangePaymentReply | undefined;
 
   ngOnInit(): void {
@@ -43,7 +43,7 @@ export class ChangePaymentComponent implements OnInit {
             email: subscriptionSetupIntentReply.email
           }
 
-          this.stripePaymentElementComponent.initPaymentElement(initStripePayment);
+          this.stripePaymentElementComponent().initPaymentElement(initStripePayment);
         });
     }).catch((error) => {
       this.logService.error("waitForAuth failed: " + error);
@@ -51,13 +51,14 @@ export class ChangePaymentComponent implements OnInit {
   }
 
   changePaymentMethod(): void {
-    if (this.stripePaymentElementComponent) {
+    const stripePaymentElementComponent = this.stripePaymentElementComponent();
+    if (stripePaymentElementComponent) {
       const returnUrl = this.returnUrlService.getSpecifiedUrlWithReturnUrl('/dashboard/change-payment/status');
       this.logService.info("returnUrl: " + returnUrl);
       const submitStripePayment: SubmitStripePayment = {
         return_url: returnUrl,
       }
-      this.stripePaymentElementComponent.submitIntent(submitStripePayment);
+      stripePaymentElementComponent.submitIntent(submitStripePayment);
     }
     else {
       this.logService.error("PaymentElementComponent is undefined.")
@@ -69,7 +70,7 @@ export class ChangePaymentComponent implements OnInit {
   }
 
   isSuccess(): boolean {
-    return this.stripePaymentElementComponent?.serviceStatus == ServiceStatus.Success;
+    return this.stripePaymentElementComponent()?.serviceStatus == ServiceStatus.Success;
   }
 
 }

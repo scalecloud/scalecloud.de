@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy, inject, viewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
@@ -32,7 +32,7 @@ export class CheckoutDetailsComponent implements OnInit {
   private readonly currencyPipe = inject(CurrencyPipe);
   private readonly route = inject(ActivatedRoute);
 
-  @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
+  readonly quantityComponent = viewChild(QuantityComponent);
   @Output() startSubscriptionEvent = new EventEmitter<CheckoutCreateSubscriptionRequest>();
   reply: CheckoutProductReply | undefined;
   ServiceStatus = ServiceStatus;
@@ -100,8 +100,9 @@ export class CheckoutDetailsComponent implements OnInit {
 
   getQuantity(): number {
     let quantity = 0;
-    if (this.quantityComponent) {
-      quantity = this.quantityComponent?.getQuantity();
+    const quantityComponent = this.quantityComponent();
+    if (quantityComponent) {
+      quantity = quantityComponent?.getQuantity();
     }
     return quantity;
   }

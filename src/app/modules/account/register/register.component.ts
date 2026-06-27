@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, viewChild } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PasswordMatchComponent } from './password-match/password-match.component';
@@ -23,8 +23,8 @@ export class RegisterComponent {
   private readonly returnUrlService = inject(ReturnUrlService);
 
 
-  @ViewChild(PasswordStrengthComponent) passwordStrength: PasswordStrengthComponent | undefined;
-  @ViewChild(PasswordMatchComponent) passwordMatch: PasswordMatchComponent | undefined;
+  readonly passwordStrength = viewChild(PasswordStrengthComponent);
+  readonly passwordMatch = viewChild(PasswordMatchComponent);
 
   form: UntypedFormGroup;
   submitted = false;
@@ -59,9 +59,11 @@ export class RegisterComponent {
 
   onSubmit(): void {
     this.submitted = true;
+    const passwordStrength = this.passwordStrength();
+    const passwordMatch = this.passwordMatch();
     if (this.form == null || this.form.invalid
-      || this.passwordStrength == undefined || !this.passwordStrength.isPasswordStrength()
-      || this.passwordMatch == undefined || !this.passwordMatch.isMatching()
+      || passwordStrength == undefined || !passwordStrength.isPasswordStrength()
+      || passwordMatch == undefined || !passwordMatch.isMatching()
     ) {
       return;
     }

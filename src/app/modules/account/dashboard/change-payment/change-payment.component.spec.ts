@@ -82,7 +82,7 @@ describe('ChangePaymentComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    stripeStub = component.stripePaymentElementComponent as unknown as StripePaymentElementStub;
+    stripeStub = component.stripePaymentElementComponent() as unknown as StripePaymentElementStub;
   });
 
   afterEach(() => vi.clearAllMocks());

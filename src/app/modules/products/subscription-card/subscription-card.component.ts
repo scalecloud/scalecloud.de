@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
@@ -25,7 +25,7 @@ export class SubscriptionCardComponent {
   @Input() nextcloudProduct: NextcloudProduct | undefined;
   @Input() synologyProduct: SynologyProduct | undefined;
 
-  @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
+  readonly quantityComponent = viewChild(QuantityComponent);
 
   openCheckoutIntegration(): void {
     const productID = this.getProductID();
@@ -43,7 +43,7 @@ export class SubscriptionCardComponent {
   getQuantity(): number {
     let ret = 1;
     if (this.quantityComponent != undefined) {
-      ret = this.quantityComponent.getQuantity();
+      ret = this.quantityComponent().getQuantity();
     }
     return ret;
   }

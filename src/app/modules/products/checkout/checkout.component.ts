@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
@@ -23,8 +23,8 @@ export class CheckoutComponent {
   private readonly authService = inject(AuthService);
   private readonly checkoutSubscriptionService = inject(CheckoutSubscriptionService);
 
-  @ViewChild(PaymentOverviewComponent) paymentOverviewComponent: PaymentOverviewComponent | undefined;
-  @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
+  readonly paymentOverviewComponent = viewChild(PaymentOverviewComponent);
+  readonly checkoutDetailsComponent = viewChild(CheckoutDetailsComponent);
   productID: string | undefined;
 
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): void {

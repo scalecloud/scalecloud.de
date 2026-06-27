@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, ChangeDetectionStrategy, viewChild } from '@angular/core';
 import createGlobe, { type Globe } from 'cobe';
 import { NgStyle } from '@angular/common';
 
@@ -10,8 +10,7 @@ import { NgStyle } from '@angular/common';
     imports: [NgStyle]
 })
 export class GlobeComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('cobeCanvas', { static: false })
-  private canvasRef!: ElementRef<HTMLCanvasElement>;
+  private readonly canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('cobeCanvas');
 
   public globeSize = 0;
   private globe?: Globe;
@@ -52,7 +51,7 @@ export class GlobeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   showGlobe() {
     let phi = 4;
-    const canvas = this.canvasRef.nativeElement;
+    const canvas = this.canvasRef().nativeElement;
 
     this.globe = createGlobe(canvas, {
       devicePixelRatio: 2,
