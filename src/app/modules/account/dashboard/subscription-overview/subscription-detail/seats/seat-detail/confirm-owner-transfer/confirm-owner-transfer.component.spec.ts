@@ -10,10 +10,13 @@ import { ConfirmOwnerTransferComponent } from './confirm-owner-transfer.componen
 describe('ConfirmOwnerTransferComponent', () => {
   let component: ConfirmOwnerTransferComponent;
   let fixture: ComponentFixture<ConfirmOwnerTransferComponent>;
+
   const dialogRefMock = { close: vi.fn() };
   const dialogData = { email: 'target@example.com' };
 
   beforeEach(async () => {
+    vi.clearAllMocks();
+
     await TestBed.configureTestingModule({
       imports: [
         MatDialogModule,
@@ -30,7 +33,7 @@ describe('ConfirmOwnerTransferComponent', () => {
 
     fixture = TestBed.createComponent(ConfirmOwnerTransferComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
