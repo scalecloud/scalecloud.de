@@ -9,12 +9,6 @@ import { Language } from './Language';
 export class CountryService {
   private readonly logService = inject(LogService);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-
-  constructor() { }
-
   getCountry(language: Language, code: string): string {
     const country = countries.find(c => c.code === code);
     if (!country) {

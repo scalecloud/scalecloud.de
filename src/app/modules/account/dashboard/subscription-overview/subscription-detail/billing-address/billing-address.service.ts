@@ -16,11 +16,6 @@ export class BillingAddressService {
   private readonly urlBillingAddress = `${this.apiUrl}/dashboard/subscription/billing-address`;
   private readonly urlUpdateBillingAddress = `${this.apiUrl}/dashboard/subscription/update-billing-address`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   getBillingAddress(request: BillingAddressRequest): Observable<BillingAddressReply> {
     return this.http.post<BillingAddressReply>(this.urlBillingAddress, request, this.authService.getHttpOptions());
   }

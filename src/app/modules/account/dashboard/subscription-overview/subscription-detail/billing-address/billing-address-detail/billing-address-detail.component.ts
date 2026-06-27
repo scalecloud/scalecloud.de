@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatIcon } from '@angular/material/icon';
@@ -21,15 +21,52 @@ import { CountryInputComponent } from '../country-input/country-input.component'
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../../../../shared/components/loading-failed/loading-failed.component';
 
+/**
+ * Typed shape of the billing address form.
+ * Adjust the field types here if your real model differs
+ * (e.g. if `line2` is nullable rather than always a string).
+ */
+interface BillingAddressFormControls {
+  name: FormControl<string>;
+  country: FormControl<string>;
+  line1: FormControl<string>;
+  line2: FormControl<string>;
+  postalCode: FormControl<string>;
+  city: FormControl<string>;
+  phone: FormControl<string>;
+}
+
 @Component({
-    selector: 'app-billing-address-detail',
-    templateUrl: './billing-address-detail.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrl: './billing-address-detail.component.scss',
-    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, CountryInputComponent, MatCardActions, MatButton, LoadingFailedComponent]
+  selector: 'app-billing-address-detail',
+  templateUrl: './billing-address-detail.component.html',
+  // Explicitly kept even though OnPush is now the Angular 22 default,
+  // so intent is clear regardless of future default changes.
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './billing-address-detail.component.scss',
+  imports: [
+    MatCard,
+    MatProgressBar,
+    MatCardTitle,
+    MatIcon,
+    MatDivider,
+    MatCardContent,
+    MatList,
+    MatListItem,
+    NgxSkeletonLoaderComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    CountryInputComponent,
+    MatCardActions,
+    MatButton,
+    LoadingFailedComponent,
+  ],
 })
 export class BillingAddressDetailComponent implements OnInit {
-  private readonly formBuilder = inject(UntypedFormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly permissionService = inject(PermissionService);
   private readonly service = inject(BillingAddressService);
@@ -38,28 +75,39 @@ export class BillingAddressDetailComponent implements OnInit {
   private readonly snackBarService = inject(SnackBarService);
   private readonly returnUrlService = inject(ReturnUrlService);
 
+  // Mutable view state is now signal-backed. With OnPush as the
+  // baseline strategy, plain field mutations would not reliably
+  // trigger a re-render; signals make updates explicit and correct
+  // without needing markForCheck() calls.
+  readonly ServiceStatus = ServiceStatus;
+  readonly serviceStatus = signal(ServiceStatus.Initializing);
+  readonly submitted = signal(false);
+  private readonly reply = signal<BillingAddressReply | undefined>(undefined);
 
-  reply: BillingAddressReply | undefined;
-  ServiceStatus = ServiceStatus;
-  serviceStatus = ServiceStatus.Initializing;
-  form: UntypedFormGroup;
-  submitted = false;
+  /**
+   * NOTE: the template checks f.phone.errors?.pattern, which implies
+   * a pattern validator was always intended here but was missing
+   * from the original component — meaning that error message could
+   * never have fired. This regex is a reasonable placeholder
+   * (digits, spaces, +, -, parentheses, 6+ digits total); replace it
+   * with whatever pattern your app actually validates against.
+   */
+  private static readonly PHONE_PATTERN = /^[+]?[\d\s().-]{6,}$/;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
+  // Built as a field initializer instead of inside ngOnInit, since
+  // nothing async needs to happen first. Typed via FormBuilder +
+  // nonNullable, replacing UntypedFormBuilder/UntypedFormGroup.
+  readonly form: FormGroup<BillingAddressFormControls> = this.formBuilder.nonNullable.group({
+    name: ['', Validators.required],
+    country: ['', Validators.required],
+    line1: ['', Validators.required],
+    line2: [''],
+    postalCode: ['', Validators.required],
+    city: ['', Validators.required],
+    phone: ['', [Validators.required, Validators.pattern(BillingAddressDetailComponent.PHONE_PATTERN)]],
+  });
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      name: ['', Validators.required],
-      country: ['', Validators.required],
-      line1: ['', Validators.required],
-      line2: [''],
-      postalCode: ['', Validators.required],
-      city: ['', Validators.required],
-      phone: ['', Validators.required]
-    });
     this.checkPermissions();
   }
 
@@ -67,7 +115,7 @@ export class BillingAddressDetailComponent implements OnInit {
     return this.form.controls;
   }
 
-  onCountryControlReceived(countryControl: FormControl) {
+  onCountryControlReceived(countryControl: FormControl<string>) {
     this.form.setControl('country', countryControl);
   }
 
@@ -75,11 +123,22 @@ export class BillingAddressDetailComponent implements OnInit {
     return this.route.snapshot.paramMap.get('subscriptionID') || '';
   }
 
+  /**
+   * Kept because the template pre-fills app-country-input via
+   * [initialCountryCode]="getCountyCode()" before the form's own
+   * country control exists. Everything else that used to be a
+   * single-use getXxx() method was inlined into applyReply() below,
+   * since those weren't referenced from the template.
+   */
+  getCountyCode(): string {
+    return this.reply()?.address.country ?? '';
+  }
+
   async checkPermissions() {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
       this.logService.error('BillingAddressDetailComponent.checkPermissions: subscriptionID is null');
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
 
@@ -88,120 +147,102 @@ export class BillingAddressDetailComponent implements OnInit {
       if (hasPermission) {
         this.reloadBillingAddressDetail();
       } else {
-        this.serviceStatus = ServiceStatus.NoPermission;
+        this.serviceStatus.set(ServiceStatus.NoPermission);
       }
-    } catch (error) {
-      this.serviceStatus = ServiceStatus.Error;
+    } catch {
+      this.serviceStatus.set(ServiceStatus.Error);
     }
   }
 
   reloadBillingAddressDetail(): void {
-    this.serviceStatus = ServiceStatus.Loading;
-    this.authService.waitForAuth().then(() => {
-      const subscriptionID = this.getSubscriptionID();
-      if (subscriptionID == null) {
-        this.logService.error('BillingAddressDetailComponent.reloadBillingAddressDetail: subscriptionID is null');
-      } else {
-        let request: BillingAddressRequest = {
-          subscriptionID: subscriptionID,
-        };
-        this.service.getBillingAddress(request)
-          .subscribe({
-            next: reply => {
-              this.reply = reply;
-              this.form.patchValue({
-                name: this.getName(),
-                country: this.getCountyCode(),
-                line1: this.getLine1(),
-                line2: this.getLine2(),
-                postalCode: this.getPostalCode(),
-                city: this.getCity(),
-                phone: this.getPhone()
-              });
-              this.serviceStatus = ServiceStatus.Success;
-            },
-            error: error => {
-              this.serviceStatus = ServiceStatus.Error;
-            }
-          });
-      }
-    }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
-      this.serviceStatus = ServiceStatus.Error;
+    this.serviceStatus.set(ServiceStatus.Loading);
+    this.authService
+      .waitForAuth()
+      .then(() => {
+        const subscriptionID = this.getSubscriptionID();
+        if (!subscriptionID) {
+          this.logService.error('BillingAddressDetailComponent.reloadBillingAddressDetail: subscriptionID is null');
+          return;
+        }
+
+        const request: BillingAddressRequest = { subscriptionID };
+        this.service.getBillingAddress(request).subscribe({
+          next: (reply) => this.applyReply(reply),
+          error: () => this.serviceStatus.set(ServiceStatus.Error),
+        });
+      })
+      .catch((error) => {
+        this.logService.error('waitForAuth failed: ' + error);
+        this.serviceStatus.set(ServiceStatus.Error);
+      });
+  }
+
+  /**
+   * Patches the form directly from the reply, replacing the
+   * previous getName()/getLine1()/... getter methods (still keeping
+   * getCountyCode(), which the template calls directly). `address`
+   * is a required field on BillingAddressReply, so no optional
+   * chaining is needed on it specifically.
+   */
+  private applyReply(reply: BillingAddressReply): void {
+    this.reply.set(reply);
+    this.form.patchValue({
+      name: reply.name,
+      country: reply.address.country,
+      line1: reply.address.line1,
+      line2: reply.address.line2,
+      postalCode: reply.address.postal_code,
+      city: reply.address.city,
+      phone: reply.phone,
     });
-  }
-
-  getName(): string {
-    return this.reply?.name || '';
-  }
-
-  getLine1(): string {
-    return this.reply?.address?.line1 || '';
-  }
-
-  getLine2(): string {
-    return this.reply?.address?.line2 || '';
-  }
-
-  getPostalCode(): string {
-    return this.reply?.address?.postal_code || '';
-  }
-
-  getCity(): string {
-    return this.reply?.address?.city || '';
-  }
-
-  getCountyCode(): string {
-    return this.reply?.address?.country || '';
-  }
-
-  getPhone(): string {
-    return this.reply?.phone || '';
+    this.serviceStatus.set(ServiceStatus.Success);
   }
 
   onSubmit(): void {
-    this.submitted = true;
+    this.submitted.set(true);
     if (this.form.invalid) {
       return;
     }
-    
-    this.authService.waitForAuth().then(() => {
-      const subscriptionID = this.getSubscriptionID();
-      if (!subscriptionID) {
-        this.snackBarService.error('Currently not possible update billing address. Please try again later.');
-        this.returnUrlService.openReturnURL('/dashboard');
-      } else {
-        let address: Address = {
+
+    this.authService
+      .waitForAuth()
+      .then(() => {
+        const subscriptionID = this.getSubscriptionID();
+        if (!subscriptionID) {
+          this.snackBarService.error('Currently not possible update billing address. Please try again later.');
+          this.returnUrlService.openReturnURL('/dashboard');
+          return;
+        }
+
+        const address: Address = {
           city: this.f.city.value,
           country: this.f.country.value,
           line1: this.f.line1.value,
           line2: this.f.line2.value,
           postal_code: this.f.postalCode.value,
         };
-        let updateBillingAddressRequest: UpdateBillingAddressRequest = {
+        const updateBillingAddressRequest: UpdateBillingAddressRequest = {
           subscriptionID: this.getSubscriptionID(),
           name: this.f.name.value,
-          address: address,
+          address,
           phone: this.f.phone.value,
         };
-        this.service.updateBillingAddress(updateBillingAddressRequest)
-          .subscribe(reply => {
-            if (reply.subscriptionID) {
-              this.snackBarService.info(`Billing address updated.`);
-              this.returnUrlService.openReturnURL('/dashboard');
-            }
-            else {
-              this.snackBarService.error(`Could not update billing address. Please retry.`);
-            }
-          });
-      }
-    }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
-    });
+
+        this.service.updateBillingAddress(updateBillingAddressRequest).subscribe((reply) => {
+          if (reply.subscriptionID) {
+            this.snackBarService.info('Billing address updated.');
+            this.returnUrlService.openReturnURL('/dashboard');
+          } else {
+            this.snackBarService.error('Could not update billing address. Please retry.');
+          }
+        });
+      })
+      .catch((error) => {
+        this.logService.error('waitForAuth failed: ' + error);
+      });
   }
 
   cancel(): void {
-    this.returnUrlService.openReturnURL("/dashboard");
+    this.returnUrlService.openReturnURL('/dashboard');
   }
-
 }
