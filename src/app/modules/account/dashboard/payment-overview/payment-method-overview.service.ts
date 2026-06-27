@@ -6,20 +6,13 @@ import { Observable } from 'rxjs';
 import { API_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PaymentMethodOverviewService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
-
-
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/get-payment-method-overview`;
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
 
   getPaymentMethodOverview(): Observable<PaymentMethodOverviewReply> {
     return this.http.post<PaymentMethodOverviewReply>(this.url, null, this.authService.getHttpOptions());
