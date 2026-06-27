@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, signal, computed, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -21,16 +21,30 @@ import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
-    selector: 'app-billing-address-overview',
-    templateUrl: './billing-address-overview.component.html',
-    styleUrl: './billing-address-overview.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatTooltip, MatCardActions, MatButton, LoadingFailedComponent]
+  selector: 'app-billing-address-overview',
+  templateUrl: './billing-address-overview.component.html',
+  styleUrl: './billing-address-overview.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatCard,
+    MatProgressBar,
+    MatCardTitle,
+    MatIcon,
+    MatDivider,
+    MatCardContent,
+    MatList,
+    MatListItem,
+    NgxSkeletonLoaderComponent,
+    MatTooltip,
+    MatCardActions,
+    MatButton,
+    LoadingFailedComponent,
+  ],
 })
-export class BillingAddressOverviewComponent {
-  authService = inject(AuthService);
+export class BillingAddressOverviewComponent implements OnInit {
+  private readonly authService = inject(AuthService);
   private readonly permissionService = inject(PermissionService);
-  private readonly service = inject(BillingAddressService);
+  private readonly billingAddressService = inject(BillingAddressService);
   private readonly route = inject(ActivatedRoute);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
@@ -38,112 +52,90 @@ export class BillingAddressOverviewComponent {
   private readonly countryService = inject(CountryService);
   private readonly languageService = inject(LanguageService);
 
+  readonly ServiceStatus = ServiceStatus;
+  readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Initializing);
+  readonly reply = signal<BillingAddressReply | null>(null);
+  readonly country = signal<string | null>(null);
+  readonly skeletonItems = Array.from({ length: 8 });
 
+  readonly name = computed(() => this.reply()?.name ?? '');
+  readonly line1 = computed(() => this.reply()?.address?.line1 ?? '');
+  readonly line2 = computed(() => this.reply()?.address?.line2 ?? '');
+  readonly postalCode = computed(() => this.reply()?.address?.postal_code ?? '');
+  readonly city = computed(() => this.reply()?.address?.city ?? '');
+  readonly countryCode = computed(() => this.reply()?.address?.country ?? '');
+  readonly phone = computed(() => this.reply()?.phone ?? '');
 
-  reply: BillingAddressReply | undefined;
-  ServiceStatus = ServiceStatus;
-  serviceStatus = ServiceStatus.Initializing;
-
-  country = signal<string | null>(null);
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
+  readonly subscriptionId = computed(() =>
+    this.route.snapshot.paramMap.get('subscriptionID') ?? ''
+  );
 
   ngOnInit(): void {
     this.checkPermissions();
   }
 
-  getSubscriptionID(): string {
-    return this.route.snapshot.paramMap.get('subscriptionID') || '';
+  edit(): void {
+    const id = this.subscriptionId();
+    if (!id) {
+      this.snackBarService.error('Could not edit billing address. Please try again later.');
+      return;
+    }
+    this.returnUrlService.openUrlAddReturnUrl(`/dashboard/subscription/${id}/billing-address`);
   }
 
-  async checkPermissions() {
-    const subscriptionID = this.getSubscriptionID();
-    if (!subscriptionID) {
-      this.logService.error('BillingAddressDetailComponent.checkPermissions: subscriptionID is null');
-      this.serviceStatus = ServiceStatus.Error;
+  private async checkPermissions(): Promise<void> {
+    const id = this.subscriptionId();
+    if (!id) {
+      this.logService.error('BillingAddressOverviewComponent.checkPermissions: subscriptionID is null');
+      this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
 
     try {
-      const hasPermission = await this.permissionService.isBilling(subscriptionID);
+      const hasPermission = await this.permissionService.isBilling(id);
       if (hasPermission) {
-        this.reloadBillingAddressDetail();
+        this.loadBillingAddress();
       } else {
-        this.serviceStatus = ServiceStatus.NoPermission;
+        this.serviceStatus.set(ServiceStatus.NoPermission);
       }
-    } catch (error) {
-      this.serviceStatus = ServiceStatus.Error;
+    } catch {
+      this.serviceStatus.set(ServiceStatus.Error);
       this.snackBarService.error('An error occurred while checking permissions.');
     }
   }
 
-  reloadBillingAddressDetail(): void {
-    this.serviceStatus = ServiceStatus.Loading;
-    this.authService.waitForAuth().then(() => {
-      const subscriptionID = this.getSubscriptionID();
-      if (subscriptionID == null) {
-        this.logService.error('BillingAddressDetailComponent.reloadBillingAddressDetail: subscriptionID is null');
-      } else {
-        let request: BillingAddressRequest = {
-          subscriptionID: subscriptionID,
-        };
-        this.service.getBillingAddress(request)
-          .subscribe({
-            next: reply => {
-              this.reply = reply;
-              const country = this.countryService.getCountry(this.languageService.getLanguage(), this.getCountyCode());
-              this.country.set(country);
-              this.serviceStatus = ServiceStatus.Success;
-            },
-            error: error => {
-              this.serviceStatus = ServiceStatus.Error;
-            }
-          });
-      }
-    }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
-      this.serviceStatus = ServiceStatus.Error;
-    });
-  }
+  private loadBillingAddress(): void {
+    this.serviceStatus.set(ServiceStatus.Loading);
 
-  getName(): string {
-    return this.reply?.name || '';
-  }
+    this.authService
+      .waitForAuth()
+      .then(() => {
+        const id = this.subscriptionId();
+        if (!id) {
+          this.logService.error('BillingAddressOverviewComponent.loadBillingAddress: subscriptionID is null');
+          this.serviceStatus.set(ServiceStatus.Error);
+          return;
+        }
 
-  getLine1(): string {
-    return this.reply?.address?.line1 || '';
+        const request: BillingAddressRequest = { subscriptionID: id };
+        this.billingAddressService.getBillingAddress(request).subscribe({
+          next: (data) => {
+            this.reply.set(data);
+            const resolvedCountry = this.countryService.getCountry(
+              this.languageService.getLanguage(),
+              this.countryCode()
+            );
+            this.country.set(resolvedCountry);
+            this.serviceStatus.set(ServiceStatus.Success);
+          },
+          error: (_err) => {
+            this.serviceStatus.set(ServiceStatus.Error);
+          },
+        });
+      })
+      .catch((error) => {
+        this.logService.error(`waitForAuth failed: ${error}`);
+        this.serviceStatus.set(ServiceStatus.Error);
+      });
   }
-
-  getLine2(): string {
-    return this.reply?.address?.line2 || '';
-  }
-
-  getPostalCode(): string {
-    return this.reply?.address?.postal_code || '';
-  }
-
-  getCity(): string {
-    return this.reply?.address?.city || '';
-  }
-
-  getCountyCode(): string {
-    return this.reply?.address?.country || '';
-  }
-
-  getPhone(): string {
-    return this.reply?.phone || '';
-  }
-
-  edit(): void {
-    const subscriptionID = this.getSubscriptionID();
-    if (!subscriptionID) {
-      this.snackBarService.error('Could not edit billing address. Please try again later.');
-      return;
-    }
-    this.returnUrlService.openUrlAddReturnUrl('/dashboard/subscription/' + subscriptionID + '/billing-address');
-  }
-
 }

@@ -14,8 +14,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/components/loading-failed/loading-failed.component';
 
-type CardBrand = 'amex' | 'diners' | 'discover' | 'eftpos_au' | 'jcb' | 'mastercard' | 'unionpay' | 'visa' | 'unknown';
-
 @Component({
   selector: 'app-payment-overview',
   templateUrl: './payment-overview.component.html',
