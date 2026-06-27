@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatIconButton, MatButton } from '@angular/material/button';
@@ -17,7 +17,7 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 export class HeaderComponent implements OnInit {
   authService = inject(AuthService);
 
-  @Output() toggleSideBarForMe = new EventEmitter<any>();
+  readonly toggleSideBarForMe = output<any>();
   isLoading = true;
   
   ngOnInit() {
@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleSideBar() {
+    // TODO: The 'emit' function requires a mandatory any argument
     this.toggleSideBarForMe.emit();
     setTimeout(() => {
       window.dispatchEvent(

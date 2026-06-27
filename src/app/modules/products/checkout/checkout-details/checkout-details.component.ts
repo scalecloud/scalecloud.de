@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy, inject, viewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, viewChild, output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
@@ -33,7 +33,7 @@ export class CheckoutDetailsComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   readonly quantityComponent = viewChild(QuantityComponent);
-  @Output() startSubscriptionEvent = new EventEmitter<CheckoutCreateSubscriptionRequest>();
+  readonly startSubscriptionEvent = output<CheckoutCreateSubscriptionRequest>();
   reply: CheckoutProductReply | undefined;
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;

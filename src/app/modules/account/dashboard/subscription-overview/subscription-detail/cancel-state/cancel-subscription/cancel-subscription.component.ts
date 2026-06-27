@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
@@ -26,7 +26,7 @@ export class CancelSubscriptionComponent {
   private readonly dialog = inject(MatDialog);
 
 
-  @Output() reloadSubscriptionDetail = new EventEmitter<void>();
+  readonly reloadSubscriptionDetail = output<void>();
 
   openConfirmDialog(): void {
     const dialogRef = this.dialog.open(ConfirmCancelSubscriptionComponent);

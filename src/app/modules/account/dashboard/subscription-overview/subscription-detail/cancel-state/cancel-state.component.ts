@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -29,7 +29,7 @@ export class CancelStateComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
 
-  @Output() reloadSubscriptionDetailEvent = new EventEmitter();
+  readonly reloadSubscriptionDetailEvent = output();
   ServiceStatus = ServiceStatus;
   reply: CancelStateReply | null;
   serviceStatus = ServiceStatus.Initializing;

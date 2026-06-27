@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, ChangeDetectionStrategy, inject, input, effect, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, input, effect, signal, output } from '@angular/core';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { Country } from '../country/countries';
@@ -45,7 +45,7 @@ export class CountryInputComponent {
    */
   readonly initialCountryCode = input<string>('');
 
-  @Output() countryControlEmitter = new EventEmitter<FormControl<string>>();
+  readonly countryControlEmitter = output<FormControl<string>>();
 
   // `nonNullable` so the control's value type is `string`, not
   // `string | null` — this is what lets getSelectedCountryCode() and

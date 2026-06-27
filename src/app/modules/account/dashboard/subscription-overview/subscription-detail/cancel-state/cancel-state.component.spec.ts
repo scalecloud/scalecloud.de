@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Component, Output, EventEmitter, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
@@ -16,10 +16,10 @@ import { CancelStateReply } from './cancel-state';
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
 @Component({ selector: 'app-resume-subscription', template: '', standalone: true })
-class ResumeSubscriptionStub { readonly reply = input<any>(undefined); @Output() reloadSubscriptionDetailEvent = new EventEmitter(); }
+class ResumeSubscriptionStub { readonly reply = input<any>(undefined); readonly reloadSubscriptionDetailEvent = output(); }
 
 @Component({ selector: 'app-cancel-subscription', template: '', standalone: true })
-class CancelSubscriptionStub { readonly reply = input<any>(undefined); @Output() reloadSubscriptionDetailEvent = new EventEmitter(); }
+class CancelSubscriptionStub { readonly reply = input<any>(undefined); readonly reloadSubscriptionDetailEvent = output(); }
 
 @Component({ selector: 'app-loading-failed', template: '', standalone: true })
 class LoadingFailedStub { }
