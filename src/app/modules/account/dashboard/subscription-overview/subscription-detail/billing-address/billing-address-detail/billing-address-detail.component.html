@@ -41,7 +41,7 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field class="full-width">
         <mat-label>Name</mat-label>
-        <input matInput formControlName="name">
+        <input matInput id="billing-name" formControlName="name">
         @if (submitted() && f.name.errors?.required) {
         <mat-error>Name is required</mat-error>
         }
@@ -50,32 +50,32 @@
         (countryControlEmitter)="onCountryControlReceived($event)"></app-country-input>
       <mat-form-field class="full-width">
         <mat-label>Address line 1</mat-label>
-        <input matInput formControlName="line1">
+        <input matInput id="billing-line1" formControlName="line1">
         @if (submitted() && f.line1.errors?.required) {
         <mat-error>Address line 1 is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Address line 2</mat-label>
-        <input matInput formControlName="line2" placeholder="Number of the flat/apartment unit etc. (optional)">
+        <input matInput id="billing-line2" formControlName="line2" placeholder="Number of the flat/apartment unit etc. (optional)">
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Postal Code</mat-label>
-        <input matInput formControlName="postalCode">
+        <input matInput id="billing-postalCode" formControlName="postalCode">
         @if (submitted() && f.postalCode.errors?.required) {
         <mat-error>Postal Code is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>City</mat-label>
-        <input matInput formControlName="city">
+        <input matInput id="billing-city" formControlName="city">
         @if (submitted() && f.city.errors?.required) {
         <mat-error>City is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Phone Number</mat-label>
-        <input matInput formControlName="phone">
+        <input matInput id="billing-phone" formControlName="phone">
         @if (submitted() && f.phone.errors?.required) {
         <mat-error>Phone Number is required</mat-error>
         }
