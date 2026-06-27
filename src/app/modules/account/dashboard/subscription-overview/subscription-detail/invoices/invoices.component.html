@@ -1,5 +1,5 @@
 <mat-card>
-    @if (serviceStatus === ServiceStatus.Loading) {
+    @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
     <mat-card-title>
         <mat-icon class="title-icon">receipt</mat-icon>Invoices
@@ -13,14 +13,15 @@
         </mat-list>
     </mat-card-content>
     }
-    @if (serviceStatus === ServiceStatus.Success) {
+    @if (serviceStatus() === ServiceStatus.Success) {
     <mat-card-title>
         <mat-icon class="title-icon">receipt</mat-icon>Invoices
     </mat-card-title>
     <mat-divider></mat-divider>
     <div class="invoice-list">
-        @for (invoice of reply.invoices; track $index) {
-        <div class="invoice-row" (click)="open(invoice)" (keydown)="handleKeyDown($event, invoice)">
+        @for (invoice of reply()?.invoices; track invoice.invoiceID) {
+        <div class="invoice-row" role="button" tabindex="0" [attr.aria-label]="'Download invoice from ' + (invoice.created * 1000 | date: 'dd.MM.yyyy')"
+            (click)="open(invoice)" (keydown)="handleKeyDown($event, invoice)">
             <div class="invoice-column first-column">
                 {{invoice.created * 1000 | date: 'dd.MM.yyyy'}}
             </div>
@@ -41,14 +42,14 @@
         </div>
         }
     </div>
-    @if( reply.totalResults > pageSize ) {
-    <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="reply.totalResults" [pageSize]="pageSize"
-        [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize" [pageIndex]="pageIndex"
+    @if (reply() && reply()!.totalResults > pageSize()) {
+    <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="reply()!.totalResults" [pageSize]="pageSize()"
+        [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize" [pageIndex]="pageIndex()"
         aria-label="Select page">
     </mat-paginator>
     }
     }
 </mat-card>
-@if ( serviceStatus === ServiceStatus.Error ) {
+@if (serviceStatus() === ServiceStatus.Error) {
 <app-loading-failed></app-loading-failed>
 }
