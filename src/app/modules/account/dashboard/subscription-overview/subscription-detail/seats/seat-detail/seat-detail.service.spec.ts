@@ -1,7 +1,9 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
+import { firstValueFrom } from 'rxjs';
 
 import { SeatDetailService } from './seat-detail.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -32,6 +34,7 @@ function makeSeat(overrides = {}) {
 describe('SeatDetailService', () => {
   let service: SeatDetailService;
   let httpMock: HttpTestingController;
+
   const authServiceMock = {
     getHttpOptions: vi.fn().mockReturnValue({ headers: {} }),
   };
@@ -39,6 +42,7 @@ describe('SeatDetailService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: AuthService, useValue: authServiceMock },
@@ -57,60 +61,63 @@ describe('SeatDetailService', () => {
   });
 
   // ── getSeat ────────────────────────────────────────────────────────────────
-  it('getSeat POSTs to seat-detail endpoint', fakeAsync(() => {
+
+  it('getSeat POSTs to the seat-detail endpoint', async () => {
     const request: SeatDetailRequest = { subscriptionID: 'sub-1', uid: 'u1' };
     const reply: SeatDetailReply = { selectedSeat: makeSeat(), mySeat: makeSeat({ uid: 'me' }) };
-    let result: SeatDetailReply | undefined;
 
-    service.getSeat(request).subscribe((r) => (result = r));
+    const result$ = firstValueFrom(service.getSeat(request));
 
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/seat-detail`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(request);
-
     req.flush(reply);
-    tick();
-    expect(result).toEqual(reply);
-  }));
+
+    expect(await result$).toEqual(reply);
+  });
 
   // ── updateSeat ─────────────────────────────────────────────────────────────
-  it('updateSeat POSTs to update-seat endpoint', fakeAsync(() => {
+
+  it('updateSeat POSTs to the update-seat endpoint', async () => {
     const request: UpdateSeatDetailRequest = { seatUpdated: makeSeat() };
     const reply: UpdateSeatDetailReply = { seat: makeSeat() };
-    let result: UpdateSeatDetailReply | undefined;
 
-    service.updateSeat(request).subscribe((r) => (result = r));
+    const result$ = firstValueFrom(service.updateSeat(request));
 
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/update-seat`);
     expect(req.request.method).toBe('POST');
-
+    expect(req.request.body).toEqual(request);
     req.flush(reply);
-    tick();
-    expect(result).toEqual(reply);
-  }));
+
+    expect(await result$).toEqual(reply);
+  });
 
   // ── deleteSeat ─────────────────────────────────────────────────────────────
-  it('deleteSeat POSTs to delete-seat endpoint', fakeAsync(() => {
+
+  it('deleteSeat POSTs to the delete-seat endpoint', async () => {
     const seat = makeSeat();
     const request: DeleteSeatRequest = { seatToDelete: seat };
     const reply: DeleteSeatReply = { deletedSeat: seat, success: true };
-    let result: DeleteSeatReply | undefined;
 
-    service.deleteSeat(request).subscribe((r) => (result = r));
+    const result$ = firstValueFrom(service.deleteSeat(request));
 
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/delete-seat`);
     expect(req.request.method).toBe('POST');
-
+    expect(req.request.body).toEqual(request);
     req.flush(reply);
-    tick();
-    expect(result).toEqual(reply);
-  }));
 
-  // ── Auth headers ─────────────────────────────────────────────────────────
-  it('attaches auth headers on every call', fakeAsync(() => {
-    service.getSeat({ subscriptionID: 'sub-1', uid: 'u1' }).subscribe();
+    expect(await result$).toEqual(reply);
+  });
+
+  // ── Auth headers ───────────────────────────────────────────────────────────
+
+  it('attaches auth headers on every call', async () => {
+    const result$ = firstValueFrom(service.getSeat({ subscriptionID: 'sub-1', uid: 'u1' }));
+
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/seat-detail`);
     req.flush({});
+
+    await result$;
     expect(authServiceMock.getHttpOptions).toHaveBeenCalled();
-  }));
+  });
 });
