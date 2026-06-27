@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { AddSeatRequest } from '../seats';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -6,7 +6,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { AddSeatService } from './add-seat.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ActivatedRoute } from '@angular/router';
-import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RoleDescriptions, Role } from 'src/app/shared/roles/roles';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
@@ -14,13 +14,22 @@ import { MatInput } from '@angular/material/input';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-    selector: 'app-add-seat',
-    templateUrl: './add-seat.component.html',
-    styleUrl: './add-seat.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, MatChipListbox, MatChipOption, MatTooltip, MatButton]
+  selector: 'app-add-seat',
+  templateUrl: './add-seat.component.html',
+  styleUrl: './add-seat.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ReactiveFormsModule,
+    MatCard, MatCardTitle, MatCardContent,
+    MatFormField, MatLabel, MatInput, MatError,
+    MatChipListbox, MatChipOption,
+    MatTooltip,
+    MatButton,
+    MatProgressSpinner,
+  ],
 })
 export class AddSeatComponent {
   private readonly authService = inject(AuthService);
@@ -30,76 +39,87 @@ export class AddSeatComponent {
   private readonly returnUrlService = inject(ReturnUrlService);
   private readonly route = inject(ActivatedRoute);
 
+  readonly email = new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] });
 
-  email = new UntypedFormControl('', [Validators.required, Validators.email]);
+  // Exclude the Owner role — it cannot be assigned when inviting users.
+  readonly inviteUserRoles = Object.values(Role).filter((role) => role !== Role.Owner);
 
-  // Exclude the Owner only while inviting users
-  inviteUserRoles = Object.values(Role).filter(value => typeof value === 'string' && value !== Role[Role.Owner]);
-  roleDescriptions = RoleDescriptions;
-  Roles = Role;
-  selectedRoles: Role[] = [];
+  readonly roleDescriptions = RoleDescriptions;
+  readonly Roles = Role;
+
+  readonly selectedRoles = signal<Role[]>([]);
+  readonly isSubmitting = signal(false);
+
+  readonly isEmailInvalid = computed(() => this.email.invalid);
 
   addSeat(): void {
-    this.authService.waitForAuth().then(() => {
-
-      if (this.isEmailInvalid()) {
-        this.logService.warn("Invalid inputs in Login.");
-      }
-
-      const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
-
-      if (!subscriptionID) {
-        this.snackBarService.error('Currently not possible to invite a user. Please try again later.');
-        this.returnUrlService.openReturnURL('/dashboard');
-      } else {
-        const addSeatRequest: AddSeatRequest = {
-          subscriptionID: subscriptionID,
-          email: this.email.value,
-          roles: this.selectedRoles,
-        };
-        this.addSeatService.addSeat(addSeatRequest)
-          .subscribe(addSeatReply => {
-            if (addSeatReply.success) {
-              this.snackBarService.info(`Invitation sent to ${addSeatReply?.email}.`);
-              this.returnUrlService.openReturnURL('/dashboard');
-            }
-            else {
-              this.snackBarService.error(`Could not send invitation to ${addSeatReply?.email}. Please rety.`);
-            }
-          });
-      }
-    }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
-    });
-  }
-
-  isEmailInvalid(): boolean {
-    return this.email.hasError('required') || this.email.hasError('email');
-  }
-
-  getErrorMessageEMail() {
-    if (this.email.hasError('required')) {
-      return 'You must enter a your E-Mail address';
+    if (this.email.invalid) {
+      this.logService.warn('Invalid email on invite attempt.');
+      this.email.markAsTouched();
+      return;
     }
 
-    return this.email.hasError('email') ? 'Not a valid E-Mail address' : '';
+    const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
+
+    if (!subscriptionID) {
+      this.snackBarService.error('Currently not possible to invite a user. Please try again later.');
+      this.returnUrlService.openReturnURL('/dashboard');
+      return;
+    }
+
+    this.isSubmitting.set(true);
+
+    const addSeatRequest: AddSeatRequest = {
+      subscriptionID,
+      email: this.email.value,
+      roles: this.selectedRoles(),
+    };
+
+    this.authService.waitForAuth()
+      .then(() => {
+        this.addSeatService.addSeat(addSeatRequest).subscribe({
+          next: (reply) => {
+            this.isSubmitting.set(false);
+            if (reply.success) {
+              this.snackBarService.info(`Invitation sent to ${reply.email}.`);
+              this.returnUrlService.openReturnURL('/dashboard');
+            } else {
+              this.snackBarService.error(`Could not send invitation to ${reply.email}. Please retry.`);
+            }
+          },
+          error: (err) => {
+            this.isSubmitting.set(false);
+            this.logService.error('addSeat request failed: ' + err);
+            this.snackBarService.error('An unexpected error occurred. Please try again.');
+          },
+        });
+      })
+      .catch((error) => {
+        this.isSubmitting.set(false);
+        this.logService.error('waitForAuth failed: ' + error);
+      });
+  }
+
+  getEmailErrorMessage(): string {
+    if (this.email.hasError('required')) {
+      return 'E-mail address is required';
+    }
+    return this.email.hasError('email') ? 'Enter a valid e-mail address' : '';
   }
 
   toggleRoleSelection(role: Role): void {
-    const index = this.selectedRoles.indexOf(role);
-    if (index === -1) {
-      this.selectedRoles.push(role);
-    } else {
-      this.selectedRoles.splice(index, 1);
-    }
+    this.selectedRoles.update((roles) => {
+      const index = roles.indexOf(role);
+      return index === -1
+        ? [...roles, role]
+        : roles.filter((_, i) => i !== index);
+    });
   }
 
-  handleKeyDown(event: KeyboardEvent, role: Role) {
+  handleKeyDown(event: KeyboardEvent, role: Role): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.toggleRoleSelection(role);
     }
   }
-
-
 }

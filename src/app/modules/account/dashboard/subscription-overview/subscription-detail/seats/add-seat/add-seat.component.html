@@ -2,25 +2,50 @@
   <mat-card-title>Invite user</mat-card-title>
   <mat-card-content>
     <mat-form-field appearance="fill">
-      <mat-label id="invite-email-label">E-Mail:</mat-label>
-      <input type="email" matInput id="invite-email" placeholder="E-Mail" aria-labelledby="invite-email-label" [formControl]="email" required>
-      @if (email.invalid) {
-        <mat-error>{{getErrorMessageEMail()}}</mat-error>
+      <mat-label id="invite-email-label">E-Mail</mat-label>
+      <input
+        type="email"
+        matInput
+        id="invite-email"
+        placeholder="name@example.com"
+        aria-labelledby="invite-email-label"
+        [formControl]="email"
+        required
+      />
+      @if (email.invalid && email.touched) {
+        <mat-error>{{ getEmailErrorMessage() }}</mat-error>
       }
     </mat-form-field>
-    <mat-label>Select roles:</mat-label>
-    <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked" formControlName="roles">
+
+    <mat-label>Select roles</mat-label>
+    <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked">
       @for (role of inviteUserRoles; track role) {
-        <mat-chip-option [selected]="selectedRoles.includes(Roles[role])"
-          (click)="toggleRoleSelection(Roles[role])" [matTooltip]="roleDescriptions[Roles[role]]"
-          (keydown)="handleKeyDown($event, Roles[role])">
-          {{role}}
+        <mat-chip-option
+          [selected]="selectedRoles().includes(Roles[role])"
+          (click)="toggleRoleSelection(Roles[role])"
+          (keydown)="handleKeyDown($event, Roles[role])"
+          [matTooltip]="roleDescriptions[Roles[role]]"
+        >
+          {{ role }}
         </mat-chip-option>
       }
     </mat-chip-listbox>
+
     <div class="flex-container">
       <div class="flex-item">
-        <button (click)="addSeat()" mat-raised-button color="primary">Invite</button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="addSeat()"
+          [disabled]="isSubmitting()"
+          aria-label="Send invitation"
+        >
+          @if (isSubmitting()) {
+            <mat-spinner diameter="18" />
+          } @else {
+            Invite
+          }
+        </button>
       </div>
     </div>
   </mat-card-content>
