@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { DefaultComponent } from './layouts/default/default.component';
-import { HomeComponent } from './modules/main/home/home.component';
-import { PageNotFoundComponent } from './modules/main/page-not-found/page-not-found.component';
+
+
+
 import { dashboardGuard } from './shared/guard/dashboard.guard';
 import { checkoutGuard } from './shared/guard/checkout.guard';
 import { loginGuard } from './shared/guard/login.guard';
@@ -12,11 +12,11 @@ import { verifyEMailGuard } from './shared/guard/verify-email.guard';
 export const routes: Routes = [
   {
     path: '',
-    component: DefaultComponent,
+    loadComponent: () => import('./layouts/default/default.component').then(m => m.DefaultComponent),
     children: [
       {
         path: '',
-        component: HomeComponent
+        loadComponent: () => import('./modules/main/home/home.component').then(m => m.HomeComponent)
       },
       {
         path: 'nextcloud',
@@ -122,7 +122,7 @@ export const routes: Routes = [
         loadComponent: () => import('./shared/components/newsletter/newsletter-unsubscribe/newsletter-unsubscribe.component').then(m => m.NewsletterUnsubscribeComponent)
       },
       // Wildcard
-      { path: '**', component: PageNotFoundComponent }
+      { path: '**', loadComponent: () => import('./modules/main/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent) }
     ]
   }
 ];
