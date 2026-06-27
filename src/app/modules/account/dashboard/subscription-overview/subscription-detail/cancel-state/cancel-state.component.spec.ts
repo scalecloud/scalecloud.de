@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, input } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
@@ -16,16 +16,16 @@ import { CancelStateReply } from './cancel-state';
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
 @Component({ selector: 'app-resume-subscription', template: '', standalone: true })
-class ResumeSubscriptionStub { @Input() reply: any; @Output() reloadSubscriptionDetailEvent = new EventEmitter(); }
+class ResumeSubscriptionStub { readonly reply = input<any>(undefined); @Output() reloadSubscriptionDetailEvent = new EventEmitter(); }
 
 @Component({ selector: 'app-cancel-subscription', template: '', standalone: true })
-class CancelSubscriptionStub { @Input() reply: any; @Output() reloadSubscriptionDetailEvent = new EventEmitter(); }
+class CancelSubscriptionStub { readonly reply = input<any>(undefined); @Output() reloadSubscriptionDetailEvent = new EventEmitter(); }
 
 @Component({ selector: 'app-loading-failed', template: '', standalone: true })
 class LoadingFailedStub { }
 
 @Component({ selector: 'ngx-skeleton-loader', template: '', standalone: true })
-class SkeletonLoaderStub { @Input() count: any; @Input() appearance: any; }
+class SkeletonLoaderStub { readonly count = input<any>(undefined); readonly appearance = input<any>(undefined); }
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
 

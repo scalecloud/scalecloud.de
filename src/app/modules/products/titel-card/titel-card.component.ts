@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { ProductType } from '../product-model';
 import { MatDivider } from '@angular/material/divider';
 
@@ -11,14 +11,14 @@ import { MatDivider } from '@angular/material/divider';
 })
 export class TitelCardComponent {
 
-  @Input() productType: ProductType = ProductType.Nextcloud;
+  readonly productType = input<ProductType>(ProductType.Nextcloud);
   
   get isSynology() {
-    return this.productType === ProductType.Synology;
+    return this.productType() === ProductType.Synology;
   }
 
   get isNextcloud() {
-    return this.productType === ProductType.Nextcloud;
+    return this.productType() === ProductType.Nextcloud;
   }
 
 }

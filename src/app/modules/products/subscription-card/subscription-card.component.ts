@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, inject, viewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, viewChild, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
@@ -22,8 +22,8 @@ export class SubscriptionCardComponent {
   private readonly router = inject(Router);
 
 
-  @Input() nextcloudProduct: NextcloudProduct | undefined;
-  @Input() synologyProduct: SynologyProduct | undefined;
+  readonly nextcloudProduct = input<NextcloudProduct | undefined>(undefined);
+  readonly synologyProduct = input<SynologyProduct | undefined>(undefined);
 
   readonly quantityComponent = viewChild(QuantityComponent);
 
@@ -51,9 +51,9 @@ export class SubscriptionCardComponent {
   getProductID(): string {
     let ret = "";
     if (this.nextcloudProduct != undefined) {
-      ret = this.nextcloudProduct.productID;
+      ret = this.nextcloudProduct().productID;
     } else if (this.synologyProduct != undefined) {
-      ret = this.synologyProduct.productID;
+      ret = this.synologyProduct().productID;
     }
     return ret;
   }
@@ -61,9 +61,9 @@ export class SubscriptionCardComponent {
   getName(): string {
     let ret = "";
     if (this.nextcloudProduct != undefined) {
-      ret = this.nextcloudProduct.name;
+      ret = this.nextcloudProduct().name;
     } else if (this.synologyProduct != undefined) {
-      ret = this.synologyProduct.name;
+      ret = this.synologyProduct().name;
     }
     return ret;
   }
@@ -71,9 +71,9 @@ export class SubscriptionCardComponent {
   getStorageAmount(): number {
     let ret = 0;
     if (this.nextcloudProduct != undefined) {
-      ret = this.nextcloudProduct.storageAmount;
+      ret = this.nextcloudProduct().storageAmount;
     } else if (this.synologyProduct != undefined) {
-      ret = this.synologyProduct.storageAmount;
+      ret = this.synologyProduct().storageAmount;
     }
     return ret;
   }
@@ -81,9 +81,9 @@ export class SubscriptionCardComponent {
   getStorageUnit(): string {
     let ret = "";
     if (this.nextcloudProduct != undefined) {
-      ret = this.nextcloudProduct.storageUnit;
+      ret = this.nextcloudProduct().storageUnit;
     } else if (this.synologyProduct != undefined) {
-      ret = this.synologyProduct.storageUnit;
+      ret = this.synologyProduct().storageUnit;
     }
     return ret;
   }
@@ -95,9 +95,9 @@ export class SubscriptionCardComponent {
   getTrialDays(): number {
     let ret = 0;
     if (this.nextcloudProduct != undefined) {
-      ret = this.nextcloudProduct.trialDays;
+      ret = this.nextcloudProduct().trialDays;
     } else if (this.synologyProduct != undefined) {
-      ret = this.synologyProduct.trialDays;
+      ret = this.synologyProduct().trialDays;
     }
     return ret;
   }
@@ -105,9 +105,9 @@ export class SubscriptionCardComponent {
   getPricePerMonth(): number {
     let ret = 0;
     if (this.nextcloudProduct != undefined) {
-      ret = this.nextcloudProduct.pricePerMonth;
+      ret = this.nextcloudProduct().pricePerMonth;
     } else if (this.synologyProduct != undefined) {
-      ret = this.synologyProduct.pricePerMonth;
+      ret = this.synologyProduct().pricePerMonth;
     }
     if (ret > 0) {
       ret = ret / 100;

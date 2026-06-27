@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { ISubscriptionOverview } from './subscription-overview';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
@@ -17,11 +17,11 @@ import { RouterLink } from '@angular/router';
             MatList, MatListItem, MatTooltip, MatIcon, MatCardActions, MatButton, RouterLink],
 })
 export class SubscriptionOverviewComponent {
-  @Input() subscriptionOverview: ISubscriptionOverview | undefined;
+  readonly subscriptionOverview = input<ISubscriptionOverview | undefined>(undefined);
 
   get totalStorageAmount(): number {
-    const storage = this.subscriptionOverview?.storageAmount ?? 0;
-    const users   = this.subscriptionOverview?.userCount   ?? 0;
+    const storage = this.subscriptionOverview()?.storageAmount ?? 0;
+    const users   = this.subscriptionOverview()?.userCount   ?? 0;
     return storage * users;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -10,13 +10,13 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class PasswordStrengthComponent {
 
-  @Input() password: string | undefined;
+  readonly password = input<string | undefined>(undefined);
 
   containsLower(): boolean {
     let lower = false;
     if( this.password != undefined) {
       const regex = /[a-z]/
-      lower = regex.test(this.password)
+      lower = regex.test(this.password())
     }
     return lower;
   }
@@ -29,7 +29,7 @@ export class PasswordStrengthComponent {
     let upper = false;
     if( this.password != undefined) {
       const regex = /[A-Z]/
-      upper = regex.test(this.password)
+      upper = regex.test(this.password())
     }
     return upper;
   }
@@ -42,7 +42,7 @@ export class PasswordStrengthComponent {
     let digit = false;
     if( this.password != undefined) {
       const regex = /\d/
-      digit = regex.test(this.password)
+      digit = regex.test(this.password())
     }
     return digit;
   }
@@ -55,7 +55,7 @@ export class PasswordStrengthComponent {
     let special = false;
     if( this.password != undefined) {
       const regex = /\W|_/g
-      special = regex.test(this.password)
+      special = regex.test(this.password())
     }
     return special;
   }
@@ -67,7 +67,7 @@ export class PasswordStrengthComponent {
   isLength(): boolean {
     let length = false;
     if( this.password != undefined ) {
-      length = this.password.length >= 8
+      length = this.password().length >= 8
     }
     return length;
   }

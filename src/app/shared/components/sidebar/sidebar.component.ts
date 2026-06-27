@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { MatNavList, MatListItem, MatListSubheaderCssMatStyler } from '@angular/material/list';
 import { RouterLinkActive, RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
@@ -13,7 +13,7 @@ import { MatDivider } from '@angular/material/divider';
 })
 export class SidebarComponent {
 
-  @Input() isExpanded: boolean | undefined;
-  @Input() isShowing: boolean | undefined;
+  readonly isExpanded = input<boolean | undefined>(undefined);
+  readonly isShowing = input<boolean | undefined>(undefined);
 
 }

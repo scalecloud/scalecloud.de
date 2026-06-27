@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -9,13 +9,13 @@ import { MatIcon } from '@angular/material/icon';
     imports: [MatIcon]
 })
 export class PasswordMatchComponent {
-  @Input() password: string | undefined;
-  @Input() confirmPassword: string | undefined;
+  readonly password = input<string | undefined>(undefined);
+  readonly confirmPassword = input<string | undefined>(undefined);
 
   isMatching(): boolean {
     let matches = false;
     if (this.password != undefined && this.confirmPassword != undefined) {
-      matches = this.password.length > 0 && this.password === this.confirmPassword
+      matches = this.password().length > 0 && this.password() === this.confirmPassword()
     }
     return matches;
   }

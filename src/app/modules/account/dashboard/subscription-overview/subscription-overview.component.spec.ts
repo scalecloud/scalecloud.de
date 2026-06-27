@@ -50,15 +50,16 @@ describe('SubscriptionOverviewComponent', () => {
     });
 
     it('exposes the subscription data on the input', () => {
-      expect(component.subscriptionOverview?.id).toBe('sub-123');
-      expect(component.subscriptionOverview?.active).toBe(true);
-      expect(component.subscriptionOverview?.productName).toBe('Pro Plan');
-      expect(component.subscriptionOverview?.productType).toBe('SaaS');
+      const subscriptionOverview = component.subscriptionOverview();
+      expect(subscriptionOverview?.id).toBe('sub-123');
+      expect(subscriptionOverview?.active).toBe(true);
+      expect(subscriptionOverview?.productName).toBe('Pro Plan');
+      expect(subscriptionOverview?.productType).toBe('SaaS');
     });
 
     it('reflects an inactive subscription', () => {
       component.subscriptionOverview = { ...MOCK_SUBSCRIPTION, active: false };
-      expect(component.subscriptionOverview?.active).toBe(false);
+      expect(component.subscriptionOverview()?.active).toBe(false);
     });
 
     it('calculates totalStorageAmount as storageAmount × userCount', () => {

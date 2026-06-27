@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { CheckoutCreateSubscriptionReply } from '../../checkout-create-subscription';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
@@ -17,6 +17,6 @@ import { DatePipe } from '@angular/common';
 })
 export class TrailingComponent {
 
-  @Input() checkoutCreateSubscriptionReply: CheckoutCreateSubscriptionReply | undefined;
+  readonly checkoutCreateSubscriptionReply = input<CheckoutCreateSubscriptionReply | undefined>(undefined);
 
 }

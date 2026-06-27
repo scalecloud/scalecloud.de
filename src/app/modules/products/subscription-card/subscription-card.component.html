@@ -1,4 +1,4 @@
-@if (nextcloudProduct != undefined || synologyProduct != undefined) {
+@if (nextcloudProduct() != undefined || synologyProduct() != undefined) {
   <mat-card>
     <mat-card-title>
       {{getName()}}

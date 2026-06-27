@@ -2,16 +2,16 @@
     <div class="flex-item">
         <mat-card>
             <mat-card-title>
-                {{ subscriptionOverview?.productName }}
+                {{ subscriptionOverview()?.productName }}
             </mat-card-title>
-            <mat-card-subtitle>{{ subscriptionOverview?.productType }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ subscriptionOverview()?.productType }}</mat-card-subtitle>
             <mat-divider></mat-divider>
             <mat-card-content>
                 <mat-list>
                     <mat-list-item matTooltip="ID of the subscription.">
                         <div class="icon-text">
                             <mat-icon>numbers</mat-icon>
-                            {{ subscriptionOverview?.id }}
+                            {{ subscriptionOverview()?.id }}
                         </div>
                     </mat-list-item>
                     <mat-list-item matTooltip="Total amount of storage available in the subscription.">
@@ -23,13 +23,13 @@
                     <mat-list-item matTooltip="Total amount of users available in the subscription.">
                         <div class="icon-text">
                             <mat-icon>person</mat-icon>
-                            Users: {{ subscriptionOverview?.userCount }}
+                            Users: {{ subscriptionOverview()?.userCount }}
                         </div>
                     </mat-list-item>
                 </mat-list>
             </mat-card-content>
             <mat-card-actions>
-                <button [routerLink]="['/dashboard/subscription', subscriptionOverview?.id]"
+                <button [routerLink]="['/dashboard/subscription', subscriptionOverview()?.id]"
                     mat-stroked-button color="primary">DETAILS</button>
             </mat-card-actions>
         </mat-card>

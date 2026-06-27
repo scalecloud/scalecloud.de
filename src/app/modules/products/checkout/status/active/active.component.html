@@ -1,15 +1,15 @@
-@if( checkoutCreateSubscriptionReply ) {
+@if( checkoutCreateSubscriptionReply() ) {
     <mat-card class="responsive-card">
     <mat-card-title>
-        Your Subscription {{checkoutCreateSubscriptionReply?.productName}} was created!
+        Your Subscription {{checkoutCreateSubscriptionReply()?.productName}} was created!
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
-            @if (checkoutCreateSubscriptionReply.subscriptionID) {
+            @if (checkoutCreateSubscriptionReply().subscriptionID) {
             <mat-list-item>
                 <div class="icon-text">
-                    <mat-icon>tag</mat-icon>{{checkoutCreateSubscriptionReply?.subscriptionID}}
+                    <mat-icon>tag</mat-icon>{{checkoutCreateSubscriptionReply()?.subscriptionID}}
                 </div>
             </mat-list-item>
             }
@@ -19,11 +19,11 @@
                     Your Cloud is going to be prepared.
                 </div>
             </mat-list-item>
-            @if (checkoutCreateSubscriptionReply.email) {
+            @if (checkoutCreateSubscriptionReply().email) {
             <mat-list-item>
                 <div class="icon-text">
                     <mat-icon>mail</mat-icon>
-                    We will soon send an E-Mail to&nbsp;<b>{{checkoutCreateSubscriptionReply?.email}}</b>&nbsp;when it is ready.
+                    We will soon send an E-Mail to&nbsp;<b>{{checkoutCreateSubscriptionReply()?.email}}</b>&nbsp;when it is ready.
                 </div>
             </mat-list-item>
             }
