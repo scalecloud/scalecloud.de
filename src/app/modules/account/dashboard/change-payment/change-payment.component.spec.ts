@@ -13,9 +13,6 @@ import { StripePaymentElementComponent } from 'src/app/shared/components/stripe/
 import { StripeIntent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
 
 // ── Stub ─────────────────────────────────────────────────────────────────────
-// Declared with the same selector as the real component so Angular's template
-// compiler replaces it. @ViewChild resolves by class token, so the stub must
-// also extend the real class (or at minimum satisfy its public API).
 
 @Component({
   selector: 'app-stripe-payment-element',
@@ -69,8 +66,6 @@ describe('ChangePaymentComponent', () => {
         { provide: ReturnUrlService,     useValue: mockReturnUrlService },
       ],
     })
-    // Replace the real StripePaymentElementComponent with our stub so that
-    // @ViewChild(StripePaymentElementComponent) resolves to the stub instance.
     .overrideComponent(ChangePaymentComponent, {
       remove: { imports: [StripePaymentElementComponent] },
       add:    { imports: [StripePaymentElementStub] },
@@ -79,10 +74,13 @@ describe('ChangePaymentComponent', () => {
 
     fixture   = TestBed.createComponent(ChangePaymentComponent);
     component = fixture.componentInstance;
+
+    // Manually wire the stub into the writable signal so all methods resolve it.
+    stripeStub = new StripePaymentElementStub();
+    component.stripePaymentElementComponent.set(stripeStub as unknown as StripePaymentElementComponent);
+
     fixture.detectChanges();
     await fixture.whenStable();
-
-    stripeStub = component.stripePaymentElementComponent() as unknown as StripePaymentElementStub;
   });
 
   afterEach(() => vi.clearAllMocks());
@@ -140,7 +138,7 @@ describe('ChangePaymentComponent', () => {
   });
 
   it('logs an error when the Stripe component is undefined', () => {
-    component.stripePaymentElementComponent = undefined;
+    component.stripePaymentElementComponent.set(undefined);
     component.changePaymentMethod();
     expect(mockLogService.error).toHaveBeenCalledWith(
       'PaymentElementComponent is undefined.'
@@ -167,7 +165,7 @@ describe('ChangePaymentComponent', () => {
   });
 
   it('returns false when Stripe element component is undefined', () => {
-    component.stripePaymentElementComponent = undefined;
+    component.stripePaymentElementComponent.set(undefined);
     expect(component.isSuccess()).toBe(false);
   });
 });

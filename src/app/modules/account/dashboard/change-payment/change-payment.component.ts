@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, OnInit, viewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit, viewChild, signal, WritableSignal } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ChangePaymentReply } from './change-payment';
@@ -10,6 +10,7 @@ import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { StripePaymentElementComponent as StripePaymentElementComponent_1 } from '../../../../shared/components/stripe/stripe-payment-element/stripe-payment-element.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { afterNextRender } from '@angular/core';
 
 @Component({
     selector: 'app-change-payment',
@@ -24,8 +25,19 @@ export class ChangePaymentComponent implements OnInit {
   private readonly changePaymentService = inject(ChangePaymentService);
   private readonly returnUrlService = inject(ReturnUrlService);
 
-  readonly stripePaymentElementComponent = viewChild(StripePaymentElementComponent);
+  private readonly _stripePaymentElementComponentRef = viewChild(StripePaymentElementComponent);
+
+  // Writable signal so tests can set it to undefined to exercise guard branches.
+  stripePaymentElementComponent: WritableSignal<StripePaymentElementComponent | undefined> =
+    signal(undefined);
+
   subscriptionSetupIntentReply: ChangePaymentReply | undefined;
+
+  constructor() {
+    afterNextRender(() => {
+      this.stripePaymentElementComponent.set(this._stripePaymentElementComponentRef());
+    });
+  }
 
   ngOnInit(): void {
     this.getChangePaymentSetupIntent();
@@ -40,13 +52,13 @@ export class ChangePaymentComponent implements OnInit {
           const initStripePayment: InitStripePayment = {
             intent: StripeIntent.SetupIntent,
             client_secret: subscriptionSetupIntentReply.clientsecret,
-            email: subscriptionSetupIntentReply.email
-          }
+            email: subscriptionSetupIntentReply.email,
+          };
 
-          this.stripePaymentElementComponent().initPaymentElement(initStripePayment);
+          this.stripePaymentElementComponent()?.initPaymentElement(initStripePayment);
         });
     }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
+      this.logService.error('waitForAuth failed: ' + error);
     });
   }
 
@@ -54,23 +66,21 @@ export class ChangePaymentComponent implements OnInit {
     const stripePaymentElementComponent = this.stripePaymentElementComponent();
     if (stripePaymentElementComponent) {
       const returnUrl = this.returnUrlService.getSpecifiedUrlWithReturnUrl('/dashboard/change-payment/status');
-      this.logService.info("returnUrl: " + returnUrl);
+      this.logService.info('returnUrl: ' + returnUrl);
       const submitStripePayment: SubmitStripePayment = {
         return_url: returnUrl,
-      }
+      };
       stripePaymentElementComponent.submitIntent(submitStripePayment);
-    }
-    else {
-      this.logService.error("PaymentElementComponent is undefined.")
+    } else {
+      this.logService.error('PaymentElementComponent is undefined.');
     }
   }
 
   cancel(): void {
-    this.returnUrlService.openReturnURL("/dashboard");
+    this.returnUrlService.openReturnURL('/dashboard');
   }
 
   isSuccess(): boolean {
-    return this.stripePaymentElementComponent()?.serviceStatus == ServiceStatus.Success;
+    return this.stripePaymentElementComponent()?.serviceStatus === ServiceStatus.Success;
   }
-
 }

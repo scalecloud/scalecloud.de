@@ -47,7 +47,8 @@ describe('SubscriptionOverviewComponent', () => {
 
   describe('when subscriptionOverview is provided', () => {
     beforeEach(() => {
-      component.subscriptionOverview = MOCK_SUBSCRIPTION;
+      fixture.componentRef.setInput('subscriptionOverview', MOCK_SUBSCRIPTION);
+      fixture.detectChanges();
     });
 
     it('exposes the subscription data on the input', () => {
@@ -59,7 +60,8 @@ describe('SubscriptionOverviewComponent', () => {
     });
 
     it('reflects an inactive subscription', () => {
-      component.subscriptionOverview = { ...MOCK_SUBSCRIPTION, active: false };
+      fixture.componentRef.setInput('subscriptionOverview', { ...MOCK_SUBSCRIPTION, active: false });
+      fixture.detectChanges();
       expect(component.subscriptionOverview()?.active).toBe(false);
     });
 
@@ -68,12 +70,14 @@ describe('SubscriptionOverviewComponent', () => {
     });
 
     it('returns 0 for totalStorageAmount when storageAmount is 0', () => {
-      component.subscriptionOverview = { ...MOCK_SUBSCRIPTION, storageAmount: 0 };
+      fixture.componentRef.setInput('subscriptionOverview', { ...MOCK_SUBSCRIPTION, storageAmount: 0 });
+      fixture.detectChanges();
       expect(component.totalStorageAmount).toBe(0);
     });
 
     it('returns 0 for totalStorageAmount when userCount is 0', () => {
-      component.subscriptionOverview = { ...MOCK_SUBSCRIPTION, userCount: 0 };
+      fixture.componentRef.setInput('subscriptionOverview', { ...MOCK_SUBSCRIPTION, userCount: 0 });
+      fixture.detectChanges();
       expect(component.totalStorageAmount).toBe(0);
     });
   });

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideRouter, ActivatedRoute } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
@@ -12,6 +11,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { Role } from 'src/app/shared/roles/roles';
 import { AddSeatReply } from '../seats';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -48,7 +48,7 @@ describe('AddSeatComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AddSeatComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: AddSeatService, useValue: addSeatService },
         { provide: AuthService, useValue: authService },
@@ -120,20 +120,20 @@ describe('AddSeatComponent', () => {
   // ─── Role selection ──────────────────────────────────────────────────────────
 
   it('should add a role when toggled for the first time', () => {
-    component.toggleRoleSelection(Role.Admin);
-    expect(component.selectedRoles()).toContain(Role.Admin);
+    component.toggleRoleSelection(Role.Administrator);
+    expect(component.selectedRoles()).toContain(Role.Administrator);
   });
 
   it('should remove a role when toggled a second time', () => {
-    component.toggleRoleSelection(Role.Admin);
-    component.toggleRoleSelection(Role.Admin);
-    expect(component.selectedRoles()).not.toContain(Role.Admin);
+    component.toggleRoleSelection(Role.Administrator);
+    component.toggleRoleSelection(Role.Administrator);
+    expect(component.selectedRoles()).not.toContain(Role.Administrator);
   });
 
   it('should support multiple roles selected simultaneously', () => {
-    component.toggleRoleSelection(Role.Admin);
-    component.toggleRoleSelection(Role.Viewer);
-    expect(component.selectedRoles()).toEqual([Role.Admin, Role.Viewer]);
+    component.toggleRoleSelection(Role.Administrator);
+    component.toggleRoleSelection(Role.User);
+    expect(component.selectedRoles()).toEqual([Role.Administrator, Role.User]);
   });
 
   // ─── Keyboard handler ────────────────────────────────────────────────────────
@@ -142,26 +142,26 @@ describe('AddSeatComponent', () => {
     const event = new KeyboardEvent('keydown', { key: 'Enter' });
     const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
 
-    component.handleKeyDown(event, Role.Admin);
+    component.handleKeyDown(event, Role.Administrator);
 
     expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(component.selectedRoles()).toContain(Role.Admin);
+    expect(component.selectedRoles()).toContain(Role.Administrator);
   });
 
   it('should toggle role on Space key', () => {
     const event = new KeyboardEvent('keydown', { key: ' ' });
     const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
 
-    component.handleKeyDown(event, Role.Admin);
+    component.handleKeyDown(event, Role.Administrator);
 
     expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(component.selectedRoles()).toContain(Role.Admin);
+    expect(component.selectedRoles()).toContain(Role.Administrator);
   });
 
   it('should not toggle role on other keys', () => {
     const event = new KeyboardEvent('keydown', { key: 'Tab' });
-    component.handleKeyDown(event, Role.Admin);
-    expect(component.selectedRoles()).not.toContain(Role.Admin);
+    component.handleKeyDown(event, Role.Administrator);
+    expect(component.selectedRoles()).not.toContain(Role.Administrator);
   });
 
   // ─── addSeat – success path ──────────────────────────────────────────────────
@@ -169,7 +169,7 @@ describe('AddSeatComponent', () => {
   it('should call addSeat service and show success snackbar on success', async () => {
     addSeatService.addSeat.mockReturnValue(of(makeSuccessReply('invited@example.com')));
     component.email.setValue('invited@example.com');
-    component.toggleRoleSelection(Role.Admin);
+    component.toggleRoleSelection(Role.Administrator);
 
     component.addSeat();
     await fixture.whenStable();
@@ -177,7 +177,7 @@ describe('AddSeatComponent', () => {
     expect(addSeatService.addSeat).toHaveBeenCalledWith({
       subscriptionID: SUBSCRIPTION_ID,
       email: 'invited@example.com',
-      roles: [Role.Admin],
+      roles: [Role.Administrator],
     });
     expect(snackBarService.info).toHaveBeenCalledWith('Invitation sent to invited@example.com.');
     expect(returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
