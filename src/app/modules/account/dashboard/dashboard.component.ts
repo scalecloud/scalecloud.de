@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
-import { PaymentOverviewComponent } from './payment-overview/payment-overview.component';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { LastCountService } from './subscription-overview/LastCount/last-count.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
@@ -16,51 +15,62 @@ import { SubscriptionOverviewComponent } from './subscription-overview/subscript
 import { LoadingFailedComponent } from '../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionOverviewComponent, LoadingFailedComponent]
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatCard,
+    MatProgressBar,
+    MatCardTitle,
+    NgxSkeletonLoaderComponent,
+    MatCardSubtitle,
+    MatDivider,
+    MatCardContent,
+    MatList,
+    MatListItem,
+    SubscriptionOverviewComponent,
+    LoadingFailedComponent,
+  ],
 })
 export class DashboardComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly subscriptionOverviewService = inject(SubscriptionOverviewService);
   private readonly logService = inject(LogService);
-  readonly lastCountService = inject(LastCountService);
+  private readonly lastCountService = inject(LastCountService);
   private readonly snackBarService = inject(SnackBarService);
 
-
-  @ViewChild(PaymentOverviewComponent) paymentOverviewComponent: PaymentOverviewComponent | undefined;
-  reply: ISubscriptionOverview[] = [];
-  ServiceStatus = ServiceStatus;
-  serviceStatus = ServiceStatus.Initializing;
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
+  readonly ServiceStatus = ServiceStatus;
+  readonly reply = signal<ISubscriptionOverview[]>([]);
+  readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Initializing);
+  readonly skeletonItems = computed(() =>
+    Array.from({ length: this.lastCountService.getLastSubscriptionOverviewCount })
+  );
 
   ngOnInit(): void {
-    this.getSubscriptionsOverview();
+    this.loadSubscriptionsOverview();
   }
 
-  getSubscriptionsOverview(): void {
-    this.serviceStatus = ServiceStatus.Loading;
-    this.authService.waitForAuth().then(() => {
-      this.subscriptionOverviewService.getSubscriptionsOverview()
-        .subscribe({
-          next: subscriptionsOverview => {
-            this.reply = subscriptionsOverview;
+  private loadSubscriptionsOverview(): void {
+    this.serviceStatus.set(ServiceStatus.Loading);
+
+    this.authService
+      .waitForAuth()
+      .then(() => {
+        this.subscriptionOverviewService.getSubscriptionsOverview().subscribe({
+          next: (subscriptionsOverview) => {
+            this.reply.set(subscriptionsOverview);
             this.lastCountService.setLastSubscriptionOverviewCount = subscriptionsOverview.length;
-            this.serviceStatus = ServiceStatus.Success;
+            this.serviceStatus.set(ServiceStatus.Success);
           },
-          error: error => {
-            this.serviceStatus = ServiceStatus.Error;
-          }
+          error: (_err) => {
+            this.serviceStatus.set(ServiceStatus.Error);
+          },
         });
-    }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
-      this.serviceStatus = ServiceStatus.Error;
-    });
+      })
+      .catch((error) => {
+        this.logService.error(`waitForAuth failed: ${error}`);
+        this.serviceStatus.set(ServiceStatus.Error);
+      });
   }
 }
