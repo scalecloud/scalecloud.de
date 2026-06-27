@@ -50,7 +50,7 @@ export class NewsletterUnsubscribeComponent implements OnInit {
 
   unsubscribeNewsletter(): void {
     this.serviceStatus = ServiceStatus.Loading;
-    let request: NewsletterUnsubscribeRequest = {
+    const request: NewsletterUnsubscribeRequest = {
       unsubscribeToken: this.getUnsubscribeToken(),
     };
     if (request.unsubscribeToken === '') {

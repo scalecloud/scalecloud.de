@@ -41,11 +41,11 @@ export class SnackBarService {
   }
 
   private showMessage(message: string, duration: number, cssClass: string) {
-    let date = new Date();
-    let hours = String(date.getHours()).padStart(2, '0');
-    let minutes = String(date.getMinutes()).padStart(2, '0');
-    let seconds = String(date.getSeconds()).padStart(2, '0');
-    let time = `${hours}:${minutes}:${seconds}`;
+    const date = new Date();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const time = `${hours}:${minutes}:${seconds}`;
     this.zone.run(() => {
       this.snackBar.openFromComponent(SnackBarProgressComponent, {
         duration: duration * 1000,

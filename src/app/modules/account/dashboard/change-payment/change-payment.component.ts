@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ChangePaymentReply } from './change-payment';
@@ -18,7 +18,7 @@ import { MatIcon } from '@angular/material/icon';
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [StripePaymentElementComponent_1, MatButton, MatIcon]
 })
-export class ChangePaymentComponent {
+export class ChangePaymentComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly logService = inject(LogService);
   private readonly changePaymentService = inject(ChangePaymentService);

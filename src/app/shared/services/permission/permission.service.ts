@@ -22,7 +22,7 @@ export class PermissionService {
 
   private readonly apiUrl = inject(API_URL);
   private readonly urlPermission = `${this.apiUrl}/dashboard/subscription/permission`;
-  private readonly cache: Map<string, CacheEntry> = new Map();
+  private readonly cache = new Map<string, CacheEntry>();
   private readonly cacheDuration = 60000; // 1 minute in milliseconds
   loadingPermissions: WritableSignal<boolean> = signal(false);
 

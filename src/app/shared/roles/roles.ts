@@ -5,7 +5,7 @@ export enum Role {
     Billing = 'Billing'
 }
 
-export const RoleDescriptions: { [key in Role]: string } = {
+export const RoleDescriptions: Record<Role, string> = {
     [Role.Owner]: 'Can\'t be removed from administrators.',
     [Role.Administrator]: 'Can add and remove users, change roles and cancel or resume the subscription.',
     [Role.User]: 'Can use the product. Uses a seat.',

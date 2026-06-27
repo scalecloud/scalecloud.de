@@ -60,7 +60,7 @@ export class ForgotPasswordComponent {
     this.clicked = true;
     this.secounds = this.defaultDisabledSecounds;
 
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
       this.secounds--;
       if (this.secounds < 1) {
         this.clicked = false;

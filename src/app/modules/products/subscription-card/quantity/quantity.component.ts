@@ -41,14 +41,14 @@ export class QuantityComponent implements OnInit {
   }
 
   increment(): void {
-    let currentValue = this.quantityValidator.value;
+    const currentValue = this.quantityValidator.value;
     if (currentValue < 999) {
       this.quantityValidator.setValue(currentValue + 1);
     }
   }
   
   decrement(): void {
-    let currentValue = this.quantityValidator.value;
+    const currentValue = this.quantityValidator.value;
     if (currentValue > 1) {
       this.quantityValidator.setValue(currentValue - 1);
     }

@@ -18,8 +18,8 @@ export class GlobeComponent implements OnInit, AfterViewInit, OnDestroy {
   private animationFrameId?: number;
 
   ngOnInit(): void {
-    let innerHeight = window.innerHeight;
-    let innerWidth = window.innerWidth;
+    const innerHeight = window.innerHeight;
+    const innerWidth = window.innerWidth;
     if (innerWidth > innerHeight) {
       this.globeSize = innerHeight;
     }

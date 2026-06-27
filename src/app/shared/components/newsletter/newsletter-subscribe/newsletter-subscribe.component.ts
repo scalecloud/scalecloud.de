@@ -61,7 +61,7 @@ export class NewsletterSubscribeComponent {
 
   subscribeToNewsletter() {
     if (this.email.valid) {
-      let request: NewsletterSubscribeRequest = {
+      const request: NewsletterSubscribeRequest = {
         email: this.email.value,
       };
       this.newsletterService.subscribeToNewsletter(request)

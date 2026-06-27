@@ -49,7 +49,7 @@ export class RegisterComponent {
     );
   }
 
-  get f(): { [key: string]: AbstractControl } {
+  get f(): Record<string, AbstractControl> {
     let ret = {};
     if (this.form != null) {
       ret = this.form.controls;

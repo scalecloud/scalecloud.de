@@ -52,7 +52,7 @@ export class AddSeatComponent {
         this.snackBarService.error('Currently not possible to invite a user. Please try again later.');
         this.returnUrlService.openReturnURL('/dashboard');
       } else {
-        let addSeatRequest: AddSeatRequest = {
+        const addSeatRequest: AddSeatRequest = {
           subscriptionID: subscriptionID,
           email: this.email.value,
           roles: this.selectedRoles,

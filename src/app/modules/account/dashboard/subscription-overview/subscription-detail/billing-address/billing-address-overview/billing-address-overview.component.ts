@@ -128,7 +128,8 @@ export class BillingAddressOverviewComponent implements OnInit {
             this.country.set(resolvedCountry);
             this.serviceStatus.set(ServiceStatus.Success);
           },
-          error: (_err) => {
+          error: (error) => {
+            this.logService.error(`getBillingAddress failed: ${error}`);
             this.serviceStatus.set(ServiceStatus.Error);
           },
         });

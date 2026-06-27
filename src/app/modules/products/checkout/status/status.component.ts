@@ -24,8 +24,8 @@ export class StatusComponent implements OnInit {
 
   checkoutCreateSubscriptionReply: CheckoutCreateSubscriptionReply;
 
-  active: boolean = false;
-  trialing: boolean = false;
+  active = false;
+  trialing = false;
 
   ngOnInit(): void {
     this.checkPaymentIntentStatus();
@@ -44,7 +44,7 @@ export class StatusComponent implements OnInit {
     await this.authService.waitForAuth();
     await this.initParamMap();
 
-    let allValuesSet = Object.values(this.checkoutCreateSubscriptionReply).every(value => Boolean(value));
+    const allValuesSet = Object.values(this.checkoutCreateSubscriptionReply).every(value => Boolean(value));
 
     if (!allValuesSet) {
       this.snackBarService.error("Error: Could not get payment status. Please try again later.");

@@ -18,9 +18,9 @@ export class DefaultComponent {
   private readonly permissionService = inject(PermissionService);
 
   isExpanded = true;
-  showSubmenu: boolean = false;
+  showSubmenu = false;
   isShowing = false;
-  showSubSubMenu: boolean = false;
+  showSubSubMenu = false;
   isLoading: Signal<boolean>;
 
   constructor() {

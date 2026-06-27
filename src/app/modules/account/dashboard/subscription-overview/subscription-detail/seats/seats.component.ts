@@ -79,7 +79,7 @@ export class SeatsComponent implements OnInit {
       if (!subscriptionID) {
         this.logService.error('SeatsComponent.getSeatsList: subscriptionID is null');
       } else {
-        let request: ListSeatRequest = {
+        const request: ListSeatRequest = {
           subscriptionID: subscriptionID,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize

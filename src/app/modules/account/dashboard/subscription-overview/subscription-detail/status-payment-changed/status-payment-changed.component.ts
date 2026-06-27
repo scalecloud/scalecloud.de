@@ -27,12 +27,12 @@ export class StatusPaymentChangedComponent implements OnInit  {
   setup_intent_client_secret: string | undefined;
   redirect_status: string | undefined;
 
-  message: string = "Loading...";
+  message = "Loading...";
 
-  loading: boolean = true;
-  succeeded: boolean = false;
-  processing: boolean = false;
-  requires_payment_method: boolean = false;
+  loading = true;
+  succeeded = false;
+  processing = false;
+  requires_payment_method = false;
 
   ngOnInit(): void {
     this.checkPaymentIntentStatus();

@@ -94,8 +94,9 @@ export class PaymentOverviewComponent implements OnInit {
             this.reply.set(data);
             this.serviceStatus.set(ServiceStatus.Success);
           },
-          error: (_err) => {
+          error: (error) => {
             this.serviceStatus.set(ServiceStatus.Error);
+            this.logService.error(`getPaymentMethodOverview failed: ${error}`);
           },
         });
       })

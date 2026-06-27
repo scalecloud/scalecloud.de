@@ -15,7 +15,7 @@ export class PasswordStrengthComponent {
   containsLower(): boolean {
     let lower = false;
     if( this.password != undefined) {
-      let regex = /[a-z]/
+      const regex = /[a-z]/
       lower = regex.test(this.password)
     }
     return lower;
@@ -28,7 +28,7 @@ export class PasswordStrengthComponent {
   containsUpper(): boolean {
     let upper = false;
     if( this.password != undefined) {
-      let regex = /[A-Z]/
+      const regex = /[A-Z]/
       upper = regex.test(this.password)
     }
     return upper;
@@ -41,7 +41,7 @@ export class PasswordStrengthComponent {
   containsDigit(): boolean {
     let digit = false;
     if( this.password != undefined) {
-      let regex = /\d/
+      const regex = /\d/
       digit = regex.test(this.password)
     }
     return digit;
@@ -54,7 +54,7 @@ export class PasswordStrengthComponent {
   containsSpecial(): boolean {
     let special = false;
     if( this.password != undefined) {
-      let regex = /\W|_/g
+      const regex = /\W|_/g
       special = regex.test(this.password)
     }
     return special;

@@ -17,7 +17,7 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 export class HeaderComponent implements OnInit {
   authService = inject(AuthService);
 
-  @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
+  @Output() toggleSideBarForMe = new EventEmitter<any>();
   isLoading = true;
   
   ngOnInit() {

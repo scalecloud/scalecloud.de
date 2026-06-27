@@ -63,8 +63,9 @@ export class DashboardComponent implements OnInit {
             this.lastCountService.setLastSubscriptionOverviewCount = subscriptionsOverview.length;
             this.serviceStatus.set(ServiceStatus.Success);
           },
-          error: (_err) => {
+          error: (error) => {
             this.serviceStatus.set(ServiceStatus.Error);
+            this.logService.error(`getSubscriptionsOverview failed: ${error}`);
           },
         });
       })

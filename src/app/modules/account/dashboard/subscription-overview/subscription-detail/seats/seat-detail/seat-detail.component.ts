@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleDescriptions } from 'src/app/shared/roles/roles';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -26,7 +26,7 @@ import { MatButton } from '@angular/material/button';
     styleUrl: './seat-detail.component.scss',
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatCardSubtitle, NgxSkeletonLoaderComponent, MatTooltip, MatCardContent, MatLabel, MatChipListbox, FormsModule, ReactiveFormsModule, MatChipOption, MatButton]
 })
-export class SeatDetailComponent {
+export class SeatDetailComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
@@ -107,7 +107,7 @@ export class SeatDetailComponent {
       else if (!uid) {
         this.logService.error('uid is null');
       } else {
-        let request: SeatDetailRequest = {
+        const request: SeatDetailRequest = {
           subscriptionID: subscriptionID,
           uid: uid
         };
@@ -184,7 +184,7 @@ export class SeatDetailComponent {
     }
     else {
       this.authService.waitForAuth().then(() => {
-        let request: UpdateSeatDetailRequest = {
+        const request: UpdateSeatDetailRequest = {
           seatUpdated: this.seatWithUpdates
         };
         this.seatDetailService.updateSeat(request)
@@ -217,7 +217,7 @@ export class SeatDetailComponent {
         this.snackBarService.error('Currently not possible to delete a user. Please try again later.');
         this.returnUrlService.openReturnURL('/dashboard');
       } else {
-        let removeSeatRequest: DeleteSeatRequest = {
+        const removeSeatRequest: DeleteSeatRequest = {
           seatToDelete: seatToDelete
         };
         this.seatDetailService.deleteSeat(removeSeatRequest)

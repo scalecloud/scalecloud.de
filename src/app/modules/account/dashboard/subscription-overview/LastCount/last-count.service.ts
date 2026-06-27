@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class LastCountService {
 
-  private lastSubscriptionOverviewCount: number = 1;
+  private lastSubscriptionOverviewCount = 1;
 
   get getLastSubscriptionOverviewCount(): number {
     return this.lastSubscriptionOverviewCount;

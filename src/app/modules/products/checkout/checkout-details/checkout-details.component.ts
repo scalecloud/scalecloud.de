@@ -49,7 +49,7 @@ export class CheckoutDetailsComponent implements OnInit {
       if (!productID) {
         this.logService.error("productID is undefined");
       } else {
-        let checkoutProductRequest: CheckoutProductRequest = {
+        const checkoutProductRequest: CheckoutProductRequest = {
           productID: productID
         };
         this.checkoutProductService.getCheckoutProduct(checkoutProductRequest)
@@ -109,7 +109,7 @@ export class CheckoutDetailsComponent implements OnInit {
   getPricePerMonth(): string {
     let pricePerMonth = "";
     if (this.reply && this.reply.pricePerMonth > 0) {
-      let pricePipe = this.currencyPipe.transform(this.reply.pricePerMonth / 100 * this.getQuantity(), this.getCurrency(), 'symbol', '1.0-0');
+      const pricePipe = this.currencyPipe.transform(this.reply.pricePerMonth / 100 * this.getQuantity(), this.getCurrency(), 'symbol', '1.0-0');
       if (pricePipe != null) {
         pricePerMonth = pricePipe;
       }

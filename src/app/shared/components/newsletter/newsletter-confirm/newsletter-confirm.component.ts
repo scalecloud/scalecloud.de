@@ -46,7 +46,7 @@ export class NewsletterConfirmComponent implements OnInit {
 
   confirmNewsletter(): void {
     this.serviceStatus = ServiceStatus.Loading;
-    let request: NewsletterConfirmRequest = {
+    const request: NewsletterConfirmRequest = {
       verificationToken: this.getVerificationToken(),
     };
     if (request.verificationToken === '') {
