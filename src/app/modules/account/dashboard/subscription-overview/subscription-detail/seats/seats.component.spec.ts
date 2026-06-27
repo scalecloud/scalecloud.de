@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
@@ -12,8 +12,9 @@ import { PermissionService } from 'src/app/shared/services/permission/permission
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { ListSeatReply } from './seats';
 import { of, throwError } from 'rxjs';
+import { provideZonelessChangeDetection } from '@angular/core';
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function makeReply(overrides: Partial<ListSeatReply> = {}): ListSeatReply {
   return {
@@ -57,6 +58,7 @@ describe('SeatsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SeatsComponent],
       providers: [
+        provideZonelessChangeDetection(),
         { provide: SeatsService, useValue: mocks.seatsService },
         { provide: AuthService, useValue: mocks.authService },
         { provide: LogService, useValue: mocks.logService },
@@ -104,61 +106,63 @@ describe('SeatsComponent', () => {
   });
 
   // ── loadSeats ───────────────────────────────────────────────────────────────
-  it('transitions Loading → Success and stores reply', fakeAsync(() => {
+  it('transitions Loading → Success and stores reply', async () => {
     mocks.seatsService.getListSeats.mockReturnValue(of(makeReply()));
     component.loadSeats();
-    tick();
+    await fixture.whenStable();
     expect(component.serviceStatus()).toBe(ServiceStatus.Success);
     expect(component.seatListReply()).not.toBeNull();
-  }));
+  });
 
-  it('transitions Loading → Error when API fails', fakeAsync(() => {
+  it('transitions Loading → Error when API fails', async () => {
     mocks.seatsService.getListSeats.mockReturnValue(throwError(() => new Error('500')));
     component.loadSeats();
-    tick();
+    await fixture.whenStable();
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-  }));
+  });
 
-  it('sets Error when subscriptionID missing during loadSeats', fakeAsync(() => {
+  it('sets Error when subscriptionID missing during loadSeats', async () => {
     mocks.route.snapshot.paramMap.get.mockReturnValue(null);
     component.loadSeats();
-    tick();
+    await fixture.whenStable();
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-  }));
+  });
 
   // ── Computed values ─────────────────────────────────────────────────────────
-  it('usedSeats returns totalResults', fakeAsync(() => {
+  it('usedSeats returns totalResults', async () => {
     mocks.seatsService.getListSeats.mockReturnValue(of(makeReply({ totalResults: 3 })));
     component.loadSeats();
-    tick();
+    await fixture.whenStable();
     expect(component.usedSeats()).toBe(3);
-  }));
+  });
 
-  it('maxSeats returns maxSeats from reply', fakeAsync(() => {
+  it('maxSeats returns maxSeats from reply', async () => {
     mocks.seatsService.getListSeats.mockReturnValue(of(makeReply({ maxSeats: 10 })));
     component.loadSeats();
-    tick();
+    await fixture.whenStable();
     expect(component.maxSeats()).toBe(10);
-  }));
+  });
 
-  it('isAddSeatPossible is true when seats < maxSeats', fakeAsync(() => {
-    mocks.seatsService.getListSeats.mockReturnValue(of(makeReply({ maxSeats: 5, seats: [
-      { subscriptionID: 'sub-1', uid: 'u1', email: 'a@b.com', emailVerified: true, roles: [] }
-    ], totalResults: 1 })));
+  it('isAddSeatPossible is true when seats < maxSeats', async () => {
+    mocks.seatsService.getListSeats.mockReturnValue(of(makeReply({
+      maxSeats: 5,
+      seats: [{ subscriptionID: 'sub-1', uid: 'u1', email: 'a@b.com', emailVerified: true, roles: [] }],
+      totalResults: 1,
+    })));
     component.loadSeats();
-    tick();
+    await fixture.whenStable();
     expect(component.isAddSeatPossible()).toBe(true);
-  }));
+  });
 
-  it('isAddSeatPossible is false when seats === maxSeats', fakeAsync(() => {
+  it('isAddSeatPossible is false when seats === maxSeats', async () => {
     const seats = Array.from({ length: 5 }, (_, i) => ({
       subscriptionID: 'sub-1', uid: `u${i}`, email: `u${i}@x.com`, emailVerified: true, roles: [],
     }));
     mocks.seatsService.getListSeats.mockReturnValue(of(makeReply({ maxSeats: 5, seats, totalResults: 5 })));
     component.loadSeats();
-    tick();
+    await fixture.whenStable();
     expect(component.isAddSeatPossible()).toBe(false);
-  }));
+  });
 
   it('usedSeats / maxSeats default to 0 before data loads', () => {
     expect(component.usedSeats()).toBe(0);
@@ -166,12 +170,12 @@ describe('SeatsComponent', () => {
   });
 
   // ── Pagination ──────────────────────────────────────────────────────────────
-  it('handlePageEvent updates pageIndex and re-fetches', fakeAsync(() => {
+  it('handlePageEvent updates pageIndex and re-fetches', () => {
     const loadSpy = vi.spyOn(component, 'loadSeats');
     component.handlePageEvent({ pageIndex: 2, pageSize: 5, length: 20 } as any);
     expect(component.pageIndex()).toBe(2);
     expect(loadSpy).toHaveBeenCalledOnce();
-  }));
+  });
 
   // ── Navigation helpers ──────────────────────────────────────────────────────
   it('addSeat navigates to add-seat URL', () => {

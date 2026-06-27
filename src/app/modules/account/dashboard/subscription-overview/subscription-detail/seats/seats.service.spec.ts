@@ -1,4 +1,5 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
@@ -34,6 +35,7 @@ describe('SeatsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: AuthService, useValue: authServiceMock },
@@ -47,13 +49,14 @@ describe('SeatsService', () => {
 
   afterEach(() => {
     httpMock.verify();
+    vi.clearAllMocks();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('POSTs to the correct endpoint', fakeAsync(() => {
+  it('POSTs to the correct endpoint', () => {
     let result: ListSeatReply | undefined;
     service.getListSeats(mockRequest).subscribe((r) => (result = r));
 
@@ -62,15 +65,14 @@ describe('SeatsService', () => {
     expect(req.request.body).toEqual(mockRequest);
 
     req.flush(mockReply);
-    tick();
 
     expect(result).toEqual(mockReply);
-  }));
+  });
 
-  it('uses auth headers from AuthService', fakeAsync(() => {
+  it('uses auth headers from AuthService', () => {
     service.getListSeats(mockRequest).subscribe();
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/list-seats`);
     req.flush(mockReply);
     expect(authServiceMock.getHttpOptions).toHaveBeenCalledOnce();
-  }));
+  });
 });
