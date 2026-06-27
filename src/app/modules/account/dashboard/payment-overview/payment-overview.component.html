@@ -1,94 +1,80 @@
 <mat-card>
-    @if (serviceStatus === ServiceStatus.Loading) {
-    <mat-progress-bar mode="query"></mat-progress-bar>
-    <mat-card-title>
-        Payment Method
-    </mat-card-title>
-    <mat-divider></mat-divider>
+  @if (serviceStatus() === ServiceStatus.Loading) {
+    <mat-progress-bar mode="query" />
+    <mat-card-title>Payment Method</mat-card-title>
+    <mat-divider />
     <mat-card-content>
-        <mat-list>
-            <mat-list-item>
-                <ngx-skeleton-loader [theme]="{height: '2rem', width: '19rem'}" />
-            </mat-list-item>
-            <mat-list-item>
-                <ngx-skeleton-loader [theme]="{height: '2rem', width: '19rem'}" />
-            </mat-list-item>
-        </mat-list>
+      <mat-list>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{ height: '2rem', width: '19rem' }" />
+        </mat-list-item>
+        <mat-list-item>
+          <ngx-skeleton-loader [theme]="{ height: '2rem', width: '19rem' }" />
+        </mat-list-item>
+      </mat-list>
     </mat-card-content>
-    }
-    @if (serviceStatus === ServiceStatus.Success) {
-    <mat-card-title>
-        Payment Method
-    </mat-card-title>
-    <mat-divider></mat-divider>
+  }
+
+  @if (serviceStatus() === ServiceStatus.Success) {
+    <mat-card-title>Payment Method</mat-card-title>
+    <mat-divider />
     <mat-card-content>
-        @if (hasPaymentMethod()) {
+      @if (hasPaymentMethod()) {
         <mat-list>
-            <mat-list-item>
-                @if ( isCreditCard() ) {
-                @if ( isAmericanExpress() ) {
-                <img src="assets/img/logo/payment/amex_logo.png" alt="American Express Logo">{{getPaymentMethod()}}
+          <mat-list-item>
+            @if (isCreditCard()) {
+              @switch (true) {
+                @case (isAmericanExpress()) {
+                  <img src="assets/img/logo/payment/amex_logo.png" alt="American Express Logo" />
                 }
-                @else if ( isDinersClub() ) {
-                <img src="assets/img/logo/payment/dinersclub_logo.svg" alt="Diners Club Logo">{{getPaymentMethod()}}
+                @case (isDinersClub()) {
+                  <img src="assets/img/logo/payment/dinersclub_logo.svg" alt="Diners Club Logo" />
                 }
-                @else if ( isDiscover() ) {
-                <img src="assets/img/logo/payment/discover_logo.jpg" alt="Discover Logo">{{getPaymentMethod()}}
+                @case (isDiscover()) {
+                  <img src="assets/img/logo/payment/discover_logo.jpg" alt="Discover Logo" />
                 }
-                @else if ( isEFTPOS() ) {
-                <img src="assets/img/logo/payment/eftpos_logo.png" alt="eftpos Australia Logo">{{getPaymentMethod()}}
+                @case (isEFTPOS()) {
+                  <img src="assets/img/logo/payment/eftpos_logo.png" alt="eftpos Australia Logo" />
                 }
-                @else if ( isJCB() ) {
-                <img src="assets/img/logo/payment/jcb_logo.gif"
-                    alt="Japan Credit Bureau (JCB) Logo">{{getPaymentMethod()}}
+                @case (isJCB()) {
+                  <img src="assets/img/logo/payment/jcb_logo.gif" alt="Japan Credit Bureau (JCB) Logo" />
                 }
-                @else if ( isUnionPay() ) {
-                <img src="assets/img/logo/payment/union_logo.svg" alt="UnionPay Logo">{{getPaymentMethod()}}
+                @case (isUnionPay()) {
+                  <img src="assets/img/logo/payment/union_logo.svg" alt="UnionPay Logo" />
                 }
-                @else if ( isMasterCard() ) {
-                <img src="assets/img/logo/payment/mastercard_logo.png" alt="MasterCard Logo">{{getPaymentMethod()}}
+                @case (isMasterCard()) {
+                  <img src="assets/img/logo/payment/mastercard_logo.png" alt="MasterCard Logo" />
                 }
-                @else if ( isVisa() ) {
-                <img src="assets/img/logo/payment/visa_logo.png" alt="Visa Logo">{{getPaymentMethod()}}
+                @case (isVisa()) {
+                  <img src="assets/img/logo/payment/visa_logo.png" alt="Visa Logo" />
                 }
-                @else if ( isUnknownCreditCard() ) {
-                <div class="icon-text">
-                    <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
-                </div>
+                @default {
+                  <mat-icon>credit_card</mat-icon>
                 }
-                @else {
-                <div class="icon-text">
-                    <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
-                </div>
-                }
-                }
-                @else if (isSEPA()) {
-                <img src="assets/img/logo/payment/sepa_logo.jpg" alt="SEPA Logo">{{getPaymentMethod()}}
-                }
-                @else if (isPayPal() ) {
-                <img src="assets/img/logo/payment/paypal_logo.png" alt="PayPal Logo">{{getPaymentMethod()}}
-                }
-                @else {
-                <div class="icon-text">
-                    <mat-icon>credit_card</mat-icon>{{getPaymentMethod()}}
-                </div>
-                }
-            </mat-list-item>
+              }
+              {{ paymentMethodDisplay() }}
+            } @else if (isSEPA()) {
+              <img src="assets/img/logo/payment/sepa_logo.jpg" alt="SEPA Logo" />
+              {{ paymentMethodDisplay() }}
+            } @else if (isPayPal()) {
+              <img src="assets/img/logo/payment/paypal_logo.png" alt="PayPal Logo" />
+              {{ paymentMethodDisplay() }}
+            } @else {
+              <mat-icon>credit_card</mat-icon>
+              {{ paymentMethodDisplay() }}
+            }
+          </mat-list-item>
         </mat-list>
-        }
+      }
     </mat-card-content>
     <mat-card-actions>
-        <button (click)="openUrlChangePaymentMethod()" mat-stroked-button color="primary">
-            @if( hasPaymentMethod() ) {
-            Change payment method
-            }
-            @else {
-            Add payment method
-            }
-        </button>
+      <button (click)="openUrlChangePaymentMethod()" mat-stroked-button color="primary">
+        {{ hasPaymentMethod() ? 'Change payment method' : 'Add payment method' }}
+      </button>
     </mat-card-actions>
-    }
+  }
 </mat-card>
-@if ( serviceStatus === ServiceStatus.Error ) {
-<app-loading-failed></app-loading-failed>
+
+@if (serviceStatus() === ServiceStatus.Error) {
+  <app-loading-failed />
 }

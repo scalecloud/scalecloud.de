@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
@@ -14,234 +14,109 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/components/loading-failed/loading-failed.component';
 
+type CardBrand = 'amex' | 'diners' | 'discover' | 'eftpos_au' | 'jcb' | 'mastercard' | 'unionpay' | 'visa' | 'unknown';
+
 @Component({
-    selector: 'app-payment-overview',
-    templateUrl: './payment-overview.component.html',
-    styleUrls: ['./payment-overview.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatIcon, MatCardActions, MatButton, LoadingFailedComponent]
+  selector: 'app-payment-overview',
+  templateUrl: './payment-overview.component.html',
+  styleUrl: './payment-overview.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatCard,
+    MatProgressBar,
+    MatCardTitle,
+    MatDivider,
+    MatCardContent,
+    MatList,
+    MatListItem,
+    NgxSkeletonLoaderComponent,
+    MatIcon,
+    MatCardActions,
+    MatButton,
+    LoadingFailedComponent,
+  ],
 })
 export class PaymentOverviewComponent implements OnInit {
-  private readonly subscriptionPaymentMethodService = inject(PaymentMethodOverviewService);
+  private readonly paymentMethodService = inject(PaymentMethodOverviewService);
   private readonly authService = inject(AuthService);
   private readonly logService = inject(LogService);
   private readonly returnUrlService = inject(ReturnUrlService);
 
-  reply: PaymentMethodOverviewReply | undefined;
-  ServiceStatus = ServiceStatus;
-  serviceStatus = ServiceStatus.Initializing;
+  readonly ServiceStatus = ServiceStatus;
+  readonly reply = signal<PaymentMethodOverviewReply | null>(null);
+  readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Initializing);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
+  readonly hasPaymentMethod = computed(() => this.reply()?.has_valid_payment_method ?? false);
+  readonly isCreditCard = computed(() => this.reply()?.type === 'card');
+  readonly isSEPA = computed(() => this.reply()?.type === 'sepa_debit');
+  readonly isPayPal = computed(() => this.reply()?.type === 'paypal');
 
-  constructor() { }
+  readonly cardBrand = computed(() => {
+    const brand = this.reply()?.card?.brand ?? '';
+    return brand ? brand[0].toUpperCase() + brand.slice(1).toLowerCase() : '';
+  });
+
+  readonly isAmericanExpress = computed(() => this.reply()?.card?.brand === 'amex');
+  readonly isDinersClub = computed(() => this.reply()?.card?.brand === 'diners');
+  readonly isDiscover = computed(() => this.reply()?.card?.brand === 'discover');
+  readonly isEFTPOS = computed(() => this.reply()?.card?.brand === 'eftpos_au');
+  readonly isJCB = computed(() => this.reply()?.card?.brand === 'jcb');
+  readonly isMasterCard = computed(() => this.reply()?.card?.brand === 'mastercard');
+  readonly isUnionPay = computed(() => this.reply()?.card?.brand === 'unionpay');
+  readonly isVisa = computed(() => this.reply()?.card?.brand === 'visa');
+  readonly isUnknownCreditCard = computed(() => this.reply()?.card?.brand === 'unknown');
+
+  readonly paymentMethodDisplay = computed(() => {
+    const data = this.reply();
+    if (!data) return '';
+    switch (data.type) {
+      case 'card':     return this.formatCard(data);
+      case 'sepa_debit': return this.formatSepaDebit(data);
+      case 'paypal':   return data.paypal.email;
+      default:         return '';
+    }
+  });
 
   ngOnInit(): void {
-    this.initPaymentMethodOverview();
-  }
-
-  initPaymentMethodOverview(): void {
-    this.serviceStatus = ServiceStatus.Loading;
-    this.authService.waitForAuth().then(() => {
-      this.subscriptionPaymentMethodService.getPaymentMethodOverview()
-        .subscribe({
-          next: paymentMethodOverviewReply => {
-            this.reply = paymentMethodOverviewReply;
-            this.serviceStatus = ServiceStatus.Success;
-          },
-          error: error => {
-            this.serviceStatus = ServiceStatus.Error;
-          }
-        });
-    }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
-      this.serviceStatus = ServiceStatus.Error;
-    });
+    this.loadPaymentMethodOverview();
   }
 
   openUrlChangePaymentMethod(): void {
     this.returnUrlService.openUrlAddReturnUrl('/dashboard/change-payment');
   }
 
-  hasPaymentMethod(): boolean {
-    return this.reply?.has_valid_payment_method;
+  private loadPaymentMethodOverview(): void {
+    this.serviceStatus.set(ServiceStatus.Loading);
+
+    this.authService
+      .waitForAuth()
+      .then(() => {
+        this.paymentMethodService.getPaymentMethodOverview().subscribe({
+          next: (data) => {
+            this.reply.set(data);
+            this.serviceStatus.set(ServiceStatus.Success);
+          },
+          error: (_err) => {
+            this.serviceStatus.set(ServiceStatus.Error);
+          },
+        });
+      })
+      .catch((error) => {
+        this.logService.error(`waitForAuth failed: ${error}`);
+        this.serviceStatus.set(ServiceStatus.Error);
+      });
   }
 
-  getPaymentMethod(): string {
-    let paymentMethodOverview = '';
-    if (this.reply) {
-      if (this.reply.type === 'card') {
-        paymentMethodOverview = this.getPaymentMethodCard();
-      }
-      else if (this.reply.type === 'sepa_debit') {
-        paymentMethodOverview = this.getPaymentMethodSEPADebit();
-      }
-      else if (this.reply.type === 'paypal') {
-        paymentMethodOverview = this.getPayPalEMail();
-      }
-    }
-    return paymentMethodOverview;
+  private formatCard(data: PaymentMethodOverviewReply): string {
+    const { last4, exp_month, exp_year } = data.card;
+    return `**** **** **** ${last4} - ${exp_month}/${exp_year}`;
   }
 
-  isCreditCard(): boolean {
-    let isCreditCard = false;
-    if (this.reply) {
-      if (this.reply.type === 'card') {
-        isCreditCard = true;
-      }
-    }
-    return isCreditCard;
+  private formatSepaDebit(data: PaymentMethodOverviewReply): string {
+    const { country, last4 } = data.sepa_debit;
+    const formattedLast4 = last4.length === 4
+      ? `${last4.slice(0, 2)} ${last4.slice(2, 4)}`
+      : last4;
+    return `${country}** **** **** **** **${formattedLast4}`;
   }
-
-  isSEPA(): boolean {
-    let isSepa = false;
-    if (this.reply) {
-      if (this.reply.type === 'sepa_debit') {
-        isSepa = true;
-      }
-    }
-    return isSepa;
-  }
-
-  isPayPal(): boolean {
-    let isPayPal = false;
-    if (this.reply) {
-      if (this.reply.type === 'paypal') {
-        isPayPal = true;
-      }
-    }
-    return isPayPal;
-  }
-
-  getPaymentMethodCard(): string {
-    return '**** **** **** ' + this.getCardLast4() + ' - ' + this.getCardExpiration();
-  }
-
-  isAmericanExpress(): boolean {
-    let isAmericanExpress = false;
-    if (this.reply?.card?.brand === 'amex') {
-      isAmericanExpress = true;
-    }
-    return isAmericanExpress;
-  }
-
-  isDinersClub(): boolean {
-    let isDinersClub = false;
-    if (this.reply?.card?.brand === 'diners') {
-      isDinersClub = true;
-    }
-    return isDinersClub;
-  }
-
-  isDiscover(): boolean {
-    let isDiscover = false;
-    if (this.reply?.card?.brand === 'discover') {
-      isDiscover = true;
-    }
-    return isDiscover;
-  }
-
-  isEFTPOS(): boolean {
-    let isEFTPOS = false;
-    if (this.reply?.card?.brand === 'eftpos_au') {
-      isEFTPOS = true;
-    }
-    return isEFTPOS;
-  }
-
-  isJCB(): boolean {
-    let isJCB = false;
-    if (this.reply?.card?.brand === 'jcb') {
-      isJCB = true;
-    }
-    return isJCB;
-  }
-
-  isMasterCard(): boolean {
-    let isMastercard = false;
-    if (this.reply?.card?.brand === 'mastercard') {
-      isMastercard = true;
-    }
-    return isMastercard;
-  }
-
-  isUnionPay(): boolean {
-    let isUnionPay = false;
-    if (this.reply?.card?.brand === 'unionpay') {
-      isUnionPay = true;
-    }
-    return isUnionPay;
-  }
-
-  isVisa(): boolean {
-    let isVisa = false;
-    if (this.reply?.card?.brand === 'visa') {
-      isVisa = true;
-    }
-    return isVisa;
-  }
-
-  isUnknownCreditCard(): boolean {
-    let isUnknownCreditCard = false;
-    if (this.reply?.card?.brand === 'unknown') {
-      isUnknownCreditCard = true;
-    }
-    return isUnknownCreditCard;
-  }
-
-  getCardBrand(): string {
-    let brand = '';
-    if (this.reply.card.brand) {
-      brand = this.reply.card.brand;
-      brand = brand[0].toUpperCase() + brand.slice(1).toLowerCase();
-    }
-    return brand;
-  }
-
-  getCardLast4(): string {
-    let last4 = '';
-    if (this.reply) {
-      last4 = this.reply.card.last4;
-    }
-    return last4;
-  }
-
-  getCardExpiration(): string {
-    let expiration = '';
-    if (this.reply) {
-      expiration = ' ' + this.reply.card.exp_month + '/' + this.reply.card.exp_year;
-    }
-    return expiration;
-  }
-
-  getPaymentMethodSEPADebit(): string {
-    return this.getSEPADebitCountry() + '** **** **** **** **' + this.getSEPADebitLast4();
-  }
-
-  getSEPADebitCountry(): string {
-    let country = '';
-    if (this.reply) {
-      country = this.reply.sepa_debit.country;
-    }
-    return country;
-  }
-
-  getSEPADebitLast4(): string {
-    let last4 = '';
-    if (this.reply && this.reply.sepa_debit.last4.length === 4) {
-      let first2 = this.reply.sepa_debit.last4.slice(0, 2);
-      let last2 = this.reply.sepa_debit.last4.slice(2, 4);
-      last4 = first2 + ' ' + last2;
-    }
-    return last4;
-  }
-
-  getPayPalEMail(): string {
-    let email = '';
-    if (this.reply) {
-      email = this.reply.paypal.email;
-    }
-    return email;
-  }
-
 }
