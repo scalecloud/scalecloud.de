@@ -1,72 +1,68 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ConfirmResumeSubscriptionComponent } from './confirm-resume-subscription/confirm-resume-subscription.component';
 import { ResumeSubscriptionService } from './resume-subscription.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: 'app-resume-subscription',
-    templateUrl: './resume-subscription.component.html',
-    styleUrls: ['./resume-subscription.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatButton, MatIcon]
+  selector: 'app-resume-subscription',
+  templateUrl: './resume-subscription.component.html',
+  styleUrls: ['./resume-subscription.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatButton, MatIcon],
 })
 export class ResumeSubscriptionComponent {
-  private readonly authService = inject(AuthService);
   private readonly resumeSubscriptionService = inject(ResumeSubscriptionService);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
+  private readonly destroyRef = takeUntilDestroyed();
 
+  readonly reloadSubscriptionDetail = output<void>();
 
-  @Output() reloadSubscriptionDetail = new EventEmitter();
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
-  openConfirmDialog() {
-    const dialogRef = this.dialog.open(ConfirmResumeSubscriptionComponent);
-    dialogRef.afterClosed().subscribe(resume => {
-      if (resume) {
-        this.resumeSubscription();
-      }
-    });
+  openConfirmDialog(): void {
+    this.dialog
+      .open(ConfirmResumeSubscriptionComponent)
+      .afterClosed()
+      .pipe(this.destroyRef)
+      .subscribe((resume: boolean) => {
+        if (resume) {
+          this.resumeSubscription();
+        }
+      });
   }
 
   resumeSubscription(): void {
     const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
+
     if (subscriptionID == null) {
       this.logService.error('ResumeSubscriptionComponent.resumeSubscription: id is null');
-    } else {
-
-      const iSubscriptionResumeRequest: ISubscriptionResumeRequest = {
-        subscriptionID: subscriptionID
-      }
-
-      this.resumeSubscriptionService.resumeSubscription(iSubscriptionResumeRequest).subscribe(
-        (iSubscriptionResumeReply: ISubscriptionResumeReply) => {
-          if (iSubscriptionResumeReply == null) {
-            this.logService.error('ResumeSubscriptionComponent.resumeSubscription: iSubscriptionResumeReply is null');
-          }
-          else if (iSubscriptionResumeReply.cancel_at_period_end) {
-            this.snackBarService.error(`Your Subscription is still canceled.`);
-          }
-          else {
-            this.snackBarService.info(`Your Subscription has been resumed.`);
-            this.reloadSubscriptionDetail.emit();
-          }
-        });
+      return;
     }
+
+    const request: ISubscriptionResumeRequest = { subscriptionID };
+
+    this.resumeSubscriptionService
+      .resumeSubscription(request)
+      .pipe(this.destroyRef)
+      .subscribe((reply: ISubscriptionResumeReply) => {
+        if (reply == null) {
+          this.logService.error(
+            'ResumeSubscriptionComponent.resumeSubscription: reply is null',
+          );
+        } else if (reply.cancel_at_period_end) {
+          this.snackBarService.error('Your Subscription is still canceled.');
+        } else {
+          this.snackBarService.info('Your Subscription has been resumed.');
+          this.reloadSubscriptionDetail.emit();
+        }
+      });
   }
-
-
 }
