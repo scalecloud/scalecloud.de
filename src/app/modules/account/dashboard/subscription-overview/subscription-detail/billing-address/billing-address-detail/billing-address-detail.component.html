@@ -40,8 +40,8 @@
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field class="full-width">
-        <mat-label>Name</mat-label>
-        <input matInput id="billing-name" formControlName="name">
+        <mat-label id="billing-name-label">Name</mat-label>
+        <input matInput id="billing-name" aria-labelledby="billing-name-label" formControlName="name">
         @if (submitted() && f.name.errors?.required) {
         <mat-error>Name is required</mat-error>
         }
@@ -49,33 +49,33 @@
       <app-country-input [initialCountryCode]="getCountyCode()"
         (countryControlEmitter)="onCountryControlReceived($event)"></app-country-input>
       <mat-form-field class="full-width">
-        <mat-label>Address line 1</mat-label>
-        <input matInput id="billing-line1" formControlName="line1">
+        <mat-label id="billing-line1-label">Address line 1</mat-label>
+        <input matInput id="billing-line1" aria-labelledby="billing-line1-label" formControlName="line1">
         @if (submitted() && f.line1.errors?.required) {
         <mat-error>Address line 1 is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="full-width">
-        <mat-label>Address line 2</mat-label>
-        <input matInput id="billing-line2" formControlName="line2" placeholder="Number of the flat/apartment unit etc. (optional)">
+        <mat-label id="billing-line2-label">Address line 2</mat-label>
+        <input matInput id="billing-line2" aria-labelledby="billing-line2-label" formControlName="line2" placeholder="Number of the flat/apartment unit etc. (optional)">
       </mat-form-field>
       <mat-form-field class="full-width">
-        <mat-label>Postal Code</mat-label>
-        <input matInput id="billing-postalCode" formControlName="postalCode">
+        <mat-label id="billing-postalCode-label">Postal Code</mat-label>
+        <input matInput id="billing-postalCode" aria-labelledby="billing-postalCode-label" formControlName="postalCode">
         @if (submitted() && f.postalCode.errors?.required) {
         <mat-error>Postal Code is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="full-width">
-        <mat-label>City</mat-label>
-        <input matInput id="billing-city" formControlName="city">
+        <mat-label id="billing-city-label">City</mat-label>
+        <input matInput id="billing-city" aria-labelledby="billing-city-label" formControlName="city">
         @if (submitted() && f.city.errors?.required) {
         <mat-error>City is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="full-width">
-        <mat-label>Phone Number</mat-label>
-        <input matInput id="billing-phone" formControlName="phone">
+        <mat-label id="billing-phone-label">Phone Number</mat-label>
+        <input matInput id="billing-phone" aria-labelledby="billing-phone-label" formControlName="phone">
         @if (submitted() && f.phone.errors?.required) {
         <mat-error>Phone Number is required</mat-error>
         }

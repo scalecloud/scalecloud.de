@@ -1,6 +1,6 @@
 <mat-form-field class="full-width">
-  <mat-label>Country</mat-label>
-  <input matInput type="text" [formControl]="countryControl" [matAutocomplete]="auto" (blur)="validateCountry()">
+  <mat-label id="billing-country-label">Country</mat-label>
+  <input matInput id="billing-country" type="text" aria-labelledby="billing-country-label" [formControl]="countryControl" [matAutocomplete]="auto" (blur)="validateCountry()">
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCountrySelected($event.option.value)">
     @for (country of filteredCountries | async; track country) {
       <mat-option [value]="getCountryName(country)">
