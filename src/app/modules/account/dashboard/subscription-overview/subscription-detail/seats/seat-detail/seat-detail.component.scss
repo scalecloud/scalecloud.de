@@ -1,40 +1,45 @@
+:host {
+  display: flex;
+  justify-content: center;
+}
+
 mat-card {
-    text-align: center;
-    width: 20rem;
-    margin-bottom: 1rem;
+  text-align: center;
+  width: 20rem;
+  margin-bottom: 1rem;
 }
 
 mat-card-title {
-    font-size: 2rem;
-    margin: 1rem;
+  font-size: 2rem;
+  margin: 1rem;
 }
 
 mat-card-subtitle {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .flex-item {
-    padding: 0.5rem;
+  padding: 0.5rem;
 }
 
 .center-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .verified-icon {
-    color: green;
-    margin-right: 0.5rem;
+  color: green;
+  margin-right: 0.5rem;
 }
 
 .not-verified-icon {
-    color: red;
-    margin-right: 0.5rem;
+  color: red;
+  margin-right: 0.5rem;
 }

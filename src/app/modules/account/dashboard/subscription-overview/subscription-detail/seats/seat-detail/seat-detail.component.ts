@@ -1,15 +1,34 @@
-import { Component, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  inject,
+  OnInit,
+  signal,
+  computed,
+  linkedSignal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleDescriptions } from 'src/app/shared/roles/roles';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { DeleteSeatRequest, Seat, SeatDetailReply, SeatDetailRequest, UpdateSeatDetailRequest } from '../seats';
+import {
+  DeleteSeatRequest,
+  Seat,
+  SeatDetailReply,
+  SeatDetailRequest,
+  UpdateSeatDetailRequest,
+} from '../seats';
 import { SeatDetailService } from './seat-detail.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmOwnerTransferComponent } from './confirm-owner-transfer/confirm-owner-transfer.component';
-import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import {
+  MatCard,
+  MatCardTitle,
+  MatCardSubtitle,
+  MatCardContent,
+} from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatIcon } from '@angular/material/icon';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
@@ -20,11 +39,26 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-seat-detail',
-    templateUrl: './seat-detail.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrl: './seat-detail.component.scss',
-    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatCardSubtitle, NgxSkeletonLoaderComponent, MatTooltip, MatCardContent, MatLabel, MatChipListbox, FormsModule, ReactiveFormsModule, MatChipOption, MatButton]
+  selector: 'app-seat-detail',
+  templateUrl: './seat-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './seat-detail.component.scss',
+  imports: [
+    MatCard,
+    MatProgressBar,
+    MatCardTitle,
+    MatIcon,
+    MatCardSubtitle,
+    NgxSkeletonLoaderComponent,
+    MatTooltip,
+    MatCardContent,
+    MatLabel,
+    MatChipListbox,
+    FormsModule,
+    ReactiveFormsModule,
+    MatChipOption,
+    MatButton,
+  ],
 })
 export class SeatDetailComponent implements OnInit {
   private readonly authService = inject(AuthService);
@@ -35,172 +69,144 @@ export class SeatDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
 
+  // ── State ─────────────────────────────────────────────────────────────────
+  readonly loading = signal(false);
+  readonly error = signal(false);
+  readonly seatDetailReply = signal<SeatDetailReply | null>(null);
 
-  seatDetailReply: SeatDetailReply | null;
-  seatWithUpdates: Seat | null;
-  loading = false;
-  error = false;
+  /**
+   * Editable copy of the selected seat's roles.
+   * `linkedSignal` resets automatically when `seatDetailReply` changes,
+   * so navigating away and back always starts with a fresh copy.
+   */
+  readonly pendingRoles = linkedSignal<Role[]>(() =>
+    structuredClone(this.seatDetailReply()?.selectedSeat?.roles ?? [])
+  );
 
-  allRoles = Object.values(Role);
-  roleDescriptions = RoleDescriptions;
-  Roles = Role;
+  // ── Derived ───────────────────────────────────────────────────────────────
+  readonly allRoles = Object.values(Role);
+  readonly roleDescriptions = RoleDescriptions;
 
+  readonly rolesChanged = computed(() => {
+    const original = this.seatDetailReply()?.selectedSeat?.roles ?? [];
+    const pending = this.pendingRoles();
+    if (original.length !== pending.length) return true;
+    const originalSet = new Set(original);
+    return pending.some((r) => !originalSet.has(r));
+  });
+
+  readonly canUpdate = computed(() => !this.loading() && this.rolesChanged());
+
+  readonly canDelete = computed(
+    () => !this.loading() && this.amIAdministrator() && !this.isSelectedOwner()
+  );
+
+  readonly isOwnerToggleDisabled = computed(
+    () => !this.amIOwner() || this.isSelectedOwner()
+  );
+
+  // ── Lifecycle ─────────────────────────────────────────────────────────────
   ngOnInit(): void {
-    this.getSeatDetail();
+    this.loadSeatDetail();
   }
 
-  toggleRoleSelection(role: Role) {
-    if (!this.seatWithUpdates.roles.includes(role)) {
-      this.addRole(role);
-    } else {
-      this.removeRole(role);
-    }
-    this.askOwnerTransfer(role);
-  }
+  // ── Role management ───────────────────────────────────────────────────────
+  toggleRoleSelection(role: Role): void {
+    const current = this.pendingRoles();
+    const hasRole = current.includes(role);
 
-  askOwnerTransfer(role: Role): void {
-    if (role === Role.Owner && this.seatWithUpdates.roles.includes(role)) {
-      const dialogRef = this.dialog.open(ConfirmOwnerTransferComponent, {
-        data: {
-          email: this.seatWithUpdates.email
-        }
-      });
+    this.pendingRoles.set(
+      hasRole ? current.filter((r) => r !== role) : [...current, role]
+    );
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (!result) {
-          this.removeRole(role);
-        }
-      });
+    // If the Owner role was just added, confirm the transfer.
+    if (role === Role.Owner && !hasRole) {
+      this.confirmOwnerTransfer(role);
     }
   }
 
-  addRole(role: Role) {
-    if (this.seatWithUpdates) {
-      if (!this.seatWithUpdates.roles.includes(role)) {
-        this.seatWithUpdates.roles.push(role);
-      }
-    } else {
-      this.logService.error('updatedSeat is null');
-    }
-  }
+  private confirmOwnerTransfer(role: Role): void {
+    const dialogRef = this.dialog.open(ConfirmOwnerTransferComponent, {
+      data: { email: this.seatDetailReply()?.selectedSeat?.email },
+    });
 
-  removeRole(role: Role) {
-    if (this.seatWithUpdates) {
-      const index = this.seatWithUpdates.roles.indexOf(role);
-      if (index > -1) {
-        this.seatWithUpdates.roles.splice(index, 1);
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (!confirmed) {
+        // Roll back — remove Owner from pending roles.
+        this.pendingRoles.update((roles) => roles.filter((r) => r !== role));
       }
-    } else {
-      this.logService.error('updatedSeat is null');
-    }
-  }
-
-  getSeatDetail(): void {
-    this.authService.waitForAuth().then(() => {
-
-      const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
-      const uid = this.route.snapshot.paramMap.get('uid');
-
-      if (!subscriptionID) {
-        this.logService.error('subscriptionID is null');
-      }
-      else if (!uid) {
-        this.logService.error('uid is null');
-      } else {
-        const request: SeatDetailRequest = {
-          subscriptionID: subscriptionID,
-          uid: uid
-        };
-        this.loading = true;
-        this.seatDetailService.getSeat(request)
-          .subscribe({
-            next: reply => {
-              this.seatDetailReply = reply;
-              this.seatWithUpdates = JSON.parse(JSON.stringify(reply.selectedSeat));
-              this.loading = false;
-              this.error = false;
-            },
-            error: error => {
-              this.loading = false;
-              this.error = true;
-            }
-          });
-      }
-    }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
     });
   }
 
   shouldOwnerBeDisabled(role: Role): boolean {
-    return role === Role.Owner && (!this.amIOwner() || this.isSelectedOwner());
+    return role === Role.Owner && this.isOwnerToggleDisabled();
   }
 
-  noRolesChanged(): boolean {
-    if (this.loading) {
-      return true;
-    }
-    const selectedRoles = this.seatDetailReply.selectedSeat?.roles;
-    const updatedRoles = this.seatWithUpdates?.roles;
+  // ── Data loading ──────────────────────────────────────────────────────────
+  loadSeatDetail(): void {
+    this.authService.waitForAuth().then(() => {
+      const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
+      const uid = this.route.snapshot.paramMap.get('uid');
 
-    if (!selectedRoles || !updatedRoles || selectedRoles.length !== updatedRoles.length) {
-      return false; // Enable button if roles are not set or lengths differ
-    }
-
-    const selectedRolesSet = new Set(selectedRoles);
-    const updatedRolesSet = new Set(updatedRoles);
-
-    if (selectedRolesSet.size !== updatedRolesSet.size) {
-      return false; // Enable button if the number of unique roles differs
-    }
-
-    for (const role of selectedRolesSet) {
-      if (!updatedRolesSet.has(role)) {
-        return false; // Enable button if any role differs
+      if (!subscriptionID) {
+        this.logService.error('SeatDetailComponent: subscriptionID is null');
+        this.error.set(true);
+        return;
       }
-    }
+      if (!uid) {
+        this.logService.error('SeatDetailComponent: uid is null');
+        this.error.set(true);
+        return;
+      }
 
-    return true; // Disable button if all roles match
-  }
+      const request: SeatDetailRequest = { subscriptionID, uid };
+      this.loading.set(true);
 
-  disableButtonDelete(): boolean {
-    return this.loading || !this.amIAdministrator() || this.isSelectedOwner();
-  }
-
-  isSelectedOwner(): boolean {
-    return this.seatDetailReply?.selectedSeat?.roles.includes(Role.Owner);
-  }
-
-  amIOwner(): boolean {
-    return this.seatDetailReply?.mySeat?.roles?.includes(Role.Owner);
-  }
-
-  amIAdministrator(): boolean {
-    return this.seatDetailReply?.mySeat?.roles?.includes(Role.Administrator);
-  }
-
-  updateSeat(): void {
-    if (this.noRolesChanged()) {
-      this.snackBarService.info('Nothing to update.');
-    }
-    else {
-      this.authService.waitForAuth().then(() => {
-        const request: UpdateSeatDetailRequest = {
-          seatUpdated: this.seatWithUpdates
-        };
-        this.seatDetailService.updateSeat(request)
-          .subscribe(reply => {
-            if (reply.seat) {
-              this.snackBarService.info('User updated.');
-              this.returnUrlService.openReturnURL('/dashboard');
-            }
-            else {
-              this.snackBarService.error('Could not update user. Please try again later.');
-            }
-          });
-      }).catch((error) => {
-        this.logService.error("waitForAuth failed: " + error);
+      this.seatDetailService.getSeat(request).subscribe({
+        next: (reply) => {
+          this.seatDetailReply.set(reply);
+          this.loading.set(false);
+          this.error.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+          this.error.set(true);
+        },
       });
+    }).catch((err) => {
+      this.logService.error('waitForAuth failed: ' + err);
+      this.error.set(true);
+    });
+  }
+
+  // ── Actions ───────────────────────────────────────────────────────────────
+  updateSeat(): void {
+    if (!this.canUpdate()) {
+      this.snackBarService.info('Nothing to update.');
+      return;
     }
+
+    const selectedSeat = this.seatDetailReply()?.selectedSeat;
+    if (!selectedSeat) return;
+
+    const request: UpdateSeatDetailRequest = {
+      seatUpdated: { ...selectedSeat, roles: [...this.pendingRoles()] },
+    };
+
+    this.authService.waitForAuth().then(() => {
+      this.seatDetailService.updateSeat(request).subscribe({
+        next: (reply) => {
+          if (reply.seat) {
+            this.snackBarService.info('User updated.');
+            this.returnUrlService.openReturnURL('/dashboard');
+          } else {
+            this.snackBarService.error('Could not update user. Please try again later.');
+          }
+        },
+      });
+    }).catch((err) => {
+      this.logService.error('waitForAuth failed: ' + err);
+    });
   }
 
   cancel(): void {
@@ -208,39 +214,53 @@ export class SeatDetailComponent implements OnInit {
   }
 
   deleteSeat(seatToDelete: Seat): void {
+    const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
+
+    if (!subscriptionID) {
+      this.logService.error('SeatDetailComponent.deleteSeat: subscriptionID is null');
+      this.snackBarService.error('Currently not possible to delete a user. Please try again later.');
+      this.returnUrlService.openReturnURL('/dashboard');
+      return;
+    }
+
+    const request: DeleteSeatRequest = { seatToDelete };
+
     this.authService.waitForAuth().then(() => {
-
-      const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
-
-      if (!subscriptionID) {
-        this.logService.error('SeatsComponent.invite: subscriptionID is null');
-        this.snackBarService.error('Currently not possible to delete a user. Please try again later.');
-        this.returnUrlService.openReturnURL('/dashboard');
-      } else {
-        const removeSeatRequest: DeleteSeatRequest = {
-          seatToDelete: seatToDelete
-        };
-        this.seatDetailService.deleteSeat(removeSeatRequest)
-          .subscribe(removeSeatReply => {
-            if (removeSeatReply?.success) {
-              this.snackBarService.info(`Removed ${removeSeatReply?.deletedSeat.email}.`);
-              this.returnUrlService.openReturnURL('/dashboard');
-            }
-            else {
-              this.snackBarService.error(`Could not remove ${seatToDelete?.email}. Please rety.`);
-            }
-          });
-      }
-    }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
+      this.seatDetailService.deleteSeat(request).subscribe({
+        next: (reply) => {
+          if (reply?.success) {
+            this.snackBarService.info(`Removed ${reply.deletedSeat.email}.`);
+            this.returnUrlService.openReturnURL('/dashboard');
+          } else {
+            this.snackBarService.error(
+              `Could not remove ${seatToDelete?.email}. Please retry.`
+            );
+          }
+        },
+      });
+    }).catch((err) => {
+      this.logService.error('waitForAuth failed: ' + err);
     });
   }
 
-  handleKeyDown(event: KeyboardEvent, role: Role) {
+  // ── Keyboard accessibility ────────────────────────────────────────────────
+  handleKeyDown(event: KeyboardEvent, role: Role): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.toggleRoleSelection(role);
     }
   }
 
+  // ── Seat helpers ──────────────────────────────────────────────────────────
+  isSelectedOwner(): boolean {
+    return this.seatDetailReply()?.selectedSeat?.roles.includes(Role.Owner) ?? false;
+  }
+
+  amIOwner(): boolean {
+    return this.seatDetailReply()?.mySeat?.roles?.includes(Role.Owner) ?? false;
+  }
+
+  amIAdministrator(): boolean {
+    return this.seatDetailReply()?.mySeat?.roles?.includes(Role.Administrator) ?? false;
+  }
 }

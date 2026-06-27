@@ -1,26 +1,29 @@
+:host {
+  display: block;
+}
+
 mat-card-title {
-    text-align: center;
-    font-size: 2rem;
-    padding: 1rem;
+  text-align: center;
+  font-size: 2rem;
+  padding: 1rem;
 }
 
 mat-card-subtitle {
-    text-align: center;
+  text-align: center;
 }
 
 .addSeat-button {
-    font-size: 1.2rem;
-    width: 100%;
+  font-size: 1.2rem;
+  width: 100%;
 }
 
 .seat-button {
-    width: 100%;
-    margin: 0.5rem;
-    justify-content: flex-start;
-    text-align: left;
+  width: 100%;
+  margin: 0.5rem;
+  justify-content: flex-start;
+  text-align: left;
 }
 
-
 .title-icon {
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }

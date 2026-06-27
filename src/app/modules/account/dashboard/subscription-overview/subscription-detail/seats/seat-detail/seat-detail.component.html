@@ -1,52 +1,63 @@
 <mat-card>
-  @if ( loading ) {
-    <mat-progress-bar mode="query"></mat-progress-bar>
+  @if (loading()) {
+    <mat-progress-bar mode="query" />
   }
+
   <mat-card-title><mat-icon>manage_accounts</mat-icon> Manage user</mat-card-title>
+
   <mat-card-subtitle>
-    @if ( loading ) {
-      <ngx-skeleton-loader [theme]="{height: '1.5rem', width: '80%'}" />
+    @if (loading()) {
+      <ngx-skeleton-loader [theme]="{ height: '1.5rem', width: '80%' }" />
     } @else {
+      @let seat = seatDetailReply()?.selectedSeat;
       <div class="center-icon">
-        @if (seatDetailReply?.selectedSeat?.emailVerified) {
-          <mat-icon class="verified-icon"
-          matTooltip="E-Mail is verified">check_circle</mat-icon>
+        @if (seat?.emailVerified) {
+          <mat-icon class="verified-icon" matTooltip="E-Mail is verified">check_circle</mat-icon>
+        } @else {
+          <mat-icon class="not-verified-icon" matTooltip="E-Mail is not verified">mail</mat-icon>
         }
-        @if (!seatDetailReply?.selectedSeat?.emailVerified) {
-          <mat-icon class="not-verified-icon"
-          matTooltip="E-Mail is not verified">mail</mat-icon>
-        }
-        <span matTooltip="{{ seatDetailReply?.selectedSeat?.email }}">
-          {{ seatDetailReply?.selectedSeat?.email }}
-        </span>
+        <span matTooltip="{{ seat?.email }}">{{ seat?.email }}</span>
       </div>
     }
   </mat-card-subtitle>
+
   <mat-card-content>
     <mat-label>Select roles:</mat-label>
-    <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked" formControlName="roles">
+    <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked">
       @for (role of allRoles; track role) {
-        <mat-chip-option [selected]="seatWithUpdates?.roles.includes(role)"
-          [disabled]="shouldOwnerBeDisabled(role)" (click)="toggleRoleSelection(role)"
-          [matTooltip]="roleDescriptions[role]" (keydown)="handleKeyDown($event, role)">
-          {{role}}
+        <mat-chip-option
+          [selected]="pendingRoles().includes(role)"
+          [disabled]="shouldOwnerBeDisabled(role)"
+          (click)="toggleRoleSelection(role)"
+          [matTooltip]="roleDescriptions[role]"
+          (keydown)="handleKeyDown($event, role)"
+        >
+          {{ role }}
         </mat-chip-option>
       }
     </mat-chip-listbox>
+
     <div class="flex-container">
       <div class="flex-item">
-        <button (click)="updateSeat()" mat-raised-button color="primary" [disabled]="noRolesChanged()">
-          <mat-icon>check</mat-icon>Update</button>
-        </div>
-        <div class="flex-item">
-          <button mat-raised-button (click)="cancel()">
-            <mat-icon>close</mat-icon>Cancel</button>
-          </div>
-          <div class="flex-item">
-            <button mat-raised-button color="warn" [disabled]="disableButtonDelete()"
-              (click)="deleteSeat(seatDetailReply.selectedSeat)">
-              <mat-icon>delete</mat-icon>Delete</button>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
+        <button (click)="updateSeat()" mat-raised-button color="primary" [disabled]="!canUpdate()">
+          <mat-icon>check</mat-icon> Update
+        </button>
+      </div>
+      <div class="flex-item">
+        <button mat-raised-button (click)="cancel()">
+          <mat-icon>close</mat-icon> Cancel
+        </button>
+      </div>
+      <div class="flex-item">
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="!canDelete()"
+          (click)="deleteSeat(seatDetailReply()!.selectedSeat)"
+        >
+          <mat-icon>delete</mat-icon> Delete
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

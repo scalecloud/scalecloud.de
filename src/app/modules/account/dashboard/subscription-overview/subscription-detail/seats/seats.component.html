@@ -1,56 +1,67 @@
 <mat-card>
-    @if (serviceStatus === ServiceStatus.Loading) {
-    <mat-progress-bar mode="query"></mat-progress-bar>
-    <mat-card-title>
-        <mat-icon class="title-icon">manage_accounts</mat-icon>Users
-    </mat-card-title>
-    <mat-card-subtitle>
-        <ngx-skeleton-loader [theme]="{height: '1rem', width: '80%'}" />
-    </mat-card-subtitle>
-    <mat-divider></mat-divider>
-    <mat-card-content>
-        <mat-list>
-            <ngx-skeleton-loader [theme]="{height: '1.5rem', width: '100%'}" />
-        </mat-list>
-    </mat-card-content>
-    <mat-card-actions>
-        <button class="addSeat-button" [disabled]="true" mat-stroked-button
-            color="primary"><mat-icon>person_add</mat-icon>
-            Invite</button>
-    </mat-card-actions>
-    }
+  @if (serviceStatus() === ServiceStatus.Loading) {
+    <mat-progress-bar mode="query" />
+  }
 
-    @if (serviceStatus === ServiceStatus.Success) {
+  @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-card-title>
-        <mat-icon class="title-icon">manage_accounts</mat-icon>Users
+      <mat-icon class="title-icon">manage_accounts</mat-icon>Users
     </mat-card-title>
     <mat-card-subtitle>
-        Used {{getUsedSeats()}}/{{getMaxSeats()}}
+      <ngx-skeleton-loader [theme]="{ height: '1rem', width: '80%' }" />
     </mat-card-subtitle>
-    <mat-divider></mat-divider>
+    <mat-divider />
     <mat-card-content>
-        <mat-list>
-            @for (seat of seatListReply.seats; track $index) {
-            <mat-list-item>
-                <button class="seat-button" mat-button (click)="openSeatDetail(seat)" matTooltip="{{seat.email}}">
-                    <mat-icon>person</mat-icon> {{seat.email}}
-                </button>
-            </mat-list-item>
-            }
-        </mat-list>
-        @if( seatListReply.totalResults > pageSize ) {
-        <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="seatListReply.totalResults"
-            [pageSize]="pageSize" [showFirstLastButtons]="showFirstLastButtons" [hidePageSize]="hidePageSize"
-            [pageIndex]="seatListReply.pageIndex" aria-label="Select page">
-        </mat-paginator>
-        }
+      <mat-list>
+        <ngx-skeleton-loader [theme]="{ height: '1.5rem', width: '100%' }" />
+      </mat-list>
     </mat-card-content>
     <mat-card-actions>
-        <button class="addSeat-button" (click)="addSeat()" [disabled]="!isAddSeatPossible()" mat-stroked-button
-            color="primary"><mat-icon>person_add</mat-icon> Invite</button>
+      <button class="addSeat-button" disabled mat-stroked-button color="primary">
+        <mat-icon>person_add</mat-icon> Invite
+      </button>
     </mat-card-actions>
-    }
+  }
+
+  @if (serviceStatus() === ServiceStatus.Success) {
+    @let reply = seatListReply();
+    <mat-card-title>
+      <mat-icon class="title-icon">manage_accounts</mat-icon>Users
+    </mat-card-title>
+    <mat-card-subtitle>Used {{ usedSeats() }}/{{ maxSeats() }}</mat-card-subtitle>
+    <mat-divider />
+    <mat-card-content>
+      <mat-list>
+        @for (seat of reply.seats; track seat.uid) {
+          <mat-list-item>
+            <button class="seat-button" mat-button (click)="openSeatDetail(seat)"
+              matTooltip="{{ seat.email }}">
+              <mat-icon>person</mat-icon> {{ seat.email }}
+            </button>
+          </mat-list-item>
+        }
+      </mat-list>
+      @if (reply.totalResults > pageSize) {
+        <mat-paginator
+          (page)="handlePageEvent($event)"
+          [length]="reply.totalResults"
+          [pageSize]="pageSize"
+          [showFirstLastButtons]="showFirstLastButtons"
+          [hidePageSize]="hidePageSize"
+          [pageIndex]="reply.pageIndex"
+          aria-label="Select page"
+        />
+      }
+    </mat-card-content>
+    <mat-card-actions>
+      <button class="addSeat-button" (click)="addSeat()" [disabled]="!isAddSeatPossible()"
+        mat-stroked-button color="primary">
+        <mat-icon>person_add</mat-icon> Invite
+      </button>
+    </mat-card-actions>
+  }
 </mat-card>
-@if ( serviceStatus === ServiceStatus.Error ) {
-<app-loading-failed></app-loading-failed>
+
+@if (serviceStatus() === ServiceStatus.Error) {
+  <app-loading-failed />
 }
