@@ -10,8 +10,8 @@
 <mat-card-content>
   <form (ngSubmit)="subscribeToNewsletter()" class="newsletter-form">
     <mat-form-field appearance="outline" class="email-field">
-      <mat-label>Enter your E-Mail</mat-label>
-      <input matInput placeholder="pat@example.com" [formControl]="email" (blur)="updateErrorMessage()"
+      <mat-label id="newsletter-email-label">Enter your E-Mail</mat-label>
+      <input matInput id="newsletter-email" placeholder="pat@example.com" [formControl]="email" aria-labelledby="newsletter-email-label" (blur)="updateErrorMessage()"
         required />
         @if (email.invalid) {
           <mat-error>{{ errorMessage() }}</mat-error>

@@ -2,8 +2,8 @@
   <mat-card-title>Invite user</mat-card-title>
   <mat-card-content>
     <mat-form-field appearance="fill">
-      <mat-label>E-Mail:</mat-label>
-      <input type="email" matInput placeholder="E-Mail" [formControl]="email" required>
+      <mat-label id="invite-email-label">E-Mail:</mat-label>
+      <input type="email" matInput id="invite-email" placeholder="E-Mail" aria-labelledby="invite-email-label" [formControl]="email" required>
       @if (email.invalid) {
         <mat-error>{{getErrorMessageEMail()}}</mat-error>
       }
