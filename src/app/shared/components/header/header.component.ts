@@ -17,7 +17,7 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 export class HeaderComponent implements OnInit {
   authService = inject(AuthService);
 
-  readonly toggleSideBarForMe = output<any>();
+  readonly toggleSideBarForMe = output<void>();
   isLoading = true;
   
   ngOnInit() {
@@ -32,8 +32,7 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleSideBar() {
-    // TODO: The 'emit' function requires a mandatory any argument
-    this.toggleSideBarForMe.emit();
+    this.toggleSideBarForMe.emit(undefined);
     setTimeout(() => {
       window.dispatchEvent(
         new Event('resize')
