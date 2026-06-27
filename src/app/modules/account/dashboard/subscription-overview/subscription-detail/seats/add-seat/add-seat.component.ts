@@ -1,4 +1,11 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  inject,
+  signal,
+  computed,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AddSeatRequest } from '../seats';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -8,6 +15,7 @@ import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.se
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RoleDescriptions, Role } from 'src/app/shared/roles/roles';
+import { firstValueFrom } from 'rxjs';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -39,20 +47,28 @@ export class AddSeatComponent {
   private readonly returnUrlService = inject(ReturnUrlService);
   private readonly route = inject(ActivatedRoute);
 
-  readonly email = new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] });
+  readonly email = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.email],
+  });
 
-  // Exclude the Owner role — it cannot be assigned when inviting users.
-  readonly inviteUserRoles = Object.values(Role).filter((role) => role !== Role.Owner);
+  /** All roles available for invitation. Owner is excluded — it cannot be assigned. */
+  readonly inviteUserRoles: Role[] = Object.values(Role).filter(
+    (role) => role !== Role.Owner,
+  );
 
   readonly roleDescriptions = RoleDescriptions;
-  readonly Roles = Role;
 
   readonly selectedRoles = signal<Role[]>([]);
   readonly isSubmitting = signal(false);
 
-  readonly isEmailInvalid = computed(() => this.email.invalid);
+  private readonly emailStatus = toSignal(this.email.statusChanges, {
+    initialValue: this.email.status,
+  });
 
-  addSeat(): void {
+  readonly isEmailInvalid = computed(() => this.emailStatus() !== 'VALID');
+
+  async addSeat(): Promise<void> {
     if (this.email.invalid) {
       this.logService.warn('Invalid email on invite attempt.');
       this.email.markAsTouched();
@@ -62,7 +78,9 @@ export class AddSeatComponent {
     const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
 
     if (!subscriptionID) {
-      this.snackBarService.error('Currently not possible to invite a user. Please try again later.');
+      this.snackBarService.error(
+        'Currently not possible to invite a user. Please try again later.',
+      );
       this.returnUrlService.openReturnURL('/dashboard');
       return;
     }
@@ -75,29 +93,33 @@ export class AddSeatComponent {
       roles: this.selectedRoles(),
     };
 
-    this.authService.waitForAuth()
-      .then(() => {
-        this.addSeatService.addSeat(addSeatRequest).subscribe({
-          next: (reply) => {
-            this.isSubmitting.set(false);
-            if (reply.success) {
-              this.snackBarService.info(`Invitation sent to ${reply.email}.`);
-              this.returnUrlService.openReturnURL('/dashboard');
-            } else {
-              this.snackBarService.error(`Could not send invitation to ${reply.email}. Please retry.`);
-            }
-          },
-          error: (err) => {
-            this.isSubmitting.set(false);
-            this.logService.error('addSeat request failed: ' + err);
-            this.snackBarService.error('An unexpected error occurred. Please try again.');
-          },
-        });
-      })
-      .catch((error) => {
-        this.isSubmitting.set(false);
-        this.logService.error('waitForAuth failed: ' + error);
-      });
+    try {
+      await this.authService.waitForAuth();
+    } catch (error) {
+      this.isSubmitting.set(false);
+      this.logService.error('waitForAuth failed: ' + error);
+      return;
+    }
+
+    try {
+      const reply = await firstValueFrom(
+        this.addSeatService.addSeat(addSeatRequest),
+      );
+
+      if (reply.success) {
+        this.snackBarService.info(`Invitation sent to ${reply.email}.`);
+        this.returnUrlService.openReturnURL('/dashboard');
+      } else {
+        this.snackBarService.error(
+          `Could not send invitation to ${reply.email}. Please retry.`,
+        );
+      }
+    } catch (err) {
+      this.logService.error('addSeat request failed: ' + err);
+      this.snackBarService.error('An unexpected error occurred. Please try again.');
+    } finally {
+      this.isSubmitting.set(false);
+    }
   }
 
   getEmailErrorMessage(): string {

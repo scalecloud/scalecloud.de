@@ -2,13 +2,12 @@
   <mat-card-title>Invite user</mat-card-title>
   <mat-card-content>
     <mat-form-field appearance="fill">
-      <mat-label id="invite-email-label">E-Mail</mat-label>
+      <mat-label>E-Mail</mat-label>
       <input
         type="email"
         matInput
         id="invite-email"
         placeholder="name@example.com"
-        aria-labelledby="invite-email-label"
         [formControl]="email"
         required
       />
@@ -21,10 +20,10 @@
     <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked">
       @for (role of inviteUserRoles; track role) {
         <mat-chip-option
-          [selected]="selectedRoles().includes(Roles[role])"
-          (click)="toggleRoleSelection(Roles[role])"
-          (keydown)="handleKeyDown($event, Roles[role])"
-          [matTooltip]="roleDescriptions[Roles[role]]"
+          [selected]="selectedRoles().includes(role)"
+          (click)="toggleRoleSelection(role)"
+          (keydown)="handleKeyDown($event, role)"
+          [matTooltip]="roleDescriptions[role]"
         >
           {{ role }}
         </mat-chip-option>

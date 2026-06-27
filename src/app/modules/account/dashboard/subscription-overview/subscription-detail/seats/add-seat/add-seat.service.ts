@@ -6,17 +6,20 @@ import { AddSeatRequest, AddSeatReply } from '../seats';
 import { API_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AddSeatService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
-
   private readonly apiUrl = inject(API_URL);
+
   private readonly url = `${this.apiUrl}/dashboard/subscription/add-seat`;
 
-  addSeat(addSeatRequest: AddSeatRequest): Observable<AddSeatReply> {
-    return this.http.post<AddSeatReply>(this.url, addSeatRequest, this.authService.getHttpOptions());
+  addSeat(request: AddSeatRequest): Observable<AddSeatReply> {
+    return this.http.post<AddSeatReply>(
+      this.url,
+      request,
+      this.authService.getHttpOptions(),
+    );
   }
-
 }
