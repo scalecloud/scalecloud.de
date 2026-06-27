@@ -2,6 +2,7 @@ import { Injectable, DOCUMENT, inject } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { LogService } from '../log/log.service';
 import { Location } from '@angular/common';
+import { APP_BASE_URL } from 'src/app/core/config/api.token';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,7 @@ export class ReturnUrlService {
   private readonly logService = inject(LogService);
   private readonly document = inject<Document>(DOCUMENT);
   private readonly location = inject(Location);
-
-  private readonly baseURL: string = 'https://www.scalecloud.de';
+  private readonly baseURL = inject(APP_BASE_URL);
 
   public openUrlKeepReturnUrl(url: string) {
     const returnURL = this.route.snapshot.queryParamMap.get('returnUrl');
@@ -47,7 +47,7 @@ export class ReturnUrlService {
     const domain = this.document.location.origin;
     if (specifiedRoute && domain && specifiedRoute.startsWith('/')) {
       const queryParams = this.route.snapshot.queryParams;
-      const queryString = new URLSearchParams(queryParams as any).toString();
+      const queryString = new URLSearchParams(queryParams).toString();
       continueUrl = domain + specifiedRoute + "?" + queryString;
     }
     if (continueUrl === this.baseURL) {

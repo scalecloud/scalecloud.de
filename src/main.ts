@@ -35,6 +35,10 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     {
+      provide: 'APP_BASE_URL',
+      useValue: environment.appBaseUrl,
+    },
+    {
       provide: API_URL,
       useValue: environment.apiUrl,
     },

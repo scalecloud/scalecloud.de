@@ -10,6 +10,7 @@ export const environment = {
     measurementId: "G-ZRHPQGG8LB"
   },
   production: true,
+  appBaseUrl: 'https://www.scalecloud.de',
   apiUrl: 'https://api.scalecloud.de',
   stripePublicKey: ""
 };
