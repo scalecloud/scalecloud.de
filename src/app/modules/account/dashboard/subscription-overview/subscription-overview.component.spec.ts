@@ -1,5 +1,6 @@
+import { RouterModule } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+
 import { describe, beforeEach, it, expect } from 'vitest';
 
 import { SubscriptionOverviewComponent } from './subscription-overview.component';
@@ -20,7 +21,7 @@ describe('SubscriptionOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SubscriptionOverviewComponent, RouterTestingModule],
+      imports: [SubscriptionOverviewComponent, RouterModule],
     }).compileComponents();
 
     fixture   = TestBed.createComponent(SubscriptionOverviewComponent);

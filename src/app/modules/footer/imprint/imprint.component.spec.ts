@@ -1,5 +1,6 @@
+import { RouterModule } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+
 import { MatDividerModule } from '@angular/material/divider';
 
 import { ImprintComponent } from './imprint.component';
@@ -11,7 +12,7 @@ describe('ImprintComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [RouterTestingModule, MatDividerModule, ImprintComponent]
+    imports: [MatDividerModule, ImprintComponent, RouterModule]
 }).compileComponents();
   });
 
