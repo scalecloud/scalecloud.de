@@ -11,7 +11,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { serviceErrorInterceptor } from './app/shared/interceptors/service-error-interceptor.service';
-import { API_URL } from './app/core/config/api.token';
+import { API_URL, APP_BASE_URL } from './app/core/config/api.token';
 import { STRIPE_PUBLIC_KEY } from './app/shared/services/stripe/key-service/stripe-key.service';
 
 Sentry.init({
@@ -35,7 +35,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     {
-      provide: 'APP_BASE_URL',
+      provide: APP_BASE_URL,
       useValue: environment.appBaseUrl,
     },
     {
