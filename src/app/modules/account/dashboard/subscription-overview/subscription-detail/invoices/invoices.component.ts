@@ -16,7 +16,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatChip } from '@angular/material/chips';
-import { NgClass, TitleCasePipe, CurrencyPipe, DatePipe } from '@angular/common';
+import { TitleCasePipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { LoadingFailedComponent } from '../../../../../../shared/components/loading-failed/loading-failed.component';
 
 @Component({
@@ -24,7 +24,7 @@ import { LoadingFailedComponent } from '../../../../../../shared/components/load
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatChip, NgClass, MatPaginator, LoadingFailedComponent, TitleCasePipe, CurrencyPipe, DatePipe]
+    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatChip, MatPaginator, LoadingFailedComponent, TitleCasePipe, CurrencyPipe, DatePipe]
 })
 export class InvoicesComponent implements OnInit {
   private readonly authService = inject(AuthService);

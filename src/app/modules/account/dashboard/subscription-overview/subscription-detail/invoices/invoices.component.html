@@ -29,7 +29,7 @@
                 {{invoice.total / 100 | currency: invoice.currency.toUpperCase() : 'symbol' : '1.0-0'}}
             </div>
             <div class="invoice-column last-column">
-                <mat-chip class="status-chip" [ngClass]="{
+                <mat-chip class="status-chip" [class]="{
                             'status-draft': invoice.status === InvoiceStatus.Draft,
                             'status-open': invoice.status === InvoiceStatus.Open,
                             'status-paid': invoice.status === InvoiceStatus.Paid,

@@ -8,14 +8,14 @@ import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { NgClass } from '@angular/common';
+
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardContent, MatButton, FormsModule, ReactiveFormsModule, MatCardTitle, MatFormField, MatLabel, MatInput, NgClass, MatError, PasswordStrengthComponent, PasswordMatchComponent]
+    imports: [MatCard, MatCardContent, MatButton, FormsModule, ReactiveFormsModule, MatCardTitle, MatFormField, MatLabel, MatInput, MatError, PasswordStrengthComponent, PasswordMatchComponent]
 })
 export class RegisterComponent {
   private readonly formBuilder = inject(UntypedFormBuilder);

@@ -16,7 +16,7 @@
         <mat-form-field appearance="fill">
           <mat-label id="register-email-label">E-Mail:</mat-label>
           <input type="email" id="register-email" formControlName="email" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" matInput placeholder="E-Mail" aria-labelledby="register-email-label" required>
+            [class.is-invalid]="submitted && f.email.errors" matInput placeholder="E-Mail" aria-labelledby="register-email-label" required>
             @if (submitted && f.email.errors) {
               <div class="invalid-feedback">
                 @if (f.email.errors.required) {
@@ -31,7 +31,7 @@
           <mat-form-field appearance="fill">
             <mat-label id="register-password-label">Password:</mat-label>
             <input type="password" id="register-password" #password formControlName="password" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.password.errors }" matInput placeholder="Password" name="password"
+              [class.is-invalid]="submitted && f.password.errors" matInput placeholder="Password" name="password"
               aria-labelledby="register-password-label" required>
               @if (submitted && f.password.errors) {
                 <div class="invalid-feedback">
@@ -50,7 +50,7 @@
             <mat-form-field appearance="fill">
               <mat-label id="register-confirm-password-label">Confirm password:</mat-label>
               <input type="password" id="register-confirm-password" #confirmPassword formControlName="confirmPassword" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" matInput placeholder="Confirm password"
+                [class.is-invalid]="submitted && f.confirmPassword.errors" matInput placeholder="Confirm password"
                 name="password" aria-labelledby="register-confirm-password-label" required>
                 @if (submitted && f.confirmPassword.errors) {
                   <div class="invalid-feedback">
@@ -69,7 +69,7 @@
               </app-password-match>
               <div class="space"></div>
               <input type="checkbox" id="acceptTerms" formControlName="acceptTerms" class="form-check-input"
-                [ngClass]="{ 'is-invalid': submitted && f.acceptTerms.errors }" />
+                [class.is-invalid]="submitted && f.acceptTerms.errors" />
                 <label for="acceptTerms" class="form-check-label">I have read and agree to the Terms</label>
                 @if (submitted && f.acceptTerms.errors) {
                   <div class="invalid-feedback">

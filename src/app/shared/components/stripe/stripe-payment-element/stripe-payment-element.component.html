@@ -36,7 +36,7 @@
 </mat-card>
 }
 
-<div [ngClass]="{'hidden': serviceStatus !== ServiceStatus.Success}">
+<div [class.hidden]="serviceStatus !== ServiceStatus.Success">
   <form id="payment-form">
     <div id="payment-element">
       <!-- Elements will create form elements here -->

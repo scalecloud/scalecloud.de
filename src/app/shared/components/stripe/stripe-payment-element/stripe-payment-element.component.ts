@@ -8,7 +8,7 @@ import { MatCard, MatCardSubtitle, MatCardContent } from '@angular/material/card
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatList, MatListItem } from '@angular/material/list';
-import { NgClass } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { LoadingFailedComponent } from '../../loading-failed/loading-failed.component';
 
@@ -19,7 +19,7 @@ declare const Stripe: any;
     templateUrl: './stripe-payment-element.component.html',
     styleUrls: ['./stripe-payment-element.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardSubtitle, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, NgClass, FormsModule, LoadingFailedComponent]
+    imports: [MatCard, MatProgressBar, MatCardSubtitle, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, FormsModule, LoadingFailedComponent]
 })
 export class StripePaymentElementComponent {
   private readonly logService = inject(LogService);
