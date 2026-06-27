@@ -34,12 +34,6 @@ export class CancelStateComponent implements OnInit {
   reply: CancelStateReply | null;
   serviceStatus = ServiceStatus.Initializing;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-
-  constructor() { }
-
   ngOnInit(): void {
     this.checkPermissions();
   }

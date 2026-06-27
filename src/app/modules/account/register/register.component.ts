@@ -29,9 +29,6 @@ export class RegisterComponent {
   form: UntypedFormGroup;
   submitted = false;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     this.form = this.formBuilder.group(
       {

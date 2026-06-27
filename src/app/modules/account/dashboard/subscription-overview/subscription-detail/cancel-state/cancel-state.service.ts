@@ -15,11 +15,6 @@ export class CancelStateService {
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/subscription`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   getCancelState(id: string): Observable<CancelStateReply> {
     const url = `${this.url}/${id}/cancel-state`;
     return this.http.get<CancelStateReply>(url, this.authService.getHttpOptions());

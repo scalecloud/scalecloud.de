@@ -47,11 +47,6 @@ export class SeatsComponent implements OnInit {
 
   pageEvent: PageEvent;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   ngOnInit(): void {
     this.checkPermissions();
   }

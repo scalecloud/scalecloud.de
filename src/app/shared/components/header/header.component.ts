@@ -19,12 +19,7 @@ export class HeaderComponent implements OnInit {
 
   @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
   isLoading = true;
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
+  
   ngOnInit() {
     this.authService.getUserObservable().subscribe({
       next: () => {

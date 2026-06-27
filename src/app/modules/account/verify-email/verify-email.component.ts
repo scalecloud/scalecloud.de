@@ -25,11 +25,6 @@ export class VerifyEmailComponent implements OnInit {
 
   isProceedToCheckoutLoading = false;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   ngOnInit(): void {
     this.disableButtonForSeconds();
   }

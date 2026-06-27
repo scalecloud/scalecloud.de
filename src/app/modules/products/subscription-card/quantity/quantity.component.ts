@@ -15,14 +15,7 @@ export class QuantityComponent implements OnInit {
   private readonly snackBarService = inject(SnackBarService);
   private readonly route = inject(ActivatedRoute);
 
-
   quantityValidator = new UntypedFormControl(1, [Validators.required, Validators.min(1)]);
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
 
   ngOnInit(): void {
     this.setQuantity(this.getParamMapQuantity());

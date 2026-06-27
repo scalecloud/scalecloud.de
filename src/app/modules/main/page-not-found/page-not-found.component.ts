@@ -16,12 +16,6 @@ export class PageNotFoundComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly logService = inject(LogService);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-
-  constructor() {}
-
   ngOnInit(): void {
     this.logService.error('Page not found: ' + this.router.url);
   }

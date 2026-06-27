@@ -27,11 +27,6 @@ export class CheckoutComponent {
   @ViewChild(CheckoutDetailsComponent) checkoutDetailsComponent: CheckoutDetailsComponent | undefined;
   productID: string | undefined;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): void {
     this.authService.waitForAuth().then(() => {
       const errorMessage = "Could not create Subscription. Please try again.";

@@ -43,9 +43,6 @@ export class NewsletterSubscribeComponent {
   readonly email = new FormControl('', [Validators.required, Validators.email]);
   errorMessage = signal('');
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     merge(this.email.statusChanges, this.email.valueChanges)
       .pipe(takeUntilDestroyed())

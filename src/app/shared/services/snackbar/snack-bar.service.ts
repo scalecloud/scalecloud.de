@@ -11,13 +11,7 @@ export class SnackBarService {
   private readonly zone = inject(NgZone);
   private readonly logService = inject(LogService);
 
-
   private readonly defaultDuration = 8;
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
 
   info(message: string) {
     this.infoDuration(message, this.defaultDuration);

@@ -17,11 +17,6 @@ export class SubscriptionOverviewService {
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/subscriptions`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   getSubscriptionsOverview(): Observable<ISubscriptionOverview[]> {
     return this.http.get<ISubscriptionOverview[]>(this.url, this.authService.getHttpOptions());
   }

@@ -19,11 +19,6 @@ export class NewsletterService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   subscribeToNewsletter(request: NewsletterSubscribeRequest): Observable<NewsletterSubscribeReply> {
     return this.http.post<NewsletterSubscribeReply>(this.urlSubscribe, request, this.httpOptions);
   }

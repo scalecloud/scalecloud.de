@@ -38,11 +38,6 @@ export class SubscriptionDetailCardComponent implements OnInit {
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Initializing;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   ngOnInit(): void {
     this.checkPermissions();
   }

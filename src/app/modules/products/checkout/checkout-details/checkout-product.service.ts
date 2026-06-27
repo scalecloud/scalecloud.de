@@ -15,11 +15,6 @@ export class CheckoutProductService {
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/checkout-integration/get-checkout-product`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   getCheckoutProduct(checkoutProductRequest: CheckoutProductRequest): Observable<CheckoutProductReply> {
     return this.http.post<CheckoutProductReply>(this.url, checkoutProductRequest, this.authService.getHttpOptions());
   }

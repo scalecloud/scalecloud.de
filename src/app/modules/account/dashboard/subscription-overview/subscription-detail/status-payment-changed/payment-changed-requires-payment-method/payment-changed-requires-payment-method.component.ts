@@ -16,12 +16,6 @@ import { MatButton } from '@angular/material/button';
 export class PaymentChangedRequiresPaymentMethodComponent {
   private readonly returnUrlService = inject(ReturnUrlService);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-
-  constructor() { }
-
   openChangePayment(): void {
     this.returnUrlService.openUrlKeepReturnUrl("/change-payment");
   }

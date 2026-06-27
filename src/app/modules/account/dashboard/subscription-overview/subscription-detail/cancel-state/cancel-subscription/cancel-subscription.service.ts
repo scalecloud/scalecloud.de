@@ -16,11 +16,6 @@ export class CancelSubscriptionService {
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/cancel-subscription`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   cancelSubscription(iSubscriptionCancelRequest: ISubscriptionCancelRequest): Observable<ISubscriptionCancelReply> {
     return this.http.post<ISubscriptionCancelReply>(this.url, iSubscriptionCancelRequest, this.authService.getHttpOptions());
   }

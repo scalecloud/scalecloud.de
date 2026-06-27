@@ -15,11 +15,6 @@ export class SeatsService {
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/subscription/list-seats`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   getListSeats(listSeatRequest: ListSeatRequest): Observable<ListSeatReply> {
     return this.http.post<ListSeatReply>(this.url, listSeatRequest, this.authService.getHttpOptions());
   }

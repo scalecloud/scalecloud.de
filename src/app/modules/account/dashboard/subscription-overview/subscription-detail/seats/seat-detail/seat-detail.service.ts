@@ -17,10 +17,6 @@ export class SeatDetailService {
   private readonly urlUpdateSeatDetail = `${this.apiUrl}/dashboard/subscription/update-seat`;
   private readonly urlDeleteSeat = `${this.apiUrl}/dashboard/subscription/delete-seat`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-  constructor() { }
-
   getSeat(seatDetailRequest: SeatDetailRequest): Observable<SeatDetailReply> {
     return this.http.post<SeatDetailReply>(this.urlGetSeat, seatDetailRequest, this.authService.getHttpOptions());
   }

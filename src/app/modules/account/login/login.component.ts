@@ -25,11 +25,6 @@ export class LoginComponent {
   email = new UntypedFormControl('', [Validators.required, Validators.email]);
   password = new UntypedFormControl('', [Validators.required]);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   login(): void {
     if (this.isEmailInvalid() || this.isPasswordInvalid()) {
       this.logService.warn("Invalid inputs in Login.");

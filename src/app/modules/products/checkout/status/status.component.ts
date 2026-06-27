@@ -27,11 +27,6 @@ export class StatusComponent implements OnInit {
   active: boolean = false;
   trialing: boolean = false;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   ngOnInit(): void {
     this.checkPaymentIntentStatus();
   }

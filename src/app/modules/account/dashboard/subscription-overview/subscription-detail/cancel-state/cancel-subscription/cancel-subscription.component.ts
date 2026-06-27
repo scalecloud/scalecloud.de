@@ -28,11 +28,6 @@ export class CancelSubscriptionComponent {
 
   @Output() reloadSubscriptionDetail = new EventEmitter<void>();
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   openConfirmDialog(): void {
     const dialogRef = this.dialog.open(ConfirmCancelSubscriptionComponent);
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {

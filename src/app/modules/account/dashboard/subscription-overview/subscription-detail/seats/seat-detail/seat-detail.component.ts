@@ -45,11 +45,6 @@ export class SeatDetailComponent {
   roleDescriptions = RoleDescriptions;
   Roles = Role;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   ngOnInit(): void {
     this.getSeatDetail();
   }

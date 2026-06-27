@@ -21,9 +21,6 @@ export class AuthService {
   private user: User | null | undefined = undefined;
   private token: string | null | undefined = undefined;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     this.subscribeToUser();
     this.subscribeToToken();

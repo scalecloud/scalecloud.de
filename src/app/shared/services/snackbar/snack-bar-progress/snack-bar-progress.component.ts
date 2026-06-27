@@ -16,11 +16,6 @@ export class SnackBarProgressComponent implements OnInit {
   progress = 100;
   private currentIntervalId: any;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() {}
-
   ngOnInit() {
     this.snackBarRef.afterOpened().subscribe(
       () => {

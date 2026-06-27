@@ -32,11 +32,6 @@ export class StripePaymentElementComponent {
   elements: any;
   initStripePayment: InitStripePayment | undefined;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   initPaymentElement(initStripePayment: InitStripePayment): void {
     // Your Stripe public key
     const publicKey = this.stripeKeyService.getPublicKey();

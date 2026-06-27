@@ -26,11 +26,6 @@ export class PermissionService {
   private readonly cacheDuration = 60000; // 1 minute in milliseconds
   loadingPermissions: WritableSignal<boolean> = signal(false);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   async isOwner(subscriptionID: string): Promise<boolean> {
     return this.hasPermission(subscriptionID, Role.Owner);
   }

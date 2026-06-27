@@ -13,13 +13,7 @@ export class ReturnUrlService {
   private readonly document = inject<Document>(DOCUMENT);
   private readonly location = inject(Location);
 
-
   private readonly baseURL: string = 'https://www.scalecloud.de';
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
 
   public openUrlKeepReturnUrl(url: string) {
     const returnURL = this.route.snapshot.queryParamMap.get('returnUrl');

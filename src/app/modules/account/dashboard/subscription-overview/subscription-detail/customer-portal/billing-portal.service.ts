@@ -15,11 +15,6 @@ export class BillingPortalService {
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/billing-portal`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   getBillingPortal(): Observable<IBillingPortal> {
     return this.http.get<IBillingPortal>(this.url, this.authService.getHttpOptions());
   }

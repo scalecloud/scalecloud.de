@@ -23,9 +23,6 @@ export class DefaultComponent {
   showSubSubMenu: boolean = false;
   isLoading: Signal<boolean>;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     this.isLoading = this.permissionService.loadingPermissions;
   }

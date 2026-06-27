@@ -16,12 +16,6 @@ import { NewsletterSubscribeComponent } from '../../../shared/components/newslet
 export class HomeComponent implements OnInit {
   snackBarService = inject(SnackBarService);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-
-  constructor() { }
-
   ngOnInit(): void {
     this.snackBarService.errorDuration("This Website is currently under construction. Please come back later.", 30);
   }

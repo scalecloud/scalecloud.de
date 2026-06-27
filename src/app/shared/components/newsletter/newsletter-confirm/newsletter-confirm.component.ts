@@ -40,11 +40,6 @@ export class NewsletterConfirmComponent implements OnInit {
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Loading;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   ngOnInit(): void {
     this.confirmNewsletter();
   }

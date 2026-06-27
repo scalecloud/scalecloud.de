@@ -18,12 +18,6 @@ export class ProductService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
-
   getProductTiers(productType: ProductType): Observable<ProductTiersReply> {
     return this.http.get<ProductTiersReply>(this.url + "/" + productType.toString().toLowerCase(), this.httpOptions);
   }

@@ -39,11 +39,6 @@ export class AddSeatComponent {
   Roles = Role;
   selectedRoles: Role[] = [];
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   addSeat(): void {
     this.authService.waitForAuth().then(() => {
 

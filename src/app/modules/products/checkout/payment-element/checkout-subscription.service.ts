@@ -15,11 +15,6 @@ export class CheckoutSubscriptionService {
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/checkout-integration/create-checkout-subscription`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): Observable<CheckoutCreateSubscriptionReply> {
     return this.http.post<CheckoutCreateSubscriptionReply>(this.url, checkoutIntegrationRequest, this.authService.getHttpOptions());
   }

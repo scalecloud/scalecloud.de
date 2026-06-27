@@ -15,10 +15,6 @@ export class AddSeatService {
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/subscription/add-seat`;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-  constructor() { }
-
   addSeat(addSeatRequest: AddSeatRequest): Observable<AddSeatReply> {
     return this.http.post<AddSeatReply>(this.url, addSeatRequest, this.authService.getHttpOptions());
   }

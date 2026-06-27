@@ -16,12 +16,6 @@ import { MatButton } from '@angular/material/button';
 export class PaymentChangedSucceededComponent {
   private readonly returnUrlService = inject(ReturnUrlService);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-
-  constructor() { }
-
   openReturnUrl(): void {
     this.returnUrlService.openReturnURL("/dashboard");
   }

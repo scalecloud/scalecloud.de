@@ -23,12 +23,7 @@ export class ForgotPasswordComponent {
   clicked = false;
   defaultDisabledSecounds = 60;
   secounds = 0;
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
+  
   async forgotPassword(): Promise<void> {
     if (this.isEmailInvalid()) {
       this.snackBarService.error("Please enter a valid E-Mail address");

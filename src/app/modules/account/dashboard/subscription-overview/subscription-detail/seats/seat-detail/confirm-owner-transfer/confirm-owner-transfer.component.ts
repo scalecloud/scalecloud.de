@@ -16,12 +16,6 @@ export class ConfirmOwnerTransferComponent {
     email: string;
 }>(MAT_DIALOG_DATA);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-
-  constructor() {}
-
   onNoClick(): void {
     this.dialogRef.close();
   }

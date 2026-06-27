@@ -20,12 +20,6 @@ export class BillingPortalComponent {
   private readonly billingPortalService = inject(BillingPortalService);
   private readonly logService = inject(LogService);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-
-  constructor() { }
-
   openBillingPortal(): void {
     this.billingPortalService.getBillingPortal()
       .subscribe((billingPortal) => {

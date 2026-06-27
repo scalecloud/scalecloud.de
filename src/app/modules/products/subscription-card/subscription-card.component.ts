@@ -27,11 +27,6 @@ export class SubscriptionCardComponent {
 
   @ViewChild(QuantityComponent) quantityComponent: QuantityComponent | undefined;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   openCheckoutIntegration(): void {
     const productID = this.getProductID();
     const quantity = this.getQuantity();

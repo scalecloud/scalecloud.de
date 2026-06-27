@@ -27,11 +27,6 @@ export class ChangePaymentComponent {
   @ViewChild(StripePaymentElementComponent) stripePaymentElementComponent: StripePaymentElementComponent | undefined;
   subscriptionSetupIntentReply: ChangePaymentReply | undefined;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() { }
-
   ngOnInit(): void {
     this.getChangePaymentSetupIntent();
   }
