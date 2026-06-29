@@ -5,18 +5,16 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { API_URL } from 'src/app/core/config/api.token';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class SubscriptionDetailCardService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
-
-  private readonly apiUrl = inject(API_URL);
-  private readonly url = `${this.apiUrl}/dashboard/subscription`;
+  private readonly baseUrl = `${inject(API_URL)}/dashboard/subscription`;
 
   getSubscriptionDetail(id: string): Observable<SubscriptionDetailReply> {
-    const url = `${this.url}/${id}`;
-    return this.http.get<SubscriptionDetailReply>(url, this.authService.getHttpOptions());
+    return this.http.get<SubscriptionDetailReply>(
+      `${this.baseUrl}/${id}`,
+      this.authService.getHttpOptions(),
+    );
   }
 }
