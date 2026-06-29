@@ -1,5 +1,29 @@
+@let q = quantity();
+
 <div class="quantity-container">
-    <button type="button" (click)="decrement()" [disabled]="quantityValidator.value <= 1">-</button>
-    <input matInput id="quantity-input" aria-label="Quantity" type="number" min="1" max="999" required [formControl]="quantityValidator">
-    <button type="button" (click)="increment()" [disabled]="quantityValidator.value >= 999">+</button>
+    <button
+        type="button"
+        aria-label="Decrease quantity"
+        (click)="decrement()"
+        [disabled]="q <= min">
+        &minus;
+    </button>
+
+    <input
+        matInput
+        id="quantity-input"
+        aria-label="Quantity"
+        type="number"
+        [attr.min]="min"
+        [attr.max]="max"
+        required
+        [formControl]="quantityControl">
+
+    <button
+        type="button"
+        aria-label="Increase quantity"
+        (click)="increment()"
+        [disabled]="q >= max">
+        +
+    </button>
 </div>
