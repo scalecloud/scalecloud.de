@@ -1,15 +1,15 @@
 <div>
-  @if (succeeded) {
+  @if (succeeded()) {
     <div>
       <app-payment-changed-succeeded></app-payment-changed-succeeded>
     </div>
   }
-  @if (processing) {
+  @if (processing()) {
     <div>
       <app-payment-changed-processing></app-payment-changed-processing>
     </div>
   }
-  @if (requires_payment_method) {
+  @if (requires_payment_method()) {
     <div>
       <app-payment-changed-requires-payment-method></app-payment-changed-requires-payment-method>
     </div>

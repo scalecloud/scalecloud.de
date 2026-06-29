@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -13,26 +13,28 @@ declare const Stripe: any;
     selector: 'app-status-payment-changed',
     templateUrl: './status-payment-changed.component.html',
     styleUrls: ['./status-payment-changed.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [PaymentChangedSucceededComponent, PaymentChangedProcessingComponent, PaymentChangedRequiresPaymentMethodComponent]
 })
-export class StatusPaymentChangedComponent implements OnInit  {
+export class StatusPaymentChangedComponent implements OnInit {
   private readonly logService = inject(LogService);
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
   private readonly stripeKeyService = inject(StripeKeyService);
 
-
   setup_intent: string | undefined;
   setup_intent_client_secret: string | undefined;
   redirect_status: string | undefined;
 
-  message = "Loading...";
+  message = 'Loading...';
 
-  loading = true;
-  succeeded = false;
-  processing = false;
-  requires_payment_method = false;
+  // These drive the template, and are updated from inside promise callbacks
+  // (waitForAuth / retrieveSetupIntent). Under zoneless change detection,
+  // plain field mutations inside .then() are invisible to Angular, so these
+  // must be signals to trigger a view update when they change.
+  loading = signal(true);
+  succeeded = signal(false);
+  processing = signal(false);
+  requires_payment_method = signal(false);
 
   ngOnInit(): void {
     this.checkPaymentIntentStatus();
@@ -40,24 +42,9 @@ export class StatusPaymentChangedComponent implements OnInit  {
 
   initParamMap(): void {
     const queryParamMap = this.route.snapshot.queryParamMap;
-    if (queryParamMap.has('setup_intent')) {
-      const setup_intent = queryParamMap.get('setup_intent');
-      if (setup_intent) {
-        this.setup_intent = setup_intent;
-      }
-    }
-    if (queryParamMap.has('setup_intent_client_secret')) {
-      const setup_intent_client_secret = queryParamMap.get('setup_intent_client_secret');
-      if (setup_intent_client_secret) {
-        this.setup_intent_client_secret = setup_intent_client_secret;
-      }
-    }
-    if (queryParamMap.has('redirect_status')) {
-      const redirect_status = queryParamMap.get('redirect_status');
-      if (redirect_status) {
-        this.redirect_status = redirect_status;
-      }
-    }
+    this.setup_intent = queryParamMap.get('setup_intent') ?? undefined;
+    this.setup_intent_client_secret = queryParamMap.get('setup_intent_client_secret') ?? undefined;
+    this.redirect_status = queryParamMap.get('redirect_status') ?? undefined;
   }
 
   checkPaymentIntentStatus(): void {
@@ -65,12 +52,11 @@ export class StatusPaymentChangedComponent implements OnInit  {
       // Your Stripe public key
       const publicKey = this.stripeKeyService.getPublicKey();
       if (publicKey == undefined) {
-        this.logService.error("Cannot display status because publicKey is undefined.")
+        this.logService.error('Cannot display status because publicKey is undefined.');
       }
       else {
         // Initialize Stripe.js using your publishable key
         const stripe = Stripe(publicKey);
-
 
         // Retrieve the "payment_intent_client_secret" query parameter appended to
         // your return_url by Stripe.js
@@ -78,13 +64,13 @@ export class StatusPaymentChangedComponent implements OnInit  {
 
         // Check if param is defined
         if (this.setup_intent_client_secret == undefined) {
-          this.logService.error("Cannot display status because setup_intent_client_secret is undefined.")
+          this.logService.error('Cannot display status because setup_intent_client_secret is undefined.');
         }
         else if (this.setup_intent == undefined) {
-          this.logService.error("Cannot display status because setup_intent is undefined.")
+          this.logService.error('Cannot display status because setup_intent is undefined.');
         }
         else if (this.redirect_status == undefined) {
-          this.logService.error("Cannot display status because redirect_status is undefined.")
+          this.logService.error('Cannot display status because redirect_status is undefined.');
         }
         else {
           // Retrieve the SetupIntent
@@ -96,24 +82,23 @@ export class StatusPaymentChangedComponent implements OnInit  {
             // confirmation, while others will first enter a `processing` state.
             //
             // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
-            //this.setupIntent = setupIntent;
-            this.loading = false;
+            this.loading.set(false);
             switch (setupIntent.status) {
               case 'succeeded': {
-                this.logService.info("Success! Your payment method has been saved.")
-                this.succeeded = true;
+                this.logService.info('Success! Your payment method has been saved.');
+                this.succeeded.set(true);
                 break;
               }
 
               case 'processing': {
-                this.logService.warn("Processing payment details. We'll update you when processing is complete.")
-                this.processing = true;
+                this.logService.warn("Processing payment details. We'll update you when processing is complete.");
+                this.processing.set(true);
                 break;
               }
 
               case 'requires_payment_method': {
-                this.logService.error("Failed to process payment details. Please try another payment method.")
-                this.requires_payment_method = true;
+                this.logService.error('Failed to process payment details. Please try another payment method.');
+                this.requires_payment_method.set(true);
 
                 // Redirect your user back to your payment page to attempt collecting
                 // payment again
@@ -123,11 +108,9 @@ export class StatusPaymentChangedComponent implements OnInit  {
             }
           });
         }
-
       }
     }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
+      this.logService.error('waitForAuth failed: ' + error);
     });
   }
 }
-
