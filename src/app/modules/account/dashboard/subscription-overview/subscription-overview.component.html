@@ -4,33 +4,45 @@
             <mat-card-title>
                 {{ subscriptionOverview()?.productName }}
             </mat-card-title>
-            <mat-card-subtitle>{{ subscriptionOverview()?.productType }}</mat-card-subtitle>
+            <mat-card-subtitle class="subtitle-row">
+                <span>{{ subscriptionOverview()?.productType }}</span>
+                @if (subscriptionOverview()?.active) {
+                    <mat-chip class="chip chip--active" disableRipple>Active</mat-chip>
+                } @else if (subscriptionOverview() !== undefined) {
+                    <mat-chip class="chip chip--inactive" disableRipple>Inactive</mat-chip>
+                }
+            </mat-card-subtitle>
             <mat-divider></mat-divider>
             <mat-card-content>
                 <mat-list>
                     <mat-list-item matTooltip="ID of the subscription.">
                         <div class="icon-text">
-                            <mat-icon>numbers</mat-icon>
-                            {{ subscriptionOverview()?.id }}
+                            <mat-icon aria-hidden="true">numbers</mat-icon>
+                            <span>{{ subscriptionOverview()?.id }}</span>
                         </div>
                     </mat-list-item>
-                    <mat-list-item matTooltip="Total amount of storage available in the subscription.">
+                    <mat-list-item matTooltip="Total storage available across all users.">
                         <div class="icon-text">
-                            <mat-icon>cloud</mat-icon>
-                            Storage: {{ totalStorageAmount }} TB
+                            <mat-icon aria-hidden="true">cloud</mat-icon>
+                            <span>Storage: {{ totalStorageAmount() }} TB</span>
                         </div>
                     </mat-list-item>
-                    <mat-list-item matTooltip="Total amount of users available in the subscription.">
+                    <mat-list-item matTooltip="Total number of users in the subscription.">
                         <div class="icon-text">
-                            <mat-icon>person</mat-icon>
-                            Users: {{ subscriptionOverview()?.userCount }}
+                            <mat-icon aria-hidden="true">person</mat-icon>
+                            <span>Users: {{ subscriptionOverview()?.userCount }}</span>
                         </div>
                     </mat-list-item>
                 </mat-list>
             </mat-card-content>
             <mat-card-actions>
-                <button [routerLink]="['/dashboard/subscription', subscriptionOverview()?.id]"
-                    mat-stroked-button color="primary">DETAILS</button>
+                <button
+                    [routerLink]="['/dashboard/subscription', subscriptionOverview()?.id]"
+                    mat-stroked-button
+                    color="primary"
+                    aria-label="View subscription details">
+                    Details
+                </button>
             </mat-card-actions>
         </mat-card>
     </div>

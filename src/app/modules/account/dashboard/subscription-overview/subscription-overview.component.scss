@@ -1,28 +1,55 @@
+:host {
+    --card-title-size:   2rem;
+    --card-title-py:     0.5rem;
+    --icon-gap:          0.75rem;
+}
+
+.flex-container {
+    display:         flex;
+    flex-wrap:       wrap;
+    justify-content: center;
+}
+
 mat-card {
     text-align: center;
 }
 
 mat-card-title {
-    font-size: 2rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    font-size:      var(--card-title-size);
+    padding-block:  var(--card-title-py);
 }
 
-mat-icon {
-    padding-right: 1rem;
-}
-
-button {
-    font-size: 1.2rem;
-    width: 100%;
+.subtitle-row {
+    display:     flex;
+    align-items: center;
+    justify-content: center;
+    gap:         0.5rem;
 }
 
 .icon-text {
-    display: flex;
+    display:     flex;
+    align-items: center;
+    gap:         var(--icon-gap);
 }
 
-.flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.chip {
+    font-size:     0.7rem;
+    min-height:    1.25rem;
+    padding-inline: 0.5rem;
+    pointer-events: none;
+
+    &--active {
+        background-color: #e6f4ea;
+        color:            #1e7e34;
+    }
+
+    &--inactive {
+        background-color: #fce8e6;
+        color:            #c5221f;
+    }
+}
+
+button[mat-stroked-button] {
+    font-size: 1.2rem;
+    width:     100%;
 }
