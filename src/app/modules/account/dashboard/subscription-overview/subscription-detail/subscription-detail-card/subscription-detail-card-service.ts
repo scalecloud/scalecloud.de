@@ -8,7 +8,7 @@ import { API_URL } from 'src/app/core/config/api.token';
 @Injectable({
   providedIn: 'root'
 })
-export class SubscriptionDetailCardServiceService {
+export class SubscriptionDetailCardService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
 

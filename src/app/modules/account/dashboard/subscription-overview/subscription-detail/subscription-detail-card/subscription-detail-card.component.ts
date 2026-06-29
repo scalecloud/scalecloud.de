@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
-import { SubscriptionDetailCardServiceService } from './subscription-detail-card-service.service';
+import { SubscriptionDetailCardService } from './subscription-detail-card-service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
@@ -28,7 +28,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 export class SubscriptionDetailCardComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly permissionService = inject(PermissionService);
-  private readonly subscriptionDetailCardServiceService = inject(SubscriptionDetailCardServiceService);
+  private readonly subscriptionDetailCardService = inject(SubscriptionDetailCardService);
   private readonly route = inject(ActivatedRoute);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
@@ -64,6 +64,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
       this.snackBarService.error('An error occurred while checking permissions.');
+      this.logService.error('SeatsComponent.checkPermissions: error checking permissions', error);
     }
   }
 
@@ -74,7 +75,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
       if (subscriptionID == null) {
         this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
       } else {
-        this.subscriptionDetailCardServiceService.getSubscriptionDetail(subscriptionID)
+        this.subscriptionDetailCardService.getSubscriptionDetail(subscriptionID)
           .subscribe({
             next: subscriptionDetail => {
               this.reply = subscriptionDetail;

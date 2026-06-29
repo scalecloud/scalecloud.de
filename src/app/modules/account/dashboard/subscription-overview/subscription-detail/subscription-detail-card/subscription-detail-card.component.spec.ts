@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { SubscriptionDetailCardComponent } from './subscription-detail-card.component';
-import { SubscriptionDetailCardServiceService } from './subscription-detail-card-service.service';
+import { SubscriptionDetailCardService } from './subscription-detail-card-service';
 import { CancelStateComponent } from '../cancel-state/cancel-state.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
@@ -122,7 +122,7 @@ describe('SubscriptionDetailCardComponent', () => {
         { provide: ActivatedRoute, useValue: makeActivatedRoute(subscriptionID) },
         { provide: AuthService, useValue: authService },
         { provide: PermissionService, useValue: permissionService },
-        { provide: SubscriptionDetailCardServiceService, useValue: subscriptionService },
+        { provide: SubscriptionDetailCardService, useValue: subscriptionService },
         { provide: LogService, useValue: logService },
         { provide: SnackBarService, useValue: snackBarService },
       ],
