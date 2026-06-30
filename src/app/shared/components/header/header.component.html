@@ -8,7 +8,7 @@
       ScaleCloud.de
     </button>
     <span class="fill-remaining-space"></span>
-    @if(isLoading) {
+    @if(isLoading()) {
       <mat-spinner class="auth-loading" diameter="30"></mat-spinner>
     } @else {
       @if (authService.getUser()) {
