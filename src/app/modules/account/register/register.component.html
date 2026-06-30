@@ -16,13 +16,13 @@
         <mat-form-field appearance="fill">
           <mat-label id="register-email-label">E-Mail:</mat-label>
           <input type="email" id="register-email" formControlName="email" class="form-control"
-            [class.is-invalid]="submitted && f.email.errors" matInput placeholder="E-Mail" aria-labelledby="register-email-label" required>
-            @if (submitted && f.email.errors) {
+            [class.is-invalid]="emailErrors()" matInput placeholder="E-Mail" aria-labelledby="register-email-label" required>
+            @if (emailErrors(); as errors) {
               <div class="invalid-feedback">
-                @if (f.email.errors.required) {
+                @if (errors['required']) {
                   <mat-error>{{getErrorMessageEMailRequired()}}</mat-error>
                 }
-                @if (f.email.errors.email) {
+                @if (errors['email']) {
                   <mat-error>{{getErrorMessageEMailNotValid()}}</mat-error>
                 }
               </div>
@@ -30,48 +30,48 @@
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label id="register-password-label">Password:</mat-label>
-            <input type="password" id="register-password" #password formControlName="password" class="form-control"
-              [class.is-invalid]="submitted && f.password.errors" matInput placeholder="Password" name="password"
+            <input type="password" id="register-password" formControlName="password" class="form-control"
+              [class.is-invalid]="passwordErrors()" matInput placeholder="Password" name="password"
               aria-labelledby="register-password-label" required>
-              @if (submitted && f.password.errors) {
+              @if (passwordErrors(); as errors) {
                 <div class="invalid-feedback">
-                  @if (f.password.errors.required) {
+                  @if (errors['required']) {
                     <mat-error>{{getErrorMessagePasswordRequired()}}</mat-error>
                   }
-                  @if (f.password.errors.minlength) {
+                  @if (errors['minlength']) {
                     <mat-error>{{getErrorMessagePasswordMinLength()}}</mat-error>
                   }
                 </div>
               }
             </mat-form-field>
             <app-password-strength class="passwordStrength" #passwordStrength
-            [password]="password.value"></app-password-strength>
+            [password]="form.controls.password.value"></app-password-strength>
             <div class="space"></div>
             <mat-form-field appearance="fill">
               <mat-label id="register-confirm-password-label">Confirm password:</mat-label>
-              <input type="password" id="register-confirm-password" #confirmPassword formControlName="confirmPassword" class="form-control"
-                [class.is-invalid]="submitted && f.confirmPassword.errors" matInput placeholder="Confirm password"
+              <input type="password" id="register-confirm-password" formControlName="confirmPassword" class="form-control"
+                [class.is-invalid]="confirmPasswordErrors()" matInput placeholder="Confirm password"
                 name="password" aria-labelledby="register-confirm-password-label" required>
-                @if (submitted && f.confirmPassword.errors) {
+                @if (confirmPasswordErrors(); as errors) {
                   <div class="invalid-feedback">
-                    @if (f.confirmPassword.errors.required) {
+                    @if (errors['required']) {
                       <mat-error>{{getErrorMessagePasswordConfirmRequired()}}
                       </mat-error>
                     }
-                    @if (f.confirmPassword.errors.matching) {
+                    @if (errors['matching']) {
                       <mat-error>{{getErrorMessagePasswordConfirmMatch()}}
                       </mat-error>
                     }
                   </div>
                 }
               </mat-form-field>
-              <app-password-match #passwordMatch [password]="password.value" [confirmPassword]="confirmPassword.value">
+              <app-password-match #passwordMatch [password]="form.controls.password.value" [confirmPassword]="form.controls.confirmPassword.value">
               </app-password-match>
               <div class="space"></div>
               <input type="checkbox" id="acceptTerms" formControlName="acceptTerms" class="form-check-input"
-                [class.is-invalid]="submitted && f.acceptTerms.errors" />
+                [class.is-invalid]="acceptTermsErrors()" />
                 <label for="acceptTerms" class="form-check-label">I have read and agree to the Terms</label>
-                @if (submitted && f.acceptTerms.errors) {
+                @if (acceptTermsErrors()) {
                   <div class="invalid-feedback">
                     <span class="terms">Accept Terms is required</span>
                   </div>

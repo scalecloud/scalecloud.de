@@ -1,5 +1,10 @@
-import { Component, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, computed } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+
+export interface PasswordStrengthCheck {
+  readonly passed: boolean;
+  readonly message: string;
+}
 
 @Component({
     selector: 'app-password-strength',
@@ -9,79 +14,27 @@ import { MatIcon } from '@angular/material/icon';
     imports: [MatIcon]
 })
 export class PasswordStrengthComponent {
-
   readonly password = input<string | undefined>(undefined);
 
-  containsLower(): boolean {
-    let lower = false;
-    if( this.password != undefined) {
-      const regex = /[a-z]/
-      lower = regex.test(this.password())
-    }
-    return lower;
-  }
+  readonly containsLower = computed(() => /[a-z]/.test(this.password() ?? ''));
+  readonly containsUpper = computed(() => /[A-Z]/.test(this.password() ?? ''));
+  readonly containsDigit = computed(() => /\d/.test(this.password() ?? ''));
+  readonly containsSpecial = computed(() => /[\W_]/.test(this.password() ?? ''));
+  readonly isLength = computed(() => (this.password() ?? '').length >= 8);
 
-  getMessageLower(): string {
-    return "Contains at least one lower character.";
-  }
-
-  containsUpper(): boolean {
-    let upper = false;
-    if( this.password != undefined) {
-      const regex = /[A-Z]/
-      upper = regex.test(this.password())
-    }
-    return upper;
-  }
-
-  getMessageUpper(): string {
-    return "Contains at least one upper character.";
-  }
-
-  containsDigit(): boolean {
-    let digit = false;
-    if( this.password != undefined) {
-      const regex = /\d/
-      digit = regex.test(this.password())
-    }
-    return digit;
-  }
-
-  getMessageDigit(): string {
-    return "Contains at least one digit character.";
-  }
-
-  containsSpecial(): boolean {
-    let special = false;
-    if( this.password != undefined) {
-      const regex = /\W|_/g
-      special = regex.test(this.password())
-    }
-    return special;
-  }
-
-  getMessageSpecial(): string {
-    return "Contains at least one special character.";
-  }
-
-  isLength(): boolean {
-    let length = false;
-    if( this.password != undefined ) {
-      length = this.password().length >= 8
-    }
-    return length;
-  }
-
-  getMessageLength(): string {
-    return "Password is at least 8 characters long.";
-  }
-
-  isPasswordStrength(): boolean {
-    return this.containsLower() 
+  readonly isPasswordStrength = computed(() =>
+    this.containsLower()
     && this.containsUpper()
     && this.containsDigit()
     && this.containsSpecial()
-    && this.isLength();
-  }
+    && this.isLength()
+  );
 
+  readonly checks = computed<readonly PasswordStrengthCheck[]>(() => [
+    { passed: this.containsLower(), message: 'Contains at least one lower character.' },
+    { passed: this.containsUpper(), message: 'Contains at least one upper character.' },
+    { passed: this.containsDigit(), message: 'Contains at least one digit character.' },
+    { passed: this.containsSpecial(), message: 'Contains at least one special character.' },
+    { passed: this.isLength(), message: 'Password is at least 8 characters long.' },
+  ]);
 }
