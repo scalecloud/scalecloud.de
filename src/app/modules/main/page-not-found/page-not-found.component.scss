@@ -1,3 +1,8 @@
+.page-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 mat-card {
     text-align: center;
     width: 30rem;
