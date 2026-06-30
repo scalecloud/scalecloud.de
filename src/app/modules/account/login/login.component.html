@@ -14,15 +14,15 @@
     <mat-form-field appearance="fill">
       <mat-label id="login-email-label">E-Mail:</mat-label>
       <input type="email" matInput id="login-email" placeholder="E-Mail" aria-labelledby="login-email-label" [formControl]="email" required>
-      @if (email.invalid) {
-        <mat-error>{{getErrorMessageEMail()}}</mat-error>
+      @if (emailInvalid()) {
+        <mat-error>{{ emailErrorMessage() }}</mat-error>
       }
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label id="login-password-label">Password:</mat-label>
       <input type="password" matInput id="login-password" placeholder="Password" aria-labelledby="login-password-label" [formControl]="password" required>
-      @if (password.invalid) {
-        <mat-error>{{getErrorMessagePassword()}}</mat-error>
+      @if (passwordInvalid()) {
+        <mat-error>{{ passwordErrorMessage() }}</mat-error>
       }
     </mat-form-field>
     <div class="flex-container">

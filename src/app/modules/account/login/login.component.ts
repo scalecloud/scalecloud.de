@@ -1,5 +1,7 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, ChangeDetectionStrategy, inject, computed, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { startWith } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
@@ -22,45 +24,65 @@ export class LoginComponent {
   private readonly returnUrlService = inject(ReturnUrlService);
   private readonly logService = inject(LogService);
 
-  email = new UntypedFormControl('', [Validators.required, Validators.email]);
-  password = new UntypedFormControl('', [Validators.required]);
+  readonly email = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.email],
+  });
+  readonly password = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required],
+  });
+
+  // FormControl status isn't signal-based, so bridge statusChanges (which
+  // also fires on every value change that affects validity) into a signal.
+  private readonly emailStatus = toSignal(this.email.statusChanges.pipe(startWith(this.email.status)), {
+    initialValue: this.email.status,
+  });
+  private readonly passwordStatus = toSignal(this.password.statusChanges.pipe(startWith(this.password.status)), {
+    initialValue: this.password.status,
+  });
+
+  // Track submission attempts so error messages can appear even if a field
+  // was never individually touched/blurred (e.g. left empty and submitted).
+  private readonly submitted = signal(false);
+
+  readonly emailInvalid = computed(() => {
+    this.emailStatus();
+    return this.submitted() && (this.email.hasError('required') || this.email.hasError('email'));
+  });
+  readonly passwordInvalid = computed(() => {
+    this.passwordStatus();
+    return this.submitted() && this.password.hasError('required');
+  });
+
+  readonly emailErrorMessage = computed(() => {
+    if (!this.emailInvalid()) {
+      return '';
+    }
+    if (this.email.hasError('required')) {
+      return 'You must enter your E-Mail address';
+    }
+    return this.email.hasError('email') ? 'Not a valid E-Mail address' : '';
+  });
+
+  readonly passwordErrorMessage = computed(() => {
+    return this.passwordInvalid() ? 'You must enter your password' : '';
+  });
 
   login(): void {
-    if (this.isEmailInvalid() || this.isPasswordInvalid()) {
-      this.logService.warn("Invalid inputs in Login.");
-    }
-    else {
-      this.auth.login(this.email.value, this.password.value);
-    }
-  }
+    this.submitted.set(true);
 
-  isEmailInvalid(): boolean {
-    return this.email.hasError('required') || this.email.hasError('email');
-  }
-
-  isPasswordInvalid(): boolean {
-    return this.password.hasError('required');
-  }
-
-  getErrorMessageEMail() {
-    if (this.email.hasError('required')) {
-      return 'You must enter a your E-Mail address';
+    if (this.emailInvalid() || this.passwordInvalid()) {
+      this.email.markAsTouched();
+      this.password.markAsTouched();
+      this.logService.warn('Invalid inputs in Login.');
+      return;
     }
 
-    return this.email.hasError('email') ? 'Not a valid E-Mail address' : '';
+    this.auth.login(this.email.value, this.password.value);
   }
 
-  getErrorMessagePassword() {
-    let ret = "";
-    if (this.password.hasError('required')) {
-      ret = 'You must enter your password';
-    }
-    return ret;
-  }
-
-  openUrlKeepReturnUrl() {
+  openUrlKeepReturnUrl(): void {
     this.returnUrlService.openUrlKeepReturnUrl('/register');
   }
-
-
 }
