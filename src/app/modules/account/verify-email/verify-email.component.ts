@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
@@ -7,66 +7,77 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
+const RESEND_COOLDOWN_SECONDS = 30;
+
 @Component({
-    selector: 'app-verify-email',
-    templateUrl: './verify-email.component.html',
-    styleUrls: ['./verify-email.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardTitle, MatCardContent, MatButton, MatIcon, MatProgressSpinner]
+  selector: 'app-verify-email',
+  templateUrl: './verify-email.component.html',
+  styleUrls: ['./verify-email.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatCard, MatCardTitle, MatCardContent, MatButton, MatIcon, MatProgressSpinner],
 })
-export class VerifyEmailComponent implements OnInit {
+export class VerifyEmailComponent implements OnInit, OnDestroy {
   readonly authService = inject(AuthService);
   private readonly returnUrlService = inject(ReturnUrlService);
   private readonly snackBarService = inject(SnackBarService);
 
-  clicked = false;
-  defaultDisabledSecounds = 30;
-  secounds = 0;
+  private readonly secondsRemaining = signal(0);
+  readonly isResendDisabled = computed(() => this.secondsRemaining() > 0);
+  readonly resendButtonText = computed(() => {
+    const seconds = this.secondsRemaining();
+    return seconds > 0
+      ? `Resend Verification E-Mail (${seconds})`
+      : 'Resend Verification E-Mail';
+  });
 
-  isProceedToCheckoutLoading = false;
+  readonly isProceedToCheckoutLoading = signal(false);
+
+  private intervalId: ReturnType<typeof setInterval> | undefined;
 
   ngOnInit(): void {
-    this.disableButtonForSeconds();
+    this.startResendCooldown();
   }
 
-  sendVerificationMail() {
+  ngOnDestroy(): void {
+    this.clearCooldownInterval();
+  }
+
+  sendVerificationMail(): void {
     this.authService.sendVerificationMail();
-    this.disableButtonForSeconds();
+    this.startResendCooldown();
   }
 
-  getButtonText(): string {
-    let ret = "";
-    if (this.secounds > 0) {
-      ret = "Resend Verification E-Mail (" + this.secounds + ")";
+  async proceedToCheckout(): Promise<void> {
+    this.isProceedToCheckoutLoading.set(true);
+    try {
+      await this.authService.reloadUser();
+      if (await this.authService.isLoggedIn(true)) {
+        this.returnUrlService.openReturnURL('/');
+      } else {
+        this.snackBarService.error('Please verify your E-Mail address first.');
+      }
+    } finally {
+      this.isProceedToCheckoutLoading.set(false);
     }
-    else {
-      ret = "Resend Verification E-Mail";
-    }
-    return ret;
   }
 
-  disableButtonForSeconds() {
-    this.clicked = true;
-    this.secounds = this.defaultDisabledSecounds;
+  private startResendCooldown(): void {
+    this.clearCooldownInterval();
+    this.secondsRemaining.set(RESEND_COOLDOWN_SECONDS);
 
-    const interval = setInterval(() => {
-      this.secounds--;
-      if (this.secounds < 1) {
-        this.clicked = false;
-        clearInterval(interval);
+    this.intervalId = setInterval(() => {
+      const next = this.secondsRemaining() - 1;
+      this.secondsRemaining.set(Math.max(next, 0));
+      if (next < 1) {
+        this.clearCooldownInterval();
       }
     }, 1000);
   }
 
-  async proceedToCheckout() {
-    this.isProceedToCheckoutLoading = true;
-    await this.authService.reloadUser();
-    if (await this.authService.isLoggedIn(true)) {
-      this.returnUrlService.openReturnURL('/');
-    } else {
-      this.snackBarService.error("Please verify your E-Mail address first.");
+  private clearCooldownInterval(): void {
+    if (this.intervalId !== undefined) {
+      clearInterval(this.intervalId);
+      this.intervalId = undefined;
     }
-    this.isProceedToCheckoutLoading = false;
   }
-
 }
