@@ -1,5 +1,5 @@
 <mat-card>
-  @if (serviceStatus === ServiceStatus.Loading) {
+  @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
     <mat-card-title>
       <ngx-skeleton-loader [theme]="{height: '2rem', width: '50%'}" />
@@ -28,9 +28,9 @@
       </mat-list>
     </mat-card-content>
   }
-  @if (serviceStatus === ServiceStatus.Success) {
+  @if (serviceStatus() === ServiceStatus.Success) {
     <mat-card-title>
-      {{getName()}}
+      {{name()}}
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
@@ -38,7 +38,7 @@
         <mat-list-item>
           <div class="icon-text">
             <mat-icon>cloud</mat-icon>
-            {{getStorageAmount()}}{{getStorageUnit()}}
+            {{storageAmount()}}{{storageUnit()}}
           </div>
         </mat-list-item>
         <mat-list-item>
@@ -51,12 +51,12 @@
           <mat-list-item>
             <div class="icon-text">
               <mat-icon>event_available</mat-icon>
-              @if (getIsTrialIncluded()) {
-                {{getTrialDays()}}&nbsp;days trial*
+              @if (isTrialIncluded()) {
+                {{trialDays()}}&nbsp;days trial*
               } @else {
                 <div class="no-trial">
                   <s>
-                    {{getTrialDays()}}&nbsp;days trial*
+                    {{trialDays()}}&nbsp;days trial*
                   </s>
                 </div>
               }
@@ -76,14 +76,16 @@
       </mat-list>
     </mat-card-content>
     <mat-card-subtitle>
-      {{getPricePerMonth()}}<span class="price-month">/month</span>
+      @if (rawPricePerMonth() > 0) {
+        {{rawPricePerMonth() | currency: currency() : 'symbol' : '1.0-0'}}<span class="price-month">/month</span>
+      }
     </mat-card-subtitle>
     <mat-card-actions>
       <button (click)="startSubscription()" mat-stroked-button color="primary"
-        [disabled]="!(hasPaymentMethod())">Subscribe<mat-icon>payment</mat-icon></button>
+        [disabled]="!hasPaymentMethod()">Subscribe<mat-icon>payment</mat-icon></button>
       </mat-card-actions>
     }
   </mat-card>
-  @if ( serviceStatus === ServiceStatus.Error ) {
+  @if ( serviceStatus() === ServiceStatus.Error ) {
     <app-loading-failed></app-loading-failed>
   }
