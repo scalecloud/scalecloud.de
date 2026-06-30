@@ -3,7 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { GlobeComponent } from './globe.component';
-import * as cobeModule from 'cobe';
+import createGlobe from 'cobe';
+
+// `cobe`'s ESM namespace object is frozen, so vi.spyOn(cobeModule, 'default')
+// fails with "Module namespace is not configurable in ESM". Mocking the whole
+// module via vi.mock (hoisted above all imports by Vitest) replaces the
+// import at resolution time instead of mutating the live namespace object.
+vi.mock('cobe', () => ({
+    default: vi.fn(),
+}));
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -29,14 +37,23 @@ describe('GlobeComponent', () => {
     let createGlobeSpy: Mock;
 
     beforeEach(async () => {
+        // vi.spyOn on the same global (window) across multiple tests reuses the
+        // existing spy rather than creating a fresh one, so call counts would
+        // otherwise accumulate across the whole suite. Restore real
+        // implementations first so each test starts from a clean slate.
+        vi.restoreAllMocks();
+
         // Mock the cobe globe instance
         mockGlobe = {
             update: vi.fn().mockName('update'),
             destroy: vi.fn().mockName('destroy'),
         };
 
-        // Replace createGlobe with a spy that returns the mock globe
-        createGlobeSpy = vi.spyOn(cobeModule, 'default').mockReturnValue(mockGlobe);
+        // createGlobe is already a vi.fn() from the vi.mock factory above;
+        // just (re)configure its return value for this test.
+        createGlobeSpy = vi.mocked(createGlobe);
+        createGlobeSpy.mockReset();
+        createGlobeSpy.mockReturnValue(mockGlobe);
 
         // Prevent the rAF loop from actually running
         vi.spyOn(window, 'requestAnimationFrame').mockReturnValue(42 as unknown as ReturnType<typeof requestAnimationFrame>);
@@ -90,6 +107,28 @@ describe('GlobeComponent', () => {
             component.ngOnInit();
             expect(component.globeSize).toBe(600 * 60 / 100);
         });
+
+        it('falls back to 60% of width when width equals height (square viewport)', () => {
+            // width > height is false when they're equal, so this lands in the
+            // "else" 60% branch rather than the landscape branch — documenting
+            // the existing boundary behaviour rather than changing it.
+            setWindowSize(500, 500);
+            component.ngOnInit();
+            expect(component.globeSize).toBe(500 * 60 / 100);
+        });
+
+        it('uses 55% of width exactly at the 425px narrow-viewport boundary', () => {
+            // innerWidth < 425 is strict, so 425 itself falls into the 60% branch.
+            setWindowSize(425, 900);
+            component.ngOnInit();
+            expect(component.globeSize).toBe(425 * 60 / 100);
+        });
+
+        it('uses 55% of width just below the narrow-viewport boundary', () => {
+            setWindowSize(424, 900);
+            component.ngOnInit();
+            expect(component.globeSize).toBe(424 * 55 / 100);
+        });
     });
 
     // ── Canvas binding ─────────────────────────────────────────────────────────
@@ -117,6 +156,12 @@ describe('GlobeComponent', () => {
         expect(style).toEqual({ width: '500px', height: '500px' });
     });
 
+    it('setGlobeSize() returns 0px dimensions when globeSize is 0', () => {
+        component.globeSize = 0;
+        const style = component.setGlobeSize();
+        expect(style).toEqual({ width: '0px', height: '0px' });
+    });
+
     // ── COBE integration ───────────────────────────────────────────────────────
 
     describe('showGlobe()', () => {
@@ -135,6 +180,18 @@ describe('GlobeComponent', () => {
             expect(options.markerElevation).toBe(0.01);
         });
 
+        it('includes exactly one marker at the configured location', () => {
+            const options = vi.mocked(createGlobeSpy).mock.lastCall[1];
+            expect(options.markers).toHaveLength(1);
+            expect(options.markers[0]).toEqual({ location: [54.7945644, 9.397062], size: 0.02 });
+        });
+
+        it('sizes the globe canvas as 2× globeSize in the createGlobe options', () => {
+            const options = vi.mocked(createGlobeSpy).mock.lastCall[1];
+            expect(options.width).toBe(component.globeSize * 2);
+            expect(options.height).toBe(component.globeSize * 2);
+        });
+
         it('starts the animation loop via requestAnimationFrame', () => {
             expect(window.requestAnimationFrame).toHaveBeenCalled();
         });
@@ -145,6 +202,38 @@ describe('GlobeComponent', () => {
             rafCallback(0);
 
             expect(mockGlobe.update).toHaveBeenCalled();
+        });
+
+        it('advances phi on each animation frame', () => {
+            const rafCallback = vi.mocked((window.requestAnimationFrame as Mock)).mock.lastCall[0] as FrameRequestCallback;
+
+            rafCallback(0);
+            const firstPhi = mockGlobe.update.mock.calls[0][0].phi;
+
+            rafCallback(0);
+            const secondPhi = mockGlobe.update.mock.calls[1][0].phi;
+
+            expect(secondPhi).toBeGreaterThan(firstPhi);
+        });
+
+        it('schedules a new animation frame on each tick', () => {
+            const initialCallCount = (window.requestAnimationFrame as unknown as Mock).mock.calls.length;
+            const rafCallback = vi.mocked((window.requestAnimationFrame as Mock)).mock.lastCall[0] as FrameRequestCallback;
+
+            rafCallback(0);
+
+            expect((window.requestAnimationFrame as unknown as Mock).mock.calls.length).toBeGreaterThan(initialCallCount);
+        });
+
+        it('stops scheduling further frames once the globe is gone', () => {
+            const rafCallback = vi.mocked((window.requestAnimationFrame as Mock)).mock.lastCall[0] as FrameRequestCallback;
+            (component as any).globe = undefined;
+
+            const callCountBefore = (window.requestAnimationFrame as unknown as Mock).mock.calls.length;
+            rafCallback(0);
+
+            expect(mockGlobe.update).not.toHaveBeenCalled();
+            expect((window.requestAnimationFrame as unknown as Mock).mock.calls.length).toBe(callCountBefore);
         });
     });
 
@@ -165,6 +254,17 @@ describe('GlobeComponent', () => {
             (component as any).globe = undefined;
             (component as any).animationFrameId = undefined;
             expect(() => component.ngOnDestroy()).not.toThrow();
+        });
+
+        it('does not call cancelAnimationFrame if no frame was ever scheduled', () => {
+            (component as any).animationFrameId = undefined;
+            component.ngOnDestroy();
+            expect(window.cancelAnimationFrame).not.toHaveBeenCalled();
+        });
+
+        it('is safe to call destroy via fixture.destroy()', () => {
+            expect(() => fixture.destroy()).not.toThrow();
+            expect(mockGlobe.destroy).toHaveBeenCalled();
         });
     });
 });
