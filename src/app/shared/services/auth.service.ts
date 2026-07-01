@@ -1,13 +1,20 @@
-import { Injectable, inject } from '@angular/core';
+import { DestroyRef, Injectable, Signal, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpHeaders } from '@angular/common/http';
+import type { User } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
+
 import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
 import { ReturnUrlService } from './redirect/return-url.service';
-import { Observable } from 'rxjs';
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
-import { HttpHeaders } from '@angular/common/http';
 import { FirebaseService } from 'src/app/services/firebase.service';
-
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,147 +23,118 @@ export class AuthService {
   private readonly logService = inject(LogService);
   private readonly returnUrlService = inject(ReturnUrlService);
   private readonly firebaseService = inject(FirebaseService);
+  private readonly destroyRef = inject(DestroyRef);
 
+  private readonly userSignal = signal<User | null | undefined>(undefined);
+  private readonly tokenSignal = signal<string | null | undefined>(undefined);
 
-  private user: User | null | undefined = undefined;
-  private token: string | null | undefined = undefined;
+  /** Current Firebase user: `undefined` until the first auth-state event, `null` when signed out. */
+  readonly user: Signal<User | null | undefined> = this.userSignal.asReadonly();
+  /** Mirrors `user`'s lifecycle; refreshed on every auth-state change. */
+  readonly token: Signal<string | null | undefined> = this.tokenSignal.asReadonly();
+  /** True once a verified user is present. For code that must wait for the initial auth state, use isLoggedIn() instead. */
+  readonly isAuthenticated: Signal<boolean> = computed(() => !!this.userSignal()?.emailVerified);
 
   constructor() {
-    this.subscribeToUser();
-    this.subscribeToToken();
+    const unsubscribe = onAuthStateChanged(
+      this.firebaseService.auth,
+      (user) => this.handleAuthStateChanged(user),
+      (error) => this.logService.error('Auth state listener failed: ' + error.message),
+    );
+    this.destroyRef.onDestroy(unsubscribe);
   }
 
-  subscribeToUser() {
-    this.getUserObservable().subscribe((user) => {
-      this.setUser(user);
-    });
-  }
+  private async handleAuthStateChanged(user: User | null): Promise<void> {
+    this.userSignal.set(user);
 
-  subscribeToToken() {
-    this.getTokenObservable().subscribe((token) => {
-      this.setToken(token);
-    });
-  }
+    if (!user) {
+      this.tokenSignal.set(null);
+      return;
+    }
 
-  getUserObservable(): Observable<User | null> {
-    return new Observable((subscriber) => {
-      const unsubscribe = onAuthStateChanged(this.firebaseService.auth, (user) => {
-        subscriber.next(user);
-      }, (error) => subscriber.error(error));
-      return () => unsubscribe();
-    });
-  }
-
-  getTokenObservable(): Observable<string | null> {
-    // Gibt bei jedem Auth-State-Wechsel ein frisches Token aus
-    return new Observable((subscriber) => {
-      const unsubscribe = onAuthStateChanged(this.firebaseService.auth, async (user) => {
-        if (user) {
-          const token = await user.getIdToken();
-          subscriber.next(token);
-        } else {
-          subscriber.next(null);
-        }
-      }, (error) => subscriber.error(error));
-      return () => unsubscribe();
-    });
-  }
-
-  async getUserPromise(): Promise<User | null> {
-    await this.authStateReady();
-    return this.firebaseService.auth.currentUser;
-  }
-
-  async getTokenPromise(): Promise<string> {
     try {
-      const user = await this.getUserPromise();
-      if (user) {
-        return await user.getIdToken();
-      } else {
-        throw new Error('User not found');
-      }
+      this.tokenSignal.set(await user.getIdToken());
     } catch (error) {
-      this.logService.error(error.message);
-      throw error;
+      this.logService.error('Could not refresh ID token: ' + (error as Error).message);
+      this.tokenSignal.set(null);
     }
   }
 
-  setUser(user: User | null) { this.user = user; }
-  getUser(): User | null { return this.user; }
+  getUser(): User | null | undefined {
+    return this.userSignal();
+  }
 
-  setToken(token: string | null) { this.token = token; }
-  getToken(): string | null { return this.token; }
+  getToken(): string | null | undefined {
+    return this.tokenSignal();
+  }
 
   getHttpOptions() {
     return {
       headers: new HttpHeaders({
-        'Authorization': this.getToken()
-      })
+        Authorization: this.getToken() ?? '',
+      }),
     };
   }
 
   async login(email: string, password: string): Promise<void> {
-    return signInWithEmailAndPassword(this.firebaseService.auth, email, password)
-      .then((result) => {
-        this.setUser(result.user);
-        this.returnUrlService.openReturnURL('/dashboard');
-      })
-      .catch((error) => {
-        this.snackBarService.error(error.message);
-      });
+    try {
+      const result = await signInWithEmailAndPassword(this.firebaseService.auth, email, password);
+      this.userSignal.set(result.user);
+      this.returnUrlService.openReturnURL('/dashboard');
+    } catch (error) {
+      this.snackBarService.error((error as Error).message);
+    }
   }
 
-  register(email: string, password: string) {
-    createUserWithEmailAndPassword(this.firebaseService.auth, email, password)
-      .then((result) => {
-        this.setUser(result.user);
-        this.sendVerificationMail();
-      })
-      .catch((error) => {
-        this.snackBarService.error(error.message);
-      });
+  async register(email: string, password: string): Promise<void> {
+    try {
+      const result = await createUserWithEmailAndPassword(this.firebaseService.auth, email, password);
+      this.userSignal.set(result.user);
+      await this.sendVerificationMail();
+    } catch (error) {
+      this.snackBarService.error((error as Error).message);
+    }
   }
 
-  sendVerificationMail() {
-    const actionCodeSettings = {
-      url: this.returnUrlService.getReturnUrlDecoded(),
-    };
+  async sendVerificationMail(): Promise<void> {
     const user = this.firebaseService.auth.currentUser;
     if (!user) {
       this.snackBarService.error('No user logged in.');
       return;
     }
-    sendEmailVerification(user, actionCodeSettings)
-      .then(() => {
-        this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
-        this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
-      })
-      .catch((error) => {
-        this.snackBarService.error(error.message);
-      });
+
+    const actionCodeSettings = { url: this.returnUrlService.getReturnUrlDecoded() };
+
+    try {
+      await sendEmailVerification(user, actionCodeSettings);
+      this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
+      this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
+    } catch (error) {
+      this.snackBarService.error((error as Error).message);
+    }
   }
 
   async forgotPassword(passwordResetEmail: string): Promise<boolean> {
-    let result = false;
-    await sendPasswordResetEmail(this.firebaseService.auth, passwordResetEmail)
-      .then(() => {
-        result = true;
-        this.snackBarService.infoDuration('Please check your E-Mail for further instructions.', 30);
-      })
-      .catch((error) => {
-        this.snackBarService.error(error.message);
-      });
-    return result;
+    try {
+      await sendPasswordResetEmail(this.firebaseService.auth, passwordResetEmail);
+      this.snackBarService.infoDuration('Please check your E-Mail for further instructions.', 30);
+      return true;
+    } catch (error) {
+      this.snackBarService.error((error as Error).message);
+      return false;
+    }
   }
 
   async reloadUser(): Promise<void> {
     const user = this.getUser();
-    if (user) {
-      await user.reload().catch((error) => {
-        this.logService.error(error.message);
-      });
-    } else {
+    if (!user) {
       this.logService.error('Could not reload user, because user is null.');
+      return;
+    }
+    try {
+      await user.reload();
+    } catch (error) {
+      this.logService.error((error as Error).message);
     }
   }
 
@@ -164,34 +142,44 @@ export class AuthService {
     const timeoutDuration = 4000;
 
     if (this.getUser() === undefined) {
-      await new Promise<void>((resolve, reject) => {
-        const timer = setTimeout(() => reject(new Error('Auth state timeout')), timeoutDuration);
-        const unsub = onAuthStateChanged(this.firebaseService.auth, (user) => {
-          clearTimeout(timer);
-          unsub();
-          this.setUser(user);
-          resolve();
-        });
-      }).catch((err) => this.logService.warn(err.message));
+      await this.waitForNextAuthStateChange(timeoutDuration).catch((error) =>
+        this.logService.warn((error as Error).message),
+      );
     }
 
     if (this.getToken() === undefined) {
       const user = this.firebaseService.auth.currentUser;
       if (user) {
-        const token = await user.getIdToken();
-        this.setToken(token);
+        this.tokenSignal.set(await user.getIdToken());
       } else {
-        this.setToken(null);
+        this.tokenSignal.set(null);
       }
     }
   }
 
+  private waitForNextAuthStateChange(timeoutDuration: number): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('Auth state timeout')), timeoutDuration);
+      const unsubscribe = onAuthStateChanged(this.firebaseService.auth, (user) => {
+        clearTimeout(timer);
+        unsubscribe();
+        this.userSignal.set(user);
+        resolve();
+      });
+    });
+  }
+
   async waitForAuth(): Promise<void> {
     await this.authStateReady();
+    if (this.getUser()) {
+      return;
+    }
+
     await new Promise<void>((resolve) => {
-      const unsub = onAuthStateChanged(this.firebaseService.auth, (user) => {
+      const unsubscribe = onAuthStateChanged(this.firebaseService.auth, (user) => {
         if (user) {
-          unsub();
+          unsubscribe();
+          this.userSignal.set(user);
           resolve();
         }
       });
@@ -210,7 +198,7 @@ export class AuthService {
     return !!(user && !user.emailVerified);
   }
 
-  async signOut() {
+  async signOut(): Promise<void> {
     await signOut(this.firebaseService.auth);
     this.router.navigate(['/']);
   }
