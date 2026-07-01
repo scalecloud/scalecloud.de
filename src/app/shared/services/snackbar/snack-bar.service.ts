@@ -1,14 +1,15 @@
-import { Injectable, NgZone, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LogService } from '../log/log.service';
-import { SnackBarProgressComponent } from './snack-bar-progress/snack-bar-progress.component';
+import { SnackBarProgressComponent, SnackBarProgressData } from './snack-bar-progress/snack-bar-progress.component';
+
+type SnackBarCssClass = 'snackbar-info' | 'snackbar-warn' | 'snackbar-error';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SnackBarService {
   private readonly snackBar = inject(MatSnackBar);
-  private readonly zone = inject(NgZone);
   private readonly logService = inject(LogService);
 
   private readonly defaultDuration = 8;
@@ -40,18 +41,19 @@ export class SnackBarService {
     this.logService.error(message);
   }
 
-  private showMessage(message: string, duration: number, cssClass: string) {
+  private showMessage(message: string, duration: number, cssClass: SnackBarCssClass) {
     const date = new Date();
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
     const time = `${hours}:${minutes}:${seconds}`;
-    this.zone.run(() => {
-      this.snackBar.openFromComponent(SnackBarProgressComponent, {
-        duration: duration * 1000,
-        panelClass: [cssClass],
-        data: { message, time, duration }
-      });
+
+    const data: SnackBarProgressData = { message, time, duration };
+
+    this.snackBar.openFromComponent(SnackBarProgressComponent, {
+      duration: duration * 1000,
+      panelClass: [cssClass],
+      data,
     });
   }
 }

@@ -4,7 +4,7 @@
         --mdc-snackbar-supporting-text-color: #fff;
 
         #progress-bar {
-             background-color: #279e53;
+            background-color: #279e53;
         }
     }
 
@@ -18,7 +18,7 @@
     }
 
     &.snackbar-error {
-        --mdc-snackbar-container-color: #F44336;
+        --mdc-snackbar-container-color: #f44336;
         --mdc-snackbar-supporting-text-color: #fff;
 
         #progress-bar {
@@ -36,8 +36,8 @@
 
 #progress-bar {
     position: absolute;
-    left: 0px;
-    bottom: 0px;
+    left: 0;
+    bottom: 0;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 }
