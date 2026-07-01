@@ -1,5 +1,5 @@
 <mat-card>
-    @if (serviceStatus === ServiceStatus.Loading) {
+    @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
     <mat-card-title>
         Confirming E-Mail
@@ -10,8 +10,8 @@
         <mat-spinner></mat-spinner>
     </mat-card-content>
     }
-    @if (serviceStatus === ServiceStatus.Success) {
-    @if (reply?.confirmed) {
+    @if (serviceStatus() === ServiceStatus.Success) {
+    @if (reply()?.confirmed) {
     <mat-card-title>
         <mat-icon class="icon-confirmed">notifications</mat-icon>E-Mail Confirmed
     </mat-card-title>
@@ -40,6 +40,6 @@
     }
     }
 </mat-card>
-@if (serviceStatus === ServiceStatus.Error) {
+@if (serviceStatus() === ServiceStatus.Error) {
 <app-loading-failed></app-loading-failed>
 }

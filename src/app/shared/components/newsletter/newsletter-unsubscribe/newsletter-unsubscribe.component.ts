@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { NewsletterService } from '../newsletter.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus, NewsletterUnsubscribeRequest } from '../newsletter';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDivider } from '@angular/material/divider';
@@ -36,36 +36,36 @@ export class NewsletterUnsubscribeComponent implements OnInit {
   private readonly newsletterService = inject(NewsletterService);
   private readonly logService = inject(LogService);
   private readonly route = inject(ActivatedRoute);
-  private readonly snackbarservice = inject(SnackBarService);
+  private readonly destroyRef = inject(DestroyRef);
 
-
-  reply: NewsletterUnsubscribeReply | undefined;
-  NewsletterUnsubscribeReplyStatus = NewsletterUnsubscribeReplyStatus;
-  ServiceStatus = ServiceStatus;
-  serviceStatus = ServiceStatus.Loading;
+  readonly NewsletterUnsubscribeReplyStatus = NewsletterUnsubscribeReplyStatus;
+  readonly ServiceStatus = ServiceStatus;
+  readonly reply = signal<NewsletterUnsubscribeReply | undefined>(undefined);
+  readonly serviceStatus = signal(ServiceStatus.Loading);
 
   ngOnInit(): void {
     this.unsubscribeNewsletter();
   }
 
   unsubscribeNewsletter(): void {
-    this.serviceStatus = ServiceStatus.Loading;
+    this.serviceStatus.set(ServiceStatus.Loading);
     const request: NewsletterUnsubscribeRequest = {
       unsubscribeToken: this.getUnsubscribeToken(),
     };
     if (request.unsubscribeToken === '') {
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       this.logService.error('unsubscribeToken is empty current URL: ' + window.location.href);
       return;
     }
     this.newsletterService.unsubscribeFromNewsletter(request)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: reply => {
-          this.reply = reply;
-          this.serviceStatus = ServiceStatus.Success;
+          this.reply.set(reply);
+          this.serviceStatus.set(ServiceStatus.Success);
         },
-        error: error => {
-          this.serviceStatus = ServiceStatus.Error;
+        error: () => {
+          this.serviceStatus.set(ServiceStatus.Error);
         }
       });
   }
@@ -73,5 +73,4 @@ export class NewsletterUnsubscribeComponent implements OnInit {
   getUnsubscribeToken(): string {
     return this.route.snapshot.paramMap.get('unsubscribeToken') || '';
   }
-
 }

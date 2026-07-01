@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { NewsletterConfirmReply, NewsletterConfirmRequest } from '../newsletter';
 import { NewsletterService } from '../newsletter.service';
@@ -35,33 +36,35 @@ export class NewsletterConfirmComponent implements OnInit {
   private readonly newsletterService = inject(NewsletterService);
   private readonly logService = inject(LogService);
   private readonly route = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
 
-  reply: NewsletterConfirmReply | undefined;
-  ServiceStatus = ServiceStatus;
-  serviceStatus = ServiceStatus.Loading;
+  readonly ServiceStatus = ServiceStatus;
+  readonly reply = signal<NewsletterConfirmReply | undefined>(undefined);
+  readonly serviceStatus = signal(ServiceStatus.Loading);
 
   ngOnInit(): void {
     this.confirmNewsletter();
   }
 
   confirmNewsletter(): void {
-    this.serviceStatus = ServiceStatus.Loading;
+    this.serviceStatus.set(ServiceStatus.Loading);
     const request: NewsletterConfirmRequest = {
       verificationToken: this.getVerificationToken(),
     };
     if (request.verificationToken === '') {
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       this.logService.error('verificationToken is empty current URL: ' + window.location.href);
       return;
     }
     this.newsletterService.confirmNewsletterEMail(request)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: reply => {
-          this.reply = reply;
-          this.serviceStatus = ServiceStatus.Success;
+          this.reply.set(reply);
+          this.serviceStatus.set(ServiceStatus.Success);
         },
-        error: error => {
-          this.serviceStatus = ServiceStatus.Error;
+        error: () => {
+          this.serviceStatus.set(ServiceStatus.Error);
         }
       });
   }

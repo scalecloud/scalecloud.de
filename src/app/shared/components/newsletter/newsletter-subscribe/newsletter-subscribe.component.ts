@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, signal, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
@@ -39,6 +39,7 @@ import { RouterLink } from '@angular/router';
 export class NewsletterSubscribeComponent {
   private readonly snackBarService = inject(SnackBarService);
   private readonly newsletterService = inject(NewsletterService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly email = new FormControl('', [Validators.required, Validators.email]);
   errorMessage = signal('');
@@ -62,9 +63,10 @@ export class NewsletterSubscribeComponent {
   subscribeToNewsletter() {
     if (this.email.valid) {
       const request: NewsletterSubscribeRequest = {
-        email: this.email.value,
+        email: this.email.value ?? '',
       };
       this.newsletterService.subscribeToNewsletter(request)
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: reply => {
             if (reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.SUCCESS) {
