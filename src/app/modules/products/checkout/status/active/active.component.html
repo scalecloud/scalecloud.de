@@ -1,42 +1,42 @@
-@if( checkoutCreateSubscriptionReply() ) {
-    <mat-card class="responsive-card">
-    <mat-card-title>
-        Your Subscription {{checkoutCreateSubscriptionReply()?.productName}} was created!
-    </mat-card-title>
-    <mat-divider></mat-divider>
-    <mat-card-content>
-        <mat-list>
-            @if (checkoutCreateSubscriptionReply().subscriptionID) {
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>tag</mat-icon>{{checkoutCreateSubscriptionReply()?.subscriptionID}}
-                </div>
-            </mat-list-item>
-            }
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>published_with_changes</mat-icon>
-                    Your Cloud is going to be prepared.
-                </div>
-            </mat-list-item>
-            @if (checkoutCreateSubscriptionReply().email) {
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>mail</mat-icon>
-                    We will soon send an E-Mail to&nbsp;<b>{{checkoutCreateSubscriptionReply()?.email}}</b>&nbsp;when it is ready.
-                </div>
-            </mat-list-item>
-            }
-            <mat-list-item>
-                <div class="icon-text">
-                    <mat-icon>dashboard</mat-icon>
-                    You can manage your Subscription in your Dashboard.
-                </div>
-            </mat-list-item>
-        </mat-list>
-    </mat-card-content>
-    <mat-card-actions>
-        <button routerLink="/dashboard" mat-stroked-button color="primary">Dashboard</button>
-    </mat-card-actions>
+@if (checkoutCreateSubscriptionReply(); as reply) {
+<mat-card class="responsive-card">
+  <mat-card-title>
+    Your Subscription {{ reply.productName }} was created!
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <mat-list>
+      @if (reply.subscriptionID) {
+      <mat-list-item>
+        <div class="icon-text">
+          <mat-icon>tag</mat-icon>{{ reply.subscriptionID }}
+        </div>
+      </mat-list-item>
+      }
+      <mat-list-item>
+        <div class="icon-text">
+          <mat-icon>published_with_changes</mat-icon>
+          Your Cloud is going to be prepared.
+        </div>
+      </mat-list-item>
+      @if (reply.email) {
+      <mat-list-item>
+        <div class="icon-text">
+          <mat-icon>mail</mat-icon>
+          We will soon send an E-Mail to&nbsp;<b>{{ reply.email }}</b>&nbsp;when it is ready.
+        </div>
+      </mat-list-item>
+      }
+      <mat-list-item>
+        <div class="icon-text">
+          <mat-icon>dashboard</mat-icon>
+          You can manage your Subscription in your Dashboard.
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <button routerLink="/dashboard" mat-stroked-button color="primary">Dashboard</button>
+  </mat-card-actions>
 </mat-card>
 }

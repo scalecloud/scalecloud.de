@@ -1,6 +1,6 @@
-@if (active) {
-<app-active [checkoutCreateSubscriptionReply]="checkoutCreateSubscriptionReply"></app-active>
+@if (active()) {
+<app-active [checkoutCreateSubscriptionReply]="checkoutCreateSubscriptionReply()"></app-active>
 }
-@if (trialing) {
-<app-trailing [checkoutCreateSubscriptionReply]="checkoutCreateSubscriptionReply"></app-trailing>
+@if (trialing()) {
+<app-trailing [checkoutCreateSubscriptionReply]="checkoutCreateSubscriptionReply()"></app-trailing>
 }
