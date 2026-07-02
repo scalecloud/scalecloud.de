@@ -6,6 +6,7 @@ import { StatusPaymentChangedComponent } from './status-payment-changed.componen
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
+import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 describe('StatusPaymentChangedComponent', () => {
   let component: StatusPaymentChangedComponent;
@@ -18,6 +19,7 @@ describe('StatusPaymentChangedComponent', () => {
     error: ReturnType<typeof vi.fn>;
   };
   let stripeKeyServiceMock: { getPublicKey: ReturnType<typeof vi.fn> };
+  let returnUrlServiceMock: { openReturnURL: ReturnType<typeof vi.fn> };
   let retrieveSetupIntentMock: ReturnType<typeof vi.fn>;
   let stripeFactoryMock: ReturnType<typeof vi.fn>;
 
@@ -39,6 +41,13 @@ describe('StatusPaymentChangedComponent', () => {
     stripeKeyServiceMock = {
       getPublicKey: vi.fn().mockReturnValue('pk_test_123')
     };
+    // The real child components (succeeded/processing/requires-payment-method)
+    // inject ReturnUrlService, whose real constructor needs APP_BASE_URL.
+    // Mocking the service here avoids having to satisfy that token in tests
+    // that don't care about return-URL behavior.
+    returnUrlServiceMock = {
+      openReturnURL: vi.fn()
+    };
     retrieveSetupIntentMock = vi.fn();
     stripeFactoryMock = vi.fn().mockReturnValue({
       retrieveSetupIntent: retrieveSetupIntentMock
@@ -53,6 +62,7 @@ describe('StatusPaymentChangedComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: LogService, useValue: logServiceMock },
         { provide: StripeKeyService, useValue: stripeKeyServiceMock },
+        { provide: ReturnUrlService, useValue: returnUrlServiceMock },
         {
           provide: ActivatedRoute,
           useValue: {
