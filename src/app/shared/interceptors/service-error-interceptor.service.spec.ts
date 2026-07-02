@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
@@ -21,6 +22,7 @@ describe('serviceErrorInterceptor', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        provideZonelessChangeDetection(),
         provideHttpClient(withInterceptors([serviceErrorInterceptor])),
         provideHttpClientTesting(),
         { provide: SnackBarService, useValue: mockSnackBarService },
