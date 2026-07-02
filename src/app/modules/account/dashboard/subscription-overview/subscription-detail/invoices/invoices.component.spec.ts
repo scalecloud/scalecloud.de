@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { of, throwError } from 'rxjs';
-import { describe, beforeEach, it, expect, vi } from 'vitest';
+import { of, throwError, Subject } from 'rxjs';
+import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { InvoicesComponent } from './invoices.component';
 import { InvoicesService } from './invoices.service';
@@ -42,6 +42,10 @@ describe('InvoicesComponent', () => {
   });
 
   function configureTestBed(paramMapValue: Record<string, string> = { subscriptionID }) {
+    // Mocks (esp. spies on globals like window.open) persist their call
+    // history across `vi.spyOn` re-application, so clear it before every test.
+    vi.clearAllMocks();
+
     invoicesServiceMock = { getInvoices: vi.fn().mockReturnValue(of(buildReply())) };
     authServiceMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
     logServiceMock = { error: vi.fn() };
@@ -68,6 +72,11 @@ describe('InvoicesComponent', () => {
     fixture = TestBed.createComponent(InvoicesComponent);
     component = fixture.componentInstance;
   }
+
+  afterEach(() => {
+    // Fully unpatch globals (e.g. window.open) so other spec files start clean.
+    vi.restoreAllMocks();
+  });
 
   describe('basic creation', () => {
     beforeEach(() => {
@@ -127,12 +136,21 @@ describe('InvoicesComponent', () => {
       configureTestBed();
     });
 
-    it('should set status to Loading while the request is in flight', () => {
-      invoicesServiceMock.getInvoices.mockReturnValue(of(buildReply()));
-      fixture.detectChanges();
+    it('should set status to Loading while the request is in flight', async () => {
+      // Hold the invoices call open so we can observe the transitional
+      // Loading state before resolving it — mirrors the isSubmitting
+      // pattern used in AddSeatComponent's spec.
+      const subject = new Subject<ListInvoicesReply>();
+      invoicesServiceMock.getInvoices.mockReturnValue(subject.asObservable());
 
-      // Status flips to Loading synchronously before the async chain resolves.
+      fixture.detectChanges();
+      await fixture.whenStable();
+
       expect(component.serviceStatus()).toBe(ServiceStatus.Loading);
+
+      subject.next(buildReply());
+      subject.complete();
+      await fixture.whenStable();
     });
 
     it('should populate reply and set status to Success on a successful response', async () => {
