@@ -11,7 +11,7 @@
     @if(isLoading()) {
       <mat-spinner class="auth-loading" diameter="30"></mat-spinner>
     } @else {
-      @if (authService.getUser()) {
+      @if (authService.user()) {
         <div>
           <button mat-button routerLink="/dashboard">
             <mat-icon>dashboard</mat-icon>

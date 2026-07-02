@@ -20,8 +20,9 @@ describe('VerifyEmailComponent', () => {
   let fixture: ComponentFixture<VerifyEmailComponent>;
 
   // Mocks
+  const userSignal = signal<any>(makeUser());
   const authService = {
-    getUser: vi.fn(() => makeUser()),
+    user: userSignal,
     sendVerificationMail: vi.fn(),
     reloadUser: vi.fn(() => Promise.resolve()),
     isLoggedIn: vi.fn(() => Promise.resolve(true)),
@@ -32,7 +33,6 @@ describe('VerifyEmailComponent', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
 
-    authService.getUser.mockReturnValue(makeUser());
     authService.reloadUser.mockResolvedValue(undefined);
     authService.isLoggedIn.mockResolvedValue(true);
 

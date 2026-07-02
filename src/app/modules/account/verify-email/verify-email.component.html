@@ -1,10 +1,10 @@
 <mat-card>
   <mat-card-title>Thank You for Registering</mat-card-title>
   <mat-card-content>
-    @if (authService.getUser()) {
+    @if (authService.user()) {
       <div>
         <p>
-          We have sent a confirmation E-Mail to: <strong>{{ authService.getUser()?.email }}</strong>.
+          We have sent a confirmation E-Mail to: <strong>{{ authService.user()?.email }}</strong>.
         </p>
         <p>
           Please check your E-Mail and click on the link to verify your E-Mail

@@ -60,18 +60,10 @@ export class AuthService {
     }
   }
 
-  getUser(): User | null | undefined {
-    return this.userSignal();
-  }
-
-  getToken(): string | null | undefined {
-    return this.tokenSignal();
-  }
-
   getHttpOptions() {
     return {
       headers: new HttpHeaders({
-        Authorization: this.getToken() ?? '',
+        Authorization: this.token() ?? '',
       }),
     };
   }
@@ -126,7 +118,7 @@ export class AuthService {
   }
 
   async reloadUser(): Promise<void> {
-    const user = this.getUser();
+    const user = this.user();
     if (!user) {
       this.logService.error('Could not reload user, because user is null.');
       return;
@@ -141,13 +133,13 @@ export class AuthService {
   async authStateReady(): Promise<void> {
     const timeoutDuration = 4000;
 
-    if (this.getUser() === undefined) {
+    if (this.user() === undefined) {
       await this.waitForNextAuthStateChange(timeoutDuration).catch((error) =>
         this.logService.warn((error as Error).message),
       );
     }
 
-    if (this.getToken() === undefined) {
+    if (this.token() === undefined) {
       const user = this.firebaseService.auth.currentUser;
       if (user) {
         this.tokenSignal.set(await user.getIdToken());
@@ -171,7 +163,7 @@ export class AuthService {
 
   async waitForAuth(): Promise<void> {
     await this.authStateReady();
-    if (this.getUser()) {
+    if (this.user()) {
       return;
     }
 
@@ -188,13 +180,13 @@ export class AuthService {
 
   async isLoggedIn(waitAuthStateReady: boolean): Promise<boolean> {
     if (waitAuthStateReady) await this.authStateReady();
-    const user = this.getUser();
+    const user = this.user();
     return !!(user && user.emailVerified);
   }
 
   async isLoggedInNotVerified(waitAuthStateReady: boolean): Promise<boolean> {
     if (waitAuthStateReady) await this.authStateReady();
-    const user = this.getUser();
+    const user = this.user();
     return !!(user && !user.emailVerified);
   }
 

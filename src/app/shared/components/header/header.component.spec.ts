@@ -19,19 +19,16 @@ describe('HeaderComponent', () => {
   let fixture: ComponentFixture<HeaderComponent>;
 
   // `user` mirrors AuthService's real signal: undefined until the first
-  // auth-state event, then User | null. getUser() just reads the signal,
-  // same as the real implementation does.
+  // auth-state event, then User | null.
   const userSignal = signal<any>(undefined);
   const authService = {
     user: userSignal,
-    getUser: vi.fn(() => userSignal()),
     signOut: vi.fn(),
   };
 
   beforeEach(async () => {
     vi.clearAllMocks();
     userSignal.set(undefined);
-    authService.getUser.mockImplementation(() => userSignal());
 
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
