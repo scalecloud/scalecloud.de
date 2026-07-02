@@ -34,8 +34,21 @@ describe('CountryInputComponent', () => {
    * the first change detection runs (Angular only runs the
    * constructor + effects once detectChanges fires for an input
    * component under test).
+   *
+   * `TestBed.resetTestingModule()` is called first because, once a
+   * component has been created (or a service injected) against the
+   * current module, Angular refuses to accept a further
+   * `configureTestingModule()` call — it throws "Cannot configure
+   * the test module when the test module has already been
+   * instantiated". Since `beforeEach` always creates a component
+   * before any individual test body runs, any test that wants to
+   * call `createComponent()` a second time (or configure a fresh
+   * module of its own, as the host-component test below does) has
+   * to reset first.
    */
   async function createComponent() {
+    TestBed.resetTestingModule();
+
     countryServiceMock = {
       getCountry: vi.fn().mockReturnValue('Germany'),
       getCountries: vi.fn().mockReturnValue(COUNTRY_LIST),
@@ -95,6 +108,11 @@ describe('CountryInputComponent', () => {
         this.emitted = control;
       }
     }
+
+    // beforeEach already instantiated a TestBed module for this test
+    // (to render the plain CountryInputComponent). Reset before
+    // configuring a second, unrelated module for the host component.
+    TestBed.resetTestingModule();
 
     await TestBed.configureTestingModule({
       imports: [HostComponent],
@@ -255,8 +273,12 @@ describe('CountryInputComponent', () => {
     });
 
     it('should do nothing when the resolved country name is falsy', async () => {
-      countryServiceMock.getCountry.mockReturnValue('');
+      // Note: this must set the mock's return value *after*
+      // createComponent(), not before — createComponent() builds a
+      // brand-new countryServiceMock object each time it runs, so
+      // customizing the old reference first would just be discarded.
       await createComponent();
+      countryServiceMock.getCountry.mockReturnValue('');
       fixture.componentRef.setInput('initialCountryCode', 'ZZ');
 
       fixture.detectChanges();

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, input, effect, signal, output } from '@angular/core';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { map, Observable, startWith } from 'rxjs';
+import { defer, map, Observable, startWith } from 'rxjs';
 import { Country } from '../country/countries';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
@@ -56,10 +56,32 @@ export class CountryInputComponent {
     validators: [Validators.required],
   });
 
-  filteredCountries: Observable<Country[]> = this.countryControl.valueChanges.pipe(
-    startWith(''),
-    map((value) => this._filter(value)),
-  );
+  /**
+   * Wrapped in defer() rather than a plain
+   * `valueChanges.pipe(startWith(this.countryControl.value), map(...))`.
+   *
+   * Without defer(), `startWith(this.countryControl.value)` reads
+   * the control's value once, eagerly, at field-initialization time
+   * (component construction) — not at subscribe time. valueChanges
+   * is a hot, un-replayed stream, so if setValue() fires *before*
+   * something subscribes (exactly what happens whenever a test calls
+   * setValue() and then awaits firstValueFrom(filteredCountries),
+   * and can equally happen with a fast typer + a late-subscribing
+   * template binding), that emission is gone forever — the
+   * subscriber only ever sees the stale seed value captured at
+   * construction, i.e. the full unfiltered list.
+   *
+   * defer() defers building the inner Observable (and therefore
+   * reading `this.countryControl.value` for the startWith seed)
+   * until each individual subscription happens, so every subscriber
+   * — no matter how late — starts from the control's *current*
+   * value rather than a stale one. This is plain, synchronous RxJS;
+   * it doesn't depend on change-detection or effect-scheduler
+   * timing at all, which a signals/toObservable-based version would.
+   */
+  filteredCountries: Observable<Country[]> = defer(() =>
+    this.countryControl.valueChanges.pipe(startWith(this.countryControl.value)),
+  ).pipe(map((value) => this._filter(value)));
 
   // Tracks whether the initial code has already been applied, so we
   // don't clobber the user's own typing if initialCountryCode somehow
@@ -80,11 +102,30 @@ export class CountryInputComponent {
       }
     });
 
-    // Emitted once, synchronously, on construction — setControl() in
-    // the parent always replaces the *same* control instance with
-    // setValue() calls happening on it later, so a single emit here
-    // is sufficient; re-emitting on every value change is not needed.
-    this.countryControlEmitter.emit(this.countryControl);
+    /**
+     * Deliberately not a plain, synchronous
+     * `this.countryControlEmitter.emit(this.countryControl)` call
+     * here. Angular instantiates a component (runs its constructor)
+     * as part of creating its host element — and it does that
+     * *before* it processes that same element's own listener
+     * bindings. So a real parent template binding like
+     * `(countryControlEmitter)="onEmit($event)"` is not wired up yet
+     * while this constructor body is running; emitting synchronously
+     * would fire into a void with nobody listening.
+     *
+     * Wrapping the emit in effect() defers it until after Angular's
+     * creation pass — and therefore listener registration — has
+     * finished, so the parent reliably receives it. Because nothing
+     * reactive is read inside, this effect runs exactly once, giving
+     * the same "emitted once" semantics as before, just correctly
+     * timed. (setControl() in the parent always replaces the *same*
+     * control instance, with setValue() calls happening on it later,
+     * so a single emit is sufficient — re-emitting on every value
+     * change is not needed.)
+     */
+    effect(() => {
+      this.countryControlEmitter.emit(this.countryControl);
+    });
   }
 
   private _filter(value: string): Country[] {
