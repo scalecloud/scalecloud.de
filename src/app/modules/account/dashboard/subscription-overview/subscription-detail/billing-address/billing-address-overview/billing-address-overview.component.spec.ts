@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { BillingAddressOverviewComponent } from './billing-address-overview.component';
 import { BillingAddressReply } from '../billing-address-model';
@@ -38,6 +39,7 @@ const snackBarServiceMock = { error: vi.fn() };
 const returnUrlServiceMock = { openUrlAddReturnUrl: vi.fn() };
 
 const providers = [
+  provideZonelessChangeDetection(),
   { provide: AuthService, useValue: authServiceMock },
   { provide: PermissionService, useValue: permissionServiceMock },
   { provide: BillingAddressService, useValue: billingAddressServiceMock },
@@ -56,8 +58,26 @@ async function createComponent(): Promise<{
   const fixture = TestBed.createComponent(BillingAddressOverviewComponent);
   const component = fixture.componentInstance;
   fixture.detectChanges();
-  await fixture.whenStable();
+  await vi.waitFor(() =>
+    expect([ServiceStatus.Initializing, ServiceStatus.Loading]).not.toContain(component.serviceStatus())
+  );
   return { component, fixture };
+}
+
+/**
+ * `vi.clearAllMocks()` only wipes call history — it does NOT undo a
+ * `.mockReturnValue()`/`.mockResolvedValue()`/`.mockRejectedValue()`
+ * set by an earlier test. Without re-applying the defaults here,
+ * an override in one test (e.g. a null subscriptionID) silently
+ * leaks into every test that runs after it.
+ */
+function resetMockDefaults(): void {
+  authServiceMock.waitForAuth.mockResolvedValue(undefined);
+  permissionServiceMock.isBilling.mockResolvedValue(true);
+  billingAddressServiceMock.getBillingAddress.mockReturnValue(of(mockReply));
+  routeMock.snapshot.paramMap.get.mockReturnValue('subscription-123');
+  countryServiceMock.getCountry.mockReturnValue('Germany');
+  languageServiceMock.getLanguage.mockReturnValue('de');
 }
 
 describe('BillingAddressOverviewComponent', () => {
@@ -66,6 +86,7 @@ describe('BillingAddressOverviewComponent', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    resetMockDefaults();
 
     await TestBed.configureTestingModule({
       imports: [BillingAddressOverviewComponent],

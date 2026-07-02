@@ -94,7 +94,7 @@ export class BillingAddressOverviewComponent implements OnInit {
     try {
       const hasPermission = await this.permissionService.isBilling(id);
       if (hasPermission) {
-        this.loadBillingAddress();
+        await this.loadBillingAddress();
       } else {
         this.serviceStatus.set(ServiceStatus.NoPermission);
       }
@@ -104,39 +104,45 @@ export class BillingAddressOverviewComponent implements OnInit {
     }
   }
 
-  private loadBillingAddress(): void {
+  /**
+   * Returns a Promise so callers (and tests) can await completion
+   * directly instead of relying on fixture.whenStable(), which only
+   * tracks Angular-scheduled work and is not guaranteed to wait for
+   * an arbitrary, untracked promise chain under zoneless CD.
+   */
+  private async loadBillingAddress(): Promise<void> {
     this.serviceStatus.set(ServiceStatus.Loading);
 
-    this.authService
-      .waitForAuth()
-      .then(() => {
-        const id = this.subscriptionId();
-        if (!id) {
-          this.logService.error('BillingAddressOverviewComponent.loadBillingAddress: subscriptionID is null');
-          this.serviceStatus.set(ServiceStatus.Error);
-          return;
-        }
+    try {
+      await this.authService.waitForAuth();
+    } catch (error) {
+      this.logService.error(`waitForAuth failed: ${error}`);
+      this.serviceStatus.set(ServiceStatus.Error);
+      return;
+    }
 
-        const request: BillingAddressRequest = { subscriptionID: id };
-        this.billingAddressService.getBillingAddress(request).subscribe({
-          next: (data) => {
-            this.reply.set(data);
-            const resolvedCountry = this.countryService.getCountry(
-              this.languageService.getLanguage(),
-              this.countryCode()
-            );
-            this.country.set(resolvedCountry);
-            this.serviceStatus.set(ServiceStatus.Success);
-          },
-          error: (error) => {
-            this.logService.error(`getBillingAddress failed: ${error}`);
-            this.serviceStatus.set(ServiceStatus.Error);
-          },
-        });
-      })
-      .catch((error) => {
-        this.logService.error(`waitForAuth failed: ${error}`);
+    const id = this.subscriptionId();
+    if (!id) {
+      this.logService.error('BillingAddressOverviewComponent.loadBillingAddress: subscriptionID is null');
+      this.serviceStatus.set(ServiceStatus.Error);
+      return;
+    }
+
+    const request: BillingAddressRequest = { subscriptionID: id };
+    this.billingAddressService.getBillingAddress(request).subscribe({
+      next: (data) => {
+        this.reply.set(data);
+        const resolvedCountry = this.countryService.getCountry(
+          this.languageService.getLanguage(),
+          this.countryCode()
+        );
+        this.country.set(resolvedCountry);
+        this.serviceStatus.set(ServiceStatus.Success);
+      },
+      error: (error) => {
+        this.logService.error(`getBillingAddress failed: ${error}`);
         this.serviceStatus.set(ServiceStatus.Error);
-      });
+      },
+    });
   }
 }
