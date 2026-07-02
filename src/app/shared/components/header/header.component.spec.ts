@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-import { Subject } from 'rxjs';
 
 import { HeaderComponent } from './header.component';
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function makeUser(overrides: Partial<{ email: string }> = {}) {
-  return { email: 'user@example.com', ...overrides };
+  return { email: 'user@example.com', ...overrides } as any;
 }
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
@@ -19,18 +18,20 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
 
-  // Mocks
-  const userSubject = new Subject<unknown>();
+  // `user` mirrors AuthService's real signal: undefined until the first
+  // auth-state event, then User | null. getUser() just reads the signal,
+  // same as the real implementation does.
+  const userSignal = signal<any>(undefined);
   const authService = {
-    getUserObservable: vi.fn(() => userSubject.asObservable()),
-    getUser: vi.fn(() => null),
+    user: userSignal,
+    getUser: vi.fn(() => userSignal()),
     signOut: vi.fn(),
   };
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    authService.getUserObservable.mockReturnValue(userSubject.asObservable());
-    authService.getUser.mockReturnValue(null);
+    userSignal.set(undefined);
+    authService.getUser.mockImplementation(() => userSignal());
 
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
@@ -72,15 +73,14 @@ describe('HeaderComponent', () => {
 
   // ─── Auth state resolves – logged out ────────────────────────────────────────
 
-  it('should stop loading once the auth observable emits', async () => {
-    userSubject.next(null);
+  it('should stop loading once the auth signal emits', async () => {
+    userSignal.set(null);
     await fixture.whenStable();
     expect(component.isLoading()).toBe(false);
   });
 
   it('should show the Login button when no user is present', async () => {
-    authService.getUser.mockReturnValue(null);
-    userSubject.next(null);
+    userSignal.set(null);
     await fixture.whenStable();
     fixture.detectChanges();
 
@@ -92,8 +92,7 @@ describe('HeaderComponent', () => {
   });
 
   it('should not show the Dashboard button when no user is present', async () => {
-    authService.getUser.mockReturnValue(null);
-    userSubject.next(null);
+    userSignal.set(null);
     await fixture.whenStable();
     fixture.detectChanges();
 
@@ -105,7 +104,7 @@ describe('HeaderComponent', () => {
   });
 
   it('should hide the spinner once loading completes', async () => {
-    userSubject.next(null);
+    userSignal.set(null);
     await fixture.whenStable();
     fixture.detectChanges();
 
@@ -116,8 +115,7 @@ describe('HeaderComponent', () => {
   // ─── Auth state resolves – logged in ─────────────────────────────────────────
 
   it('should show the Dashboard button when a user is present', async () => {
-    authService.getUser.mockReturnValue(makeUser());
-    userSubject.next(makeUser());
+    userSignal.set(makeUser());
     await fixture.whenStable();
     fixture.detectChanges();
 
@@ -129,8 +127,7 @@ describe('HeaderComponent', () => {
   });
 
   it('should not show the Login button when a user is present', async () => {
-    authService.getUser.mockReturnValue(makeUser());
-    userSubject.next(makeUser());
+    userSignal.set(makeUser());
     await fixture.whenStable();
     fixture.detectChanges();
 
@@ -142,35 +139,13 @@ describe('HeaderComponent', () => {
   });
 
   it('should call authService.signOut when Logout is triggered', async () => {
-    authService.getUser.mockReturnValue(makeUser());
-    userSubject.next(makeUser());
+    userSignal.set(makeUser());
     await fixture.whenStable();
     fixture.detectChanges();
 
     component.authService.signOut();
 
     expect(authService.signOut).toHaveBeenCalled();
-  });
-
-  // ─── Auth state errors ────────────────────────────────────────────────────────
-
-  it('should stop loading if the auth observable errors', async () => {
-    userSubject.error(new Error('Auth failed'));
-    await fixture.whenStable();
-    expect(component.isLoading()).toBe(false);
-  });
-
-  it('should show the Login button if the auth observable errors and no user is present', async () => {
-    authService.getUser.mockReturnValue(null);
-    userSubject.error(new Error('Auth failed'));
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    const compiled: HTMLElement = fixture.nativeElement;
-    const loginButton = Array.from(compiled.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Login'),
-    );
-    expect(loginButton).toBeTruthy();
   });
 
   // ─── toggleSideBar ────────────────────────────────────────────────────────────
