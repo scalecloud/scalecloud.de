@@ -145,7 +145,7 @@ export class BillingAddressDetailComponent implements OnInit {
     try {
       const hasPermission = await this.permissionService.isBilling(subscriptionID);
       if (hasPermission) {
-        this.reloadBillingAddressDetail();
+        await this.reloadBillingAddressDetail();
       } else {
         this.serviceStatus.set(ServiceStatus.NoPermission);
       }
@@ -154,27 +154,34 @@ export class BillingAddressDetailComponent implements OnInit {
     }
   }
 
-  reloadBillingAddressDetail(): void {
+  /**
+   * Returns a Promise so callers (and tests) can await completion
+   * directly instead of relying on fixture.whenStable(), which only
+   * tracks Angular-scheduled work and is not guaranteed to wait for
+   * an arbitrary, untracked promise chain under zoneless CD.
+   */
+  async reloadBillingAddressDetail(): Promise<void> {
     this.serviceStatus.set(ServiceStatus.Loading);
-    this.authService
-      .waitForAuth()
-      .then(() => {
-        const subscriptionID = this.getSubscriptionID();
-        if (!subscriptionID) {
-          this.logService.error('BillingAddressDetailComponent.reloadBillingAddressDetail: subscriptionID is null');
-          return;
-        }
 
-        const request: BillingAddressRequest = { subscriptionID };
-        this.service.getBillingAddress(request).subscribe({
-          next: (reply) => this.applyReply(reply),
-          error: () => this.serviceStatus.set(ServiceStatus.Error),
-        });
-      })
-      .catch((error) => {
-        this.logService.error('waitForAuth failed: ' + error);
-        this.serviceStatus.set(ServiceStatus.Error);
-      });
+    try {
+      await this.authService.waitForAuth();
+    } catch (error) {
+      this.logService.error('waitForAuth failed: ' + error);
+      this.serviceStatus.set(ServiceStatus.Error);
+      return;
+    }
+
+    const subscriptionID = this.getSubscriptionID();
+    if (!subscriptionID) {
+      this.logService.error('BillingAddressDetailComponent.reloadBillingAddressDetail: subscriptionID is null');
+      return;
+    }
+
+    const request: BillingAddressRequest = { subscriptionID };
+    this.service.getBillingAddress(request).subscribe({
+      next: (reply) => this.applyReply(reply),
+      error: () => this.serviceStatus.set(ServiceStatus.Error),
+    });
   }
 
   /**
@@ -198,48 +205,53 @@ export class BillingAddressDetailComponent implements OnInit {
     this.serviceStatus.set(ServiceStatus.Success);
   }
 
-  onSubmit(): void {
+  /**
+   * Returns a Promise for the same reason as reloadBillingAddressDetail():
+   * lets tests await the full submit flow deterministically instead of
+   * racing fixture.whenStable() against an untracked promise chain.
+   */
+  async onSubmit(): Promise<void> {
     this.submitted.set(true);
     if (this.form.invalid) {
       return;
     }
 
-    this.authService
-      .waitForAuth()
-      .then(() => {
-        const subscriptionID = this.getSubscriptionID();
-        if (!subscriptionID) {
-          this.snackBarService.error('Currently not possible update billing address. Please try again later.');
-          this.returnUrlService.openReturnURL('/dashboard');
-          return;
-        }
+    try {
+      await this.authService.waitForAuth();
+    } catch (error) {
+      this.logService.error('waitForAuth failed: ' + error);
+      return;
+    }
 
-        const address: Address = {
-          city: this.f.city.value,
-          country: this.f.country.value,
-          line1: this.f.line1.value,
-          line2: this.f.line2.value,
-          postal_code: this.f.postalCode.value,
-        };
-        const updateBillingAddressRequest: UpdateBillingAddressRequest = {
-          subscriptionID: this.getSubscriptionID(),
-          name: this.f.name.value,
-          address,
-          phone: this.f.phone.value,
-        };
+    const subscriptionID = this.getSubscriptionID();
+    if (!subscriptionID) {
+      this.snackBarService.error('Currently not possible update billing address. Please try again later.');
+      this.returnUrlService.openReturnURL('/dashboard');
+      return;
+    }
 
-        this.service.updateBillingAddress(updateBillingAddressRequest).subscribe((reply) => {
-          if (reply.subscriptionID) {
-            this.snackBarService.info('Billing address updated.');
-            this.returnUrlService.openReturnURL('/dashboard');
-          } else {
-            this.snackBarService.error('Could not update billing address. Please retry.');
-          }
-        });
-      })
-      .catch((error) => {
-        this.logService.error('waitForAuth failed: ' + error);
-      });
+    const address: Address = {
+      city: this.f.city.value,
+      country: this.f.country.value,
+      line1: this.f.line1.value,
+      line2: this.f.line2.value,
+      postal_code: this.f.postalCode.value,
+    };
+    const updateBillingAddressRequest: UpdateBillingAddressRequest = {
+      subscriptionID,
+      name: this.f.name.value,
+      address,
+      phone: this.f.phone.value,
+    };
+
+    this.service.updateBillingAddress(updateBillingAddressRequest).subscribe((reply) => {
+      if (reply.subscriptionID) {
+        this.snackBarService.info('Billing address updated.');
+        this.returnUrlService.openReturnURL('/dashboard');
+      } else {
+        this.snackBarService.error('Could not update billing address. Please retry.');
+      }
+    });
   }
 
   cancel(): void {
