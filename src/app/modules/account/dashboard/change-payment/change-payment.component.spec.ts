@@ -84,7 +84,8 @@ describe('ChangePaymentComponent', () => {
     fixture   = TestBed.createComponent(ChangePaymentComponent);
     component = fixture.componentInstance;
 
-    // Step 1: render so afterNextRender fires and writes viewChild() → undefined.
+    // Step 1: render so afterNextRender fires and writes viewChild() → undefined,
+    // and ngOnInit's fire-and-forget getChangePaymentSetupIntent() settles.
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -94,7 +95,9 @@ describe('ChangePaymentComponent', () => {
     component.stripePaymentElementComponent.set(stripeStub as unknown as StripePaymentElementComponent);
 
     // Step 3: re-run the init flow so it executes with the stub in place.
-    // ngOnInit already ran in step 1 (with undefined), so we call it directly.
+    // ngOnInit already ran in step 1 (with undefined), so we call it directly
+    // and await the returned promise so the full chain — including the
+    // .catch() branch in error tests — has actually resolved before assertions run.
     await component.getChangePaymentSetupIntent();
   });
 
@@ -114,6 +117,22 @@ describe('ChangePaymentComponent', () => {
     expect(changePaymentService.getChangePaymentSetupIntent).toHaveBeenCalled();
   });
 
+  it('calls getChangePaymentSetupIntent from ngOnInit', async () => {
+    // Fresh instance so we can spy before ngOnInit runs.
+    const freshFixture = TestBed.createComponent(ChangePaymentComponent);
+    const freshComponent = freshFixture.componentInstance;
+    const spy = vi.spyOn(freshComponent, 'getChangePaymentSetupIntent');
+
+    freshFixture.detectChanges();
+    await freshFixture.whenStable();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('returns a promise that resolves once the setup intent flow completes', async () => {
+    await expect(component.getChangePaymentSetupIntent()).resolves.toBeUndefined();
+  });
+
   it('stores the setup-intent reply on the component', () => {
     expect(component.subscriptionSetupIntentReply).toEqual({
       clientsecret: 'test-secret',
@@ -129,6 +148,15 @@ describe('ChangePaymentComponent', () => {
     });
   });
 
+  it('does not throw when the Stripe element is undefined while the reply arrives', async () => {
+    component.stripePaymentElementComponent.set(undefined);
+
+    await expect(component.getChangePaymentSetupIntent()).resolves.toBeUndefined();
+    // No init call possible without a Stripe element, and no error logged either
+    // — this path is a normal race (view not yet rendered), not a failure.
+    expect(logService.error).not.toHaveBeenCalled();
+  });
+
   it('logs an error when waitForAuth rejects', async () => {
     authService.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
 
@@ -137,6 +165,15 @@ describe('ChangePaymentComponent', () => {
     expect(logService.error).toHaveBeenCalledWith(
       expect.stringContaining('waitForAuth failed'),
     );
+  });
+
+  it('does not fetch the setup intent when waitForAuth rejects', async () => {
+    authService.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
+    changePaymentService.getChangePaymentSetupIntent.mockClear();
+
+    await component.getChangePaymentSetupIntent();
+
+    expect(changePaymentService.getChangePaymentSetupIntent).not.toHaveBeenCalled();
   });
 
   // ── changePaymentMethod ────────────────────────────────────────────────────
@@ -165,6 +202,14 @@ describe('ChangePaymentComponent', () => {
     expect(logService.error).toHaveBeenCalledWith(
       'PaymentElementComponent is undefined.',
     );
+  });
+
+  it('does not call submitIntent when the Stripe component is undefined', () => {
+    component.stripePaymentElementComponent.set(undefined);
+
+    component.changePaymentMethod();
+
+    expect(stripeStub.submitIntent).not.toHaveBeenCalled();
   });
 
   // ── cancel ─────────────────────────────────────────────────────────────────

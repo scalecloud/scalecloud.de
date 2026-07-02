@@ -40,11 +40,15 @@ export class ChangePaymentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getChangePaymentSetupIntent();
+    // Fire-and-forget from the lifecycle hook is fine; errors are handled and
+    // logged inside getChangePaymentSetupIntent itself.
+    void this.getChangePaymentSetupIntent();
   }
 
-  getChangePaymentSetupIntent(): void {
-    this.authService.waitForAuth().then(() => {
+  // Returns the underlying promise so callers (and tests) can await
+  // completion of the whole async flow, including the error branch.
+  getChangePaymentSetupIntent(): Promise<void> {
+    return this.authService.waitForAuth().then(() => {
       this.changePaymentService.getChangePaymentSetupIntent().subscribe(
         (subscriptionSetupIntentReply: ChangePaymentReply) => {
           this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
