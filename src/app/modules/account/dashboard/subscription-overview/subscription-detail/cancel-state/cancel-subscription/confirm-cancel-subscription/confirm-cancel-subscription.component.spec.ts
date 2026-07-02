@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
@@ -17,6 +18,7 @@ describe('ConfirmCancelSubscriptionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ConfirmCancelSubscriptionComponent],
       providers: [
+        provideZonelessChangeDetection(),
         { provide: MatDialogRef, useValue: mockDialogRef },
       ],
     }).compileComponents();
@@ -24,6 +26,7 @@ describe('ConfirmCancelSubscriptionComponent', () => {
     fixture   = TestBed.createComponent(ConfirmCancelSubscriptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   // ── Creation ───────────────────────────────────────────────────────────
@@ -44,15 +47,16 @@ describe('ConfirmCancelSubscriptionComponent', () => {
   // ── Confirm button ─────────────────────────────────────────────────────
 
   describe('Cancel Subscription button', () => {
-    it('closes the dialog with true when clicked', () => {
-      const button = fixture.debugElement.query(By.css('[mat-dialog-close="true"]'));
+    it('closes the dialog with true when clicked', async () => {
+      const button = fixture.debugElement.query(By.css('[data-testid="confirm-cancel-btn"]'));
       button.nativeElement.click();
       fixture.detectChanges();
+      await fixture.whenStable();
       expect(mockDialogRef.close).toHaveBeenCalledWith(true);
     });
 
     it('has the correct label', () => {
-      const button = fixture.debugElement.query(By.css('[mat-dialog-close="true"]'));
+      const button = fixture.debugElement.query(By.css('[data-testid="confirm-cancel-btn"]'));
       expect(button.nativeElement.textContent.trim()).toBe('Cancel Subscription');
     });
   });
@@ -60,15 +64,16 @@ describe('ConfirmCancelSubscriptionComponent', () => {
   // ── Dismiss button ─────────────────────────────────────────────────────
 
   describe('Cancel button', () => {
-    it('closes the dialog without a value when clicked', () => {
-      const button = fixture.debugElement.query(By.css('[mat-dialog-close]:not([mat-dialog-close="true"])'));
+    it('closes the dialog without a value when clicked', async () => {
+      const button = fixture.debugElement.query(By.css('[data-testid="dismiss-btn"]'));
       button.nativeElement.click();
       fixture.detectChanges();
+      await fixture.whenStable();
       expect(mockDialogRef.close).toHaveBeenCalled();
     });
 
     it('has the correct label', () => {
-      const button = fixture.debugElement.query(By.css('[mat-dialog-close]:not([mat-dialog-close="true"])'));
+      const button = fixture.debugElement.query(By.css('[data-testid="dismiss-btn"]'));
       expect(button.nativeElement.textContent.trim()).toBe('Cancel');
     });
   });
