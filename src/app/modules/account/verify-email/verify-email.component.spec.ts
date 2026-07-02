@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { VerifyEmailComponent } from './verify-email.component';
