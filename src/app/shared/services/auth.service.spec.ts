@@ -417,8 +417,8 @@ describe('AuthService', () => {
       expect(await service.isLoggedInNotVerified(false)).toBe(true);
     });
 
-    it('isLoggedInNotVerified should be false when there is no user', () => {
-      expect(service.isLoggedInNotVerified(false)).resolves.toBe(false);
+    it('isLoggedInNotVerified should be false when there is no user', async () => {
+      await expect(service.isLoggedInNotVerified(false)).resolves.toBe(false);
     });
   });
 
