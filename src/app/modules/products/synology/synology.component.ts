@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { SynologyProduct } from './synology-product';
 import { ProductType } from '../product-model';
 import { ProductService } from '../product/product.service';
@@ -22,26 +22,29 @@ import { LoadingFailedComponent } from '../../../shared/components/loading-faile
 export class SynologyComponent implements OnInit {
   private readonly productService = inject(ProductService);
 
+  readonly ServiceStatus = ServiceStatus;
+  readonly productType = ProductType.Synology;
 
-  productType = ProductType.Synology;
-  synologyProducts: SynologyProduct[] = [];
-  ServiceStatus = ServiceStatus;
-  serviceStatus = ServiceStatus.Initializing;
+  // Signals instead of plain fields: under zoneless change detection, mutating a
+  // plain property from inside an RxJS subscribe callback gives Angular no signal
+  // that the view needs to re-render. Signals make the write itself the trigger.
+  readonly synologyProducts = signal<SynologyProduct[]>([]);
+  readonly serviceStatus = signal(ServiceStatus.Initializing);
 
   ngOnInit(): void {
     this.getSynologyProducts();
   }
 
   getSynologyProducts(): void {
-    this.serviceStatus = ServiceStatus.Loading;
+    this.serviceStatus.set(ServiceStatus.Loading);
     this.productService.getProductTiers(this.productType)
       .subscribe({
         next: reply => {
-          this.synologyProducts = reply.productTiers;
-          this.serviceStatus = ServiceStatus.Success;
+          this.synologyProducts.set(reply.productTiers);
+          this.serviceStatus.set(ServiceStatus.Success);
         },
-        error: error => {
-          this.serviceStatus = ServiceStatus.Error;
+        error: () => {
+          this.serviceStatus.set(ServiceStatus.Error);
         }
       });
   }
