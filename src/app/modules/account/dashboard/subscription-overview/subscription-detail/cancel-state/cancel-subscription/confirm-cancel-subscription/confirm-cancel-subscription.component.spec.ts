@@ -23,7 +23,6 @@ describe('ConfirmCancelSubscriptionComponent', () => {
 
     fixture   = TestBed.createComponent(ConfirmCancelSubscriptionComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     await fixture.whenStable();
   });
 
@@ -48,7 +47,6 @@ describe('ConfirmCancelSubscriptionComponent', () => {
     it('closes the dialog with true when clicked', async () => {
       const button = fixture.debugElement.query(By.css('[data-testid="confirm-cancel-btn"]'));
       button.nativeElement.click();
-      fixture.detectChanges();
       await fixture.whenStable();
       expect(mockDialogRef.close).toHaveBeenCalledWith(true);
     });
@@ -65,7 +63,6 @@ describe('ConfirmCancelSubscriptionComponent', () => {
     it('closes the dialog without a value when clicked', async () => {
       const button = fixture.debugElement.query(By.css('[data-testid="dismiss-btn"]'));
       button.nativeElement.click();
-      fixture.detectChanges();
       await fixture.whenStable();
       expect(mockDialogRef.close).toHaveBeenCalled();
     });

@@ -162,7 +162,6 @@ describe('SubscriptionDetailCardComponent', () => {
     await setup();
     permissionService.isUser.mockRejectedValue(new Error('network'));
 
-    fixture.detectChanges();
     await stabilize(fixture);
 
     expect(component.serviceStatus).toBe(ServiceStatus.Error);
@@ -187,7 +186,6 @@ describe('SubscriptionDetailCardComponent', () => {
       throwError(() => new Error('500')),
     );
 
-    fixture.detectChanges();
     await stabilize(fixture);
 
     expect(component.serviceStatus).toBe(ServiceStatus.Error);
@@ -201,8 +199,6 @@ describe('SubscriptionDetailCardComponent', () => {
     rejected.catch(() => {});
 
     await setup({ waitForAuthResult: rejected });
-
-    fixture.detectChanges();
 
     // Two stabilize passes are needed because the async chain has two hops:
     //   1. permissionService.isUser() resolves  → reloadSubscriptionDetail() is called

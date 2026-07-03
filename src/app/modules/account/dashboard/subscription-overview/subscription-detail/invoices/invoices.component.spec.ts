@@ -92,7 +92,6 @@ describe('InvoicesComponent', () => {
   describe('permission checks', () => {
     it('should set status to Error and log when subscriptionID is missing', async () => {
       configureTestBed({});
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
@@ -102,7 +101,6 @@ describe('InvoicesComponent', () => {
 
     it('should load invoices when the user has billing permission', async () => {
       configureTestBed();
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(permissionServiceMock.isBilling).toHaveBeenCalledWith(subscriptionID);
@@ -113,7 +111,6 @@ describe('InvoicesComponent', () => {
     it('should set status to NoPermission when the user lacks billing permission', async () => {
       configureTestBed();
       permissionServiceMock.isBilling.mockResolvedValue(false);
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.NoPermission);
@@ -123,7 +120,6 @@ describe('InvoicesComponent', () => {
     it('should set status to Error and show a snackbar when the permission check throws', async () => {
       configureTestBed();
       permissionServiceMock.isBilling.mockRejectedValue(new Error('boom'));
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
@@ -143,7 +139,6 @@ describe('InvoicesComponent', () => {
       const subject = new Subject<ListInvoicesReply>();
       invoicesServiceMock.getInvoices.mockReturnValue(subject.asObservable());
 
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Loading);
@@ -156,7 +151,6 @@ describe('InvoicesComponent', () => {
     it('should populate reply and set status to Success on a successful response', async () => {
       const reply = buildReply({ totalResults: 42 });
       invoicesServiceMock.getInvoices.mockReturnValue(of(reply));
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.reply()).toEqual(reply);
@@ -165,7 +159,6 @@ describe('InvoicesComponent', () => {
 
     it('should set status to Error when the request fails', async () => {
       invoicesServiceMock.getInvoices.mockReturnValue(throwError(() => new Error('network error')));
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
@@ -174,7 +167,6 @@ describe('InvoicesComponent', () => {
 
     it('should set status to Error when waitForAuth rejects', async () => {
       authServiceMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
@@ -182,7 +174,6 @@ describe('InvoicesComponent', () => {
     });
 
     it('should pass pageSize and subscriptionID in the request', async () => {
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(invoicesServiceMock.getInvoices).toHaveBeenCalledWith(
@@ -194,7 +185,6 @@ describe('InvoicesComponent', () => {
   describe('pagination', () => {
     beforeEach(async () => {
       configureTestBed();
-      fixture.detectChanges();
       await fixture.whenStable();
       invoicesServiceMock.getInvoices.mockClear();
     });

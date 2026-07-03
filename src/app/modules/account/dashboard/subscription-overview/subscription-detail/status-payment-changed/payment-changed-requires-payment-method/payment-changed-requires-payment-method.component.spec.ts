@@ -54,10 +54,10 @@ describe('PaymentChangedRequiresPaymentMethodComponent', () => {
     expect(returnUrlServiceMock.openUrlKeepReturnUrl).toHaveBeenCalledWith('/change-payment');
   });
 
-  it('should call openChangePayment when the Dashboard button is clicked', () => {
+  it('should call openChangePayment when the Dashboard button is clicked', async () => {
     const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
     button.click();
-    fixture.detectChanges();
+    await fixture.whenStable();
 
     expect(returnUrlServiceMock.openUrlKeepReturnUrl).toHaveBeenCalledTimes(1);
     expect(returnUrlServiceMock.openUrlKeepReturnUrl).toHaveBeenCalledWith('/change-payment');

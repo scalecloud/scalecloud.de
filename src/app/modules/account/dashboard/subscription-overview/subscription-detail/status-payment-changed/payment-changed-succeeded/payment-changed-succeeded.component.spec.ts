@@ -54,10 +54,10 @@ describe('PaymentChangedSucceededComponent', () => {
     expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
-  it('should call openReturnUrl when the Return button is clicked', () => {
+  it('should call openReturnUrl when the Return button is clicked', async () => {
     const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
     button.click();
-    fixture.detectChanges();
+    await fixture.whenStable();
 
     expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledTimes(1);
     expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledWith('/dashboard');

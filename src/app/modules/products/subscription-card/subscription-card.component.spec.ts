@@ -134,9 +134,7 @@ describe('SubscriptionCardComponent', () => {
 
     it('strikes through the trial once quantity reaches 2', async () => {
       component.quantityComponent()!.setQuantity(2);
-      fixture.detectChanges();
       await fixture.whenStable();
-      fixture.detectChanges();
 
       expect(component.isTrialIncluded()).toBe(false);
 
@@ -154,7 +152,6 @@ describe('SubscriptionCardComponent', () => {
 
     it('multiplies price per month by quantity', async () => {
       component.quantityComponent()!.setQuantity(3);
-      fixture.detectChanges();
       await fixture.whenStable();
 
       const expectedTotal = (synologyProduct.pricePerMonth / 100) * 3;
@@ -163,7 +160,6 @@ describe('SubscriptionCardComponent', () => {
 
     it('multiplies storage amount by quantity', async () => {
       component.quantityComponent()!.setQuantity(3);
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.storageAmount() * component.quantity()).toBe(synologyProduct.storageAmount * 3);
@@ -192,7 +188,6 @@ describe('SubscriptionCardComponent', () => {
 
     it('reflects the current quantity, not just the default', async () => {
       component.quantityComponent()!.setQuantity(5);
-      fixture.detectChanges();
       await fixture.whenStable();
 
       const navigateSpy = vi.spyOn(router, 'navigate');

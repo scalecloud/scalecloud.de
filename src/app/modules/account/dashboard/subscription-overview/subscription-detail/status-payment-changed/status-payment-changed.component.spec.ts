@@ -94,7 +94,6 @@ describe('StatusPaymentChangedComponent', () => {
     });
 
     it('should set succeeded() to true and render the succeeded child component', async () => {
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.succeeded()).toBe(true);
@@ -108,7 +107,6 @@ describe('StatusPaymentChangedComponent', () => {
     });
 
     it('should log a success message', async () => {
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(logServiceMock.info).toHaveBeenCalledWith('Success! Your payment method has been saved.');
@@ -122,7 +120,6 @@ describe('StatusPaymentChangedComponent', () => {
     });
 
     it('should set processing() to true and render the processing child component', async () => {
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.processing()).toBe(true);
@@ -142,7 +139,6 @@ describe('StatusPaymentChangedComponent', () => {
     });
 
     it('should set requires_payment_method() to true and render the requires-payment-method child component', async () => {
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(component.requires_payment_method()).toBe(true);
@@ -155,7 +151,6 @@ describe('StatusPaymentChangedComponent', () => {
     });
 
     it('should log an error message', async () => {
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(logServiceMock.error).toHaveBeenCalledWith('Failed to process payment details. Please try another payment method.');
@@ -165,7 +160,6 @@ describe('StatusPaymentChangedComponent', () => {
   describe('missing query params', () => {
     it('should log an error and not call retrieveSetupIntent when setup_intent_client_secret is missing', async () => {
       configureTestBed({ setup_intent_client_secret: undefined as any });
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(logServiceMock.error).toHaveBeenCalledWith('Cannot display status because setup_intent_client_secret is undefined.');
@@ -178,7 +172,6 @@ describe('StatusPaymentChangedComponent', () => {
       configureTestBed();
       stripeKeyServiceMock.getPublicKey.mockReturnValue(undefined);
 
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(logServiceMock.error).toHaveBeenCalledWith('Cannot display status because publicKey is undefined.');
@@ -191,7 +184,6 @@ describe('StatusPaymentChangedComponent', () => {
       configureTestBed();
       authServiceMock.waitForAuth.mockRejectedValue(new Error('not authenticated'));
 
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(logServiceMock.error).toHaveBeenCalledWith('waitForAuth failed: Error: not authenticated');

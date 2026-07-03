@@ -78,7 +78,6 @@ describe('HeaderComponent', () => {
   it('should show the Login button when no user is present', async () => {
     userSignal.set(null);
     await fixture.whenStable();
-    fixture.detectChanges();
 
     const compiled: HTMLElement = fixture.nativeElement;
     const loginButton = Array.from(compiled.querySelectorAll('button')).find((b) =>
@@ -90,7 +89,6 @@ describe('HeaderComponent', () => {
   it('should not show the Dashboard button when no user is present', async () => {
     userSignal.set(null);
     await fixture.whenStable();
-    fixture.detectChanges();
 
     const compiled: HTMLElement = fixture.nativeElement;
     const dashboardButton = Array.from(compiled.querySelectorAll('button')).find((b) =>
@@ -102,7 +100,6 @@ describe('HeaderComponent', () => {
   it('should hide the spinner once loading completes', async () => {
     userSignal.set(null);
     await fixture.whenStable();
-    fixture.detectChanges();
 
     const compiled: HTMLElement = fixture.nativeElement;
     expect(compiled.querySelector('mat-spinner')).toBeNull();
@@ -113,7 +110,6 @@ describe('HeaderComponent', () => {
   it('should show the Dashboard button when a user is present', async () => {
     userSignal.set(makeUser());
     await fixture.whenStable();
-    fixture.detectChanges();
 
     const compiled: HTMLElement = fixture.nativeElement;
     const dashboardButton = Array.from(compiled.querySelectorAll('button')).find((b) =>
@@ -125,7 +121,6 @@ describe('HeaderComponent', () => {
   it('should not show the Login button when a user is present', async () => {
     userSignal.set(makeUser());
     await fixture.whenStable();
-    fixture.detectChanges();
 
     const compiled: HTMLElement = fixture.nativeElement;
     const loginButton = Array.from(compiled.querySelectorAll('button')).find((b) =>
@@ -137,7 +132,6 @@ describe('HeaderComponent', () => {
   it('should call authService.signOut when Logout is triggered', async () => {
     userSignal.set(makeUser());
     await fixture.whenStable();
-    fixture.detectChanges();
 
     component.authService.signOut();
 

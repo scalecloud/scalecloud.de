@@ -85,7 +85,6 @@ describe('ChangePaymentComponent', () => {
 
     // Step 1: render so afterNextRender fires and writes viewChild() → undefined,
     // and ngOnInit's fire-and-forget getChangePaymentSetupIntent() settles.
-    fixture.detectChanges();
     await fixture.whenStable();
 
     // Step 2: now that afterNextRender has already fired, our set() is the last
@@ -122,7 +121,6 @@ describe('ChangePaymentComponent', () => {
     const freshComponent = freshFixture.componentInstance;
     const spy = vi.spyOn(freshComponent, 'getChangePaymentSetupIntent');
 
-    freshFixture.detectChanges();
     await freshFixture.whenStable();
 
     expect(spy).toHaveBeenCalled();

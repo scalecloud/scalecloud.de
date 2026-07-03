@@ -43,21 +43,18 @@ describe('NextcloudComponent', () => {
   });
 
   it('should create', async () => {
-    fixture.detectChanges();
     await fixture.whenStable();
 
     expect(component).toBeTruthy();
   });
 
   it('should request the Nextcloud product tiers on init', async () => {
-    fixture.detectChanges();
     await fixture.whenStable();
 
     expect(productServiceMock.getProductTiers).toHaveBeenCalledWith(component.productType);
   });
 
   it('should move to Success and expose the returned products once the request resolves', async () => {
-    fixture.detectChanges();
     await fixture.whenStable();
 
     expect(component.serviceStatus()).toBe(ServiceStatus.Success);
@@ -65,7 +62,6 @@ describe('NextcloudComponent', () => {
   });
 
   it('should render one subscription card per product on success', async () => {
-    fixture.detectChanges();
     await fixture.whenStable();
 
     const cards = fixture.nativeElement.querySelectorAll('app-subscription-card');
@@ -75,7 +71,6 @@ describe('NextcloudComponent', () => {
   it('should move to Error when the request fails', async () => {
     productServiceMock.getProductTiers.mockReturnValue(throwError(() => new Error('boom')));
 
-    fixture.detectChanges();
     await fixture.whenStable();
 
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);

@@ -128,7 +128,6 @@ describe('LoginComponent', () => {
     component.password.setValue('');
 
     component.login();
-    fixture.detectChanges();
     await fixture.whenStable();
 
     const errors = fixture.debugElement.queryAll(By.css('mat-error'));

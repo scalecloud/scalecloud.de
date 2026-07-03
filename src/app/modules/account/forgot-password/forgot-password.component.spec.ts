@@ -209,7 +209,6 @@ describe('ForgotPasswordComponent', () => {
     component.email.setValue('user@example.com');
 
     await component.forgotPassword();
-    fixture.detectChanges();
     await fixture.whenStable();
 
     const submitButton = fixture.nativeElement.querySelector('button[color="primary"]') as HTMLButtonElement;

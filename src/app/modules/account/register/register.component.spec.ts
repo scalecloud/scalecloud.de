@@ -168,7 +168,6 @@ describe('RegisterComponent', () => {
 
   it('should call AuthService.register with email and password on a fully valid submit', async () => {
     fillValidForm();
-    fixture.detectChanges();
     await fixture.whenStable();
 
     component.onSubmit();
@@ -186,7 +185,6 @@ describe('RegisterComponent', () => {
     component.form.controls.password.setValue('weakweak');
     component.form.controls.confirmPassword.setValue('weakweak');
     component.form.controls.acceptTerms.setValue(true);
-    fixture.detectChanges();
     await fixture.whenStable();
 
     component.onSubmit();
@@ -199,7 +197,6 @@ describe('RegisterComponent', () => {
     component.form.controls.password.setValue(STRONG_PASSWORD);
     component.form.controls.confirmPassword.setValue('Different1!');
     component.form.controls.acceptTerms.setValue(true);
-    fixture.detectChanges();
     await fixture.whenStable();
 
     component.onSubmit();

@@ -84,7 +84,6 @@ describe('CancelStateComponent', () => {
 
     fixture   = TestBed.createComponent(CancelStateComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     await fixture.whenStable();
   });
 

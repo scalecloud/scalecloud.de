@@ -108,7 +108,6 @@ describe('DefaultComponent', () => {
 
   it('renders the progress bar while permissions are loading', async () => {
     loadingPermissions.set(true);
-    fixture.detectChanges();
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('mat-progress-bar')).toBeTruthy();
@@ -116,12 +115,10 @@ describe('DefaultComponent', () => {
 
   it('hides the progress bar once permissions finish loading', async () => {
     loadingPermissions.set(true);
-    fixture.detectChanges();
     await fixture.whenStable();
     expect(fixture.nativeElement.querySelector('mat-progress-bar')).toBeTruthy();
 
     loadingPermissions.set(false);
-    fixture.detectChanges();
     await fixture.whenStable();
     expect(fixture.nativeElement.querySelector('mat-progress-bar')).toBeFalsy();
   });
