@@ -46,17 +46,18 @@ ScaleCloud.de offers affordable cloud storage.
       </td>
     </tr>
     <tr>
+      <td>Reliability</td>
+      <td align="center">
+        <a href="https://sonarcloud.io/summary/new_code?id=scalecloud_scalecloud.de">
+          <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=reliability_rating&style=flat-square" alt="Reliability Rating" />
+        </a>
+      </td>
+    </tr>
+    <tr>
       <td>Maintainability</td>
       <td align="center">
         <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=sqale_rating&style=flat-square" alt="Maintainability" />
         <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=sqale_index&style=flat-square" alt="Technical Debt" />
-      </td>
-    </tr>
-    <tr>
-      <td>Reliability & Size</td>
-      <td align="center">
-        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=duplicated_lines_density&style=flat-square" alt="Duplicated Lines" />
-        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=ncloc&style=flat-square" alt="Lines of Code" />
       </td>
     </tr>
     <tr>
@@ -65,6 +66,13 @@ ScaleCloud.de offers affordable cloud storage.
         <a href="https://sonarcloud.io/summary/new_code?id=scalecloud_scalecloud.de">
           <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=coverage&style=flat-square" alt="Coverage" />
         </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Size</td>
+      <td align="center">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=duplicated_lines_density&style=flat-square" alt="Duplicated Lines" />
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=ncloc&style=flat-square" alt="Lines of Code" />
       </td>
     </tr>
   </tbody>
