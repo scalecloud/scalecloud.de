@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
-import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
+import { describe, afterEach, it, expect, vi } from 'vitest';
 import { PaymentOverviewComponent } from './payment-overview.component';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
@@ -75,7 +74,6 @@ async function createComponent(
   await TestBed.configureTestingModule({
     imports: [PaymentOverviewComponent],
     providers: [
-      provideZonelessChangeDetection(),
       { provide: PaymentMethodOverviewService, useValue: paymentMethodServiceMock },
       { provide: AuthService, useValue: authServiceMock },
       { provide: LogService, useValue: logServiceMock },

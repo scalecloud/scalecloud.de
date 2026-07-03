@@ -1,4 +1,3 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, RouterLink }      from '@angular/router';
 import { ComponentFixture, TestBed }      from '@angular/core/testing';
 import { By }                             from '@angular/platform-browser';
@@ -17,7 +16,6 @@ describe('ImprintComponent', () => {
     await TestBed.configureTestingModule({
       imports:   [ImprintComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
       ],
     }).compileComponents();

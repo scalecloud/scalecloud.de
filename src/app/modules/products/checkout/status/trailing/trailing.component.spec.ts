@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, it, expect } from 'vitest';
 
 import { TrailingComponent } from './trailing.component';
@@ -13,7 +12,7 @@ describe('TrailingComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TrailingComponent],
-      providers: [provideZonelessChangeDetection(), provideRouter([])],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TrailingComponent);

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
@@ -24,7 +23,6 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: AuthService, useValue: authService },
         { provide: LogService, useValue: logService },

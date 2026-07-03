@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection, DOCUMENT } from '@angular/core';
+import { DOCUMENT } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Location } from '@angular/common';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
@@ -45,7 +45,6 @@ describe('ReturnUrlService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideZonelessChangeDetection(),
         { provide: Router, useValue: router },
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: LogService, useValue: logService },

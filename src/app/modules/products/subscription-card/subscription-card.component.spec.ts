@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
@@ -34,7 +33,6 @@ describe('SubscriptionCardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SubscriptionCardComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
       ],
     }).compileComponents();

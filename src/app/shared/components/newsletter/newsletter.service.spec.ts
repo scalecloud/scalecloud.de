@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 import { NewsletterService } from './newsletter.service';
@@ -23,7 +22,6 @@ describe('NewsletterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: apiUrl },

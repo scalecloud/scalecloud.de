@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { VerifyEmailComponent } from './verify-email.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { signal } from '@angular/core';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -39,7 +39,6 @@ describe('VerifyEmailComponent', () => {
     await TestBed.configureTestingModule({
       imports: [VerifyEmailComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: AuthService, useValue: authService },
         { provide: ReturnUrlService, useValue: returnUrlService },
         { provide: SnackBarService, useValue: snackBarService },

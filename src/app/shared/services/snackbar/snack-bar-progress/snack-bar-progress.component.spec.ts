@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { Subject } from 'rxjs';
 
@@ -25,7 +24,6 @@ describe('SnackBarProgressComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SnackBarProgressComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: MAT_SNACK_BAR_DATA, useValue: data },
         { provide: MatSnackBarRef, useValue: snackBarRef },
       ],

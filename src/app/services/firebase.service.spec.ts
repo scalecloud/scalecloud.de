@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { FirebaseService } from './firebase.service';
@@ -52,11 +51,6 @@ describe('FirebaseService', () => {
   beforeEach(() => {
     // Without this, mock call counts leak between tests.
     vi.clearAllMocks();
-
-    TestBed.configureTestingModule({
-      providers: [provideZonelessChangeDetection()],
-    });
-
     // providedIn: 'root' + field initializers means construction (and the
     // initializeApp/getAuth/getAnalytics/getPerformance calls) happens here,
     // fresh, every test - only guaranteed if the previous module was reset.

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { Router, provideRouter } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { PageNotFoundComponent } from './page-not-found.component';
@@ -36,7 +35,6 @@ describe('PageNotFoundComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PageNotFoundComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([
           { path: '', component: BlankRouteComponent },
           { path: '**', component: BlankRouteComponent },

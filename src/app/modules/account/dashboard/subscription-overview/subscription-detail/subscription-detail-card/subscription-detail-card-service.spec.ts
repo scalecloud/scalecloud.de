@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
@@ -51,7 +50,6 @@ describe('SubscriptionDetailCardService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideZonelessChangeDetection(),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: TEST_API_URL },

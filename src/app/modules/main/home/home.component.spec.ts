@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, provideZonelessChangeDetection } from '@angular/core';
+import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
@@ -33,7 +33,6 @@ describe('HomeComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: SnackBarService, useValue: snackBarService },
       ],

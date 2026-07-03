@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
@@ -115,7 +114,6 @@ describe('SubscriptionDetailCardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SubscriptionDetailCardComponent],
       providers: [
-        provideZonelessChangeDetection(),
         // Stub API_URL so any deep dependency that escapes the override below
         // does not blow up the injector.
         { provide: API_URL, useValue: 'https://api.test' },

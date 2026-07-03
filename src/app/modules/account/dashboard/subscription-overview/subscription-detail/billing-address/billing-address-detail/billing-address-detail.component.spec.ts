@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { of, throwError } from 'rxjs';
@@ -88,7 +87,6 @@ describe('BillingAddressDetailComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BillingAddressDetailComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: AuthService, useValue: authServiceMock },
         { provide: PermissionService, useValue: permissionServiceMock },
         { provide: BillingAddressService, useValue: billingAddressServiceMock },

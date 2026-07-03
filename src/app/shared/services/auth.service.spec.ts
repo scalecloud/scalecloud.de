@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { Router } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi, type Mock } from 'vitest';
 import type { User } from 'firebase/auth';
@@ -92,7 +91,6 @@ describe('AuthService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideZonelessChangeDetection(),
         { provide: Router, useValue: router },
         { provide: SnackBarService, useValue: snackBarService },
         { provide: LogService, useValue: logService },

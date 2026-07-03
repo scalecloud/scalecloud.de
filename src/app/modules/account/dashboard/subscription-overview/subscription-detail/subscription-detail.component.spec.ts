@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
@@ -32,7 +31,6 @@ describe('SubscriptionDetailComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SubscriptionDetailComponent],
       providers: [
-        provideZonelessChangeDetection(),
         // Several root services form a chain: AuthService → ReturnUrlService →
         // ActivatedRoute + APP_BASE_URL. Mocking the whole chain here is more
         // robust than stubbing individual tokens one error at a time.

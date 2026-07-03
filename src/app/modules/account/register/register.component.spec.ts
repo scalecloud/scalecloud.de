@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { RegisterComponent } from './register.component';
@@ -22,7 +21,6 @@ describe('RegisterComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RegisterComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: AuthService, useValue: authService },
         { provide: ReturnUrlService, useValue: returnUrlService },
       ],

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect } from 'vitest';
 
@@ -12,7 +11,6 @@ describe('AddSeatService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: API_URL, useValue: 'http://localhost' },
         { provide: APP_BASE_URL, useValue: 'http://localhost' },

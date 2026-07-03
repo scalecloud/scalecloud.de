@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, it, expect } from 'vitest';
 
 import { PasswordStrengthComponent } from './password-strength.component';
@@ -11,7 +10,6 @@ describe('PasswordStrengthComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PasswordStrengthComponent],
-      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PasswordStrengthComponent);

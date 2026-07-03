@@ -1,4 +1,3 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -35,7 +34,6 @@ describe('ResumeSubscriptionComponent', () => {
     TestBed.configureTestingModule({
       imports: [ResumeSubscriptionComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: MatDialog, useValue: dialog },
         { provide: ResumeSubscriptionService, useValue: resumeSubscriptionService },
         { provide: LogService, useValue: logService },

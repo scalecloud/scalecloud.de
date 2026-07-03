@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, it, expect, vi } from 'vitest';
 import { of } from 'rxjs';
 
@@ -30,7 +29,6 @@ describe('StatusComponent', () => {
     await TestBed.configureTestingModule({
       imports: [StatusComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: AuthService, useValue: authService },
         { provide: LogService, useValue: logService },
         { provide: SnackBarService, useValue: snackBarService },

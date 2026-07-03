@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
@@ -30,7 +29,6 @@ describe('SynologyComponent', () => {
       // its `imports` array, so nothing else needs to be imported here.
       imports: [SynologyComponent],
       providers: [
-        provideZonelessChangeDetection(),
         // Some rendered child (e.g. TitelCardComponent / SubscriptionCardComponent)
         // injects ActivatedRoute or uses a routerLink-style directive. An empty
         // router config is enough to satisfy that DI requirement; nothing here

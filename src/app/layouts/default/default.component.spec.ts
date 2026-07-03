@@ -1,6 +1,6 @@
 import { RouterModule, provideRouter, ActivatedRoute } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, provideZonelessChangeDetection, signal, WritableSignal } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, signal, WritableSignal } from '@angular/core';
 
 import { DefaultComponent } from './default.component';
 import { SidebarComponent } from 'src/app/shared/components/sidebar/sidebar.component';
@@ -40,7 +40,6 @@ describe('DefaultComponent', () => {
         RouterModule
       ],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         {
           provide: ActivatedRoute,

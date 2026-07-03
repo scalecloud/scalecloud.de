@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
@@ -20,7 +19,6 @@ describe('ForgotPasswordComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ForgotPasswordComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: AuthService, useValue: authService },
         { provide: SnackBarService, useValue: snackBarService },

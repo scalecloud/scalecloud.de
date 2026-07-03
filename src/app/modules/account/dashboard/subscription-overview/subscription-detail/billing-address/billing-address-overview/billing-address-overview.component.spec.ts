@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { BillingAddressOverviewComponent } from './billing-address-overview.component';
 import { BillingAddressReply } from '../billing-address-model';
@@ -39,7 +38,6 @@ const snackBarServiceMock = { error: vi.fn() };
 const returnUrlServiceMock = { openUrlAddReturnUrl: vi.fn() };
 
 const providers = [
-  provideZonelessChangeDetection(),
   { provide: AuthService, useValue: authServiceMock },
   { provide: PermissionService, useValue: permissionServiceMock },
   { provide: BillingAddressService, useValue: billingAddressServiceMock },

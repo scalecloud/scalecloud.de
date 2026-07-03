@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { of } from 'rxjs';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
@@ -31,7 +30,6 @@ describe('BillingPortalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BillingPortalComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: AuthService, useValue: authServiceMock },
         { provide: LogService, useValue: logServiceMock },
         { provide: BillingPortalService, useValue: billingPortalServiceMock }

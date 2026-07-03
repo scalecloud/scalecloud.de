@@ -1,4 +1,3 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, RouterLink }      from '@angular/router';
 import { ComponentFixture, TestBed }      from '@angular/core/testing';
 import { By }                             from '@angular/platform-browser';
@@ -52,7 +51,6 @@ describe('SubscriptionOverviewComponent', () => {
     await TestBed.configureTestingModule({
       imports:   [SubscriptionOverviewComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
       ],
     }).compileComponents();

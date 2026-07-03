@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
@@ -18,7 +17,6 @@ describe('ConfirmCancelSubscriptionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ConfirmCancelSubscriptionComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: MatDialogRef, useValue: mockDialogRef },
       ],
     }).compileComponents();

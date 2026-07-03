@@ -12,7 +12,6 @@ import { PermissionService } from 'src/app/shared/services/permission/permission
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { ListSeatReply } from './seats';
 import { of, throwError } from 'rxjs';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -58,7 +57,6 @@ describe('SeatsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SeatsComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: SeatsService, useValue: mocks.seatsService },
         { provide: AuthService, useValue: mocks.authService },
         { provide: LogService, useValue: mocks.logService },

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
@@ -22,7 +21,6 @@ describe('NewsletterSubscribeComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NewsletterSubscribeComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: NewsletterService, useValue: newsletterService },
         { provide: SnackBarService, useValue: snackBarService },

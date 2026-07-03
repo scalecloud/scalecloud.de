@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
@@ -71,7 +70,6 @@ describe('SeatDetailComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SeatDetailComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: SeatDetailService, useValue: mocks.seatDetailService },
         { provide: AuthService, useValue: mocks.authService },
         { provide: LogService, useValue: mocks.logService },

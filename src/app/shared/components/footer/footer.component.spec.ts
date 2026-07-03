@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, it, expect } from 'vitest';
 
 import { FooterComponent } from './footer.component';
@@ -15,7 +14,6 @@ describe('FooterComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FooterComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
       ],
     }).compileComponents();

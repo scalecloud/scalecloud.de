@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, ActivatedRoute } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { of, Subject, throwError } from 'rxjs';
 
@@ -48,7 +47,6 @@ describe('AddSeatComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AddSeatComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: AddSeatService, useValue: addSeatService },
         { provide: AuthService, useValue: authService },

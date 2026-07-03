@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StripePaymentElementComponent } from './stripe-payment-element.component';
@@ -75,7 +74,6 @@ describe('StripePaymentElementComponent', () => {
     await TestBed.configureTestingModule({
       imports: [StripePaymentElementComponent],
       providers: [
-        provideZonelessChangeDetection(),
         { provide: LogService, useValue: logServiceMock },
         { provide: SnackBarService, useValue: snackBarServiceMock },
         { provide: StripeKeyService, useValue: stripeKeyServiceMock }

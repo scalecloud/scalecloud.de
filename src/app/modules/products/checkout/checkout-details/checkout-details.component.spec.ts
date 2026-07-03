@@ -1,4 +1,4 @@
-import { Component, forwardRef, signal, provideZonelessChangeDetection } from '@angular/core';
+import { Component, forwardRef, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
@@ -92,7 +92,6 @@ describe('CheckoutDetailsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CheckoutDetailsComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: CheckoutProductService, useValue: checkoutProductService },
         { provide: AuthService, useValue: authService },

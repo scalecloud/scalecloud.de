@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { provideZonelessChangeDetection, signal } from '@angular/core';
+import {  signal } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { HeaderComponent } from './header.component';
@@ -33,7 +33,6 @@ describe('HeaderComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: AuthService, useValue: authService },
       ],

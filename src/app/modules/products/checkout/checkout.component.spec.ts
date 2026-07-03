@@ -1,4 +1,4 @@
-import { Component, output, provideZonelessChangeDetection } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
@@ -38,7 +38,6 @@ describe('CheckoutComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CheckoutComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: LogService, useValue: { error: vi.fn() } },
         { provide: SnackBarService, useValue: { info: vi.fn(), error: vi.fn() } },

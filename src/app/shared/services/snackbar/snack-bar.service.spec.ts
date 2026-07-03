@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -20,7 +19,6 @@ describe('SnackBarService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideZonelessChangeDetection(),
         { provide: MatSnackBar, useValue: matSnackBar },
         { provide: LogService, useValue: logService },
       ],

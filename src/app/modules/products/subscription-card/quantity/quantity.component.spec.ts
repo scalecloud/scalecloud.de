@@ -1,4 +1,3 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, ActivatedRoute }  from '@angular/router';
 import { ComponentFixture, TestBed }      from '@angular/core/testing';
 import { By }                             from '@angular/platform-browser';
@@ -45,7 +44,6 @@ describe('QuantityComponent', () => {
     await TestBed.configureTestingModule({
       imports:   [QuantityComponent],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: SnackBarService, useValue: snackBarService },
         { provide: ActivatedRoute,  useValue: makeRoute(queryParams) },

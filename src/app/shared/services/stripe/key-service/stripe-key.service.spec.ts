@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { StripeKeyService, STRIPE_PUBLIC_KEY } from './stripe-key.service';
@@ -15,7 +14,6 @@ describe('StripeKeyService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideZonelessChangeDetection(),
         { provide: STRIPE_PUBLIC_KEY, useValue: publicKey },
         { provide: LogService, useValue: logService },
       ],

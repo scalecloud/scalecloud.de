@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { of, throwError, Subject } from 'rxjs';
@@ -31,7 +30,6 @@ describe('PermissionService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideZonelessChangeDetection(),
         { provide: HttpClient, useValue: httpClient },
         { provide: AuthService, useValue: authService },
         { provide: LogService, useValue: logService },
