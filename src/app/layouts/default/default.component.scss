@@ -1,14 +1,29 @@
 .app-shell {
   display: flex;
   flex-direction: column;
+  min-height: 100vh; // Gives the shell a real, definite height so .app-content
+                      // has actual leftover space to grow into. Without this,
+                      // .app-content just shrink-wraps its content, and mat-drawer-container's
+                      // height: 100% has nothing meaningful to resolve against,
+                      // which is what let the footer's position/size get affected
+                      // by whatever was (or wasn't) rendered in <main>.
 }
 
 .app-content {
   flex: 1;
+  min-height: 0; // Prevents this flex item from refusing to shrink below its
+                 // content size (the default min-height: auto on flex items),
+                 // which can otherwise cause layout to overflow/misbehave
+                 // when content is short.
+  display: flex; // Turns main into a flex container so mat-drawer-container
+                  // can be given its size directly via flex, instead of via
+                  // "height: 100%", which requires percentage-height resolution
+                  // that can silently fail through Material's internal markup.
 }
 
 mat-drawer-container {
-  height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 mat-drawer-content {
