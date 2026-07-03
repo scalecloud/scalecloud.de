@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, viewChild, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, viewChild, input, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { NextcloudProduct } from '../nextcloud/nextcloud-product';
 import { SynologyProduct } from '../synology/synology-product';
@@ -11,6 +11,8 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { CurrencyPipe } from '@angular/common';
 
+type SubscriptionProduct = NextcloudProduct | SynologyProduct;
+
 @Component({
     selector: 'app-subscription-card',
     templateUrl: './subscription-card.component.html',
@@ -21,97 +23,51 @@ import { CurrencyPipe } from '@angular/common';
 export class SubscriptionCardComponent {
   private readonly router = inject(Router);
 
-
   readonly nextcloudProduct = input<NextcloudProduct | undefined>(undefined);
   readonly synologyProduct = input<SynologyProduct | undefined>(undefined);
 
   readonly quantityComponent = viewChild(QuantityComponent);
 
+  /**
+   * Whichever product was actually bound. Nextcloud takes priority if,
+   * for some reason, both were ever passed at once.
+   *
+   * Deriving this once with `computed()` means every getter below reads
+   * from a single source of truth instead of repeating the same
+   * "is nextcloud set, else is synology set" branch — which is exactly
+   * where the old `this.nextcloudProduct != undefined` bug lived (that
+   * checked the signal *function*, not its value).
+   */
+  readonly product = computed<SubscriptionProduct | undefined>(
+    () => this.nextcloudProduct() ?? this.synologyProduct()
+  );
+
+  /**
+   * Reads the child's `quantity` signal — not its `getQuantity()` method.
+   * `computed()` only re-runs when a *signal* it read changes; `getQuantity()`
+   * just returns `quantityControl.value`, a plain (non-signal) FormControl
+   * value, so depending on it here would silently go stale.
+   */
+  readonly quantity = computed(() => this.quantityComponent()?.quantity() ?? 1);
+
+  readonly name = computed(() => this.product()?.name ?? '');
+  readonly productID = computed(() => this.product()?.productID ?? '');
+  readonly storageAmount = computed(() => this.product()?.storageAmount ?? 0);
+  readonly storageUnit = computed(() => this.product()?.storageUnit ?? '');
+  readonly trialDays = computed(() => this.product()?.trialDays ?? 0);
+  readonly isTrialIncluded = computed(() => this.quantity() < 2);
+
+  readonly pricePerMonth = computed(() => {
+    const price = this.product()?.pricePerMonth ?? 0;
+    return price > 0 ? price / 100 : 0;
+  });
+
   openCheckoutIntegration(): void {
-    const productID = this.getProductID();
-    const quantity = this.getQuantity();
-    this.router.navigate(['/checkout'],
-      {
-        queryParams: {
-          productID: productID,
-          quantity: quantity,
-        }
+    this.router.navigate(['/checkout'], {
+      queryParams: {
+        productID: this.productID(),
+        quantity: this.quantity(),
       }
-    );
-  }
-
-  getQuantity(): number {
-    let ret = 1;
-    if (this.quantityComponent() != undefined) {
-      ret = this.quantityComponent()!.getQuantity();
-    }
-    return ret;
-  }
-
-  getProductID(): string {
-    let ret = "";
-    if (this.nextcloudProduct() != undefined) {
-      ret = this.nextcloudProduct().productID;
-    } else if (this.synologyProduct() != undefined) {
-      ret = this.synologyProduct().productID;
-    }
-    return ret;
-  }
-
-  getName(): string {
-    let ret = "";
-    if (this.nextcloudProduct() != undefined) {
-      ret = this.nextcloudProduct().name;
-    } else if (this.synologyProduct() != undefined) {
-      ret = this.synologyProduct().name;
-    }
-    return ret;
-  }
-
-  getStorageAmount(): number {
-    let ret = 0;
-    if (this.nextcloudProduct() != undefined) {
-      ret = this.nextcloudProduct().storageAmount;
-    } else if (this.synologyProduct() != undefined) {
-      ret = this.synologyProduct().storageAmount;
-    }
-    return ret;
-  }
-
-  getStorageUnit(): string {
-    let ret = "";
-    if (this.nextcloudProduct() != undefined) {
-      ret = this.nextcloudProduct().storageUnit;
-    } else if (this.synologyProduct() != undefined) {
-      ret = this.synologyProduct().storageUnit;
-    }
-    return ret;
-  }
-
-  getIsTrialIncluded(): boolean {
-    return this.getQuantity() < 2;
-  }
-
-  getTrialDays(): number {
-    let ret = 0;
-    if (this.nextcloudProduct() != undefined) {
-      ret = this.nextcloudProduct().trialDays;
-    } else if (this.synologyProduct() != undefined) {
-      ret = this.synologyProduct().trialDays;
-    }
-    return ret;
-  }
-
-  getPricePerMonth(): number {
-    let ret = 0;
-    if (this.nextcloudProduct() != undefined) {
-      ret = this.nextcloudProduct().pricePerMonth;
-    } else if (this.synologyProduct() != undefined) {
-      ret = this.synologyProduct().pricePerMonth;
-    }
-    if (ret > 0) {
-      ret = ret / 100;
-    }
-    return ret;
+    });
   }
 }

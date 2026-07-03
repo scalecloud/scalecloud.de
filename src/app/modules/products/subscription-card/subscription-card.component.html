@@ -1,7 +1,7 @@
-@if (nextcloudProduct() != undefined || synologyProduct() != undefined) {
+@if (product()) {
   <mat-card>
     <mat-card-title>
-      {{getName()}}
+      {{ name() }}
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
@@ -9,7 +9,7 @@
         <mat-list-item>
           <div class="icon-text">
             <mat-icon>cloud</mat-icon>
-            {{getStorageAmount() * getQuantity() }}{{getStorageUnit()}}
+            {{ storageAmount() * quantity() }}{{ storageUnit() }}
           </div>
         </mat-list-item>
         <mat-list-item>
@@ -21,12 +21,12 @@
         <mat-list-item>
           <div class="icon-text">
             <mat-icon>event_available</mat-icon>
-            @if (getIsTrialIncluded()) {
-              {{getTrialDays()}}&nbsp;days trial*
+            @if (isTrialIncluded()) {
+              {{ trialDays() }}&nbsp;days trial*
             } @else {
               <div class="no-trial">
                 <s>
-                  {{getTrialDays()}}&nbsp;days trial*
+                  {{ trialDays() }}&nbsp;days trial*
                 </s>
               </div>
             }
@@ -45,7 +45,7 @@
       </mat-list>
     </mat-card-content>
     <mat-card-subtitle>
-      {{getPricePerMonth() * getQuantity() | currency:'EUR' : 'symbol' : '1.0-0'}}
+      {{ pricePerMonth() * quantity() | currency:'EUR' : 'symbol' : '1.0-0' }}
       <span class="price-month">/month</span>
     </mat-card-subtitle>
     <mat-card-actions>
