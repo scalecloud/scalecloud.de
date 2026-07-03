@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
@@ -64,31 +65,34 @@ export class CancelStateComponent implements OnInit {
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
       this.snackBarService.error('An error occurred while checking permissions.');
+      this.logService.error('SeatsComponent.checkPermissions: error checking permissions', error);
     }
   }
 
-  getCancelState(): void {
+  async getCancelState(): Promise<void> {
     this.serviceStatus = ServiceStatus.Loading;
-    this.authService.waitForAuth().then(() => {
-      const subscriptionID = this.getSubscriptionID();
-      if (!subscriptionID) {
-        this.logService.error('SeatsComponent.getSeatsList: subscriptionID is null');
-      } else {
-        this.cancelStateService.getCancelState(subscriptionID)
-          .subscribe({
-            next: seatListReply => {
-              this.reply = seatListReply;
-              this.serviceStatus = ServiceStatus.Success;
-            },
-            error: error => {
-              this.serviceStatus = ServiceStatus.Error;
-            }
-          });
-      }
-    }).catch((error) => {
+
+    try {
+      await this.authService.waitForAuth();
+    } catch (error) {
       this.logService.error("waitForAuth failed: " + error);
       this.serviceStatus = ServiceStatus.Error;
-    });
+      return;
+    }
+
+    const subscriptionID = this.getSubscriptionID();
+    if (!subscriptionID) {
+      this.logService.error('SeatsComponent.getSeatsList: subscriptionID is null');
+      return;
+    }
+
+    try {
+      this.reply = await firstValueFrom(this.cancelStateService.getCancelState(subscriptionID));
+      this.serviceStatus = ServiceStatus.Success;
+    } catch (error) {
+      this.serviceStatus = ServiceStatus.Error;
+      this.logService.error('SeatsComponent.getSeatsList: error fetching cancel state', error);
+    }
   }
 
   reloadSubscriptionDetail() {

@@ -146,16 +146,14 @@ describe('CancelStateComponent', () => {
   describe('getCancelState', () => {
     it('sets serviceStatus to Success on a successful response', async () => {
       mockCancelStateService.getCancelState.mockReturnValueOnce(of(MOCK_REPLY));
-      component.getCancelState();
-      await fixture.whenStable();
+      await component.getCancelState();
       expect(component.serviceStatus).toBe(ServiceStatus.Success);
     });
 
     it('stores the reply on success', async () => {
       const reply: CancelStateReply = { subscriptionID: SUBSCRIPTION_ID, cancel_at_period_end: true };
       mockCancelStateService.getCancelState.mockReturnValueOnce(of(reply));
-      component.getCancelState();
-      await fixture.whenStable();
+      await component.getCancelState();
       expect(component.reply).toEqual(reply);
     });
 
@@ -163,15 +161,13 @@ describe('CancelStateComponent', () => {
       mockCancelStateService.getCancelState.mockReturnValueOnce(
         throwError(() => new Error('server error'))
       );
-      component.getCancelState();
-      await fixture.whenStable();
+      await component.getCancelState();
       expect(component.serviceStatus).toBe(ServiceStatus.Error);
     });
 
     it('logs and sets Error status when waitForAuth rejects', async () => {
       mockAuthService.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
-      component.getCancelState();
-      await fixture.whenStable();
+      await component.getCancelState();
       expect(mockLogService.error).toHaveBeenCalledWith(
         expect.stringContaining('waitForAuth failed')
       );
@@ -182,8 +178,7 @@ describe('CancelStateComponent', () => {
       mockActivatedRoute.snapshot.paramMap.get.mockReturnValueOnce(null);
       vi.clearAllMocks();
       mockAuthService.waitForAuth.mockResolvedValueOnce(void 0);
-      component.getCancelState();
-      await fixture.whenStable();
+      await component.getCancelState();
       expect(mockCancelStateService.getCancelState).not.toHaveBeenCalled();
     });
   });
