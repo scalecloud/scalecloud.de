@@ -1,12 +1,17 @@
 import { TestBed } from '@angular/core/testing';
-import { describe, beforeEach, it, expect, vi } from 'vitest';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { FirebaseService } from './firebase.service';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getAnalytics } from 'firebase/analytics';
+import { getPerformance } from 'firebase/performance';
+import { environment } from 'src/environments/environment';
 
 // ── Firebase module mocks ────────────────────────────────────────────────────
 // All four Firebase calls happen at field-initialisation time, so they must be
-// mocked before the service is constructed. Each mock creates its own objects
-// to avoid hoisting issues with variable references.
+// mocked before the service is constructed (vi.mock is hoisted above these imports).
 
 vi.mock('firebase/app', () => {
   const mockApp = { name: '[DEFAULT]', options: {}, automaticDataCollectionEnabled: false };
@@ -45,17 +50,31 @@ describe('FirebaseService', () => {
   let service: FirebaseService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    // Without this, mock call counts leak between tests.
+    vi.clearAllMocks();
+
+    TestBed.configureTestingModule({
+      providers: [provideZonelessChangeDetection()],
+    });
+
+    // providedIn: 'root' + field initializers means construction (and the
+    // initializeApp/getAuth/getAnalytics/getPerformance calls) happens here,
+    // fresh, every test - only guaranteed if the previous module was reset.
     service = TestBed.inject(FirebaseService);
+  });
+
+  afterEach(() => {
+    // Without this, TestBed can hand back the same cached root singleton
+    // across tests instead of constructing a fresh one, so the field
+    // initializers (and the mock calls inside them) never re-run.
+    TestBed.resetTestingModule();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('initialises the Firebase app with the environment config', async () => {
-    const { initializeApp } = await import('firebase/app');
-    const { environment } = await import('src/environments/environment');
+  it('initialises the Firebase app with the environment config', () => {
     expect(initializeApp).toHaveBeenCalledWith(environment.firebaseConfig);
   });
 
@@ -74,12 +93,7 @@ describe('FirebaseService', () => {
     expect(service.perf).toHaveProperty('app');
   });
 
-  it('initialises all SDK modules', async () => {
-    const { getAuth } = await import('firebase/auth');
-    const { getAnalytics } = await import('firebase/analytics');
-    const { getPerformance } = await import('firebase/performance');
-    const { initializeApp } = await import('firebase/app');
-
+  it('initialises all SDK modules', () => {
     expect(initializeApp).toHaveBeenCalled();
     expect(getAuth).toHaveBeenCalled();
     expect(getAnalytics).toHaveBeenCalled();
