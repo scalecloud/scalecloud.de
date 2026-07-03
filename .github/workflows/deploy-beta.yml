@@ -22,8 +22,8 @@ jobs:
     #  - name: Lint
     #   run: npm run lint
 
-    #  - name: Test
-    #    run: npm test
+      - name: Test
+        run: npm test
 
   build_and_deploy:
     runs-on: ubuntu-latest
