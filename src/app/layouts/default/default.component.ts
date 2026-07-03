@@ -1,4 +1,4 @@
-import { Component, Signal, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, Signal, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -17,29 +17,28 @@ import { FooterComponent } from '../../shared/components/footer/footer.component
 export class DefaultComponent {
   private readonly permissionService = inject(PermissionService);
 
-  isExpanded = true;
-  showSubmenu = false;
-  isShowing = false;
-  showSubSubMenu = false;
-  isLoading: Signal<boolean>;
+  readonly isExpanded = signal(true);
+  readonly isShowing = signal(false);
+  readonly isLoading: Signal<boolean> = this.permissionService.loadingPermissions;
 
-  constructor() {
-    this.isLoading = this.permissionService.loadingPermissions;
-  }
+  sideBarToggler(): void {
+    this.isExpanded.update((expanded) => !expanded);
 
-  sideBarToggler() {
-    this.isExpanded = !this.isExpanded;
-  }
-
-  mouseenter() {
-    if (!this.isExpanded) {
-      this.isShowing = true;
+    // Collapsing the drawer permanently shouldn't leave a stale flyout open.
+    if (this.isExpanded()) {
+      this.isShowing.set(false);
     }
   }
 
-  mouseleave() {
-    if (!this.isExpanded) {
-      this.isShowing = false;
+  mouseenter(): void {
+    if (!this.isExpanded()) {
+      this.isShowing.set(true);
+    }
+  }
+
+  mouseleave(): void {
+    if (!this.isExpanded()) {
+      this.isShowing.set(false);
     }
   }
 }

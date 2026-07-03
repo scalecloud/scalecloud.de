@@ -1,3 +1,12 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+}
+
 mat-drawer-container {
   height: 100%;
 }
@@ -6,13 +15,4 @@ mat-drawer-content {
   display: flex;
   justify-content: center;
   margin-top: 2rem;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-}
-
-content {
-  flex: 1;
 }
