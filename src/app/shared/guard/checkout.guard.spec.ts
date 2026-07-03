@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { NgZone } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { checkoutGuard } from './checkout.guard';
@@ -23,8 +22,6 @@ function runGuard(url = MOCK_URL): Promise<boolean> {
 }
 
 describe('checkoutGuard', () => {
-  let ngZone: NgZone;
-
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -35,9 +32,6 @@ describe('checkoutGuard', () => {
         { provide: LogService, useValue: mockLogService },
       ],
     });
-
-    ngZone = TestBed.inject(NgZone);
-    vi.spyOn(ngZone, 'run').mockImplementation((fn: () => unknown) => fn());
   });
 
   describe('when the user is logged in but unverified', () => {
