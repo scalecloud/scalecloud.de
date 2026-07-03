@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductTiersReply, ProductType } from '../product-model';
@@ -9,18 +9,12 @@ import { API_URL } from 'src/app/core/config/api.token';
 })
 export class ProductService {
   private readonly http = inject(HttpClient);
-
-
   private readonly apiUrl = inject(API_URL);
-  private readonly url = `${this.apiUrl}/product/tiers`;
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  private readonly tiersUrl = `${this.apiUrl}/product/tiers`;
 
   getProductTiers(productType: ProductType): Observable<ProductTiersReply> {
-    return this.http.get<ProductTiersReply>(this.url + "/" + productType.toString().toLowerCase(), this.httpOptions);
+    const segment = productType.toString().toLowerCase();
+    return this.http.get<ProductTiersReply>(`${this.tiersUrl}/${segment}`);
   }
-
-
 }
