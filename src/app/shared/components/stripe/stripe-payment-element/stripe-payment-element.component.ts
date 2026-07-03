@@ -37,10 +37,10 @@ export class StripePaymentElementComponent {
     const publicKey = this.stripeKeyService.getPublicKey();
     if (publicKey == undefined) {
       this.logService.error("Cannot display Payment because publicKey is undefined.")
+      this.serviceStatus = ServiceStatus.Error;
+      return;
     }
-    else {
-      this.stripeElement = Stripe(publicKey);
-    }
+    this.stripeElement = Stripe(publicKey);
     this.initStripePayment = initStripePayment;
     if (this.initStripePayment) {
       const options = {
