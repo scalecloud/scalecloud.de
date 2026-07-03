@@ -1,5 +1,5 @@
 <app-titel-card [productType]="productType"></app-titel-card>
-@if (serviceStatus === ServiceStatus.Loading) {
+@if (serviceStatus() === ServiceStatus.Loading) {
   <div class="flex-container">
     @for (i of [0, 1, 2, 3]; track i) {
       <div class="flex-item">
@@ -38,9 +38,9 @@
     }
   </div>
 }
-@if (serviceStatus === ServiceStatus.Success) {
+@if (serviceStatus() === ServiceStatus.Success) {
   <div class="flex-container">
-    @for (nextcloudProduct of nextcloudProducts; track nextcloudProduct) {
+    @for (nextcloudProduct of nextcloudProducts(); track nextcloudProduct.productID) {
       <div class="flex-item">
         <app-subscription-card [nextcloudProduct]="nextcloudProduct"></app-subscription-card>
       </div>
@@ -48,7 +48,7 @@
     <p class="disclaimer">*Each account is eligible for a single trial user per product category. We reserve the right to limit the availability of trials.</p>
   </div>
 }
-@if ( serviceStatus === ServiceStatus.Error ) {
+@if ( serviceStatus() === ServiceStatus.Error ) {
   <div class="flex-container">
     @for (i of [0, 1, 2, 3]; track i) {
       <div class="flex-item">
