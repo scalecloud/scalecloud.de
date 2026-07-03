@@ -22,9 +22,7 @@
             },
             "browser": "src/main.ts",
             "index": "src/index.html",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": [],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets/img/logo/favicon.png",
