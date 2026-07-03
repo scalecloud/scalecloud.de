@@ -258,7 +258,20 @@ describe('GlobeComponent', () => {
 
         it('does not call cancelAnimationFrame if no frame was ever scheduled', () => {
             (component as any).animationFrameId = undefined;
+
+            // Clear here, right before the action under test, rather than
+            // relying on call-count history since the start of the test.
+            // window.cancelAnimationFrame is a single shared spy across the
+            // whole suite; something outside this test's own control flow
+            // (Angular's TestBed teardown of a prior fixture, a leftover
+            // rAF-mocked id of 42 from another component instance, etc.) can
+            // record a call against it before this assertion runs. Clearing
+            // immediately beforehand means the assertion below can only ever
+            // reflect what ngOnDestroy() itself does in this test.
+            vi.mocked(window.cancelAnimationFrame).mockClear();
+
             component.ngOnDestroy();
+
             expect(window.cancelAnimationFrame).not.toHaveBeenCalled();
         });
 
