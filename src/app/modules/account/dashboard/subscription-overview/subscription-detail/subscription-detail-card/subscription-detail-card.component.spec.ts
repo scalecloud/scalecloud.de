@@ -70,10 +70,6 @@ function makeSnackBarService() {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-/**
- * Flush all pending microtasks and trigger Angular's zoneless scheduler.
- * Equivalent to the old `tick()` + `detectChanges()` pattern under Zone.js.
- */
 async function stabilize(fixture: ComponentFixture<unknown>): Promise<void> {
   await fixture.whenStable();
   fixture.detectChanges();

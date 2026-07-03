@@ -29,10 +29,6 @@ export class ForgotPasswordComponent {
     validators: [Validators.required, Validators.email],
   });
 
-  // Seconds left on the post-request cooldown. A plain signal works fine
-  // here: writes from the interval callback notify any component reading
-  // the signal directly through Angular's reactivity graph, with no
-  // dependency on zone.js to schedule a re-render.
   private readonly secondsRemaining = signal(0);
 
   readonly clicked = computed(() => this.secondsRemaining() > 0);
