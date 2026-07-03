@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
@@ -19,8 +18,6 @@ function runGuard(): Promise<boolean> {
 }
 
 describe('forgotPasswordGuard', () => {
-  let ngZone: NgZone;
-
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -30,9 +27,6 @@ describe('forgotPasswordGuard', () => {
         { provide: AuthService, useValue: mockAuthService },
       ],
     });
-
-    ngZone = TestBed.inject(NgZone);
-    vi.spyOn(ngZone, 'run').mockImplementation((fn: () => unknown) => fn());
   });
 
   describe('when the user is fully logged in and verified', () => {

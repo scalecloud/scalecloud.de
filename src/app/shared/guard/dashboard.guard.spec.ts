@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { NgZone } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { dashboardGuard } from './dashboard.guard';
@@ -21,8 +20,6 @@ function runGuard(url = MOCK_URL): Promise<boolean> {
 }
 
 describe('dashboardGuard', () => {
-  let ngZone: NgZone;
-
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -32,9 +29,6 @@ describe('dashboardGuard', () => {
         { provide: AuthService, useValue: mockAuthService },
       ],
     });
-
-    ngZone = TestBed.inject(NgZone);
-    vi.spyOn(ngZone, 'run').mockImplementation((fn: () => unknown) => fn());
   });
 
   describe('when the user is logged in but unverified', () => {
