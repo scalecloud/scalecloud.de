@@ -204,7 +204,6 @@ describe('ForgotPasswordComponent', () => {
   // ─── DOM ─────────────────────────────────────────────────────────────────────
 
   it('should disable the submit button in the DOM while the countdown is active', async () => {
-    vi.useFakeTimers();
     authService.forgotPassword.mockResolvedValue(true);
     component.email.setValue('user@example.com');
 
@@ -213,7 +212,5 @@ describe('ForgotPasswordComponent', () => {
 
     const submitButton = fixture.nativeElement.querySelector('button[color="primary"]') as HTMLButtonElement;
     expect(submitButton.disabled).toBe(true);
-
-    vi.useRealTimers();
   });
 });
