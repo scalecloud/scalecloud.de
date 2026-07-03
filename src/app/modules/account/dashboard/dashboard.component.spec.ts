@@ -9,6 +9,7 @@ import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.serv
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { of, throwError } from 'rxjs';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
+import { provideRouter } from '@angular/router';
 
 const mockSubscriptions: ISubscriptionOverview[] = [
   {
@@ -60,6 +61,7 @@ describe('DashboardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
       providers: [
+        provideRouter([]),
         { provide: AuthService, useValue: authServiceMock },
         { provide: SubscriptionOverviewService, useValue: subscriptionOverviewServiceMock },
         { provide: LogService, useValue: logServiceMock },
