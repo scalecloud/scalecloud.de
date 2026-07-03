@@ -1,20 +1,43 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { of } from 'rxjs';
+import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { BillingPortalComponent } from './billing-portal.component';
-import { describe, beforeEach, it, expect } from 'vitest';
+import { BillingPortalService } from './billing-portal.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { LogService } from 'src/app/shared/services/log/log.service';
+import { IBillingPortal } from './billing-portal';
 
 describe('BillingPortalComponent', () => {
   let component: BillingPortalComponent;
   let fixture: ComponentFixture<BillingPortalComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-    imports: [BillingPortalComponent]
-})
-    .compileComponents();
-  });
+  const authServiceMock = {
+    getHttpOptions: vi.fn().mockReturnValue({})
+  };
 
-  beforeEach(() => {
+  const logServiceMock = {
+    error: vi.fn()
+  };
+
+  const billingPortalServiceMock = {
+    getBillingPortal: vi.fn()
+  };
+
+  beforeEach(async () => {
+    vi.clearAllMocks();
+
+    await TestBed.configureTestingModule({
+      imports: [BillingPortalComponent],
+      providers: [
+        provideZonelessChangeDetection(),
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: LogService, useValue: logServiceMock },
+        { provide: BillingPortalService, useValue: billingPortalServiceMock }
+      ]
+    }).compileComponents();
+
     fixture = TestBed.createComponent(BillingPortalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -22,5 +45,39 @@ describe('BillingPortalComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('openBillingPortal', () => {
+    let openSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    });
+
+    afterEach(() => {
+      openSpy.mockRestore();
+    });
+
+    it('should open the billing portal url in a new tab when one is returned', () => {
+      const billingPortal: IBillingPortal = { url: 'https://billing.example.com/session/123' };
+      billingPortalServiceMock.getBillingPortal.mockReturnValue(of(billingPortal));
+
+      component.openBillingPortal();
+
+      expect(billingPortalServiceMock.getBillingPortal).toHaveBeenCalled();
+      expect(openSpy).toHaveBeenCalledWith(billingPortal.url, '_blank');
+      expect(logServiceMock.error).not.toHaveBeenCalled();
+    });
+
+    it('should log an error and not open a tab when billingPortal is null', () => {
+      billingPortalServiceMock.getBillingPortal.mockReturnValue(of(null));
+
+      component.openBillingPortal();
+
+      expect(logServiceMock.error).toHaveBeenCalledWith(
+        'BillingPortalComponent.openBillingPortal: billingPortal is null'
+      );
+      expect(openSpy).not.toHaveBeenCalled();
+    });
   });
 });
