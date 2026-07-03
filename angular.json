@@ -92,16 +92,6 @@
             ]
           }
         },
-        "test-ui": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "tsConfig": "tsconfig.spec.json",
-            "include": [
-              "src/**/*.spec.ts"
-            ],
-            "runnerConfig": "vitest.config.ui.ts"
-          }
-        },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {

@@ -6,7 +6,7 @@
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "test": "ng test",
-    "test:ui": "ng run scalecloud:test-ui",
+    "test:ui": "ng test --ui",
     "lint": "ng lint",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org scalecloudde --project scalecloud ./dist/scalecloud && sentry-cli sourcemaps upload --org scalecloudde --project scalecloud ./dist/scalecloud"
   },
