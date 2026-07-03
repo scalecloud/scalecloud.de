@@ -59,5 +59,13 @@ ScaleCloud.de offers affordable cloud storage.
         <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=ncloc&style=flat-square" alt="Lines of Code" />
       </td>
     </tr>
+    <tr>
+      <td>Coverage</td>
+      <td align="center">
+        <a href="https://sonarcloud.io/summary/new_code?id=scalecloud_scalecloud.de">
+          <img src="https://sonarcloud.io/api/project_badges/measure?project=scalecloud_scalecloud.de&metric=coverage&style=flat-square" alt="Coverage" />
+        </a>
+      </td>
+    </tr>
   </tbody>
 </table>
