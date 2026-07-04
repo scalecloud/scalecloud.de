@@ -87,6 +87,10 @@
             "tsConfig": "tsconfig.spec.json",
             "include": [
               "src/**/*.spec.ts"
+            ],
+            "coverageReporters": [
+              "lcov",
+              "text-summary"
             ]
           }
         },
