@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { PaymentChangedProcessingComponent } from './payment-changed-processing.component';
+import { SucceededComponent } from './succeeded.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
-describe('PaymentChangedProcessingComponent', () => {
-  let component: PaymentChangedProcessingComponent;
-  let fixture: ComponentFixture<PaymentChangedProcessingComponent>;
+describe('PaymentChangedSucceededComponent', () => {
+  let component: SucceededComponent;
+  let fixture: ComponentFixture<SucceededComponent>;
   let returnUrlServiceMock: { openReturnURL: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
@@ -15,13 +15,13 @@ describe('PaymentChangedProcessingComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [PaymentChangedProcessingComponent],
+      imports: [SucceededComponent],
       providers: [
         { provide: ReturnUrlService, useValue: returnUrlServiceMock }
       ]
     });
 
-    fixture = TestBed.createComponent(PaymentChangedProcessingComponent);
+    fixture = TestBed.createComponent(SucceededComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -30,15 +30,15 @@ describe('PaymentChangedProcessingComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the processing title', () => {
+  it('should display the success title', () => {
     const title: HTMLElement = fixture.nativeElement.querySelector('mat-card-title');
-    expect(title?.textContent).toContain('Processing payment details');
+    expect(title?.textContent).toContain('Success');
   });
 
   it('should display both informational list items', () => {
     const items = fixture.nativeElement.querySelectorAll('mat-list-item');
     expect(items.length).toBe(2);
-    expect(items[0].textContent).toContain('Your payment details are being processed.');
+    expect(items[0].textContent).toContain('Your payment method has been saved.');
     expect(items[1].textContent).toContain('You can manage your Subscription in your Dashboard.');
   });
 

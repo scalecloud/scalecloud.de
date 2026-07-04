@@ -7,13 +7,13 @@ import { MatButton } from '@angular/material/button';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({
-    selector: 'app-payment-changed-processing',
-    templateUrl: './payment-changed-processing.component.html',
-    styleUrls: ['./payment-changed-processing.component.scss'],
+    selector: 'app-processing',
+    templateUrl: './processing.component.html',
+    styleUrls: ['./processing.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
 })
-export class PaymentChangedProcessingComponent {
+export class ProcessingComponent {
   private readonly returnUrlService = inject(ReturnUrlService);
 
   openReturnUrl(): void {

@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { PaymentChangedSucceededComponent } from './payment-changed-succeeded.component';
+import { ProcessingComponent } from './processing.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
-describe('PaymentChangedSucceededComponent', () => {
-  let component: PaymentChangedSucceededComponent;
-  let fixture: ComponentFixture<PaymentChangedSucceededComponent>;
+describe('ProcessingComponent', () => {
+  let component: ProcessingComponent;
+  let fixture: ComponentFixture<ProcessingComponent>;
   let returnUrlServiceMock: { openReturnURL: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
@@ -15,13 +15,13 @@ describe('PaymentChangedSucceededComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [PaymentChangedSucceededComponent],
+      imports: [ProcessingComponent],
       providers: [
         { provide: ReturnUrlService, useValue: returnUrlServiceMock }
       ]
     });
 
-    fixture = TestBed.createComponent(PaymentChangedSucceededComponent);
+    fixture = TestBed.createComponent(ProcessingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -30,15 +30,15 @@ describe('PaymentChangedSucceededComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the success title', () => {
+  it('should display the processing title', () => {
     const title: HTMLElement = fixture.nativeElement.querySelector('mat-card-title');
-    expect(title?.textContent).toContain('Success');
+    expect(title?.textContent).toContain('Processing payment details');
   });
 
   it('should display both informational list items', () => {
     const items = fixture.nativeElement.querySelectorAll('mat-list-item');
     expect(items.length).toBe(2);
-    expect(items[0].textContent).toContain('Your payment method has been saved.');
+    expect(items[0].textContent).toContain('Your payment details are being processed.');
     expect(items[1].textContent).toContain('You can manage your Subscription in your Dashboard.');
   });
 

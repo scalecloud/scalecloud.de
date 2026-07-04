@@ -102,7 +102,7 @@ describe('StatusPaymentChangedComponent', () => {
       expect(component.loading()).toBe(false);
 
       fixture.detectChanges();
-      const succeededEl = fixture.nativeElement.querySelector('app-payment-changed-succeeded');
+      const succeededEl = fixture.nativeElement.querySelector('app-succeeded');
       expect(succeededEl).toBeTruthy();
     });
 
@@ -127,7 +127,7 @@ describe('StatusPaymentChangedComponent', () => {
       expect(component.requires_payment_method()).toBe(false);
 
       fixture.detectChanges();
-      const processingEl = fixture.nativeElement.querySelector('app-payment-changed-processing');
+      const processingEl = fixture.nativeElement.querySelector('app-processing');
       expect(processingEl).toBeTruthy();
     });
   });
@@ -146,7 +146,7 @@ describe('StatusPaymentChangedComponent', () => {
       expect(component.processing()).toBe(false);
 
       fixture.detectChanges();
-      const requiresEl = fixture.nativeElement.querySelector('app-payment-changed-requires-payment-method');
+      const requiresEl = fixture.nativeElement.querySelector('app-requires-payment-method');
       expect(requiresEl).toBeTruthy();
     });
 

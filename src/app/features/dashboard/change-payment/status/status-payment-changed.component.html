@@ -1,17 +1,17 @@
 <div>
   @if (succeeded()) {
     <div>
-      <app-payment-changed-succeeded></app-payment-changed-succeeded>
+      <app-succeeded></app-succeeded>
     </div>
   }
   @if (processing()) {
     <div>
-      <app-payment-changed-processing></app-payment-changed-processing>
+      <app-processing></app-processing>
     </div>
   }
   @if (requires_payment_method()) {
     <div>
-      <app-payment-changed-requires-payment-method></app-payment-changed-requires-payment-method>
+      <app-requires-payment-method></app-requires-payment-method>
     </div>
   }
 </div>

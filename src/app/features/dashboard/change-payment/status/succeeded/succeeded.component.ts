@@ -7,15 +7,15 @@ import { MatButton } from '@angular/material/button';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({
-    selector: 'app-payment-changed-requires-payment-method',
-    templateUrl: './payment-changed-requires-payment-method.component.html',
-    styleUrls: ['./payment-changed-requires-payment-method.component.scss'],
+    selector: 'app-succeeded',
+    templateUrl: './succeeded.component.html',
+    styleUrls: ['./succeeded.component.scss'],
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
 })
-export class PaymentChangedRequiresPaymentMethodComponent {
+export class SucceededComponent {
   private readonly returnUrlService = inject(ReturnUrlService);
 
-  openChangePayment(): void {
-    this.returnUrlService.openUrlKeepReturnUrl('/change-payment');
+  openReturnUrl(): void {
+    this.returnUrlService.openReturnURL('/dashboard');
   }
 }
