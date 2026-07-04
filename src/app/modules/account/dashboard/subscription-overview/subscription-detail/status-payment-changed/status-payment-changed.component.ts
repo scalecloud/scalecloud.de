@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
+import { LogService } from 'src/app/core/logging/log.service';
+import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { PaymentChangedSucceededComponent } from './payment-changed-succeeded/payment-changed-succeeded.component';
 import { PaymentChangedProcessingComponent } from './payment-changed-processing/payment-changed-processing.component';
 import { PaymentChangedRequiresPaymentMethodComponent } from './payment-changed-requires-payment-method/payment-changed-requires-payment-method.component';

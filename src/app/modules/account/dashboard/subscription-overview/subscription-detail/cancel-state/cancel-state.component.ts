@@ -2,10 +2,10 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { LogService } from 'src/app/core/logging/log.service';
+import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CancelStateReply } from './cancel-state';
 import { CancelStateService } from './cancel-state.service';
 import { MatProgressBar } from '@angular/material/progress-bar';

@@ -1,4 +1,4 @@
-import { Role } from "src/app/shared/roles/roles";
+import { Role } from "src/app/core/permission/roles";
 
 export interface Seat {
     subscriptionID: string;

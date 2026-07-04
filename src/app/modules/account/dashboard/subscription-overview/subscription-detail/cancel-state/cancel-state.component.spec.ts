@@ -7,9 +7,9 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { CancelStateComponent } from './cancel-state.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { CancelStateService } from './cancel-state.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { LogService } from 'src/app/core/logging/log.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
+import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { CancelStateReply } from './cancel-state';
 

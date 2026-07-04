@@ -7,10 +7,10 @@ import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 import { BillingAddressDetailComponent } from './billing-address-detail.component';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { PermissionService } from 'src/app/core/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { LogService } from 'src/app/core/logging/log.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { BillingAddressReply } from '../billing-address-model';
 

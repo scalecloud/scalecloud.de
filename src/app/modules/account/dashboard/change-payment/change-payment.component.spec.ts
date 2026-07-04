@@ -6,7 +6,7 @@ import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 import { ChangePaymentComponent } from './change-payment.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ChangePaymentService } from './change-payment.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { StripePaymentElementComponent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-element.component';

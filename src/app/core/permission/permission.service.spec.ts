@@ -4,9 +4,9 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { of, throwError, Subject } from 'rxjs';
 
 import { PermissionService } from './permission.service';
-import { AuthService } from '../../../core/auth/auth.service';
-import { LogService } from '../log/log.service';
-import { Role } from '../../roles/roles';
+import { AuthService } from '../auth/auth.service';
+import { LogService } from '../logging/log.service';
+import { Role } from './roles';
 import { API_URL } from 'src/app/core/config/api.token';
 import { PermissionReply } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seats';
 

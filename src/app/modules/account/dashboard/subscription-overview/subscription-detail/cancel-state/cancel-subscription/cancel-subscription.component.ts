@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmCancelSubscriptionComponent } from './confirm-cancel-subscription/confirm-cancel-subscription.component';
 import { MatButton } from '@angular/material/button';

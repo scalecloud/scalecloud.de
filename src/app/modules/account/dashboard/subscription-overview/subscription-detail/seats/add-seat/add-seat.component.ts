@@ -8,13 +8,13 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AddSeatRequest } from '../seats';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { LogService } from 'src/app/core/logging/log.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { AddSeatService } from './add-seat.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RoleDescriptions, Role } from 'src/app/shared/roles/roles';
+import { RoleDescriptions, Role } from 'src/app/core/permission/roles';
 import { firstValueFrom } from 'rxjs';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';

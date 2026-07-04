@@ -4,8 +4,8 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { serviceErrorInterceptor } from './service-error-interceptor.service';
-import { SnackBarService } from '../services/snackbar/snack-bar.service';
-import { LogService } from '../services/log/log.service';
+import { SnackBarService } from '../snackbar/snack-bar.service';
+import { LogService } from '../logging/log.service';
 
 const mockSnackBarService = { error: vi.fn() };
 const mockLogService = { error: vi.fn() };

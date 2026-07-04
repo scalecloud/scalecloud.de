@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StripePaymentElementComponent } from './stripe-payment-element.component';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
+import { LogService } from 'src/app/core/logging/log.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
+import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
 

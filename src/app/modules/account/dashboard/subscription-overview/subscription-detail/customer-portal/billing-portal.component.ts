@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { BillingPortalService } from './billing-portal.service';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';

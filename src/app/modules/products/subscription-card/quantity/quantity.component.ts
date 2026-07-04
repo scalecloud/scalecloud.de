@@ -9,7 +9,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatInput } from '@angular/material/input';
 
 const MIN = 1;

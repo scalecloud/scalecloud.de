@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { GlobeComponent } from '../globe/globe.component';
 import { MatDivider } from '@angular/material/divider';
 import { MatButton } from '@angular/material/button';

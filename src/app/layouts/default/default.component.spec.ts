@@ -12,7 +12,7 @@ import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatListModule, MatNavList } from '@angular/material/list';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { PermissionService } from 'src/app/core/permission/permission.service';
 import { API_URL, APP_BASE_URL } from 'src/app/core/config/api.token';
 import { AuthService } from 'src/app/core/auth/auth.service';
 

@@ -1,11 +1,11 @@
 import { Component, signal, computed, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { LogService } from 'src/app/core/logging/log.service';
+import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { BillingAddressReply, BillingAddressRequest } from '../billing-address-model';
 import { BillingAddressService } from '../billing-address.service';
 import { CountryService } from '../country/country.service';

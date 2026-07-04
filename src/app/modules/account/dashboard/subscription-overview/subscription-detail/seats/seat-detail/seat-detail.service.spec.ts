@@ -15,7 +15,7 @@ import {
   DeleteSeatRequest,
   DeleteSeatReply,
 } from '../seats';
-import { Role } from 'src/app/shared/roles/roles';
+import { Role } from 'src/app/core/permission/roles';
 
 const MOCK_API_URL = 'https://api.example.com';
 

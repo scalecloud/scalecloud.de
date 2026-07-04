@@ -3,8 +3,8 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SnackBarService } from './snack-bar.service';
-import { SnackBarProgressComponent } from './snack-bar-progress/snack-bar-progress.component';
-import { LogService } from '../log/log.service';
+import { SnackBarProgressComponent } from './progress/snack-bar-progress.component';
+import { LogService } from '../logging/log.service';
 
 describe('SnackBarService', () => {
   let service: SnackBarService;

@@ -1,5 +1,5 @@
 import { Component, Signal, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { PermissionService } from 'src/app/core/permission/permission.service';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDrawerContainer, MatDrawer, MatDrawerContent } from '@angular/material/sidenav';

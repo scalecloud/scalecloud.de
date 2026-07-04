@@ -8,11 +8,11 @@ import {
   linkedSignal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Role, RoleDescriptions } from 'src/app/shared/roles/roles';
+import { Role, RoleDescriptions } from 'src/app/core/permission/roles';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import {
   DeleteSeatRequest,
   Seat,

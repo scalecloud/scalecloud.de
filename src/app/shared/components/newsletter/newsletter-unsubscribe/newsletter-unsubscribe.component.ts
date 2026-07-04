@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject, signal 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { NewsletterService } from '../newsletter.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus, NewsletterUnsubscribeRequest } from '../newsletter';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';

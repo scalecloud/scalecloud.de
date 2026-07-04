@@ -8,7 +8,7 @@ import { CheckoutDetailsComponent } from './checkout-details.component';
 import { CheckoutProductService } from './checkout-product.service';
 import { CheckoutProductReply } from './checkout-product';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
 import { LoadingFailedComponent } from '../../../../shared/components/loading-failed/loading-failed.component';
 import { ServiceStatus } from 'src/app/shared/services/service-status';

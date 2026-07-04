@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { NewsletterConfirmReply, NewsletterConfirmRequest } from '../newsletter';
 import { NewsletterService } from '../newsletter.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';

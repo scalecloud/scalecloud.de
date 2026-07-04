@@ -5,7 +5,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { NewsletterConfirmComponent } from './newsletter-confirm.component';
 import { NewsletterService } from '../newsletter.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { NewsletterConfirmReply } from '../newsletter';
 

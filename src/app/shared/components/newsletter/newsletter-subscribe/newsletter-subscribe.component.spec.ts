@@ -5,7 +5,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { NewsletterSubscribeComponent } from './newsletter-subscribe.component';
 import { NewsletterService } from '../newsletter.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { NewsletterSubscribeReplyStatus } from '../newsletter';
 
 describe('NewsletterSubscribeComponent', () => {

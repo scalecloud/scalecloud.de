@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LogService } from '../log/log.service';
-import { SnackBarProgressComponent, SnackBarProgressData } from './snack-bar-progress/snack-bar-progress.component';
+import { LogService } from '../logging/log.service';
+import { SnackBarProgressComponent, SnackBarProgressData } from './progress/snack-bar-progress.component';
 
 type SnackBarCssClass = 'snackbar-info' | 'snackbar-warn' | 'snackbar-error';
 

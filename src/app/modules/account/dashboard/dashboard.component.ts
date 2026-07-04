@@ -2,10 +2,10 @@ import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } 
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { LastCountService } from './subscription-overview/LastCount/last-count.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';

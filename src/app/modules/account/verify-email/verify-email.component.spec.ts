@@ -4,7 +4,7 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { VerifyEmailComponent } from './verify-email.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { signal } from '@angular/core';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

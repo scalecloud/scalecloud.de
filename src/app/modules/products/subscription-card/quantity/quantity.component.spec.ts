@@ -5,7 +5,7 @@ import { By }                             from '@angular/platform-browser';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { QuantityComponent } from './quantity.component';
-import { SnackBarService }   from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService }   from 'src/app/core/snackbar/snack-bar.service';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

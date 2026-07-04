@@ -1,5 +1,5 @@
 import { Injectable, inject, InjectionToken } from '@angular/core';
-import { LogService } from '../../log/log.service';
+import { LogService } from '../logging/log.service';
 
 export const STRIPE_PUBLIC_KEY = new InjectionToken<string>('STRIPE_PUBLIC_KEY');
 

@@ -2,11 +2,11 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@ang
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { PermissionService } from 'src/app/core/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
 import { ActivatedRoute } from '@angular/router';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { LogService } from 'src/app/core/logging/log.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';

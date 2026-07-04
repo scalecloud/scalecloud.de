@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-
 import { forgotPasswordGuard } from './forgot-password.guard';
 import { AuthService } from '../auth.service';
+
 
 const mockRouter = { navigate: vi.fn() };
 const mockAuthService = {

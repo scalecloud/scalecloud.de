@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { countries, Country } from './countries';
 import { Language } from './Language';
 

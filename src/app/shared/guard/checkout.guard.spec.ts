@@ -4,7 +4,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { checkoutGuard } from './checkout.guard';
 import { AuthService } from '../../core/auth/auth.service';
-import { LogService } from '../services/log/log.service';
+import { LogService } from '../../core/logging/log.service';
 
 const mockRouter = { navigate: vi.fn() };
 const mockAuthService = {

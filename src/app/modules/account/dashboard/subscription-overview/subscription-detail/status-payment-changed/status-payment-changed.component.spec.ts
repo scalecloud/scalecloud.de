@@ -4,8 +4,8 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StatusPaymentChangedComponent } from './status-payment-changed.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
-import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
+import { LogService } from 'src/app/core/logging/log.service';
+import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 describe('StatusPaymentChangedComponent', () => {

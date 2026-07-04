@@ -4,7 +4,7 @@ import { Router, provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { PageNotFoundComponent } from './page-not-found.component';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
 // Router itself is NOT overridden with a stub. provideRouter([])'s internal

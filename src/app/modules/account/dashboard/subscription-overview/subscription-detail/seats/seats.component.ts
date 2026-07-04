@@ -8,13 +8,13 @@ import {
 } from '@angular/core';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { SeatsService } from './seats.service';
-import { LogService } from 'src/app/shared/services/log/log.service';
+import { LogService } from 'src/app/core/logging/log.service';
 import { ListSeatReply, ListSeatRequest, Seat } from './seats';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { PermissionService } from 'src/app/shared/services/permission/permission.service';
+import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ActivatedRoute } from '@angular/router';
 import {
   MatCard,

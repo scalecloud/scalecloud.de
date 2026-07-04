@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, signal, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
-import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
+import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { NewsletterService } from '../newsletter.service';
 import { NewsletterSubscribeReplyStatus, NewsletterSubscribeRequest } from '../newsletter';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
