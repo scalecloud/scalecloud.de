@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { LogService } from 'src/app/core/logging/log.service';
 import { countries, Country } from './countries';
-import { Language } from './languages';
+import { Language } from './language';
 
 @Injectable({
   providedIn: 'root'
