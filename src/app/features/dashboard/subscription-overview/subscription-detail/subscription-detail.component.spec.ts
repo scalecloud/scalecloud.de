@@ -6,7 +6,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionDetailComponent } from './subscription-detail.component';
 import { SubscriptionDetailCardComponent } from './subscription-detail-card/subscription-detail-card.component';
 import { SeatsComponent } from './seats/seats.component';
-import { PaymentOverviewComponent } from '../../payment-overview/payment-overview.component';
+import { PaymentMethodOverviewComponent } from '../../payment-method-overview/payment-method-overview.component';
 import { InvoicesComponent } from './invoices/invoices.component';
 import { BillingAddressOverviewComponent } from './billing-address/billing-address-overview/billing-address-overview.component';
 import { BillingPortalComponent } from './customer-portal/billing-portal.component';
@@ -52,7 +52,7 @@ describe('SubscriptionDetailComponent', () => {
     // keeping these tests fast and focused on what this component owns.
     .overrideComponent(SubscriptionDetailCardComponent, { set: { template: '', imports: [], providers: [] } })
     .overrideComponent(SeatsComponent,                  { set: { template: '', imports: [], providers: [] } })
-    .overrideComponent(PaymentOverviewComponent,        { set: { template: '', imports: [], providers: [] } })
+    .overrideComponent(PaymentMethodOverviewComponent,        { set: { template: '', imports: [], providers: [] } })
     .overrideComponent(InvoicesComponent,               { set: { template: '', imports: [], providers: [] } })
     .overrideComponent(BillingAddressOverviewComponent, { set: { template: '', imports: [], providers: [] } })
     .overrideComponent(BillingPortalComponent,          { set: { template: '', imports: [], providers: [] } })
@@ -91,7 +91,7 @@ describe('SubscriptionDetailComponent', () => {
   });
 
   it('includes the payment overview', () => {
-    expect(hasElement(fixture, 'app-payment-overview')).toBe(true);
+    expect(hasElement(fixture, 'app-payment-method-overview')).toBe(true);
   });
 
   it('includes the invoices component', () => {
@@ -110,7 +110,7 @@ describe('SubscriptionDetailComponent', () => {
     const selectors = [
       'app-subscription-detail-card',
       'app-seats',
-      'app-payment-overview',
+      'app-payment-method-overview',
       'app-invoices',
       'app-billing-address-overview',
       'app-billing-portal',
@@ -130,7 +130,7 @@ describe('SubscriptionDetailComponent', () => {
     expect(selectors).toEqual([
       'app-subscription-detail-card',
       'app-seats',
-      'app-payment-overview',
+      'app-payment-method-overview',
       'app-invoices',
       'app-billing-address-overview',
       'app-billing-portal',
@@ -143,7 +143,7 @@ describe('SubscriptionDetailComponent', () => {
     const selectors = [
       'app-subscription-detail-card',
       'app-seats',
-      'app-payment-overview',
+      'app-payment-method-overview',
       'app-invoices',
       'app-billing-address-overview',
       'app-billing-portal',

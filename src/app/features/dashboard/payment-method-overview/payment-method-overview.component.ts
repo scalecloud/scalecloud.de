@@ -15,9 +15,9 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({
-  selector: 'app-payment-overview',
-  templateUrl: './payment-overview.component.html',
-  styleUrl: './payment-overview.component.scss',
+  selector: 'app-payment-method-overview',
+  templateUrl: './payment-method-overview.component.html',
+  styleUrl: './payment-method-overview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
@@ -34,7 +34,7 @@ import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
     LoadingFailedComponent,
   ],
 })
-export class PaymentOverviewComponent implements OnInit {
+export class PaymentMethodOverviewComponent implements OnInit {
   private readonly paymentMethodService = inject(PaymentMethodOverviewService);
   private readonly authService = inject(AuthService);
   private readonly logService = inject(LogService);

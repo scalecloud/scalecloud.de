@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, afterEach, it, expect, vi } from 'vitest';
-import { PaymentOverviewComponent } from './payment-overview.component';
+import { PaymentMethodOverviewComponent } from './payment-method-overview.component';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
@@ -53,7 +53,7 @@ async function createComponent(
     authError?: boolean;
     authPending?: boolean;
   } = {}
-): Promise<{ fixture: ComponentFixture<PaymentOverviewComponent>; component: PaymentOverviewComponent }> {
+): Promise<{ fixture: ComponentFixture<PaymentMethodOverviewComponent>; component: PaymentMethodOverviewComponent }> {
   const { reply = mockReply, serviceError = false, authError = false, authPending = false } = options;
 
   vi.resetAllMocks();
@@ -72,7 +72,7 @@ async function createComponent(
 
   TestBed.resetTestingModule();
   await TestBed.configureTestingModule({
-    imports: [PaymentOverviewComponent],
+    imports: [PaymentMethodOverviewComponent],
     providers: [
       { provide: PaymentMethodOverviewService, useValue: paymentMethodServiceMock },
       { provide: AuthService, useValue: authServiceMock },
@@ -81,7 +81,7 @@ async function createComponent(
     ],
   }).compileComponents();
 
-  const fixture = TestBed.createComponent(PaymentOverviewComponent);
+  const fixture = TestBed.createComponent(PaymentMethodOverviewComponent);
   const component = fixture.componentInstance;
   fixture.detectChanges();
 

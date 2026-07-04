@@ -5,7 +5,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { CheckoutComponent } from './checkout.component';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
-import { PaymentOverviewComponent } from 'src/app/features/dashboard/payment-overview/payment-overview.component';
+import { PaymentMethodOverviewComponent } from 'src/app/features/dashboard/payment-method-overview/payment-method-overview.component';
 import { CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
@@ -20,8 +20,8 @@ import { CheckoutSubscriptionService } from './checkout-payment/checkout-subscri
 // CheckoutComponent rather than a full integration test of the whole checkout
 // page, and avoids needing to recreate that entire dependency graph here.
 
-@Component({ selector: 'app-payment-overview', template: '' })
-class MockPaymentOverviewComponent {}
+@Component({ selector: 'app-payment-method-overview', template: '' })
+class MockPaymentMethodOverviewComponent {}
 
 @Component({ selector: 'app-checkout-details', template: '' })
 class MockCheckoutDetailsComponent {
@@ -46,8 +46,8 @@ describe('CheckoutComponent', () => {
       ],
     })
       .overrideComponent(CheckoutComponent, {
-        remove: { imports: [PaymentOverviewComponent, CheckoutDetailsComponent] },
-        add: { imports: [MockPaymentOverviewComponent, MockCheckoutDetailsComponent] },
+        remove: { imports: [PaymentMethodOverviewComponent, CheckoutDetailsComponent] },
+        add: { imports: [MockPaymentMethodOverviewComponent, MockCheckoutDetailsComponent] },
       })
       .compileComponents();
 
