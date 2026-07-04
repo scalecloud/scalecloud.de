@@ -6,8 +6,6 @@ import { DefaultComponent } from './default.component';
 import { SidebarComponent } from 'src/app/layouts/sidebar/sidebar.component';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
-import { FooterComponent } from 'src/app/shared/components/footer/footer.component';
-import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatListModule, MatNavList } from '@angular/material/list';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
@@ -15,6 +13,8 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { API_URL, APP_BASE_URL } from 'src/app/core/config/api.token';
 import { AuthService } from 'src/app/core/auth/auth.service';
+import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../header/header.component';
 
 // DefaultComponent imports HeaderComponent, which injects AuthService.
 // Without a mock here, Angular's root injector constructs the real

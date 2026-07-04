@@ -4,7 +4,7 @@ import {  signal } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { HeaderComponent } from './header.component';
-import { AuthService } from '../../../core/auth/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
