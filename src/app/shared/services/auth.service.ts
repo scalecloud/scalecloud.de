@@ -2,14 +2,6 @@ import { DestroyRef, Injectable, Signal, computed, inject, signal } from '@angul
 import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
 import type { User } from 'firebase/auth';
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-  signOut,
-} from 'firebase/auth';
 
 import { LogService } from './log/log.service';
 import { SnackBarService } from './snackbar/snack-bar.service';
@@ -36,8 +28,7 @@ export class AuthService {
   readonly isAuthenticated: Signal<boolean> = computed(() => !!this.userSignal()?.emailVerified);
 
   constructor() {
-    const unsubscribe = onAuthStateChanged(
-      this.firebaseService.auth,
+    const unsubscribe = this.firebaseService.onAuthStateChanged(
       (user) => this.handleAuthStateChanged(user),
       (error) => this.logService.error('Auth state listener failed: ' + error.message),
     );
@@ -70,7 +61,7 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<void> {
     try {
-      const result = await signInWithEmailAndPassword(this.firebaseService.auth, email, password);
+      const result = await this.firebaseService.signInWithEmailAndPassword(email, password);
       this.userSignal.set(result.user);
       this.returnUrlService.openReturnURL('/dashboard');
     } catch (error) {
@@ -80,7 +71,7 @@ export class AuthService {
 
   async register(email: string, password: string): Promise<void> {
     try {
-      const result = await createUserWithEmailAndPassword(this.firebaseService.auth, email, password);
+      const result = await this.firebaseService.createUserWithEmailAndPassword(email, password);
       this.userSignal.set(result.user);
       await this.sendVerificationMail();
     } catch (error) {
@@ -98,7 +89,7 @@ export class AuthService {
     const actionCodeSettings = { url: this.returnUrlService.getReturnUrlDecoded() };
 
     try {
-      await sendEmailVerification(user, actionCodeSettings);
+      await this.firebaseService.sendEmailVerification(user, actionCodeSettings);
       this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
       this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
     } catch (error) {
@@ -108,7 +99,7 @@ export class AuthService {
 
   async forgotPassword(passwordResetEmail: string): Promise<boolean> {
     try {
-      await sendPasswordResetEmail(this.firebaseService.auth, passwordResetEmail);
+      await this.firebaseService.sendPasswordResetEmail(passwordResetEmail);
       this.snackBarService.infoDuration('Please check your E-Mail for further instructions.', 30);
       return true;
     } catch (error) {
@@ -152,7 +143,7 @@ export class AuthService {
   private waitForNextAuthStateChange(timeoutDuration: number): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       const timer = setTimeout(() => reject(new Error('Auth state timeout')), timeoutDuration);
-      const unsubscribe = onAuthStateChanged(this.firebaseService.auth, (user) => {
+      const unsubscribe = this.firebaseService.onAuthStateChanged((user) => {
         clearTimeout(timer);
         unsubscribe();
         this.userSignal.set(user);
@@ -168,7 +159,7 @@ export class AuthService {
     }
 
     await new Promise<void>((resolve) => {
-      const unsubscribe = onAuthStateChanged(this.firebaseService.auth, (user) => {
+      const unsubscribe = this.firebaseService.onAuthStateChanged((user) => {
         if (user) {
           unsubscribe();
           this.userSignal.set(user);
@@ -191,7 +182,7 @@ export class AuthService {
   }
 
   async signOut(): Promise<void> {
-    await signOut(this.firebaseService.auth);
+    await this.firebaseService.signOut();
     this.router.navigate(['/']);
   }
 }
