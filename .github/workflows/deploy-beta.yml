@@ -27,11 +27,6 @@ jobs:
       - name: Test with coverage
         run: npm run test:coverage
 
-      - name: Debug coverage output
-        run: |
-          ls -la coverage/scalecloud/
-          head -20 coverage/scalecloud/lcov.info || echo "still not found"
-
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v8
         env:
