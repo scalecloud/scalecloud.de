@@ -10,7 +10,7 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatList, MatListItem } from '@angular/material/list';
 
 import { FormsModule } from '@angular/forms';
-import { LoadingFailedComponent } from '../../loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../loading-failed/loading-failed.component';
 
 declare const Stripe: any;
 

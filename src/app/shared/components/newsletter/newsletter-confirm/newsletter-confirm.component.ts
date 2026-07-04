@@ -11,7 +11,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-newsletter-confirm',

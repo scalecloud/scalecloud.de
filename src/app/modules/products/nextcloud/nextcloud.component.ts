@@ -10,7 +10,7 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { SubscriptionCardComponent } from '../subscription-card/subscription-card.component';
-import { LoadingFailedComponent } from '../../../shared/components/loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-nextcloud',

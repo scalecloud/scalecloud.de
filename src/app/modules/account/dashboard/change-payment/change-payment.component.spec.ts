@@ -9,8 +9,8 @@ import { ChangePaymentService } from './change-payment.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { StripePaymentElementComponent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-element.component';
-import { StripeIntent } from 'src/app/shared/components/stripe/stripe-payment-element/stripe-payment-setup-intent';
+import { StripePaymentElementComponent } from 'src/app/shared/stripe-payment-element/stripe-payment-element.component';
+import { StripeIntent } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent';
 
 // ── Stub ──────────────────────────────────────────────────────────────────────
 
