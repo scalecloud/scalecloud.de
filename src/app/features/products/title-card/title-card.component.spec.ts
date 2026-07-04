@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDivider } from '@angular/material/divider';
-import { TitelCardComponent } from './titel-card.component';
 import { describe, beforeEach, it, expect } from 'vitest';
+import { TitleCardComponent } from './title-card.component';
 
 describe('TitelCardComponent', () => {
-  let component: TitelCardComponent;
-  let fixture: ComponentFixture<TitelCardComponent>;
+  let component: TitleCardComponent;
+  let fixture: ComponentFixture<TitleCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [TitelCardComponent,
+    imports: [TitleCardComponent,
         MatDivider]
 })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TitelCardComponent);
+    fixture = TestBed.createComponent(TitleCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -3,13 +3,13 @@ import { ProductType } from '../product-model';
 import { MatDivider } from '@angular/material/divider';
 
 @Component({
-    selector: 'app-titel-card',
-    templateUrl: './titel-card.component.html',
-    styleUrls: ['./titel-card.component.scss'],
+    selector: 'app-title-card',
+    templateUrl: './title-card.component.html',
+    styleUrls: ['./title-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatDivider]
 })
-export class TitelCardComponent {
+export class TitleCardComponent {
 
   readonly productType = input<ProductType>(ProductType.Nextcloud);
   

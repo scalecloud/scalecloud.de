@@ -3,7 +3,7 @@ import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 
 import { CountryService } from './country.service';
 import { LogService } from 'src/app/core/logging/log.service';
-import { Language } from './Language';
+import { Language } from './language';
 
 describe('CountryService', () => {
   let service: CountryService;

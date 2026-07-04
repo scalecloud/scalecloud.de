@@ -4,7 +4,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LogService } from 'src/app/core/logging/log.service';
-import { LastCountService } from './subscription-overview/LastCount/last-count.service';
+import { LastCountService } from './subscription-overview/last-count/last-count.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { of, throwError } from 'rxjs';

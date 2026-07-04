@@ -3,7 +3,7 @@ import { SynologyProduct } from './synology-product';
 import { ProductType } from '../product-model';
 import { ProductService } from '../product/product.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { TitelCardComponent } from '../titel-card/titel-card.component';
+import { TitleCardComponent } from '../title-card/title-card.component';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
@@ -17,7 +17,7 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
     templateUrl: './synology.component.html',
     styleUrls: ['./synology.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TitelCardComponent, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCardComponent, LoadingFailedComponent]
+    imports: [TitleCardComponent, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCardComponent, LoadingFailedComponent]
 })
 export class SynologyComponent implements OnInit {
   private readonly productService = inject(ProductService);
