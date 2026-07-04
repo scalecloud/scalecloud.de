@@ -3,7 +3,7 @@ import { describe, beforeEach, it, expect } from 'vitest';
 import { firstValueFrom, take, toArray } from 'rxjs';
 
 import { LanguageService } from './language.service';
-import { Language } from './language';
+import { Language } from './languages';
 
 describe('LanguageService', () => {
   let service: LanguageService;

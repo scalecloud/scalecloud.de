@@ -12,7 +12,7 @@ import { CountryInputComponent } from './country-input.component';
 import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
-import { Language } from '../country/language';
+import { Language } from '../country/languages';
 
 describe('CountryInputComponent', () => {
   let component: CountryInputComponent;
