@@ -7,6 +7,7 @@
     "build:prod": "ng build --configuration production",
     "test": "ng test",
     "test:ui": "ng test --ui",
+    "test:coverage": "ng test --coverage",
     "lint": "ng lint",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org scalecloudde --project scalecloud ./dist/scalecloud && sentry-cli sourcemaps upload --org scalecloudde --project scalecloud ./dist/scalecloud"
   },
@@ -42,6 +43,7 @@
     "@schematics/angular": "^22.0.5",
     "@sentry/cli": "^3.6.0",
     "@types/node": "^26.1.0",
+    "@vitest/coverage-v8": "^4.1.9",
     "@vitest/ui": "^4.1.9",
     "angular-eslint": "22.0.0",
     "eslint": "^10.6.0",
