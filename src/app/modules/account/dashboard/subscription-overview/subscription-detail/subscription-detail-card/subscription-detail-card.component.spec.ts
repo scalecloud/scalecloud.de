@@ -6,7 +6,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionDetailCardComponent } from './subscription-detail-card.component';
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
 import { CancelStateComponent } from '../cancel-state/cancel-state.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';

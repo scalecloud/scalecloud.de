@@ -6,7 +6,7 @@ import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 
 import { BillingAddressDetailComponent } from './billing-address-detail.component';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
 import { LogService } from 'src/app/shared/services/log/log.service';

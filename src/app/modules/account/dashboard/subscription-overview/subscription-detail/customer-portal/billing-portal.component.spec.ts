@@ -4,7 +4,7 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { BillingPortalComponent } from './billing-portal.component';
 import { BillingPortalService } from './billing-portal.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { IBillingPortal } from './billing-portal';
 

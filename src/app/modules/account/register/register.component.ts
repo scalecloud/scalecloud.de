@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, viewChild, signal, computed
 import { AbstractControl, FormBuilder, FormGroup, FormControl, ValidatorFn, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { PasswordMatchComponent } from './password-match/password-match.component';
 import { PasswordStrengthComponent } from './password-strength/password-strength.component';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';

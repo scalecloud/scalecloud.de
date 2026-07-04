@@ -6,7 +6,7 @@ import {
   signal,
   computed,
 } from '@angular/core';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ListSeatReply, ListSeatRequest, Seat } from './seats';

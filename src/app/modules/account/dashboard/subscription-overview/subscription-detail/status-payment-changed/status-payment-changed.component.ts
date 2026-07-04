@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { StripeKeyService } from 'src/app/shared/services/stripe/key-service/stripe-key.service';
 import { PaymentChangedSucceededComponent } from './payment-changed-succeeded/payment-changed-succeeded.component';

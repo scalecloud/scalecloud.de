@@ -3,7 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { API_URL } from 'src/app/core/config/api.token';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { ResumeSubscriptionService } from './resume-subscription.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
 

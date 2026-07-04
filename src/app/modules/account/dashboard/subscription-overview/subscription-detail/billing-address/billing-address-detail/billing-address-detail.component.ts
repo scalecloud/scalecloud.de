@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
 import { ActivatedRoute } from '@angular/router';

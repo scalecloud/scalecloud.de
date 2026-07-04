@@ -6,7 +6,7 @@ import { of, Subject } from 'rxjs';
 
 import { SeatDetailComponent } from './seat-detail.component';
 import { SeatDetailService } from './seat-detail.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';

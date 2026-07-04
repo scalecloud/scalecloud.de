@@ -14,7 +14,7 @@ import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { API_URL, APP_BASE_URL } from 'src/app/core/config/api.token';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 // DefaultComponent imports HeaderComponent, which injects AuthService.
 // Without a mock here, Angular's root injector constructs the real

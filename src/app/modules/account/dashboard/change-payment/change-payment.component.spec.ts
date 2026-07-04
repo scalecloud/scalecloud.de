@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { ChangePaymentComponent } from './change-payment.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { ChangePaymentService } from './change-payment.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';

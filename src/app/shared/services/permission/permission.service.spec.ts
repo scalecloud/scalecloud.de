@@ -4,7 +4,7 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { of, throwError, Subject } from 'rxjs';
 
 import { PermissionService } from './permission.service';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../../core/auth/auth.service';
 import { LogService } from '../log/log.service';
 import { Role } from '../../roles/roles';
 import { API_URL } from 'src/app/core/config/api.token';

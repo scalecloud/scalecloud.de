@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { ForgotPasswordComponent } from './forgot-password.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 
 describe('ForgotPasswordComponent', () => {

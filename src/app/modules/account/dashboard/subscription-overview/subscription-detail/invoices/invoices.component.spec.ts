@@ -7,7 +7,7 @@ import { InvoicesComponent } from './invoices.component';
 import { InvoicesService } from './invoices.service';
 import { InvoiceStatus, ListInvoicesReply } from './invoices';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';

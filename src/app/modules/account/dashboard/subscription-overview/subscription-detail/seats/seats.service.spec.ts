@@ -4,7 +4,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { SeatsService } from './seats.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
 import { ListSeatReply, ListSeatRequest } from './seats';
 

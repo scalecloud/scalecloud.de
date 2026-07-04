@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { RegisterComponent } from './register.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 
 // A password that satisfies every PasswordStrengthComponent check.

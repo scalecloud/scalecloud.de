@@ -7,7 +7,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { vi, describe, beforeEach, afterEach, expect, it } from 'vitest';
 
 import { ChangePaymentService } from './change-payment.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { ChangePaymentReply } from './change-payment';
 import { API_URL } from 'src/app/core/config/api.token';
 import { environment } from 'src/environments/environment';

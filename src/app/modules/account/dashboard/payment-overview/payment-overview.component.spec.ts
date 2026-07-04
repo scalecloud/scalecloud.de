@@ -3,7 +3,7 @@ import { describe, afterEach, it, expect, vi } from 'vitest';
 import { PaymentOverviewComponent } from './payment-overview.component';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';

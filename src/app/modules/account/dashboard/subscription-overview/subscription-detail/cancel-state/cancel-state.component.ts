@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { PermissionService } from 'src/app/shared/services/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';

@@ -9,7 +9,7 @@ import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/paym
 import { CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { CheckoutSubscriptionService } from './payment-element/checkout-subscription.service';
 
 // ─── Stubs for the child components CheckoutComponent renders ─────────────────

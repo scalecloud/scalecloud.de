@@ -10,7 +10,7 @@ import { PaymentOverviewComponent } from '../../payment-overview/payment-overvie
 import { InvoicesComponent } from './invoices/invoices.component';
 import { BillingAddressOverviewComponent } from './billing-address/billing-address-overview/billing-address-overview.component';
 import { BillingPortalComponent } from './customer-portal/billing-portal.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { API_URL, APP_BASE_URL } from 'src/app/core/config/api.token';
 

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { SubscriptionOverviewService } from './subscription-overview.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 import { API_URL } from 'src/app/core/config/api.token';
 import { environment } from 'src/environments/environment';

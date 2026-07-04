@@ -5,7 +5,7 @@ import { of, Subject, throwError } from 'rxjs';
 
 import { AddSeatComponent } from './add-seat.component';
 import { AddSeatService } from './add-seat.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';

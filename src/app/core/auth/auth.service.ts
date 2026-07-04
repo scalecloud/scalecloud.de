@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
 import type { User } from 'firebase/auth';
 
-import { LogService } from './log/log.service';
-import { SnackBarService } from './snackbar/snack-bar.service';
-import { ReturnUrlService } from './redirect/return-url.service';
-import { FirebaseService } from 'src/app/services/firebase.service';
+import { LogService } from '../../shared/services/log/log.service';
+import { SnackBarService } from '../../shared/services/snackbar/snack-bar.service';
+import { ReturnUrlService } from '../../shared/services/redirect/return-url.service';
+import { FirebaseService } from 'src/app/core/auth/firebase.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

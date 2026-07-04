@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, OnInit, viewChild, signal, WritableSignal } from '@angular/core';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ChangePaymentReply } from './change-payment';
 import { ChangePaymentService } from './change-payment.service';

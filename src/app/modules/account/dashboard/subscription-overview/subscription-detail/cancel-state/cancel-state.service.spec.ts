@@ -4,7 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { CancelStateService } from './cancel-state.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { CancelStateReply } from './cancel-state';
 import { API_URL } from 'src/app/core/config/api.token';
 import { environment } from 'src/environments/environment';

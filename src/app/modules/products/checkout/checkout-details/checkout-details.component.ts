@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, viewChild, output, computed, resource, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
 import { CheckoutProductRequest } from './checkout-product';

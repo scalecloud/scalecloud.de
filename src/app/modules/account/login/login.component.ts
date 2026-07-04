@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, computed, signal } from '@a
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { startWith } from 'rxjs';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';

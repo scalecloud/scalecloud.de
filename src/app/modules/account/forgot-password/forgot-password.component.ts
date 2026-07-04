@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, signal, computed, DestroyRe
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { interval, take } from 'rxjs';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';

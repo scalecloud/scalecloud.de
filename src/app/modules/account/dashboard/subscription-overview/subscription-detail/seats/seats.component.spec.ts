@@ -4,7 +4,7 @@ import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { SeatsComponent } from './seats.component';
 import { SeatsService } from './seats.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';

@@ -6,7 +6,7 @@ import { of, Subject } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { CancelSubscriptionComponent } from './cancel-subscription.component';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
 import { LogService } from 'src/app/shared/services/log/log.service';
 import { SnackBarService } from 'src/app/shared/services/snackbar/snack-bar.service';

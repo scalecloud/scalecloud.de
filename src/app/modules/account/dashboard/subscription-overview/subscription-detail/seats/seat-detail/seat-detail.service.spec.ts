@@ -5,7 +5,7 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { firstValueFrom } from 'rxjs';
 
 import { SeatDetailService } from './seat-detail.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
 import {
   SeatDetailRequest,

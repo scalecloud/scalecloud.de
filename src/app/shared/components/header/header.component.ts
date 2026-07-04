@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, output, computed } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../core/auth/auth.service';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
