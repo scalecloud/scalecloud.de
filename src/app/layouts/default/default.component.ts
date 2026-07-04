@@ -1,11 +1,11 @@
 import { Component, Signal, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { PermissionService } from 'src/app/core/permission/permission.service';
-import { HeaderComponent } from '../../shared/components/header/header.component';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDrawerContainer, MatDrawer, MatDrawerContent } from '@angular/material/sidenav';
-import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 import { RouterOutlet } from '@angular/router';
-import { FooterComponent } from '../../shared/components/footer/footer.component';
+import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
     selector: 'app-default',

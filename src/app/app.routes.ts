@@ -95,23 +95,23 @@ export const routes: Routes = [
       // Footer - Lazy Loaded
       {
         path: 'privacy-policy',
-        loadComponent: () => import('./modules/footer/privacy/privacy.component').then(m => m.PrivacyComponent)
+        loadComponent: () => import('./layouts/footer/privacy/privacy.component').then(m => m.PrivacyComponent)
       },
       {
         path: 'imprint',
-        loadComponent: () => import('./modules/footer/imprint/imprint.component').then(m => m.ImprintComponent)
+        loadComponent: () => import('./layouts/footer/imprint/imprint.component').then(m => m.ImprintComponent)
       },
       {
         path: 'terms',
-        loadComponent: () => import('./modules/footer/terms/terms.component').then(m => m.TermsComponent)
+        loadComponent: () => import('./layouts/footer/terms/terms.component').then(m => m.TermsComponent)
       },
       {
         path: 'contact',
-        loadComponent: () => import('./modules/footer/contact/contact.component').then(m => m.ContactComponent)
+        loadComponent: () => import('./layouts/footer/contact/contact.component').then(m => m.ContactComponent)
       },
       {
         path: 'legal',
-        loadComponent: () => import('./modules/footer/legal/legal.component').then(m => m.LegalComponent)
+        loadComponent: () => import('./layouts/footer/legal/legal.component').then(m => m.LegalComponent)
       },
       // Newsletter - Lazy Loaded
       {

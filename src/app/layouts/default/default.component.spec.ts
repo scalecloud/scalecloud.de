@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, signal, WritableSignal } from '@angular/core';
 
 import { DefaultComponent } from './default.component';
-import { SidebarComponent } from 'src/app/shared/components/sidebar/sidebar.component';
+import { SidebarComponent } from 'src/app/layouts/sidebar/sidebar.component';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { FooterComponent } from 'src/app/shared/components/footer/footer.component';

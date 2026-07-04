@@ -1,11 +1,11 @@
 import { Component, ChangeDetectionStrategy, inject, output, computed } from '@angular/core';
-import { AuthService } from '../../../core/auth/auth.service';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Component({
     selector: 'app-header',
