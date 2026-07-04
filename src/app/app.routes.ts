@@ -2,12 +2,12 @@ import { Routes } from '@angular/router';
 
 
 
-import { dashboardGuard } from './shared/guard/dashboard.guard';
+import { dashboardGuard } from './core/auth/guards/dashboard.guard';
 import { checkoutGuard } from './shared/guard/checkout.guard';
-import { loginGuard } from './shared/guard/login.guard';
-import { registerGuard } from './shared/guard/register.guard';
-import { forgotPasswordGuard } from './shared/guard/forgot-password.guard';
-import { verifyEMailGuard } from './shared/guard/verify-email.guard';
+import { loginGuard } from './core/auth/guards/login.guard';
+import { registerGuard } from './core/auth/guards/register.guard';
+import { forgotPasswordGuard } from './core/auth/guards/forgot-password.guard';
+import { verifyEMailGuard } from './core/auth/guards/verify-email.guard';
 
 export const routes: Routes = [
   {

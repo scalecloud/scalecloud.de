@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { loginGuard } from './login.guard';
-import { AuthService } from '../../core/auth/auth.service';
+import { AuthService } from '../auth.service';
 
 const mockRouter = { navigate: vi.fn() };
 const mockAuthService = {

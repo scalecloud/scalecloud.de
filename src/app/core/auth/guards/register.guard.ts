@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../../core/auth/auth.service';
+import { AuthService } from '../auth.service';
 
-export const verifyEMailGuard: CanActivateFn = async (route, state) => {
+export const registerGuard: CanActivateFn = async (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
@@ -10,8 +10,8 @@ export const verifyEMailGuard: CanActivateFn = async (route, state) => {
     router.navigate(['/dashboard']);
     return false;
   }
-  else if (!(await authService.isLoggedIn(true)) && !(await authService.isLoggedInNotVerified(true))) {
-    router.navigate(['/login']);
+  else if (await authService.isLoggedInNotVerified(true)) {
+    router.navigate(['/verify-email-address']);
     return false;
   }
 

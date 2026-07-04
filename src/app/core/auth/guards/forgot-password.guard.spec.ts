@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { registerGuard } from './register.guard';
-import { AuthService } from '../../core/auth/auth.service';
+import { forgotPasswordGuard } from './forgot-password.guard';
+import { AuthService } from '../auth.service';
 
 const mockRouter = { navigate: vi.fn() };
 const mockAuthService = {
@@ -13,11 +13,11 @@ const mockAuthService = {
 
 function runGuard(): Promise<boolean> {
   return TestBed.runInInjectionContext(() =>
-    registerGuard({} as any, {} as any) as Promise<boolean>
+    forgotPasswordGuard({} as any, {} as any) as Promise<boolean>
   );
 }
 
-describe('registerGuard', () => {
+describe('forgotPasswordGuard', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -66,7 +66,7 @@ describe('registerGuard', () => {
     });
   });
 
-  describe('when the user is not logged in and not pending verification (the register page is intended for them)', () => {
+  describe('when the user is not logged in and not pending verification (the forgot-password page is intended for them)', () => {
     beforeEach(() => {
       mockAuthService.isLoggedIn.mockResolvedValue(false);
       mockAuthService.isLoggedInNotVerified.mockResolvedValue(false);
