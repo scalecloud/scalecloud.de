@@ -6,8 +6,8 @@ import { CheckoutDetailsComponent } from './checkout-details/checkout-details.co
 import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { CheckoutSubscriptionService } from './payment-element/checkout-subscription.service';
-import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
+import { CheckoutSubscriptionService } from './checkout-payment/checkout-subscription.service';
+import { PaymentOverviewComponent } from 'src/app/features/dashboard/payment-overview/payment-overview.component';
 
 @Component({
     selector: 'app-checkout',

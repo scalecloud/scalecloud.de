@@ -4,9 +4,9 @@ import { provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { HomeComponent } from './home.component';
-import { GlobeComponent } from '../globe/globe.component';
-import { NewsletterSubscribeComponent } from '../../../shared/components/newsletter/newsletter-subscribe/newsletter-subscribe.component';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
+import { NewsletterSubscribeComponent } from 'src/app/shared/components/newsletter/newsletter-subscribe/newsletter-subscribe.component';
+import { GlobeComponent } from './globe/globe.component';
 
 // ─── Stubs ────────────────────────────────────────────────────────────────────
 // HomeComponent only cares that these children are present, not what they do

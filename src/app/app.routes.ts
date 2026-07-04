@@ -16,81 +16,81 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () => import('./modules/main/home/home.component').then(m => m.HomeComponent)
+        loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent)
       },
       {
         path: 'nextcloud',
-        loadComponent: () => import('./modules/products/nextcloud/nextcloud.component').then(m => m.NextcloudComponent)
+        loadComponent: () => import('./features/products/nextcloud/nextcloud.component').then(m => m.NextcloudComponent)
       },
       {
         path: 'synology',
-        loadComponent: () => import('./modules/products/synology/synology.component').then(m => m.SynologyComponent)
+        loadComponent: () => import('./features/products/synology/synology.component').then(m => m.SynologyComponent)
       },
       {
         path: 'checkout',
         canActivate: [checkoutGuard],
-        loadComponent: () => import('./modules/products/checkout/checkout.component').then(m => m.CheckoutComponent)
+        loadComponent: () => import('./features/products/checkout/checkout.component').then(m => m.CheckoutComponent)
       },
       {
         path: 'checkout/status',
-        loadComponent: () => import('./modules/products/checkout/status/status.component').then(m => m.StatusComponent)
+        loadComponent: () => import('./features/products/checkout/status/status.component').then(m => m.StatusComponent)
       },
       // Account/Dashboard - Lazy Loaded
       {
         path: 'dashboard',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./modules/account/dashboard/dashboard.component').then(m => m.DashboardComponent)
+        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/subscription-detail.component').then(m => m.SubscriptionDetailComponent)
+        loadComponent: () => import('./features/dashboard/subscription-overview/subscription-detail/subscription-detail.component').then(m => m.SubscriptionDetailComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/add-seat',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component').then(m => m.AddSeatComponent)
+        loadComponent: () => import('./features/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component').then(m => m.AddSeatComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component').then(m => m.SeatDetailComponent)
+        loadComponent: () => import('./features/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component').then(m => m.SeatDetailComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/billing-address',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component').then(m => m.BillingAddressDetailComponent)
+        loadComponent: () => import('./features/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component').then(m => m.BillingAddressDetailComponent)
       },
       {
         path: 'dashboard/change-payment',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./modules/account/dashboard/change-payment/change-payment.component').then(m => m.ChangePaymentComponent)
+        loadComponent: () => import('./features/dashboard/change-payment/change-payment.component').then(m => m.ChangePaymentComponent)
       },
       {
         path: 'dashboard/change-payment/status',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./modules/account/dashboard/subscription-overview/subscription-detail/status-payment-changed/status-payment-changed.component').then(m => m.StatusPaymentChangedComponent)
+        loadComponent: () => import('./features/dashboard/subscription-overview/subscription-detail/status-payment-changed/status-payment-changed.component').then(m => m.StatusPaymentChangedComponent)
       },
       // Auth - Lazy Loaded
       {
         path: 'login',
         canActivate: [loginGuard],
-        loadComponent: () => import('./modules/account/login/login.component').then(m => m.LoginComponent)
+        loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent)
       },
       {
         path: 'register',
         canActivate: [registerGuard],
-        loadComponent: () => import('./modules/account/register/register.component').then(m => m.RegisterComponent)
+        loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent)
       },
       {
         path: 'verify-email-address',
         canActivate: [verifyEMailGuard],
-        loadComponent: () => import('./modules/account/verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
+        loadComponent: () => import('./features/auth/verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
       },
       {
         path: 'forgot-password',
         canActivate: [forgotPasswordGuard],
-        loadComponent: () => import('./modules/account/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
+        loadComponent: () => import('./features/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
       },
       // Footer - Lazy Loaded
       {
@@ -123,7 +123,7 @@ export const routes: Routes = [
         loadComponent: () => import('./shared/components/newsletter/newsletter-unsubscribe/newsletter-unsubscribe.component').then(m => m.NewsletterUnsubscribeComponent)
       },
       // Wildcard
-      { path: '**', loadComponent: () => import('./modules/main/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent) }
+      { path: '**', loadComponent: () => import('./features/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent) }
     ]
   }
 ];

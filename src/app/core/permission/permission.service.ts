@@ -4,7 +4,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { LogService } from '../logging/log.service';
 import { Role } from './roles';
-import { PermissionReply, PermissionRequest } from 'src/app/modules/account/dashboard/subscription-overview/subscription-detail/seats/seats';
+import { PermissionReply, PermissionRequest } from 'src/app/features/dashboard/subscription-overview/subscription-detail/seats/seats';
 import { API_URL } from 'src/app/core/config/api.token';
 
 interface CacheEntry {

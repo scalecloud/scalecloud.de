@@ -5,12 +5,12 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { CheckoutComponent } from './checkout.component';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
-import { PaymentOverviewComponent } from 'src/app/modules/account/dashboard/payment-overview/payment-overview.component';
+import { PaymentOverviewComponent } from 'src/app/features/dashboard/payment-overview/payment-overview.component';
 import { CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { CheckoutSubscriptionService } from './payment-element/checkout-subscription.service';
+import { CheckoutSubscriptionService } from './checkout-payment/checkout-subscription.service';
 
 // ─── Stubs for the child components CheckoutComponent renders ─────────────────
 // CheckoutDetailsComponent and PaymentOverviewComponent each pull in their own

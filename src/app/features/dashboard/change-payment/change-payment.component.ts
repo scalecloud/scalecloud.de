@@ -7,7 +7,7 @@ import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/sh
 import { StripePaymentElementComponent } from 'src/app/shared/stripe-payment-element/stripe-payment-element.component';
 import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
-import { StripePaymentElementComponent as StripePaymentElementComponent_1 } from '../../../../shared/stripe-payment-element/stripe-payment-element.component';
+import { StripePaymentElementComponent as StripePaymentElementComponent_1 } from '../../../shared/stripe-payment-element/stripe-payment-element.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { afterNextRender } from '@angular/core';

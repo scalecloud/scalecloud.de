@@ -17,7 +17,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatChip } from '@angular/material/chips';
 import { TitleCasePipe, CurrencyPipe, DatePipe } from '@angular/common';
-import { LoadingFailedComponent } from '../../../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../../../shared/loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-invoices',

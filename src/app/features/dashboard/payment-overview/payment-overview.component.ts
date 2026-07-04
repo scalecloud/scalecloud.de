@@ -12,7 +12,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 
 @Component({
   selector: 'app-payment-overview',

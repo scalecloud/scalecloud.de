@@ -12,7 +12,7 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { SubscriptionOverviewComponent } from './subscription-overview/subscription-overview.component';
-import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../shared/loading-failed/loading-failed.component';
 
 @Component({
   selector: 'app-dashboard',
