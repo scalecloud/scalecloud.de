@@ -29,7 +29,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
-import { LoadingFailedComponent } from '../../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({

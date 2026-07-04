@@ -18,7 +18,7 @@ import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { CountryInputComponent } from '../country-input/country-input.component';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 /**

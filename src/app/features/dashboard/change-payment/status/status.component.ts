@@ -10,12 +10,12 @@ import { RequiresPaymentMethodComponent } from './requires-payment-method/requir
 declare const Stripe: any;
 
 @Component({
-    selector: 'app-status-payment-changed',
-    templateUrl: './status-payment-changed.component.html',
-    styleUrls: ['./status-payment-changed.component.scss'],
+    selector: 'app-status',
+    templateUrl: './status.component.html',
+    styleUrls: ['./status.component.scss'],
     imports: [SucceededComponent, ProcessingComponent, RequiresPaymentMethodComponent]
 })
-export class StatusPaymentChangedComponent implements OnInit {
+export class StatusComponent implements OnInit {
   private readonly logService = inject(LogService);
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);

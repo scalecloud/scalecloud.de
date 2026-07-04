@@ -17,7 +17,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({

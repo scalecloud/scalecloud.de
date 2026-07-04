@@ -6,7 +6,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionDetailComponent } from './subscription-detail.component';
 import { SubscriptionDetailCardComponent } from './subscription-detail-card/subscription-detail-card.component';
 import { SeatsComponent } from './seats/seats.component';
-import { PaymentMethodOverviewComponent } from '../../payment-method-overview/payment-method-overview.component';
+import { PaymentMethodOverviewComponent } from '../dashboard/payment-method-overview/payment-method-overview.component';
 import { InvoicesComponent } from './invoices/invoices.component';
 import { BillingAddressOverviewComponent } from './billing-address/billing-address-overview/billing-address-overview.component';
 import { BillingPortalComponent } from './customer-portal/billing-portal.component';

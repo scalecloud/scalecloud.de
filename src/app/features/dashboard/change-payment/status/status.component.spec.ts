@@ -2,15 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
-import { StatusPaymentChangedComponent } from './status-payment-changed.component';
+import { StatusComponent } from './status.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
-describe('StatusPaymentChangedComponent', () => {
-  let component: StatusPaymentChangedComponent;
-  let fixture: ComponentFixture<StatusPaymentChangedComponent>;
+describe('StatusComponent', () => {
+  let component: StatusComponent;
+  let fixture: ComponentFixture<StatusComponent>;
 
   let authServiceMock: { waitForAuth: ReturnType<typeof vi.fn> };
   let logServiceMock: {
@@ -57,7 +57,7 @@ describe('StatusPaymentChangedComponent', () => {
     const mergedParams = { ...queryParams, ...paramOverrides };
 
     TestBed.configureTestingModule({
-      imports: [StatusPaymentChangedComponent],
+      imports: [StatusComponent],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: LogService, useValue: logServiceMock },
@@ -74,7 +74,7 @@ describe('StatusPaymentChangedComponent', () => {
       ]
     });
 
-    fixture = TestBed.createComponent(StatusPaymentChangedComponent);
+    fixture = TestBed.createComponent(StatusComponent);
     component = fixture.componentInstance;
   }
 

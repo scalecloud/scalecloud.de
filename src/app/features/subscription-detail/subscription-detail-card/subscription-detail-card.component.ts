@@ -15,7 +15,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { CancelStateComponent } from '../cancel-state/cancel-state.component';
-import { LoadingFailedComponent } from '../../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({

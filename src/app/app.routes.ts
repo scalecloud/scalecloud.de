@@ -44,22 +44,22 @@ export const routes: Routes = [
       {
         path: 'dashboard/subscription/:subscriptionID',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard/subscription-overview/subscription-detail/subscription-detail.component').then(m => m.SubscriptionDetailComponent)
+        loadComponent: () => import('./features/subscription-detail/subscription-detail.component').then(m => m.SubscriptionDetailComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/add-seat',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard/subscription-overview/subscription-detail/seats/add-seat/add-seat.component').then(m => m.AddSeatComponent)
+        loadComponent: () => import('./features/subscription-detail/seats/add-seat/add-seat.component').then(m => m.AddSeatComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard/subscription-overview/subscription-detail/seats/seat-detail/seat-detail.component').then(m => m.SeatDetailComponent)
+        loadComponent: () => import('./features/subscription-detail/seats/seat-detail/seat-detail.component').then(m => m.SeatDetailComponent)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/billing-address',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard/subscription-overview/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component').then(m => m.BillingAddressDetailComponent)
+        loadComponent: () => import('./features/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component').then(m => m.BillingAddressDetailComponent)
       },
       {
         path: 'dashboard/change-payment',
@@ -69,7 +69,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/change-payment/status',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard/change-payment/status/status-payment-changed.component').then(m => m.StatusPaymentChangedComponent)
+        loadComponent: () => import('./features/dashboard/change-payment/status/status.component').then(m => m.StatusComponent)
       },
       // Auth - Lazy Loaded
       {

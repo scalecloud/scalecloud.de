@@ -12,7 +12,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { ResumeSubscriptionComponent } from './resume-subscription/resume-subscription.component';
 import { CancelSubscriptionComponent } from './cancel-subscription/cancel-subscription.component';
-import { LoadingFailedComponent } from '../../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 
 @Component({
     selector: 'app-cancel-state',
