@@ -1,22 +1,22 @@
 import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { NewsletterConfirmReply, NewsletterConfirmRequest } from '../newsletter';
 import { NewsletterService } from '../newsletter.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus, NewsletterUnsubscribeRequest } from '../newsletter';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDivider } from '@angular/material/divider';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../../loading-failed/loading-failed.component';
+import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 
 @Component({
-    selector: 'app-newsletter-unsubscribe',
-    templateUrl: './newsletter-unsubscribe.component.html',
-    styleUrl: './newsletter-unsubscribe.component.scss',
+    selector: 'app-newsletter-confirm',
+    templateUrl: './newsletter-confirm.component.html',
+    styleUrl: './newsletter-confirm.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatCard,
@@ -32,32 +32,31 @@ import { LoadingFailedComponent } from '../../../loading-failed/loading-failed.c
         LoadingFailedComponent,
     ],
 })
-export class NewsletterUnsubscribeComponent implements OnInit {
+export class NewsletterConfirmComponent implements OnInit {
   private readonly newsletterService = inject(NewsletterService);
   private readonly logService = inject(LogService);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly NewsletterUnsubscribeReplyStatus = NewsletterUnsubscribeReplyStatus;
   readonly ServiceStatus = ServiceStatus;
-  readonly reply = signal<NewsletterUnsubscribeReply | undefined>(undefined);
+  readonly reply = signal<NewsletterConfirmReply | undefined>(undefined);
   readonly serviceStatus = signal(ServiceStatus.Loading);
 
   ngOnInit(): void {
-    this.unsubscribeNewsletter();
+    this.confirmNewsletter();
   }
 
-  unsubscribeNewsletter(): void {
+  confirmNewsletter(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
-    const request: NewsletterUnsubscribeRequest = {
-      unsubscribeToken: this.getUnsubscribeToken(),
+    const request: NewsletterConfirmRequest = {
+      verificationToken: this.getVerificationToken(),
     };
-    if (request.unsubscribeToken === '') {
+    if (request.verificationToken === '') {
       this.serviceStatus.set(ServiceStatus.Error);
-      this.logService.error('unsubscribeToken is empty current URL: ' + window.location.href);
+      this.logService.error('verificationToken is empty current URL: ' + window.location.href);
       return;
     }
-    this.newsletterService.unsubscribeFromNewsletter(request)
+    this.newsletterService.confirmNewsletterEMail(request)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: reply => {
@@ -70,7 +69,7 @@ export class NewsletterUnsubscribeComponent implements OnInit {
       });
   }
 
-  getUnsubscribeToken(): string {
-    return this.route.snapshot.paramMap.get('unsubscribeToken') || '';
+  getVerificationToken(): string {
+    return this.route.snapshot.paramMap.get('verificationToken') || '';
   }
 }

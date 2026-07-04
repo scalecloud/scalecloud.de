@@ -5,7 +5,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { HomeComponent } from './home.component';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { NewsletterSubscribeComponent } from 'src/app/shared/components/newsletter/newsletter-subscribe/newsletter-subscribe.component';
+import { NewsletterSubscribeComponent } from 'src/app/features/newsletter/newsletter-subscribe/newsletter-subscribe.component';
 import { GlobeComponent } from './globe/globe.component';
 
 // ─── Stubs ────────────────────────────────────────────────────────────────────

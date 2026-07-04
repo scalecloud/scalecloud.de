@@ -3,11 +3,11 @@ import { Routes } from '@angular/router';
 
 
 import { dashboardGuard } from './core/auth/guards/dashboard.guard';
-import { checkoutGuard } from './shared/guard/checkout.guard';
 import { loginGuard } from './core/auth/guards/login.guard';
 import { registerGuard } from './core/auth/guards/register.guard';
 import { forgotPasswordGuard } from './core/auth/guards/forgot-password.guard';
 import { verifyEMailGuard } from './core/auth/guards/verify-email.guard';
+import { checkoutGuard } from './features/products/checkout/guard/checkout.guard';
 
 export const routes: Routes = [
   {
@@ -116,11 +116,11 @@ export const routes: Routes = [
       // Newsletter - Lazy Loaded
       {
         path: 'newsletter/confirm/:verificationToken',
-        loadComponent: () => import('./shared/components/newsletter/newsletter-confirm/newsletter-confirm.component').then(m => m.NewsletterConfirmComponent)
+        loadComponent: () => import('./features/newsletter/newsletter-confirm/newsletter-confirm.component').then(m => m.NewsletterConfirmComponent)
       },
       {
         path: 'newsletter/unsubscribe/:unsubscribeToken',
-        loadComponent: () => import('./shared/components/newsletter/newsletter-unsubscribe/newsletter-unsubscribe.component').then(m => m.NewsletterUnsubscribeComponent)
+        loadComponent: () => import('./features/newsletter/newsletter-unsubscribe/newsletter-unsubscribe.component').then(m => m.NewsletterUnsubscribeComponent)
       },
       // Wildcard
       { path: '**', loadComponent: () => import('./features/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent) }

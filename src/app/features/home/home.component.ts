@@ -4,7 +4,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { GlobeComponent } from './globe/globe.component';
-import { NewsletterSubscribeComponent } from 'src/app/shared/components/newsletter/newsletter-subscribe/newsletter-subscribe.component';
+import { NewsletterSubscribeComponent } from 'src/app/features/newsletter/newsletter-subscribe/newsletter-subscribe.component';
 
 @Component({
     selector: 'app-home',

@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../../core/auth/auth.service';
-import { LogService } from '../../core/logging/log.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
+import { LogService } from 'src/app/core/logging/log.service';
 
 export const checkoutGuard: CanActivateFn = async (route, state) => {
   const authService = inject(AuthService);
