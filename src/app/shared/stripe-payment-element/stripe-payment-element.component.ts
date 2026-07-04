@@ -3,7 +3,7 @@ import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { MatCard, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';

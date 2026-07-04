@@ -5,8 +5,8 @@ import type { User } from 'firebase/auth';
 
 import { LogService } from '../logging/log.service';
 import { SnackBarService } from '../snackbar/snack-bar.service';
-import { ReturnUrlService } from '../../shared/services/redirect/return-url.service';
 import { FirebaseService } from 'src/app/core/firebase/firebase.service';
+import { ReturnUrlService } from '../redirect/return-url.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

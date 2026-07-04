@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LogService } from 'src/app/core/logging/log.service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { LastCountService } from './subscription-overview/last-count/last-count.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';

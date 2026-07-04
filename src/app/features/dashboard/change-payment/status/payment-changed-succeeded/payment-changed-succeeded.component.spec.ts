@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { PaymentChangedSucceededComponent } from './payment-changed-succeeded.component';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 describe('PaymentChangedSucceededComponent', () => {
   let component: PaymentChangedSucceededComponent;

@@ -1,8 +1,8 @@
 import { Injectable, DOCUMENT, inject } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
-import { LogService } from '../../../core/logging/log.service';
 import { Location } from '@angular/common';
 import { APP_BASE_URL } from 'src/app/core/config/api.token';
+import { LogService } from '../logging/log.service';
 
 @Injectable({
   providedIn: 'root'

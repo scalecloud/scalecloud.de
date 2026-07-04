@@ -7,11 +7,11 @@ import { SeatsService } from './seats.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { ListSeatReply } from './seats';
 import { of, throwError } from 'rxjs';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

@@ -6,7 +6,7 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { InvoicesComponent } from './invoices.component';
 import { InvoicesService } from './invoices.service';
 import { InvoiceStatus, ListInvoicesReply } from './invoices';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';

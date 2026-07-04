@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({
     selector: 'app-payment-changed-processing',

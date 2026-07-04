@@ -3,7 +3,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { RegisterComponent } from './register.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 // A password that satisfies every PasswordStrengthComponent check.
 const STRONG_PASSWORD = 'Abcdefg1!';

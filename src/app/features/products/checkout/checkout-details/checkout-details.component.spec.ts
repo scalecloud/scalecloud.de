@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 
 // ─── Stubs for child components rendered by the template ──────────────────────
 // We don't have the real QuantityComponent / LoadingFailedComponent source, so

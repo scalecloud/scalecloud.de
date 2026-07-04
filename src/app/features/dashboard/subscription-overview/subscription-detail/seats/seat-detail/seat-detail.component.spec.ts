@@ -9,9 +9,9 @@ import { SeatDetailService } from './seat-detail.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { Role } from 'src/app/core/permission/roles';
 import { SeatDetailReply } from '../seats';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

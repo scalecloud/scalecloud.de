@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';

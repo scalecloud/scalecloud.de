@@ -6,7 +6,7 @@ import { StatusPaymentChangedComponent } from './status-payment-changed.componen
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 describe('StatusPaymentChangedComponent', () => {
   let component: StatusPaymentChangedComponent;

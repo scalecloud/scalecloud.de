@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
@@ -7,7 +7,6 @@ import { BillingAddressService } from '../billing-address.service';
 import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -20,6 +19,7 @@ import { MatInput } from '@angular/material/input';
 import { CountryInputComponent } from '../country-input/country-input.component';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../../../shared/loading-failed/loading-failed.component';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 /**
  * Typed shape of the billing address form.

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/auth.service';

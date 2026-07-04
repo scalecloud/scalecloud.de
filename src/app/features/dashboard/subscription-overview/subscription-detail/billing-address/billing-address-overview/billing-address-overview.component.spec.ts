@@ -6,13 +6,13 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ActivatedRoute } from '@angular/router';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 const mockReply: BillingAddressReply = {
   subscriptionID: 'subscription-123',

@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@ang
 import { SynologyProduct } from './synology-product';
 import { ProductType } from '../product-model';
 import { ProductService } from '../product/product.service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { TitleCardComponent } from '../title-card/title-card.component';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';

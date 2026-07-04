@@ -5,7 +5,7 @@ import { StripePaymentElementComponent } from './stripe-payment-element.componen
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
 
 describe('StripePaymentElementComponent', () => {

@@ -5,9 +5,9 @@ import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 const mockReply: PaymentMethodOverviewReply = {
   has_valid_payment_method: true,

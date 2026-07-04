@@ -4,12 +4,12 @@ import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angu
 import { startWith } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 
 @Component({

@@ -5,8 +5,8 @@ import { Location } from '@angular/common';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { ReturnUrlService } from './return-url.service';
-import { LogService } from '../../../core/logging/log.service';
 import { APP_BASE_URL } from 'src/app/core/config/api.token';
+import { LogService } from '../logging/log.service';
 
 describe('ReturnUrlService', () => {
   let service: ReturnUrlService;

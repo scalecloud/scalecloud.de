@@ -1,10 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDivider } from '@angular/material/divider';
@@ -13,6 +12,7 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({
   selector: 'app-payment-overview',

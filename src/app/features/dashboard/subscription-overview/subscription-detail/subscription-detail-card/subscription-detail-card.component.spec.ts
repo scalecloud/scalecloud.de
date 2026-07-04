@@ -11,7 +11,7 @@ import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { API_URL } from 'src/app/core/config/api.token';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 
 // ─── Factories ───────────────────────────────────────────────────────────────

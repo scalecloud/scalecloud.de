@@ -5,12 +5,12 @@ import { ChangePaymentReply } from './change-payment';
 import { ChangePaymentService } from './change-payment.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent';
 import { StripePaymentElementComponent } from 'src/app/shared/stripe-payment-element/stripe-payment-element.component';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { StripePaymentElementComponent as StripePaymentElementComponent_1 } from '../../../shared/stripe-payment-element/stripe-payment-element.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { afterNextRender } from '@angular/core';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({
     selector: 'app-change-payment',

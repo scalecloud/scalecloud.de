@@ -6,7 +6,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { LoginComponent } from './login.component';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;

@@ -9,7 +9,7 @@ import { CheckoutProductService } from './checkout-product.service';
 import { CurrencyPipe } from '@angular/common';
 import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
 import { ActivatedRoute } from '@angular/router';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { MatCard, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';

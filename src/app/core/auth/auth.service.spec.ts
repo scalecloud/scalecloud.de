@@ -6,8 +6,8 @@ import type { User } from 'firebase/auth';
 import { AuthService } from './auth.service';
 import { LogService } from '../logging/log.service';
 import { SnackBarService } from '../snackbar/snack-bar.service';
-import { ReturnUrlService } from '../../shared/services/redirect/return-url.service';
 import { FirebaseService } from 'src/app/core/firebase/firebase.service';
+import { ReturnUrlService } from '../redirect/return-url.service';
 
 // ── Firebase mocking note ────────────────────────────────────────────────────
 // AuthService no longer imports firebase/auth directly - it calls the thin

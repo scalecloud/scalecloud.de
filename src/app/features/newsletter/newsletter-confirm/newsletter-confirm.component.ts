@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { NewsletterConfirmReply, NewsletterConfirmRequest } from '../newsletter';
 import { NewsletterService } from '../newsletter.service';
 import { LogService } from 'src/app/core/logging/log.service';

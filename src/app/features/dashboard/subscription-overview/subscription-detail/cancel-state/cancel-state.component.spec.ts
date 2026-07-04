@@ -10,7 +10,7 @@ import { CancelStateService } from './cancel-state.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { CancelStateReply } from './cancel-state';
 
 // ── Stubs ─────────────────────────────────────────────────────────────────────

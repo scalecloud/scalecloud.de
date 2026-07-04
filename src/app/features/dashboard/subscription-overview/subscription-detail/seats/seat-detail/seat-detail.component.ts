@@ -11,7 +11,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Role, RoleDescriptions } from 'src/app/core/permission/roles';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import {
   DeleteSeatRequest,
@@ -37,6 +36,7 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({
   selector: 'app-seat-detail',

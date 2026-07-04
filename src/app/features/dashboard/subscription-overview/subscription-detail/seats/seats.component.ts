@@ -11,9 +11,8 @@ import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { ListSeatReply, ListSeatRequest, Seat } from './seats';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { ReturnUrlService } from 'src/app/shared/services/redirect/return-url.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
-import { ServiceStatus } from 'src/app/shared/services/service-status';
+import { ServiceStatus } from 'src/app/shared/service-status';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -31,6 +30,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingFailedComponent } from '../../../../../shared/loading-failed/loading-failed.component';
+import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 
 @Component({
   selector: 'app-seats',
