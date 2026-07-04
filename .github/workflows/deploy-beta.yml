@@ -29,10 +29,8 @@ jobs:
 
       - name: Debug coverage output
         run: |
-          echo "--- contents of coverage/ ---"
-          ls -la coverage/ || echo "coverage/ does not exist"
-          echo "--- first lines of lcov.info ---"
-          head -20 coverage/lcov.info || echo "lcov.info not found"
+          ls -la coverage/scalecloud/
+          head -20 coverage/scalecloud/lcov.info || echo "still not found"
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v8
