@@ -1,41 +1,34 @@
-export enum NewsletterStatus {
-    ACTIVE = 'active',
-    PENDING = 'pending',
-    BOUNCED = 'bounced',
-}
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { NewsletterConfirmReply, NewsletterConfirmRequest, NewsletterSubscribeReply, NewsletterSubscribeRequest, NewsletterUnsubscribeReply, NewsletterUnsubscribeRequest } from './newsletter-model';
+import { API_URL } from 'src/app/core/config/api-token';
 
-export enum NewsletterSubscribeReplyStatus {
-    SUCCESS = 'success',
-    INVALID_EMAIL = 'invalid_email',
-    RATE_LIMIT = 'rate_limited',
-}
+@Injectable({
+  providedIn: 'root'
+})
+export class Newsletter {
+  private readonly http = inject(HttpClient);
 
-export interface NewsletterSubscribeRequest {
-    email: string;
-}
+  private readonly apiUrl = inject(API_URL);
+  private readonly urlSubscribe = `${this.apiUrl}/newsletter/subscribe`;
+  private readonly urlConfirm = `${this.apiUrl}/newsletter/confirm`;
+  private readonly urlUnsubscribe = `${this.apiUrl}/newsletter/unsubscribe`;
 
-export interface NewsletterSubscribeReply {
-    newsletterSubscribeReplyStatus: NewsletterSubscribeReplyStatus;
-    email: string;
-}
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
-export interface NewsletterConfirmRequest {
-    verificationToken: string;
-}
+  subscribeToNewsletter(request: NewsletterSubscribeRequest): Observable<NewsletterSubscribeReply> {
+    return this.http.post<NewsletterSubscribeReply>(this.urlSubscribe, request, this.httpOptions);
+  }
 
-export interface NewsletterConfirmReply {
-    confirmed: boolean;
-}
+  confirmNewsletterEMail(request: NewsletterConfirmRequest): Observable<NewsletterConfirmReply> {
+    return this.http.post<NewsletterConfirmReply>(this.urlConfirm, request, this.httpOptions);
+  }
 
-export interface NewsletterUnsubscribeRequest {
-    unsubscribeToken: string;
-}
+  unsubscribeFromNewsletter(request: NewsletterUnsubscribeRequest): Observable<NewsletterUnsubscribeReply> {
+    return this.http.post<NewsletterUnsubscribeReply>(this.urlUnsubscribe, request, this.httpOptions);
+  }
 
-export enum NewsletterUnsubscribeReplyStatus {
-    UNSUBSCRIBED = 'unsubscribed',
-    NOTFOUND = 'not_found',
-}
-
-export interface NewsletterUnsubscribeReply {
-    newsletterUnsubscribeReplyStatus: NewsletterUnsubscribeReplyStatus;
 }

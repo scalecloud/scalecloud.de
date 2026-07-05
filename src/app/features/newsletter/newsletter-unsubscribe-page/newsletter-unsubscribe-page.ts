@@ -1,9 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { NewsletterService } from '../newsletter.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus, NewsletterUnsubscribeRequest } from '../newsletter';
+import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus, NewsletterUnsubscribeRequest } from '../newsletter-model';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDivider } from '@angular/material/divider';
@@ -12,6 +11,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { Log } from 'src/app/core/logging/log';
+import { Newsletter } from '../newsletter';
 
 @Component({
     selector: 'app-newsletter-unsubscribe-page',
@@ -33,7 +33,7 @@ import { Log } from 'src/app/core/logging/log';
     ],
 })
 export class NewsletterUnsubscribePage implements OnInit {
-  private readonly newsletterService = inject(NewsletterService);
+  private readonly newsletter = inject(Newsletter);
   private readonly log = inject(Log);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
@@ -57,7 +57,7 @@ export class NewsletterUnsubscribePage implements OnInit {
       this.log.error('unsubscribeToken is empty current URL: ' + window.location.href);
       return;
     }
-    this.newsletterService.unsubscribeFromNewsletter(request)
+    this.newsletter.unsubscribeFromNewsletter(request)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: reply => {

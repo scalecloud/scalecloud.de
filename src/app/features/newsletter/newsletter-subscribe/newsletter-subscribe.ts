@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, signal, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
-import { NewsletterService } from '../newsletter.service';
-import { NewsletterSubscribeReplyStatus, NewsletterSubscribeRequest } from '../newsletter';
+import { NewsletterSubscribeReplyStatus, NewsletterSubscribeRequest } from '../newsletter-model';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
@@ -11,11 +10,12 @@ import { MatInput } from '@angular/material/input';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { Newsletter } from '../newsletter';
 
 @Component({
     selector: 'app-newsletter-subscribe',
-    templateUrl: './newsletter-subscribe.component.html',
-    styleUrl: './newsletter-subscribe.component.scss',
+    templateUrl: './newsletter-subscribe.html',
+    styleUrl: './newsletter-subscribe.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatCard,
@@ -36,9 +36,9 @@ import { SnackBar } from 'src/app/core/snackbar/snack-bar';
         RouterLink,
     ],
 })
-export class NewsletterSubscribeComponent {
+export class NewsletterSubscribe {
   private readonly snackBar = inject(SnackBar);
-  private readonly newsletterService = inject(NewsletterService);
+  private readonly newsletter = inject(Newsletter);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly email = new FormControl('', [Validators.required, Validators.email]);
@@ -65,7 +65,7 @@ export class NewsletterSubscribeComponent {
       const request: NewsletterSubscribeRequest = {
         email: this.email.value ?? '',
       };
-      this.newsletterService.subscribeToNewsletter(request)
+      this.newsletter.subscribeToNewsletter(request)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: reply => {

@@ -2,16 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-
 import { HomePage } from './home-page';
-import { NewsletterSubscribeComponent } from 'src/app/features/newsletter/newsletter-subscribe/newsletter-subscribe.component';
 import { GlobeComponent } from './globe/globe.component';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { NewsletterSubscribe } from '../newsletter/newsletter-subscribe/newsletter-subscribe';
 
 // ─── Stubs ────────────────────────────────────────────────────────────────────
 // HomeComponent only cares that these children are present, not what they do
 // internally. Stubbing them keeps this a true unit test of HomeComponent and
-// avoids needing cobe/NewsletterService/etc. wired up just to render a parent.
+// avoids needing cobe/Newsletter/etc. wired up just to render a parent.
 
 @Component({ selector: 'app-globe', template: '' })
 class GlobeStubComponent {}
@@ -38,7 +37,7 @@ describe('HomePage', () => {
       ],
     })
       .overrideComponent(HomePage, {
-        remove: { imports: [GlobeComponent, NewsletterSubscribeComponent] },
+        remove: { imports: [GlobeComponent, NewsletterSubscribe] },
         add: { imports: [GlobeStubComponent, NewsletterSubscribeStubComponent] },
       })
       .compileComponents();

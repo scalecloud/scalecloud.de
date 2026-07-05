@@ -2,21 +2,20 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
-
-import { NewsletterService } from './newsletter.service';
 import {
   NewsletterConfirmReply,
   NewsletterSubscribeReply,
   NewsletterSubscribeReplyStatus,
   NewsletterUnsubscribeReply,
   NewsletterUnsubscribeReplyStatus,
-} from './newsletter';
+} from './newsletter-model';
 import { API_URL } from 'src/app/core/config/api-token';
+import { Newsletter } from './newsletter';
 
 const apiUrl = 'https://api.example.com';
 
-describe('NewsletterService', () => {
-  let service: NewsletterService;
+describe('Newsletter', () => {
+  let service: Newsletter;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -28,7 +27,7 @@ describe('NewsletterService', () => {
       ],
     });
 
-    service = TestBed.inject(NewsletterService);
+    service = TestBed.inject(Newsletter);
     httpMock = TestBed.inject(HttpTestingController);
   });
 

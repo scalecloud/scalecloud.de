@@ -2,18 +2,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-
 import { NewsletterUnsubscribePage } from './newsletter-unsubscribe-page';
-import { NewsletterService } from '../newsletter.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus } from '../newsletter';
+import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus } from '../newsletter-model';
 import { Log } from 'src/app/core/logging/log';
+import { Newsletter } from '../newsletter';
 
 describe('NewsletterUnsubscribePage', () => {
   let component: NewsletterUnsubscribePage;
   let fixture: ComponentFixture<NewsletterUnsubscribePage>;
 
-  const newsletterService = { unsubscribeFromNewsletter: vi.fn() };
+  const newsletter = { unsubscribeFromNewsletter: vi.fn() };
   const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
   function createComponent(token: string | null): void {
@@ -21,7 +20,7 @@ describe('NewsletterUnsubscribePage', () => {
       imports: [NewsletterUnsubscribePage],
       providers: [
         provideRouter([]),
-        { provide: NewsletterService, useValue: newsletterService },
+        { provide: Newsletter, useValue: newsletter },
         { provide: Log, useValue: log },
         {
           provide: ActivatedRoute,
@@ -41,7 +40,7 @@ describe('NewsletterUnsubscribePage', () => {
   });
 
   it('should create', () => {
-    newsletterService.unsubscribeFromNewsletter.mockReturnValue(
+    newsletter.unsubscribeFromNewsletter.mockReturnValue(
       of({ newsletterUnsubscribeReplyStatus: NewsletterUnsubscribeReplyStatus.UNSUBSCRIBED } as NewsletterUnsubscribeReply),
     );
 
@@ -57,14 +56,14 @@ describe('NewsletterUnsubscribePage', () => {
 
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     expect(log.error).toHaveBeenCalled();
-    expect(newsletterService.unsubscribeFromNewsletter).not.toHaveBeenCalled();
+    expect(newsletter.unsubscribeFromNewsletter).not.toHaveBeenCalled();
   });
 
   it('should show success state and store the reply once unsubscribing succeeds', () => {
     const reply: NewsletterUnsubscribeReply = {
       newsletterUnsubscribeReplyStatus: NewsletterUnsubscribeReplyStatus.NOTFOUND,
     };
-    newsletterService.unsubscribeFromNewsletter.mockReturnValue(of(reply));
+    newsletter.unsubscribeFromNewsletter.mockReturnValue(of(reply));
 
     createComponent('token-123');
     fixture.detectChanges();
@@ -74,7 +73,7 @@ describe('NewsletterUnsubscribePage', () => {
   });
 
   it('should show the error state when the unsubscribe request fails', () => {
-    newsletterService.unsubscribeFromNewsletter.mockReturnValue(throwError(() => new Error('network error')));
+    newsletter.unsubscribeFromNewsletter.mockReturnValue(throwError(() => new Error('network error')));
 
     createComponent('token-123');
     fixture.detectChanges();

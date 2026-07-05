@@ -2,33 +2,32 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-
-import { NewsletterSubscribeComponent } from './newsletter-subscribe.component';
-import { NewsletterService } from '../newsletter.service';
-import { NewsletterSubscribeReplyStatus } from '../newsletter';
+import { NewsletterSubscribe } from './newsletter-subscribe';
+import { NewsletterSubscribeReplyStatus } from '../newsletter-model';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { Newsletter } from '../newsletter';
 
-describe('NewsletterSubscribeComponent', () => {
-  let component: NewsletterSubscribeComponent;
-  let fixture: ComponentFixture<NewsletterSubscribeComponent>;
+describe('NewsletterSubscribe', () => {
+  let component: NewsletterSubscribe;
+  let fixture: ComponentFixture<NewsletterSubscribe>;
 
-  const newsletterService = { subscribeToNewsletter: vi.fn() };
+  const newsletter = { subscribeToNewsletter: vi.fn() };
   const snackBar = { info: vi.fn(), infoDuration: vi.fn(), warn: vi.fn(), warnDuration: vi.fn(), error: vi.fn(), errorDuration: vi.fn() };
 
   beforeEach(async () => {
     vi.clearAllMocks();
 
     await TestBed.configureTestingModule({
-      imports: [NewsletterSubscribeComponent],
+      imports: [NewsletterSubscribe],
       providers: [
         provideRouter([]),
-        { provide: NewsletterService, useValue: newsletterService },
+        { provide: Newsletter, useValue: newsletter },
         { provide: SnackBar, useValue: snackBar },
       ],
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(NewsletterSubscribeComponent);
+    fixture = TestBed.createComponent(NewsletterSubscribe);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -62,24 +61,24 @@ describe('NewsletterSubscribeComponent', () => {
 
     component.subscribeToNewsletter();
 
-    expect(newsletterService.subscribeToNewsletter).not.toHaveBeenCalled();
+    expect(newsletter.subscribeToNewsletter).not.toHaveBeenCalled();
   });
 
   it('should subscribe, notify, and disable the field on success', () => {
-    newsletterService.subscribeToNewsletter.mockReturnValue(
+    newsletter.subscribeToNewsletter.mockReturnValue(
       of({ newsletterSubscribeReplyStatus: NewsletterSubscribeReplyStatus.SUCCESS, email: 'user@example.com' }),
     );
     component.email.setValue('user@example.com');
 
     component.subscribeToNewsletter();
 
-    expect(newsletterService.subscribeToNewsletter).toHaveBeenCalledWith({ email: 'user@example.com' });
+    expect(newsletter.subscribeToNewsletter).toHaveBeenCalledWith({ email: 'user@example.com' });
     expect(snackBar.info).toHaveBeenCalledWith('Please check your E-Mail to confirm your newsletter subscription.');
     expect(component.email.disabled).toBe(true);
   });
 
   it('should show a rate-limit warning without disabling the field', () => {
-    newsletterService.subscribeToNewsletter.mockReturnValue(
+    newsletter.subscribeToNewsletter.mockReturnValue(
       of({ newsletterSubscribeReplyStatus: NewsletterSubscribeReplyStatus.RATE_LIMIT, email: 'user@example.com' }),
     );
     component.email.setValue('user@example.com');
@@ -91,7 +90,7 @@ describe('NewsletterSubscribeComponent', () => {
   });
 
   it('should show an error snackbar when the request fails', () => {
-    newsletterService.subscribeToNewsletter.mockReturnValue(throwError(() => new Error('network error')));
+    newsletter.subscribeToNewsletter.mockReturnValue(throwError(() => new Error('network error')));
     component.email.setValue('user@example.com');
 
     component.subscribeToNewsletter();
