@@ -25,28 +25,28 @@
             @if (isCreditCard()) {
               @switch (true) {
                 @case (isAmericanExpress()) {
-                  <img src="assets/img/logo/payment/amex_logo.png" alt="American Express Logo" />
+                  <img src="img/logo/payment/amex_logo.png" alt="American Express Logo" />
                 }
                 @case (isDinersClub()) {
-                  <img src="assets/img/logo/payment/dinersclub_logo.svg" alt="Diners Club Logo" />
+                  <img src="img/logo/payment/dinersclub_logo.svg" alt="Diners Club Logo" />
                 }
                 @case (isDiscover()) {
-                  <img src="assets/img/logo/payment/discover_logo.jpg" alt="Discover Logo" />
+                  <img src="img/logo/payment/discover_logo.jpg" alt="Discover Logo" />
                 }
                 @case (isEFTPOS()) {
-                  <img src="assets/img/logo/payment/eftpos_logo.png" alt="eftpos Australia Logo" />
+                  <img src="img/logo/payment/eftpos_logo.png" alt="eftpos Australia Logo" />
                 }
                 @case (isJCB()) {
-                  <img src="assets/img/logo/payment/jcb_logo.gif" alt="Japan Credit Bureau (JCB) Logo" />
+                  <img src="img/logo/payment/jcb_logo.gif" alt="Japan Credit Bureau (JCB) Logo" />
                 }
                 @case (isUnionPay()) {
-                  <img src="assets/img/logo/payment/union_logo.svg" alt="UnionPay Logo" />
+                  <img src="img/logo/payment/union_logo.svg" alt="UnionPay Logo" />
                 }
                 @case (isMasterCard()) {
-                  <img src="assets/img/logo/payment/mastercard_logo.png" alt="MasterCard Logo" />
+                  <img src="img/logo/payment/mastercard_logo.png" alt="MasterCard Logo" />
                 }
                 @case (isVisa()) {
-                  <img src="assets/img/logo/payment/visa_logo.png" alt="Visa Logo" />
+                  <img src="img/logo/payment/visa_logo.png" alt="Visa Logo" />
                 }
                 @default {
                   <mat-icon>credit_card</mat-icon>
@@ -54,10 +54,10 @@
               }
               {{ paymentMethodDisplay() }}
             } @else if (isSEPA()) {
-              <img src="assets/img/logo/payment/sepa_logo.jpg" alt="SEPA Logo" />
+              <img src="img/logo/payment/sepa_logo.jpg" alt="SEPA Logo" />
               {{ paymentMethodDisplay() }}
             } @else if (isPayPal()) {
-              <img src="assets/img/logo/payment/paypal_logo.png" alt="PayPal Logo" />
+              <img src="img/logo/payment/paypal_logo.png" alt="PayPal Logo" />
               {{ paymentMethodDisplay() }}
             } @else {
               <mat-icon>credit_card</mat-icon>
