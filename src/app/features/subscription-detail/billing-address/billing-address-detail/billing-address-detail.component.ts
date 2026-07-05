@@ -3,7 +3,6 @@ import { ServiceStatus } from 'src/app/shared/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { BillingAddressService } from '../billing-address.service';
 import { ActivatedRoute } from '@angular/router';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
@@ -20,6 +19,7 @@ import { LoadingFailedComponent } from '../../../../shared/loading-failed/loadin
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
+import { Log } from 'src/app/core/logging/log';
 
 /**
  * Typed shape of the billing address form.
@@ -71,7 +71,7 @@ export class BillingAddressDetailComponent implements OnInit {
   private readonly permission = inject(Permission);
   private readonly service = inject(BillingAddressService);
   private readonly route = inject(ActivatedRoute);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly returnUrlService = inject(ReturnUrlService);
 
@@ -137,7 +137,7 @@ export class BillingAddressDetailComponent implements OnInit {
   async checkPermissions() {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.logService.error('BillingAddressDetailComponent.checkPermissions: subscriptionID is null');
+      this.log.error('BillingAddressDetailComponent.checkPermissions: subscriptionID is null');
       this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
@@ -166,14 +166,14 @@ export class BillingAddressDetailComponent implements OnInit {
     try {
       await this.auth.waitForAuth();
     } catch (error) {
-      this.logService.error('waitForAuth failed: ' + error);
+      this.log.error('waitForAuth failed: ' + error);
       this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
 
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.logService.error('BillingAddressDetailComponent.reloadBillingAddressDetail: subscriptionID is null');
+      this.log.error('BillingAddressDetailComponent.reloadBillingAddressDetail: subscriptionID is null');
       return;
     }
 
@@ -219,7 +219,7 @@ export class BillingAddressDetailComponent implements OnInit {
     try {
       await this.auth.waitForAuth();
     } catch (error) {
-      this.logService.error('waitForAuth failed: ' + error);
+      this.log.error('waitForAuth failed: ' + error);
       return;
     }
 

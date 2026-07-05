@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { LastCountService } from './subscription-overview/last-count/last-count.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
@@ -13,6 +12,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { SubscriptionOverviewComponent } from './subscription-overview/subscription-overview.component';
 import { LoadingFailedComponent } from '../../shared/loading-failed/loading-failed.component';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +36,7 @@ import { Auth } from 'src/app/core/auth/auth';
 export class DashboardComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly subscriptionOverviewService = inject(SubscriptionOverviewService);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly lastCountService = inject(LastCountService);
   private readonly snackBarService = inject(SnackBarService);
 
@@ -65,12 +65,12 @@ export class DashboardComponent implements OnInit {
           },
           error: (error) => {
             this.serviceStatus.set(ServiceStatus.Error);
-            this.logService.error(`getSubscriptionsOverview failed: ${error}`);
+            this.log.error(`getSubscriptionsOverview failed: ${error}`);
           },
         });
       })
       .catch((error) => {
-        this.logService.error(`waitForAuth failed: ${error}`);
+        this.log.error(`waitForAuth failed: ${error}`);
         this.serviceStatus.set(ServiceStatus.Error);
       });
   }

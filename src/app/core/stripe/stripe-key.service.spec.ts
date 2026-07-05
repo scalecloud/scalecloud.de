@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { StripeKeyService, STRIPE_PUBLIC_KEY } from './stripe-key.service';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 
 describe('StripeKeyService', () => {
   let service: StripeKeyService;
@@ -15,7 +15,7 @@ describe('StripeKeyService', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: STRIPE_PUBLIC_KEY, useValue: publicKey },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: logService },
       ],
     });
 

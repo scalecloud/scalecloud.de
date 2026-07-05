@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription';
 import { ActiveComponent } from './active/active.component';
 import { TrailingComponent } from './trailing/trailing.component';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
   selector: 'app-status',
@@ -16,7 +16,7 @@ import { Auth } from 'src/app/core/auth/auth';
   imports: [ActiveComponent, TrailingComponent],
 })
 export class StatusComponent implements OnInit {
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly route = inject(ActivatedRoute);
   private readonly auth = inject(Auth);
@@ -33,7 +33,7 @@ export class StatusComponent implements OnInit {
     try {
       await this.auth.waitForAuth();
     } catch (error) {
-      this.logService.error(`waitForAuth failed: ${error}`);
+      this.log.error(`waitForAuth failed: ${error}`);
       this.snackBarService.error('Error: Could not get payment status. Please try again later.');
       return;
     }
@@ -51,11 +51,11 @@ export class StatusComponent implements OnInit {
 
     switch (reply.status) {
       case 'active':
-        this.logService.info('Success! Your payment method has been saved.');
+        this.log.info('Success! Your payment method has been saved.');
         break;
 
       case 'trialing':
-        this.logService.warn("Processing payment details. We'll update you when processing is complete.");
+        this.log.warn("Processing payment details. We'll update you when processing is complete.");
         break;
     }
   }

@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleDescriptions } from 'src/app/core/permission/roles';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import {
   DeleteSeatRequest,
@@ -37,6 +36,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
   selector: 'app-seat-detail',
@@ -62,7 +62,7 @@ import { Auth } from 'src/app/core/auth/auth';
 })
 export class SeatDetailComponent implements OnInit {
   private readonly auth = inject(Auth);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly seatDetailService = inject(SeatDetailService);
   private readonly returnUrlService = inject(ReturnUrlService);
@@ -149,12 +149,12 @@ export class SeatDetailComponent implements OnInit {
       const uid = this.route.snapshot.paramMap.get('uid');
 
       if (!subscriptionID) {
-        this.logService.error('SeatDetailComponent: subscriptionID is null');
+        this.log.error('SeatDetailComponent: subscriptionID is null');
         this.error.set(true);
         return;
       }
       if (!uid) {
-        this.logService.error('SeatDetailComponent: uid is null');
+        this.log.error('SeatDetailComponent: uid is null');
         this.error.set(true);
         return;
       }
@@ -174,7 +174,7 @@ export class SeatDetailComponent implements OnInit {
         },
       });
     }).catch((err) => {
-      this.logService.error('waitForAuth failed: ' + err);
+      this.log.error('waitForAuth failed: ' + err);
       this.error.set(true);
     });
   }
@@ -205,7 +205,7 @@ export class SeatDetailComponent implements OnInit {
         },
       });
     }).catch((err) => {
-      this.logService.error('waitForAuth failed: ' + err);
+      this.log.error('waitForAuth failed: ' + err);
     });
   }
 
@@ -217,7 +217,7 @@ export class SeatDetailComponent implements OnInit {
     const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
 
     if (!subscriptionID) {
-      this.logService.error('SeatDetailComponent.deleteSeat: subscriptionID is null');
+      this.log.error('SeatDetailComponent.deleteSeat: subscriptionID is null');
       this.snackBarService.error('Currently not possible to delete a user. Please try again later.');
       this.returnUrlService.openReturnURL('/dashboard');
       return;
@@ -239,7 +239,7 @@ export class SeatDetailComponent implements OnInit {
         },
       });
     }).catch((err) => {
-      this.logService.error('waitForAuth failed: ' + err);
+      this.log.error('waitForAuth failed: ' + err);
     });
   }
 

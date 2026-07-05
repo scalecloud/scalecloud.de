@@ -7,10 +7,10 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { CancelSubscriptionComponent } from './cancel-subscription.component';
 import { CancelSubscriptionService } from './cancel-subscription.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ISubscriptionCancelReply } from './subscription-cancel-request';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
@@ -26,7 +26,7 @@ const mockActivatedRoute = {
 };
 
 const mockAuth            = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
-const mockLogService             = { error: vi.fn(), info: vi.fn() };
+const mockLog             = { error: vi.fn(), info: vi.fn() };
 const mockSnackBarService        = { info: vi.fn(), error: vi.fn() };
 const mockCancelSubscriptionService = {
   cancelSubscription: vi.fn(),
@@ -66,7 +66,7 @@ describe('CancelSubscriptionComponent', () => {
         { provide: ActivatedRoute,             useValue: mockActivatedRoute },
         { provide: Auth,                useValue: mockAuth },
         { provide: CancelSubscriptionService,  useValue: mockCancelSubscriptionService },
-        { provide: LogService,                 useValue: mockLogService },
+        { provide: Log,                 useValue: mockLog },
         { provide: SnackBarService,            useValue: mockSnackBarService },
         { provide: MatDialog,                  useValue: mockDialog },
       ],
@@ -154,7 +154,7 @@ describe('CancelSubscriptionComponent', () => {
     it('logs an error when subscriptionID is missing', () => {
       mockActivatedRoute.snapshot.paramMap.get.mockReturnValueOnce(null);
       component.cancelSubscription();
-      expect(mockLogService.error).toHaveBeenCalledWith(
+      expect(mockLog.error).toHaveBeenCalledWith(
         expect.stringContaining('id is null')
       );
       expect(mockCancelSubscriptionService.cancelSubscription).not.toHaveBeenCalled();
@@ -163,7 +163,7 @@ describe('CancelSubscriptionComponent', () => {
     it('logs an error when the reply is null', () => {
       mockCancelSubscriptionService.cancelSubscription.mockReturnValueOnce(of(null));
       component.cancelSubscription();
-      expect(mockLogService.error).toHaveBeenCalledWith(
+      expect(mockLog.error).toHaveBeenCalledWith(
         expect.stringContaining('reply is null')
       );
     });

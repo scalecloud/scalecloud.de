@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject, signal 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { NewsletterService } from '../newsletter.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus, NewsletterUnsubscribeRequest } from '../newsletter';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
@@ -12,6 +11,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
     selector: 'app-newsletter-unsubscribe',
@@ -34,7 +34,7 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
 })
 export class NewsletterUnsubscribeComponent implements OnInit {
   private readonly newsletterService = inject(NewsletterService);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -54,7 +54,7 @@ export class NewsletterUnsubscribeComponent implements OnInit {
     };
     if (request.unsubscribeToken === '') {
       this.serviceStatus.set(ServiceStatus.Error);
-      this.logService.error('unsubscribeToken is empty current URL: ' + window.location.href);
+      this.log.error('unsubscribeToken is empty current URL: ' + window.location.href);
       return;
     }
     this.newsletterService.unsubscribeFromNewsletter(request)

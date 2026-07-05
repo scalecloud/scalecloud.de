@@ -4,11 +4,11 @@ import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ConfirmResumeSubscriptionComponent } from './confirm-resume-subscription/confirm-resume-subscription.component';
 import { ResumeSubscriptionService } from './resume-subscription.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
   selector: 'app-resume-subscription',
@@ -19,7 +19,7 @@ import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscrip
 })
 export class ResumeSubscriptionComponent {
   private readonly resumeSubscriptionService = inject(ResumeSubscriptionService);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
@@ -43,7 +43,7 @@ export class ResumeSubscriptionComponent {
     const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
 
     if (subscriptionID == null) {
-      this.logService.error('ResumeSubscriptionComponent.resumeSubscription: id is null');
+      this.log.error('ResumeSubscriptionComponent.resumeSubscription: id is null');
       return;
     }
 
@@ -54,7 +54,7 @@ export class ResumeSubscriptionComponent {
       .pipe(this.destroyRef)
       .subscribe((reply: ISubscriptionResumeReply) => {
         if (reply == null) {
-          this.logService.error(
+          this.log.error(
             'ResumeSubscriptionComponent.resumeSubscription: reply is null',
           );
         } else if (reply.cancel_at_period_end) {

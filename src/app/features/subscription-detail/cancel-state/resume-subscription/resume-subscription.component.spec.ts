@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of } from 'rxjs';
 import { ResumeSubscriptionComponent } from './resume-subscription.component';
 import { ResumeSubscriptionService } from './resume-subscription.service';
 import { ISubscriptionResumeReply } from './subscription-resume';
+import { Log } from 'src/app/core/logging/log';
 
 const SUBSCRIPTION_ID = 'sub_123';
 
@@ -22,13 +22,13 @@ describe('ResumeSubscriptionComponent', () => {
 
   let dialog: { open: ReturnType<typeof vi.fn> };
   let resumeSubscriptionService: { resumeSubscription: ReturnType<typeof vi.fn> };
-  let logService: { error: ReturnType<typeof vi.fn> };
+  let log: { error: ReturnType<typeof vi.fn> };
   let snackBarService: { info: ReturnType<typeof vi.fn>; error: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     dialog = { open: vi.fn() };
     resumeSubscriptionService = { resumeSubscription: vi.fn() };
-    logService = { error: vi.fn() };
+    log = { error: vi.fn() };
     snackBarService = { info: vi.fn(), error: vi.fn() };
 
     TestBed.configureTestingModule({
@@ -36,7 +36,7 @@ describe('ResumeSubscriptionComponent', () => {
       providers: [
         { provide: MatDialog, useValue: dialog },
         { provide: ResumeSubscriptionService, useValue: resumeSubscriptionService },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: log },
         { provide: SnackBarService, useValue: snackBarService },
         {
           provide: ActivatedRoute,
@@ -117,7 +117,7 @@ describe('ResumeSubscriptionComponent', () => {
 
       component.resumeSubscription();
 
-      expect(logService.error).toHaveBeenCalledWith(
+      expect(log.error).toHaveBeenCalledWith(
         'ResumeSubscriptionComponent.resumeSubscription: id is null',
       );
       expect(resumeSubscriptionService.resumeSubscription).not.toHaveBeenCalled();
@@ -128,7 +128,7 @@ describe('ResumeSubscriptionComponent', () => {
 
       component.resumeSubscription();
 
-      expect(logService.error).toHaveBeenCalledWith(
+      expect(log.error).toHaveBeenCalledWith(
         'ResumeSubscriptionComponent.resumeSubscription: reply is null',
       );
     });

@@ -2,17 +2,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StripePaymentElementComponent } from './stripe-payment-element.component';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
+import { Log } from 'src/app/core/logging/log';
 
 describe('StripePaymentElementComponent', () => {
   let component: StripePaymentElementComponent;
   let fixture: ComponentFixture<StripePaymentElementComponent>;
 
-  const logServiceMock = {
+  const logMock = {
     error: vi.fn()
   };
 
@@ -74,7 +74,7 @@ describe('StripePaymentElementComponent', () => {
     await TestBed.configureTestingModule({
       imports: [StripePaymentElementComponent],
       providers: [
-        { provide: LogService, useValue: logServiceMock },
+        { provide: Log, useValue: logMock },
         { provide: SnackBarService, useValue: snackBarServiceMock },
         { provide: StripeKeyService, useValue: stripeKeyServiceMock }
       ]
@@ -105,7 +105,7 @@ describe('StripePaymentElementComponent', () => {
       expect(stripeElementsMock.create).toHaveBeenCalledWith('payment');
       expect(paymentDomElement.mount).toHaveBeenCalledWith('#payment-element');
       expect(addressDomElement.mount).toHaveBeenCalledWith('#address-element');
-      expect(logServiceMock.error).not.toHaveBeenCalled();
+      expect(logMock.error).not.toHaveBeenCalled();
     });
 
     it('should set serviceStatus to Success when the element fires "ready"', () => {
@@ -175,7 +175,7 @@ describe('StripePaymentElementComponent', () => {
 
       expect(() => component.initPaymentElement(initStripePayment)).not.toThrow();
 
-      expect(logServiceMock.error).toHaveBeenCalledWith(
+      expect(logMock.error).toHaveBeenCalledWith(
         'Cannot display Payment because publicKey is undefined.'
       );
       expect(component.serviceStatus).toBe(ServiceStatus.Error);
@@ -192,7 +192,7 @@ describe('StripePaymentElementComponent', () => {
 
       await component.submitIntent(submitStripePayment);
 
-      expect(logServiceMock.error).toHaveBeenCalledWith(
+      expect(logMock.error).toHaveBeenCalledWith(
         'Cannot submit Payment because initStripePayment is undefined.'
       );
     });

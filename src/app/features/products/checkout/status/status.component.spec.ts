@@ -4,17 +4,17 @@ import { describe, it, expect, vi } from 'vitest';
 import { of } from 'rxjs';
 
 import { StatusComponent } from './status.component';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 describe('StatusComponent', () => {
   let component: StatusComponent;
   let fixture: ComponentFixture<StatusComponent>;
 
   const authMock = { waitForAuth: vi.fn(() => Promise.resolve()) };
-  const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
+  const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
   const snackBarService = { error: vi.fn() };
 
   async function createComponent(
@@ -30,7 +30,7 @@ describe('StatusComponent', () => {
       imports: [StatusComponent],
       providers: [
         { provide: Auth, useValue: authMock },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: log },
         { provide: SnackBarService, useValue: snackBarService },
         { provide: ActivatedRoute, useValue: { queryParams: of(queryParams) } },
       ],
@@ -51,7 +51,7 @@ describe('StatusComponent', () => {
 
     expect(component.active()).toBe(true);
     expect(component.trialing()).toBe(false);
-    expect(logService.info).toHaveBeenCalledWith('Success! Your payment method has been saved.');
+    expect(log.info).toHaveBeenCalledWith('Success! Your payment method has been saved.');
   });
 
   it('should mark trialing and log a warning when status is trialing', async () => {
@@ -59,7 +59,7 @@ describe('StatusComponent', () => {
 
     expect(component.trialing()).toBe(true);
     expect(component.active()).toBe(false);
-    expect(logService.warn).toHaveBeenCalledWith(
+    expect(log.warn).toHaveBeenCalledWith(
       "Processing payment details. We'll update you when processing is complete.",
     );
   });
@@ -86,7 +86,7 @@ describe('StatusComponent', () => {
       { authError: new Error('Auth failed') },
     );
 
-    expect(logService.error).toHaveBeenCalledWith(expect.stringContaining('waitForAuth failed'));
+    expect(log.error).toHaveBeenCalledWith(expect.stringContaining('waitForAuth failed'));
     expect(snackBarService.error).toHaveBeenCalledWith(
       'Error: Could not get payment status. Please try again later.',
     );

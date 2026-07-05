@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AddSeatRequest } from '../seats';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { AddSeatService } from './add-seat.service';
 import { ActivatedRoute } from '@angular/router';
@@ -23,6 +22,7 @@ import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
   selector: 'app-add-seat',
@@ -41,7 +41,7 @@ import { Auth } from 'src/app/core/auth/auth';
 })
 export class AddSeatComponent {
   private readonly auth = inject(Auth);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly addSeatService = inject(AddSeatService);
   private readonly returnUrlService = inject(ReturnUrlService);
@@ -70,7 +70,7 @@ export class AddSeatComponent {
 
   async addSeat(): Promise<void> {
     if (this.email.invalid) {
-      this.logService.warn('Invalid email on invite attempt.');
+      this.log.warn('Invalid email on invite attempt.');
       this.email.markAsTouched();
       return;
     }
@@ -97,7 +97,7 @@ export class AddSeatComponent {
       await this.auth.waitForAuth();
     } catch (error) {
       this.isSubmitting.set(false);
-      this.logService.error('waitForAuth failed: ' + error);
+      this.log.error('waitForAuth failed: ' + error);
       return;
     }
 
@@ -115,7 +115,7 @@ export class AddSeatComponent {
         );
       }
     } catch (err) {
-      this.logService.error('addSeat request failed: ' + err);
+      this.log.error('addSeat request failed: ' + err);
       this.snackBarService.error('An unexpected error occurred. Please try again.');
     } finally {
       this.isSubmitting.set(false);

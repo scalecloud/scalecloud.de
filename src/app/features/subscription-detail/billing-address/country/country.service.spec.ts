@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 
 import { CountryService } from './country.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { Language } from './language';
+import { Log } from 'src/app/core/logging/log';
 
 describe('CountryService', () => {
   let service: CountryService;
@@ -13,7 +13,7 @@ describe('CountryService', () => {
     logServiceMock = { warn: vi.fn(), error: vi.fn() };
 
     TestBed.configureTestingModule({
-      providers: [{ provide: LogService, useValue: logServiceMock }],
+      providers: [{ provide: Log, useValue: logServiceMock }],
     });
     service = TestBed.inject(CountryService);
   });

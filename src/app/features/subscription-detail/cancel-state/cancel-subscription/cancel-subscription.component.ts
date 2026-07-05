@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
-import { LogService } from 'src/app/core/logging/log.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
@@ -9,6 +8,7 @@ import { ConfirmCancelSubscriptionComponent } from './confirm-cancel-subscriptio
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
   selector: 'app-cancel-subscription',
@@ -20,7 +20,7 @@ import { Auth } from 'src/app/core/auth/auth';
 export class CancelSubscriptionComponent {
   private readonly auth = inject(Auth);
   private readonly cancelSubscriptionService = inject(CancelSubscriptionService);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
@@ -40,7 +40,7 @@ export class CancelSubscriptionComponent {
   cancelSubscription(): void {
     const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
     if (!subscriptionID) {
-      this.logService.error('CancelSubscriptionComponent.cancelSubscription: id is null');
+      this.log.error('CancelSubscriptionComponent.cancelSubscription: id is null');
       return;
     }
 
@@ -49,7 +49,7 @@ export class CancelSubscriptionComponent {
     this.cancelSubscriptionService.cancelSubscription(request).subscribe({
       next: (reply: ISubscriptionCancelReply) => {
         if (!reply) {
-          this.logService.error('CancelSubscriptionComponent.cancelSubscription: reply is null');
+          this.log.error('CancelSubscriptionComponent.cancelSubscription: reply is null');
           return;
         }
         if (reply.cancel_at_period_end) {

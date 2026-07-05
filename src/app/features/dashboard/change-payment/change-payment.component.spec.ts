@@ -5,12 +5,12 @@ import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { ChangePaymentComponent } from './change-payment.component';
 import { ChangePaymentService } from './change-payment.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { StripePaymentElementComponent } from 'src/app/shared/stripe-payment-element/stripe-payment-element.component';
 import { StripeIntent } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 // ── Stub ──────────────────────────────────────────────────────────────────────
 
@@ -65,7 +65,7 @@ describe('ChangePaymentComponent', () => {
       providers: [
         { provide: Auth,          useValue: makeAuth() },
         { provide: ChangePaymentService, useValue: makeChangePaymentService() },
-        { provide: LogService,           useValue: makeLogService() },
+        { provide: Log,           useValue: makeLogService() },
         { provide: ReturnUrlService,     useValue: makeReturnUrlService() },
       ],
     })
@@ -77,7 +77,7 @@ describe('ChangePaymentComponent', () => {
 
     authMock          = TestBed.inject(Auth)          as unknown as ReturnType<typeof makeAuth>;
     changePaymentService = TestBed.inject(ChangePaymentService) as unknown as ReturnType<typeof makeChangePaymentService>;
-    logService           = TestBed.inject(LogService)           as unknown as ReturnType<typeof makeLogService>;
+    logService           = TestBed.inject(Log)           as unknown as ReturnType<typeof makeLogService>;
     returnUrlService     = TestBed.inject(ReturnUrlService)     as unknown as ReturnType<typeof makeReturnUrlService>;
 
     fixture   = TestBed.createComponent(ChangePaymentComponent);

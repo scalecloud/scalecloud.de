@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@ang
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { firstValueFrom } from 'rxjs';
 import { Invoice, InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from './invoices';
@@ -18,6 +17,7 @@ import { TitleCasePipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
     selector: 'app-invoices',
@@ -29,7 +29,7 @@ import { Permission } from 'src/app/core/permission/permission';
 export class InvoicesComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly invoiceService = inject(InvoicesService);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly permission = inject(Permission);
   private readonly route = inject(ActivatedRoute);
@@ -53,7 +53,7 @@ export class InvoicesComponent implements OnInit {
   async checkPermissions(): Promise<void> {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.logService.error('InvoicesComponent.checkPermissions: subscriptionID is null');
+      this.log.error('InvoicesComponent.checkPermissions: subscriptionID is null');
       this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
@@ -76,7 +76,7 @@ export class InvoicesComponent implements OnInit {
 
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.logService.error('InvoicesComponent.getInvoices: subscriptionID is null');
+      this.log.error('InvoicesComponent.getInvoices: subscriptionID is null');
       this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
@@ -95,7 +95,7 @@ export class InvoicesComponent implements OnInit {
       this.reply.set(reply);
       this.serviceStatus.set(ServiceStatus.Success);
     } catch (error) {
-      this.logService.error('InvoicesComponent.getInvoices failed: ' + error);
+      this.log.error('InvoicesComponent.getInvoices failed: ' + error);
       this.serviceStatus.set(ServiceStatus.Error);
     }
   }

@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, inject, computed, signal } from '@a
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { startWith } from 'rxjs';
-import { LogService } from 'src/app/core/logging/log.service';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
@@ -10,6 +9,7 @@ import { MatInput } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 
 @Component({
@@ -22,7 +22,7 @@ import { Auth } from 'src/app/core/auth/auth';
 export class LoginComponent {
   private readonly auth = inject(Auth);
   private readonly returnUrlService = inject(ReturnUrlService);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
 
   readonly email = new FormControl('', {
     nonNullable: true,
@@ -75,7 +75,7 @@ export class LoginComponent {
     if (this.emailInvalid() || this.passwordInvalid()) {
       this.email.markAsTouched();
       this.password.markAsTouched();
-      this.logService.warn('Invalid inputs in Login.');
+      this.log.warn('Invalid inputs in Login.');
       return;
     }
 

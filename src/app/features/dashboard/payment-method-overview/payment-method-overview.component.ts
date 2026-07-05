@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
-import { LogService } from 'src/app/core/logging/log.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
@@ -13,6 +12,7 @@ import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
   selector: 'app-payment-method-overview',
@@ -37,7 +37,7 @@ import { Auth } from 'src/app/core/auth/auth';
 export class PaymentMethodOverviewComponent implements OnInit {
   private readonly paymentMethodService = inject(PaymentMethodOverviewService);
   private readonly auth = inject(Auth);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly returnUrlService = inject(ReturnUrlService);
 
   readonly ServiceStatus = ServiceStatus;
@@ -96,12 +96,12 @@ export class PaymentMethodOverviewComponent implements OnInit {
           },
           error: (error) => {
             this.serviceStatus.set(ServiceStatus.Error);
-            this.logService.error(`getPaymentMethodOverview failed: ${error}`);
+            this.log.error(`getPaymentMethodOverview failed: ${error}`);
           },
         });
       })
       .catch((error) => {
-        this.logService.error(`waitForAuth failed: ${error}`);
+        this.log.error(`waitForAuth failed: ${error}`);
         this.serviceStatus.set(ServiceStatus.Error);
       });
   }

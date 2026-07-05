@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { NewsletterConfirmReply, NewsletterConfirmRequest } from '../newsletter';
 import { NewsletterService } from '../newsletter.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -12,6 +11,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
     selector: 'app-newsletter-confirm',
@@ -34,7 +34,7 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
 })
 export class NewsletterConfirmComponent implements OnInit {
   private readonly newsletterService = inject(NewsletterService);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -53,7 +53,7 @@ export class NewsletterConfirmComponent implements OnInit {
     };
     if (request.verificationToken === '') {
       this.serviceStatus.set(ServiceStatus.Error);
-      this.logService.error('verificationToken is empty current URL: ' + window.location.href);
+      this.log.error('verificationToken is empty current URL: ' + window.location.href);
       return;
     }
     this.newsletterService.confirmNewsletterEMail(request)

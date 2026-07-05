@@ -5,16 +5,16 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { NewsletterUnsubscribeComponent } from './newsletter-unsubscribe.component';
 import { NewsletterService } from '../newsletter.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus } from '../newsletter';
+import { Log } from 'src/app/core/logging/log';
 
 describe('NewsletterUnsubscribeComponent', () => {
   let component: NewsletterUnsubscribeComponent;
   let fixture: ComponentFixture<NewsletterUnsubscribeComponent>;
 
   const newsletterService = { unsubscribeFromNewsletter: vi.fn() };
-  const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
+  const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
   function createComponent(token: string | null): void {
     TestBed.configureTestingModule({
@@ -22,7 +22,7 @@ describe('NewsletterUnsubscribeComponent', () => {
       providers: [
         provideRouter([]),
         { provide: NewsletterService, useValue: newsletterService },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: log },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -56,7 +56,7 @@ describe('NewsletterUnsubscribeComponent', () => {
     fixture.detectChanges();
 
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    expect(logService.error).toHaveBeenCalled();
+    expect(log.error).toHaveBeenCalled();
     expect(newsletterService.unsubscribeFromNewsletter).not.toHaveBeenCalled();
   });
 

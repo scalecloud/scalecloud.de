@@ -2,7 +2,7 @@ import { inject, Injectable, WritableSignal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { Auth } from '../auth/auth';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 import { Role } from './roles';
 import { PermissionReply, PermissionRequest } from 'src/app/features/subscription-detail/seats/seats';
 import { API_URL } from '../config/api-token';
@@ -18,7 +18,7 @@ interface CacheEntry {
 export class Permission {
   private readonly http = inject(HttpClient);
   private readonly auth = inject(Auth);
-  private readonly logService = inject(LogService);
+  private readonly logService = inject(Log);
 
   private readonly apiUrl = inject(API_URL);
   private readonly urlPermission = `${this.apiUrl}/dashboard/subscription/permission`;

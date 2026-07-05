@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { LogService } from 'src/app/core/logging/log.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CancelStateReply } from './cancel-state';
@@ -13,6 +12,7 @@ import { CancelSubscriptionComponent } from './cancel-subscription/cancel-subscr
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
     selector: 'app-cancel-state',
@@ -24,7 +24,7 @@ import { Permission } from 'src/app/core/permission/permission';
 export class CancelStateComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly cancelStateService = inject(CancelStateService);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly permission = inject(Permission);
   private readonly route = inject(ActivatedRoute);
@@ -50,7 +50,7 @@ export class CancelStateComponent implements OnInit {
   async checkPermissions() {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.logService.error('SeatsComponent.checkPermissions: subscriptionID is null');
+      this.log.error('SeatsComponent.checkPermissions: subscriptionID is null');
       this.serviceStatus = ServiceStatus.Error;
       return;
     }
@@ -65,7 +65,7 @@ export class CancelStateComponent implements OnInit {
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
       this.snackBarService.error('An error occurred while checking permissions.');
-      this.logService.error('SeatsComponent.checkPermissions: error checking permissions', error);
+      this.log.error('SeatsComponent.checkPermissions: error checking permissions', error);
     }
   }
 
@@ -75,14 +75,14 @@ export class CancelStateComponent implements OnInit {
     try {
       await this.auth.waitForAuth();
     } catch (error) {
-      this.logService.error("waitForAuth failed: " + error);
+      this.log.error("waitForAuth failed: " + error);
       this.serviceStatus = ServiceStatus.Error;
       return;
     }
 
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.logService.error('SeatsComponent.getSeatsList: subscriptionID is null');
+      this.log.error('SeatsComponent.getSeatsList: subscriptionID is null');
       return;
     }
 
@@ -91,7 +91,7 @@ export class CancelStateComponent implements OnInit {
       this.serviceStatus = ServiceStatus.Success;
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
-      this.logService.error('SeatsComponent.getSeatsList: error fetching cancel state', error);
+      this.log.error('SeatsComponent.getSeatsList: error fetching cancel state', error);
     }
   }
 

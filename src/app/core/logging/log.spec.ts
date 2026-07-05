@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LogService } from './log.service';
+import { Log } from './log';
 import { describe, beforeEach, it, expect } from 'vitest';
 
-describe('LogService', () => {
-  let service: LogService;
+describe('Log', () => {
+  let service: Log;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LogService);
+    service = TestBed.inject(Log);
   });
 
   it('should be created', () => {

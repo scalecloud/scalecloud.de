@@ -4,9 +4,9 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { BillingPortalComponent } from './billing-portal.component';
 import { BillingPortalService } from './billing-portal.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { IBillingPortal } from './billing-portal';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 describe('BillingPortalComponent', () => {
   let component: BillingPortalComponent;
@@ -16,7 +16,7 @@ describe('BillingPortalComponent', () => {
     getHttpOptions: vi.fn().mockReturnValue({})
   };
 
-  const logServiceMock = {
+  const logMock = {
     error: vi.fn()
   };
 
@@ -31,7 +31,7 @@ describe('BillingPortalComponent', () => {
       imports: [BillingPortalComponent],
       providers: [
         { provide: Auth, useValue: authMock },
-        { provide: LogService, useValue: logServiceMock },
+        { provide: Log, useValue: logMock },
         { provide: BillingPortalService, useValue: billingPortalServiceMock }
       ]
     }).compileComponents();
@@ -64,7 +64,7 @@ describe('BillingPortalComponent', () => {
 
       expect(billingPortalServiceMock.getBillingPortal).toHaveBeenCalled();
       expect(openSpy).toHaveBeenCalledWith(billingPortal.url, '_blank');
-      expect(logServiceMock.error).not.toHaveBeenCalled();
+      expect(logMock.error).not.toHaveBeenCalled();
     });
 
     it('should log an error and not open a tab when billingPortal is null', () => {
@@ -72,7 +72,7 @@ describe('BillingPortalComponent', () => {
 
       component.openBillingPortal();
 
-      expect(logServiceMock.error).toHaveBeenCalledWith(
+      expect(logMock.error).toHaveBeenCalledWith(
         'BillingPortalComponent.openBillingPortal: billingPortal is null'
       );
       expect(openSpy).not.toHaveBeenCalled();

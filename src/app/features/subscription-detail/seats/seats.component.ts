@@ -7,7 +7,6 @@ import {
   computed,
 } from '@angular/core';
 import { SeatsService } from './seats.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { ListSeatReply, ListSeatRequest, Seat } from './seats';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
@@ -31,6 +30,7 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
   selector: 'app-seats',
@@ -58,7 +58,7 @@ import { Permission } from 'src/app/core/permission/permission';
 export class SeatsComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly seatService = inject(SeatsService);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly returnUrlService = inject(ReturnUrlService);
   private readonly permission = inject(Permission);
@@ -92,7 +92,7 @@ export class SeatsComponent implements OnInit {
   async checkPermissions(): Promise<void> {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.logService.error('SeatsComponent.checkPermissions: subscriptionID is null');
+      this.log.error('SeatsComponent.checkPermissions: subscriptionID is null');
       this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
@@ -116,7 +116,7 @@ export class SeatsComponent implements OnInit {
     this.auth.waitForAuth().then(() => {
       const subscriptionID = this.getSubscriptionID();
       if (!subscriptionID) {
-        this.logService.error('SeatsComponent.loadSeats: subscriptionID is null');
+        this.log.error('SeatsComponent.loadSeats: subscriptionID is null');
         this.serviceStatus.set(ServiceStatus.Error);
         return;
       }
@@ -137,7 +137,7 @@ export class SeatsComponent implements OnInit {
         },
       });
     }).catch((error) => {
-      this.logService.error('waitForAuth failed: ' + error);
+      this.log.error('waitForAuth failed: ' + error);
       this.serviceStatus.set(ServiceStatus.Error);
     });
   }

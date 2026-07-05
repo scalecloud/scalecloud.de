@@ -4,7 +4,7 @@ import { describe, beforeEach, afterEach, it, expect, vi, type Mock } from 'vite
 import type { User } from 'firebase/auth';
 
 import { Auth } from './auth';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 import { SnackBarService } from '../snackbar/snack-bar.service';
 import { ReturnUrlService } from '../redirect/return-url.service';
 import { Firebase } from '../firebase/firebase';
@@ -90,7 +90,7 @@ describe('Auth', () => {
       providers: [
         { provide: Router, useValue: router },
         { provide: SnackBarService, useValue: snackBarService },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: logService },
         { provide: ReturnUrlService, useValue: returnUrlService },
         { provide: Firebase, useValue: firebase },
       ],

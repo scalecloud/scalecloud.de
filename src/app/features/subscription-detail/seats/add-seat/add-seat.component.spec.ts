@@ -5,12 +5,12 @@ import { of, Subject, throwError } from 'rxjs';
 
 import { AddSeatComponent } from './add-seat.component';
 import { AddSeatService } from './add-seat.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Role } from 'src/app/core/permission/roles';
 import { AddSeatReply } from '../seats';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -33,7 +33,7 @@ describe('AddSeatComponent', () => {
   // Mocks
   const addSeatService = { addSeat: vi.fn() };
   const auth = { waitForAuth: vi.fn(() => Promise.resolve()) };
-  const logService = { warn: vi.fn(), error: vi.fn() };
+  const log = { warn: vi.fn(), error: vi.fn() };
   const snackBarService = { info: vi.fn(), error: vi.fn() };
   const returnUrlService = { openReturnURL: vi.fn() };
 
@@ -50,7 +50,7 @@ describe('AddSeatComponent', () => {
         provideRouter([]),
         { provide: AddSeatService, useValue: addSeatService },
         { provide: Auth, useValue: auth },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: log },
         { provide: SnackBarService, useValue: snackBarService },
         { provide: ReturnUrlService, useValue: returnUrlService },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
@@ -322,7 +322,7 @@ describe('AddSeatComponent', () => {
     expect(snackBarService.error).toHaveBeenCalledWith(
       'An unexpected error occurred. Please try again.',
     );
-    expect(logService.error).toHaveBeenCalled();
+    expect(log.error).toHaveBeenCalled();
     expect(component.isSubmitting()).toBe(false);
   });
 
@@ -358,7 +358,7 @@ describe('AddSeatComponent', () => {
 
     await component.addSeat();
 
-    expect(logService.error).toHaveBeenCalledWith(
+    expect(log.error).toHaveBeenCalledWith(
       expect.stringContaining('waitForAuth failed'),
     );
     expect(component.isSubmitting()).toBe(false);

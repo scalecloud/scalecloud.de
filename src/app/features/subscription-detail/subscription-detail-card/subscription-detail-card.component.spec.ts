@@ -6,13 +6,13 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionDetailCardComponent } from './subscription-detail-card.component';
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
 import { CancelStateComponent } from '../cancel-state/cancel-state.component';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 import { Permission } from 'src/app/core/permission/permission';
+import { Log } from 'src/app/core/logging/log';
 
 // ─── Factories ───────────────────────────────────────────────────────────────
 
@@ -84,7 +84,7 @@ describe('SubscriptionDetailCardComponent', () => {
   let auth: ReturnType<typeof makeAuth>;
   let permission: ReturnType<typeof makePermissionService>;
   let subscriptionService: ReturnType<typeof makeSubscriptionService>;
-  let logService: ReturnType<typeof makeLogService>;
+  let log: ReturnType<typeof makeLogService>;
   let snackBarService: ReturnType<typeof makeSnackBarService>;
 
   async function setup(options: {
@@ -104,7 +104,7 @@ describe('SubscriptionDetailCardComponent', () => {
     auth.waitForAuth.mockReturnValue(waitForAuthResult);
     permission = makePermissionService(hasPermission);
     subscriptionService = makeSubscriptionService(reply);
-    logService = makeLogService();
+    log = makeLogService();
     snackBarService = makeSnackBarService();
 
     await TestBed.configureTestingModule({
@@ -117,7 +117,7 @@ describe('SubscriptionDetailCardComponent', () => {
         { provide: Auth, useValue: auth },
         { provide: Permission, useValue: permission },
         { provide: SubscriptionDetailCardService, useValue: subscriptionService },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: log },
         { provide: SnackBarService, useValue: snackBarService },
       ],
     })
@@ -175,7 +175,7 @@ describe('SubscriptionDetailCardComponent', () => {
     await stabilize(fixture);
 
     expect(component.serviceStatus).toBe(ServiceStatus.Error);
-    expect(logService.error).toHaveBeenCalled();
+    expect(log.error).toHaveBeenCalled();
   });
 
   // ── Data loading ──────────────────────────────────────────────────────────
@@ -208,7 +208,7 @@ describe('SubscriptionDetailCardComponent', () => {
     await stabilize(fixture);
 
     expect(component.serviceStatus).toBe(ServiceStatus.Error);
-    expect(logService.error).toHaveBeenCalled();
+    expect(log.error).toHaveBeenCalled();
   });
 
   // ── Accessor methods ──────────────────────────────────────────────────────

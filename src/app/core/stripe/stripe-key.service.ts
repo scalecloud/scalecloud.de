@@ -1,5 +1,5 @@
 import { Injectable, inject, InjectionToken } from '@angular/core';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 
 export const STRIPE_PUBLIC_KEY = new InjectionToken<string>('STRIPE_PUBLIC_KEY');
 
@@ -8,7 +8,7 @@ export const STRIPE_PUBLIC_KEY = new InjectionToken<string>('STRIPE_PUBLIC_KEY')
 })
 export class StripeKeyService {
   private readonly publicKey = inject(STRIPE_PUBLIC_KEY);
-  private readonly logService = inject(LogService);
+  private readonly logService = inject(Log);
 
 
   getPublicKey(): string | undefined {

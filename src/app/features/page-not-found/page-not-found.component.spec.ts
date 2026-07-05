@@ -4,7 +4,7 @@ import { Router, provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { PageNotFoundComponent } from './page-not-found.component';
-import { LogService } from 'src/app/core/logging/log.service';
+import { Log } from 'src/app/core/logging/log';
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
 // Router itself is NOT overridden with a stub. provideRouter([])'s internal
@@ -27,7 +27,7 @@ describe('PageNotFoundComponent', () => {
   let router: Router;
 
   // Mocks
-  const logService = { error: vi.fn() };
+  const log = { error: vi.fn() };
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -39,7 +39,7 @@ describe('PageNotFoundComponent', () => {
           { path: '', component: BlankRouteComponent },
           { path: '**', component: BlankRouteComponent },
         ]),
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: log },
       ],
     }).compileComponents();
 
@@ -85,11 +85,11 @@ describe('PageNotFoundComponent', () => {
   // ─── ngOnInit / logging ────────────────────────────────────────────────────────
 
   it('should log the current URL as an error on init', () => {
-    expect(logService.error).toHaveBeenCalledWith('Page not found: /some/missing/path');
+    expect(log.error).toHaveBeenCalledWith('Page not found: /some/missing/path');
   });
 
   it('should log exactly once on init', () => {
-    expect(logService.error).toHaveBeenCalledTimes(1);
+    expect(log.error).toHaveBeenCalledTimes(1);
   });
 
   it('should reflect the router URL present at component creation time', async () => {
@@ -99,7 +99,7 @@ describe('PageNotFoundComponent', () => {
     const newFixture = TestBed.createComponent(PageNotFoundComponent);
     newFixture.detectChanges();
 
-    expect(logService.error).toHaveBeenCalledWith('Page not found: /another/bad/url?foo=bar');
+    expect(log.error).toHaveBeenCalledWith('Page not found: /another/bad/url?foo=bar');
   });
 
   it('should not throw when the router URL is the root path', async () => {
@@ -111,6 +111,6 @@ describe('PageNotFoundComponent', () => {
       rootFixture.detectChanges();
     }).not.toThrow();
 
-    expect(logService.error).toHaveBeenCalledWith('Page not found: /');
+    expect(log.error).toHaveBeenCalledWith('Page not found: /');
   });
 });

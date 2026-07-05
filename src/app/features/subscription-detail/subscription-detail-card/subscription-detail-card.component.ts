@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { ActivatedRoute } from '@angular/router';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
@@ -17,6 +16,7 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
     selector: 'app-subscription-detail-card',
@@ -30,7 +30,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
   private readonly permission = inject(Permission);
   private readonly subscriptionDetailCardService = inject(SubscriptionDetailCardService);
   private readonly route = inject(ActivatedRoute);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
 
 
@@ -49,7 +49,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
   async checkPermissions() {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.logService.error('SeatsComponent.checkPermissions: subscriptionID is null');
+      this.log.error('SeatsComponent.checkPermissions: subscriptionID is null');
       this.serviceStatus = ServiceStatus.Error;
       return;
     }
@@ -64,7 +64,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
       this.snackBarService.error('An error occurred while checking permissions.');
-      this.logService.error('SeatsComponent.checkPermissions: error checking permissions', error);
+      this.log.error('SeatsComponent.checkPermissions: error checking permissions', error);
     }
   }
 
@@ -73,7 +73,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
     this.auth.waitForAuth().then(() => {
       const subscriptionID = this.getSubscriptionID();
       if (subscriptionID == null) {
-        this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
+        this.log.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
       } else {
         this.subscriptionDetailCardService.getSubscriptionDetail(subscriptionID)
           .subscribe({
@@ -87,7 +87,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
           });
       }
     }).catch((error) => {
-      this.logService.error("waitForAuth failed: " + error);
+      this.log.error("waitForAuth failed: " + error);
       this.serviceStatus = ServiceStatus.Error;
     });
   }

@@ -7,12 +7,12 @@ import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 import { BillingAddressDetailComponent } from './billing-address-detail.component';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { BillingAddressService } from '../billing-address.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { BillingAddressReply } from '../billing-address-model';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
+import { Log } from 'src/app/core/logging/log';
 
 /**
  * NOTE: These mock shapes are inferred from how the component calls
@@ -54,7 +54,7 @@ describe('BillingAddressDetailComponent', () => {
   let authMock: { waitForAuth: Mock };
   let permissionMock: { isBilling: Mock };
   let billingAddressServiceMock: { getBillingAddress: Mock; updateBillingAddress: Mock };
-  let logServiceMock: { error: Mock };
+  let logMock: { error: Mock };
   let snackBarServiceMock: { info: Mock; error: Mock };
   let returnUrlServiceMock: { openReturnURL: Mock };
   let activatedRouteStub: Partial<ActivatedRoute>;
@@ -72,7 +72,7 @@ describe('BillingAddressDetailComponent', () => {
       getBillingAddress: vi.fn().mockReturnValue(of(createReply())),
       updateBillingAddress: vi.fn().mockReturnValue(of({ subscriptionID: SUBSCRIPTION_ID })),
     };
-    logServiceMock = { error: vi.fn() };
+    logMock = { error: vi.fn() };
     snackBarServiceMock = { info: vi.fn(), error: vi.fn() };
     returnUrlServiceMock = { openReturnURL: vi.fn() };
     activatedRouteStub = routeOverride ?? createActivatedRouteStub();
@@ -90,7 +90,7 @@ describe('BillingAddressDetailComponent', () => {
         { provide: Auth, useValue: authMock },
         { provide: Permission, useValue: permissionMock },
         { provide: BillingAddressService, useValue: billingAddressServiceMock },
-        { provide: LogService, useValue: logServiceMock },
+        { provide: Log, useValue: logMock },
         { provide: SnackBarService, useValue: snackBarServiceMock },
         { provide: ReturnUrlService, useValue: returnUrlServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
@@ -133,7 +133,7 @@ describe('BillingAddressDetailComponent', () => {
       fixture.detectChanges();
       await vi.waitFor(() => expect(component.serviceStatus()).toBe(ServiceStatus.Error));
 
-      expect(logServiceMock.error).toHaveBeenCalledWith(
+      expect(logMock.error).toHaveBeenCalledWith(
         expect.stringContaining('subscriptionID is null'),
       );
       expect(permissionMock.isBilling).not.toHaveBeenCalled();
@@ -223,7 +223,7 @@ describe('BillingAddressDetailComponent', () => {
 
       await component.reloadBillingAddressDetail();
 
-      expect(logServiceMock.error).toHaveBeenCalledWith(
+      expect(logMock.error).toHaveBeenCalledWith(
         expect.stringContaining('waitForAuth failed'),
       );
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
@@ -234,7 +234,7 @@ describe('BillingAddressDetailComponent', () => {
 
       await component.reloadBillingAddressDetail();
 
-      expect(logServiceMock.error).toHaveBeenCalledWith(
+      expect(logMock.error).toHaveBeenCalledWith(
         expect.stringContaining('subscriptionID is null'),
       );
       expect(billingAddressServiceMock.getBillingAddress).not.toHaveBeenCalled();
@@ -378,7 +378,7 @@ describe('BillingAddressDetailComponent', () => {
 
       await component.onSubmit();
 
-      expect(logServiceMock.error).toHaveBeenCalledWith(
+      expect(logMock.error).toHaveBeenCalledWith(
         expect.stringContaining('waitForAuth failed'),
       );
     });

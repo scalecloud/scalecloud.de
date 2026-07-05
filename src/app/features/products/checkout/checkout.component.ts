@@ -1,13 +1,13 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { LogService } from 'src/app/core/logging/log.service';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
 import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CheckoutSubscriptionService } from './checkout-payment/checkout-subscription.service';
 import { PaymentMethodOverviewComponent } from 'src/app/features/dashboard/payment-method-overview/payment-method-overview.component';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
     selector: 'app-checkout',
@@ -17,7 +17,7 @@ import { Auth } from 'src/app/core/auth/auth';
     imports: [PaymentMethodOverviewComponent, CheckoutDetailsComponent]
 })
 export class CheckoutComponent {
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly router = inject(Router);
   private readonly snackBarService = inject(SnackBarService);
   private readonly auth = inject(Auth);
@@ -50,7 +50,7 @@ export class CheckoutComponent {
         this.snackBarService.error('Could not charge payment method. Please update your payment method.');
       }
     } catch (error) {
-      this.logService.error('createCheckoutSubscription failed: ' + error);
+      this.log.error('createCheckoutSubscription failed: ' + error);
       this.snackBarService.error(errorMessage);
     }
   }

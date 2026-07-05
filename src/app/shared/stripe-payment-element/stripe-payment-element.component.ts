@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
@@ -11,6 +10,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 
 import { FormsModule } from '@angular/forms';
 import { LoadingFailedComponent } from '../loading-failed/loading-failed.component';
+import { Log } from 'src/app/core/logging/log';
 
 declare const Stripe: any;
 
@@ -22,7 +22,7 @@ declare const Stripe: any;
     imports: [MatCard, MatProgressBar, MatCardSubtitle, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, FormsModule, LoadingFailedComponent]
 })
 export class StripePaymentElementComponent {
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly stripeKeyService = inject(StripeKeyService);
 
@@ -36,7 +36,7 @@ export class StripePaymentElementComponent {
     // Your Stripe public key
     const publicKey = this.stripeKeyService.getPublicKey();
     if (publicKey == undefined) {
-      this.logService.error("Cannot display Payment because publicKey is undefined.")
+      this.log.error("Cannot display Payment because publicKey is undefined.")
       this.serviceStatus = ServiceStatus.Error;
       return;
     }
@@ -96,7 +96,7 @@ export class StripePaymentElementComponent {
     const elements = this.elements
 
     if (this.initStripePayment == undefined) {
-      this.logService.error("Cannot submit Payment because initStripePayment is undefined.")
+      this.log.error("Cannot submit Payment because initStripePayment is undefined.")
     }
     else if (this.initStripePayment.intent == StripeIntent.SetupIntent) {
       const { error: stripeError } = await this.stripeElement.confirmSetup({

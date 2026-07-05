@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { BillingAddressOverviewComponent } from './billing-address-overview.component';
 import { BillingAddressReply } from '../billing-address-model';
-import { LogService } from 'src/app/core/logging/log.service';
 import { BillingAddressService } from '../billing-address.service';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
@@ -13,6 +12,7 @@ import { of, throwError } from 'rxjs';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
+import { Log } from 'src/app/core/logging/log';
 
 const mockReply: BillingAddressReply = {
   subscriptionID: 'subscription-123',
@@ -33,7 +33,7 @@ const billingAddressServiceMock = { getBillingAddress: vi.fn().mockReturnValue(o
 const routeMock = { snapshot: { paramMap: { get: vi.fn().mockReturnValue('subscription-123') } } };
 const countryServiceMock = { getCountry: vi.fn().mockReturnValue('Germany') };
 const languageServiceMock = { getLanguage: vi.fn().mockReturnValue('de') };
-const logServiceMock = { error: vi.fn() };
+const logMock = { error: vi.fn() };
 const snackBarServiceMock = { error: vi.fn() };
 const returnUrlServiceMock = { openUrlAddReturnUrl: vi.fn() };
 
@@ -42,7 +42,7 @@ const providers = [
   { provide: Permission, useValue: permissionMock },
   { provide: BillingAddressService, useValue: billingAddressServiceMock },
   { provide: ActivatedRoute, useValue: routeMock },
-  { provide: LogService, useValue: logServiceMock },
+  { provide: Log, useValue: logMock },
   { provide: SnackBarService, useValue: snackBarServiceMock },
   { provide: ReturnUrlService, useValue: returnUrlServiceMock },
   { provide: CountryService, useValue: countryServiceMock },
@@ -142,7 +142,7 @@ describe('BillingAddressOverviewComponent', () => {
     routeMock.snapshot.paramMap.get.mockReturnValue(null);
     ({ component } = await createComponent());
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    expect(logServiceMock.error).toHaveBeenCalled();
+    expect(logMock.error).toHaveBeenCalled();
   });
 
   it('should set Error status when getBillingAddress fails', async () => {
@@ -157,7 +157,7 @@ describe('BillingAddressOverviewComponent', () => {
     authMock.waitForAuth.mockRejectedValue(new Error('Auth error'));
     ({ component } = await createComponent());
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    expect(logServiceMock.error).toHaveBeenCalledWith(
+    expect(logMock.error).toHaveBeenCalledWith(
       expect.stringContaining('waitForAuth failed')
     );
   });

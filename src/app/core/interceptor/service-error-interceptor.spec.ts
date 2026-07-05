@@ -5,7 +5,7 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { serviceErrorInterceptor } from './service-error-interceptor';
 import { SnackBarService } from '../snackbar/snack-bar.service';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 
 const mockSnackBarService = { error: vi.fn() };
 const mockLogService = { error: vi.fn() };
@@ -24,7 +24,7 @@ describe('serviceErrorInterceptor', () => {
         provideHttpClient(withInterceptors([serviceErrorInterceptor])),
         provideHttpClientTesting(),
         { provide: SnackBarService, useValue: mockSnackBarService },
-        { provide: LogService, useValue: mockLogService },
+        { provide: Log, useValue: mockLogService },
       ],
     });
 

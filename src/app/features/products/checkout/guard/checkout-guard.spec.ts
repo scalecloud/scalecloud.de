@@ -3,15 +3,15 @@ import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { checkoutGuard } from './checkout-guard';
-import { LogService } from 'src/app/core/logging/log.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 const mockRouter = { navigate: vi.fn() };
 const authMock = {
   isLoggedIn: vi.fn(),
   isLoggedInNotVerified: vi.fn(),
 };
-const mockLogService = { log: vi.fn() };
+const mockLog = { log: vi.fn() };
 
 const MOCK_URL = '/checkout/summary';
 
@@ -29,7 +29,7 @@ describe('checkoutGuard', () => {
       providers: [
         { provide: Router, useValue: mockRouter },
         { provide: Auth, useValue: authMock },
-        { provide: LogService, useValue: mockLogService },
+        { provide: Log, useValue: mockLog },
       ],
     });
   });
@@ -56,7 +56,7 @@ describe('checkoutGuard', () => {
 
     it('does not log when redirecting unverified users', async () => {
       await runGuard();
-      expect(mockLogService.log).not.toHaveBeenCalled();
+      expect(mockLog.log).not.toHaveBeenCalled();
     });
   });
 
@@ -88,7 +88,7 @@ describe('checkoutGuard', () => {
 
     it('logs before redirecting unauthenticated users', async () => {
       await runGuard();
-      expect(mockLogService.log).toHaveBeenCalledWith(
+      expect(mockLog.log).toHaveBeenCalledWith(
         'CheckoutGuard: canActivate: User is not logged in. Redirecting to login page.'
       );
     });
@@ -111,7 +111,7 @@ describe('checkoutGuard', () => {
 
     it('does not log anything for authenticated users', async () => {
       await runGuard();
-      expect(mockLogService.log).not.toHaveBeenCalled();
+      expect(mockLog.log).not.toHaveBeenCalled();
     });
   });
 });

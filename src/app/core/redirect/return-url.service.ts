@@ -1,7 +1,7 @@
 import { Injectable, DOCUMENT, inject } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Location } from '@angular/common';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 import { APP_BASE_URL } from '../config/api-token';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { APP_BASE_URL } from '../config/api-token';
 export class ReturnUrlService {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly logService = inject(LogService);
+  private readonly logService = inject(Log);
   private readonly document = inject<Document>(DOCUMENT);
   private readonly location = inject(Location);
   private readonly baseURL = inject(APP_BASE_URL);

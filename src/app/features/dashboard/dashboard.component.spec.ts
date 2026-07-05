@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { LastCountService } from './subscription-overview/last-count/last-count.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
@@ -10,6 +9,7 @@ import { of, throwError } from 'rxjs';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { provideRouter } from '@angular/router';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 const mockSubscriptions: ISubscriptionOverview[] = [
   {
@@ -38,7 +38,7 @@ const subscriptionOverviewServiceMock = {
   getSubscriptionsOverview: vi.fn().mockReturnValue(of(mockSubscriptions)),
 };
 
-const logServiceMock = {
+const logMock = {
   error: vi.fn(),
 };
 
@@ -64,7 +64,7 @@ describe('DashboardComponent', () => {
         provideRouter([]),
         { provide: Auth, useValue: authMock },
         { provide: SubscriptionOverviewService, useValue: subscriptionOverviewServiceMock },
-        { provide: LogService, useValue: logServiceMock },
+        { provide: Log, useValue: logMock },
         { provide: LastCountService, useValue: lastCountServiceMock },
         { provide: SnackBarService, useValue: snackBarServiceMock },
       ],
@@ -113,7 +113,7 @@ describe('DashboardComponent', () => {
     await fixture.whenStable();
 
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    expect(logServiceMock.error).toHaveBeenCalledWith(
+    expect(logMock.error).toHaveBeenCalledWith(
       expect.stringContaining('waitForAuth failed')
     );
   });

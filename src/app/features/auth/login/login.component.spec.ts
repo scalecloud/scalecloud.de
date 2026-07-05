@@ -4,9 +4,9 @@ import { By } from '@angular/platform-browser';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { LoginComponent } from './login.component';
-import { LogService } from 'src/app/core/logging/log.service';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -25,7 +25,7 @@ describe('LoginComponent', () => {
       providers: [
         provideRouter([]),
         { provide: Auth, useValue: authMock },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: logService },
         { provide: ReturnUrlService, useValue: returnUrlService },
       ],
     }).compileComponents();

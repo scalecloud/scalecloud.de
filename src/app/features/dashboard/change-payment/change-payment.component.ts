@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, inject, OnInit, viewChild, signal, WritableSignal } from '@angular/core';
-import { LogService } from 'src/app/core/logging/log.service';
 import { ChangePaymentReply } from './change-payment';
 import { ChangePaymentService } from './change-payment.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent';
@@ -11,6 +10,7 @@ import { MatIcon } from '@angular/material/icon';
 import { afterNextRender } from '@angular/core';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
     selector: 'app-change-payment',
@@ -21,7 +21,7 @@ import { Auth } from 'src/app/core/auth/auth';
 })
 export class ChangePaymentComponent implements OnInit {
   private readonly auth = inject(Auth);
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly changePaymentService = inject(ChangePaymentService);
   private readonly returnUrlService = inject(ReturnUrlService);
 
@@ -62,7 +62,7 @@ export class ChangePaymentComponent implements OnInit {
           this.stripePaymentElementComponent()?.initPaymentElement(initStripePayment);
         });
     }).catch((error) => {
-      this.logService.error('waitForAuth failed: ' + error);
+      this.log.error('waitForAuth failed: ' + error);
     });
   }
 
@@ -70,13 +70,13 @@ export class ChangePaymentComponent implements OnInit {
     const stripePaymentElementComponent = this.stripePaymentElementComponent();
     if (stripePaymentElementComponent) {
       const returnUrl = this.returnUrlService.getSpecifiedUrlWithReturnUrl('/dashboard/change-payment/status');
-      this.logService.info('returnUrl: ' + returnUrl);
+      this.log.info('returnUrl: ' + returnUrl);
       const submitStripePayment: SubmitStripePayment = {
         return_url: returnUrl,
       };
       stripePaymentElementComponent.submitIntent(submitStripePayment);
     } else {
-      this.logService.error('PaymentElementComponent is undefined.');
+      this.log.error('PaymentElementComponent is undefined.');
     }
   }
 

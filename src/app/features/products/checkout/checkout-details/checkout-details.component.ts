@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, viewChild, output, computed, resource, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { firstValueFrom } from 'rxjs';
-import { LogService } from 'src/app/core/logging/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
 import { CheckoutProductRequest } from './checkout-product';
 import { CheckoutProductService } from './checkout-product.service';
@@ -19,6 +18,7 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 @Component({
     selector: 'app-checkout-details',
@@ -28,7 +28,7 @@ import { Auth } from 'src/app/core/auth/auth';
     imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, QuantityComponent, MatCardSubtitle, MatCardActions, MatButton, LoadingFailedComponent, CurrencyPipe]
 })
 export class CheckoutDetailsComponent {
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly checkoutProductService = inject(CheckoutProductService);
   private readonly auth = inject(Auth);
   private readonly route = inject(ActivatedRoute);
@@ -107,7 +107,7 @@ export class CheckoutDetailsComponent {
   constructor() {
     effect(() => {
       if (this.productID() === undefined) {
-        this.logService.error('Could not determine productID from the query params.');
+        this.log.error('Could not determine productID from the query params.');
       }
     });
   }
@@ -115,7 +115,7 @@ export class CheckoutDetailsComponent {
   startSubscription(): void {
     const productID = this.reply()?.productID;
     if (!productID) {
-      this.logService.error('Cannot start subscription without a loaded product.');
+      this.log.error('Cannot start subscription without a loaded product.');
       return;
     }
     this.startSubscriptionEvent.emit({

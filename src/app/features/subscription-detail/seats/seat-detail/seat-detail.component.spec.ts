@@ -6,12 +6,12 @@ import { of, Subject } from 'rxjs';
 
 import { SeatDetailComponent } from './seat-detail.component';
 import { SeatDetailService } from './seat-detail.service';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Role } from 'src/app/core/permission/roles';
 import { SeatDetailReply } from '../seats';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -44,7 +44,7 @@ function buildMocks() {
       deleteSeat: vi.fn(),
     },
     auth: { waitForAuth: vi.fn().mockResolvedValue(undefined) },
-    logService: { error: vi.fn() },
+    log: { error: vi.fn() },
     snackBarService: { error: vi.fn(), info: vi.fn() },
     returnUrlService: { openReturnURL: vi.fn() },
     dialog: { open: vi.fn() },
@@ -72,7 +72,7 @@ describe('SeatDetailComponent', () => {
       providers: [
         { provide: SeatDetailService, useValue: mocks.seatDetailService },
         { provide: Auth, useValue: mocks.auth },
-        { provide: LogService, useValue: mocks.logService },
+        { provide: Log, useValue: mocks.log },
         { provide: SnackBarService, useValue: mocks.snackBarService },
         { provide: ReturnUrlService, useValue: mocks.returnUrlService },
         { provide: MatDialog, useValue: mocks.dialog },

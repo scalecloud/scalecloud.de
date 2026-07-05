@@ -5,7 +5,7 @@ import { captureMessage, captureException } from '@sentry/angular';
 @Injectable({
   providedIn: 'root'
 })
-export class LogService {
+export class Log {
   private readonly logger = new Logger('Logger');
 
   debug(message: string): void {

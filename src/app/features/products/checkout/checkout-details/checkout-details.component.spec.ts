@@ -7,11 +7,11 @@ import { Observable, of, throwError, Subject } from 'rxjs';
 import { CheckoutDetailsComponent } from './checkout-details.component';
 import { CheckoutProductService } from './checkout-product.service';
 import { CheckoutProductReply } from './checkout-product';
-import { LogService } from 'src/app/core/logging/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 // ─── Stubs for child components rendered by the template ──────────────────────
 // We don't have the real QuantityComponent / LoadingFailedComponent source, so
@@ -95,7 +95,7 @@ describe('CheckoutDetailsComponent', () => {
         provideRouter([]),
         { provide: CheckoutProductService, useValue: checkoutProductService },
         { provide: Auth, useValue: authMock },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: logService },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
     })

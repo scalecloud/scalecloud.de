@@ -3,17 +3,17 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StatusComponent } from './status.component';
-import { LogService } from 'src/app/core/logging/log.service';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 describe('StatusComponent', () => {
   let component: StatusComponent;
   let fixture: ComponentFixture<StatusComponent>;
 
   let authMock: { waitForAuth: ReturnType<typeof vi.fn> };
-  let logServiceMock: {
+  let logMock: {
     info: ReturnType<typeof vi.fn>;
     warn: ReturnType<typeof vi.fn>;
     error: ReturnType<typeof vi.fn>;
@@ -33,7 +33,7 @@ describe('StatusComponent', () => {
     authMock = {
       waitForAuth: vi.fn().mockResolvedValue(undefined)
     };
-    logServiceMock = {
+    logMock = {
       info: vi.fn(),
       warn: vi.fn(),
       error: vi.fn()
@@ -60,7 +60,7 @@ describe('StatusComponent', () => {
       imports: [StatusComponent],
       providers: [
         { provide: Auth, useValue: authMock },
-        { provide: LogService, useValue: logServiceMock },
+        { provide: Log, useValue: logMock },
         { provide: StripeKeyService, useValue: stripeKeyServiceMock },
         { provide: ReturnUrlService, useValue: returnUrlServiceMock },
         {
@@ -109,7 +109,7 @@ describe('StatusComponent', () => {
     it('should log a success message', async () => {
       await fixture.whenStable();
 
-      expect(logServiceMock.info).toHaveBeenCalledWith('Success! Your payment method has been saved.');
+      expect(logMock.info).toHaveBeenCalledWith('Success! Your payment method has been saved.');
     });
   });
 
@@ -153,7 +153,7 @@ describe('StatusComponent', () => {
     it('should log an error message', async () => {
       await fixture.whenStable();
 
-      expect(logServiceMock.error).toHaveBeenCalledWith('Failed to process payment details. Please try another payment method.');
+      expect(logMock.error).toHaveBeenCalledWith('Failed to process payment details. Please try another payment method.');
     });
   });
 
@@ -162,7 +162,7 @@ describe('StatusComponent', () => {
       configureTestBed({ setup_intent_client_secret: undefined as any });
       await fixture.whenStable();
 
-      expect(logServiceMock.error).toHaveBeenCalledWith('Cannot display status because setup_intent_client_secret is undefined.');
+      expect(logMock.error).toHaveBeenCalledWith('Cannot display status because setup_intent_client_secret is undefined.');
       expect(retrieveSetupIntentMock).not.toHaveBeenCalled();
     });
   });
@@ -174,7 +174,7 @@ describe('StatusComponent', () => {
 
       await fixture.whenStable();
 
-      expect(logServiceMock.error).toHaveBeenCalledWith('Cannot display status because publicKey is undefined.');
+      expect(logMock.error).toHaveBeenCalledWith('Cannot display status because publicKey is undefined.');
       expect(stripeFactoryMock).not.toHaveBeenCalled();
     });
   });
@@ -186,7 +186,7 @@ describe('StatusComponent', () => {
 
       await fixture.whenStable();
 
-      expect(logServiceMock.error).toHaveBeenCalledWith('waitForAuth failed: Error: not authenticated');
+      expect(logMock.error).toHaveBeenCalledWith('waitForAuth failed: Error: not authenticated');
     });
   });
 });

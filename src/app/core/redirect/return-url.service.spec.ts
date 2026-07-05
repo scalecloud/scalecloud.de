@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { ReturnUrlService } from './return-url.service';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 import { APP_BASE_URL } from '../config/api-token';
 
 describe('ReturnUrlService', () => {
@@ -47,7 +47,7 @@ describe('ReturnUrlService', () => {
       providers: [
         { provide: Router, useValue: router },
         { provide: ActivatedRoute, useValue: activatedRoute },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: logService },
         { provide: DOCUMENT, useValue: documentMock },
         { provide: Location, useValue: location },
         { provide: APP_BASE_URL, useValue: BASE_URL },

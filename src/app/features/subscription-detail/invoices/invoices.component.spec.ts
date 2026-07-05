@@ -7,10 +7,10 @@ import { InvoicesComponent } from './invoices.component';
 import { InvoicesService } from './invoices.service';
 import { InvoiceStatus, ListInvoicesReply } from './invoices';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
+import { Log } from 'src/app/core/logging/log';
 
 describe('InvoicesComponent', () => {
   let component: InvoicesComponent;
@@ -18,7 +18,7 @@ describe('InvoicesComponent', () => {
 
   let invoicesServiceMock: { getInvoices: ReturnType<typeof vi.fn> };
   let authMock: { waitForAuth: ReturnType<typeof vi.fn> };
-  let logServiceMock: { error: ReturnType<typeof vi.fn> };
+  let logMock: { error: ReturnType<typeof vi.fn> };
   let permissionMock: { isBilling: ReturnType<typeof vi.fn> };
   let snackBarServiceMock: { error: ReturnType<typeof vi.fn>; infoDuration: ReturnType<typeof vi.fn> };
 
@@ -48,7 +48,7 @@ describe('InvoicesComponent', () => {
 
     invoicesServiceMock = { getInvoices: vi.fn().mockReturnValue(of(buildReply())) };
     authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
-    logServiceMock = { error: vi.fn() };
+    logMock = { error: vi.fn() };
     permissionMock = { isBilling: vi.fn().mockResolvedValue(true) };
     snackBarServiceMock = { error: vi.fn(), infoDuration: vi.fn() };
 
@@ -57,7 +57,7 @@ describe('InvoicesComponent', () => {
       providers: [
         { provide: InvoicesService, useValue: invoicesServiceMock },
         { provide: Auth, useValue: authMock },
-        { provide: LogService, useValue: logServiceMock },
+        { provide: Log, useValue: logMock },
         { provide: Permission, useValue: permissionMock },
         { provide: SnackBarService, useValue: snackBarServiceMock },
         {
@@ -95,7 +95,7 @@ describe('InvoicesComponent', () => {
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-      expect(logServiceMock.error).toHaveBeenCalled();
+      expect(logMock.error).toHaveBeenCalled();
       expect(permissionMock.isBilling).not.toHaveBeenCalled();
     });
 
@@ -162,7 +162,7 @@ describe('InvoicesComponent', () => {
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-      expect(logServiceMock.error).toHaveBeenCalled();
+      expect(logMock.error).toHaveBeenCalled();
     });
 
     it('should set status to Error when waitForAuth rejects', async () => {

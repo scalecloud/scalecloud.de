@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
 import type { User } from 'firebase/auth';
 
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 import { SnackBarService } from '../snackbar/snack-bar.service';
 import { ReturnUrlService } from '../redirect/return-url.service';
 import { Firebase } from '../firebase/firebase';
@@ -12,7 +12,7 @@ import { Firebase } from '../firebase/firebase';
 export class Auth {
   private readonly router = inject(Router);
   private readonly snackBarService = inject(SnackBarService);
-  private readonly logService = inject(LogService);
+  private readonly logService = inject(Log);
   private readonly returnUrlService = inject(ReturnUrlService);
   private readonly firebase = inject(Firebase);
   private readonly destroyRef = inject(DestroyRef);

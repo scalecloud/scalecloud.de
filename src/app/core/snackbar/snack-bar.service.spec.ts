@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SnackBarService } from './snack-bar.service';
 import { SnackBarProgressComponent } from './progress/snack-bar-progress.component';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 
 describe('SnackBarService', () => {
   let service: SnackBarService;
@@ -20,7 +20,7 @@ describe('SnackBarService', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: MatSnackBar, useValue: matSnackBar },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: logService },
       ],
     });
 

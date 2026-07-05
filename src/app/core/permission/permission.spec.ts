@@ -5,7 +5,7 @@ import { of, throwError, Subject } from 'rxjs';
 
 import { Permission } from './permission';
 import { Auth } from '../auth/auth';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 import { Role } from './roles';
 import { PermissionReply } from 'src/app/features/subscription-detail/seats/seats';
 import { API_URL } from '../config/api-token';
@@ -32,7 +32,7 @@ describe('Permission', () => {
       providers: [
         { provide: HttpClient, useValue: httpClient },
         { provide: Auth, useValue: authMock },
-        { provide: LogService, useValue: logService },
+        { provide: Log, useValue: logService },
         { provide: API_URL, useValue: API_BASE },
       ],
     });

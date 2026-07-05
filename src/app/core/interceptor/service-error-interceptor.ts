@@ -2,11 +2,11 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { SnackBarService } from '../snackbar/snack-bar.service';
-import { LogService } from '../logging/log.service';
+import { Log } from '../logging/log';
 
 export const serviceErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const snackBarService = inject(SnackBarService);
-  const logService = inject(LogService);
+  const logService = inject(Log);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {

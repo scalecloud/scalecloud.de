@@ -1,11 +1,11 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LogService } from 'src/app/core/logging/log.service';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { SucceededComponent } from './succeeded/succeeded.component';
 import { ProcessingComponent } from './processing/processing.component';
 import { RequiresPaymentMethodComponent } from './requires-payment-method/requires-payment-method.component';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 declare const Stripe: any;
 
@@ -16,7 +16,7 @@ declare const Stripe: any;
     imports: [SucceededComponent, ProcessingComponent, RequiresPaymentMethodComponent]
 })
 export class StatusComponent implements OnInit {
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
   private readonly route = inject(ActivatedRoute);
   private readonly auth = inject(Auth);
   private readonly stripeKeyService = inject(StripeKeyService);
@@ -52,7 +52,7 @@ export class StatusComponent implements OnInit {
       // Your Stripe public key
       const publicKey = this.stripeKeyService.getPublicKey();
       if (publicKey == undefined) {
-        this.logService.error('Cannot display status because publicKey is undefined.');
+        this.log.error('Cannot display status because publicKey is undefined.');
       }
       else {
         // Initialize Stripe.js using your publishable key
@@ -64,13 +64,13 @@ export class StatusComponent implements OnInit {
 
         // Check if param is defined
         if (this.setup_intent_client_secret == undefined) {
-          this.logService.error('Cannot display status because setup_intent_client_secret is undefined.');
+          this.log.error('Cannot display status because setup_intent_client_secret is undefined.');
         }
         else if (this.setup_intent == undefined) {
-          this.logService.error('Cannot display status because setup_intent is undefined.');
+          this.log.error('Cannot display status because setup_intent is undefined.');
         }
         else if (this.redirect_status == undefined) {
-          this.logService.error('Cannot display status because redirect_status is undefined.');
+          this.log.error('Cannot display status because redirect_status is undefined.');
         }
         else {
           // Retrieve the SetupIntent
@@ -85,19 +85,19 @@ export class StatusComponent implements OnInit {
             this.loading.set(false);
             switch (setupIntent.status) {
               case 'succeeded': {
-                this.logService.info('Success! Your payment method has been saved.');
+                this.log.info('Success! Your payment method has been saved.');
                 this.succeeded.set(true);
                 break;
               }
 
               case 'processing': {
-                this.logService.warn("Processing payment details. We'll update you when processing is complete.");
+                this.log.warn("Processing payment details. We'll update you when processing is complete.");
                 this.processing.set(true);
                 break;
               }
 
               case 'requires_payment_method': {
-                this.logService.error('Failed to process payment details. Please try another payment method.');
+                this.log.error('Failed to process payment details. Please try another payment method.');
                 this.requires_payment_method.set(true);
 
                 // Redirect your user back to your payment page to attempt collecting
@@ -110,7 +110,7 @@ export class StatusComponent implements OnInit {
         }
       }
     }).catch((error) => {
-      this.logService.error('waitForAuth failed: ' + error);
+      this.log.error('waitForAuth failed: ' + error);
     });
   }
 }

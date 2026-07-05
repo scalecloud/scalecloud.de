@@ -1,18 +1,18 @@
 import { Injectable, inject } from '@angular/core';
-import { LogService } from 'src/app/core/logging/log.service';
 import { countries, Country } from './countries';
 import { Language } from './language';
+import { Log } from 'src/app/core/logging/log';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CountryService {
-  private readonly logService = inject(LogService);
+  private readonly log = inject(Log);
 
   getCountry(language: Language, code: string): string {
     const country = countries.find(c => c.code === code);
     if (!country) {
-      this.logService.warn(`Country with code "${code}" not found`);
+      this.log.warn(`Country with code "${code}" not found`);
       return code;
     }
     return language === Language.EN ? country.nameEN : country.nameDE;
@@ -24,7 +24,7 @@ export class CountryService {
       : countries.find(c => c.nameDE === name);
 
     if (!country) {
-      this.logService.error(`Country with name ${name} not found`);
+      this.log.error(`Country with name ${name} not found`);
       return undefined;
     }
     return country.code;

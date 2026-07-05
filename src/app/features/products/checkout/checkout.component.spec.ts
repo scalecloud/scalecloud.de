@@ -7,10 +7,10 @@ import { CheckoutComponent } from './checkout.component';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
 import { PaymentMethodOverviewComponent } from 'src/app/features/dashboard/payment-method-overview/payment-method-overview.component';
 import { CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
-import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CheckoutSubscriptionService } from './checkout-payment/checkout-subscription.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Log } from 'src/app/core/logging/log';
 
 // ─── Stubs for the child components CheckoutComponent renders ─────────────────
 // CheckoutDetailsComponent and PaymentOverviewComponent each pull in their own
@@ -39,7 +39,7 @@ describe('CheckoutComponent', () => {
       imports: [CheckoutComponent],
       providers: [
         provideRouter([]),
-        { provide: LogService, useValue: { error: vi.fn() } },
+        { provide: Log, useValue: { error: vi.fn() } },
         { provide: SnackBarService, useValue: { info: vi.fn(), error: vi.fn() } },
         { provide: Auth, useValue: { waitForAuth: vi.fn(() => Promise.resolve()) } },
         { provide: CheckoutSubscriptionService, useValue: { createCheckoutSubscription: vi.fn() } },
