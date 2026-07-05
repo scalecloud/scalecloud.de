@@ -4,7 +4,7 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { of, throwError, Subject } from 'rxjs';
 
 import { PermissionService } from './permission.service';
-import { AuthService } from '../auth/auth.service';
+import { Auth } from '../auth/auth';
 import { LogService } from '../logging/log.service';
 import { Role } from './roles';
 import { API_URL } from 'src/app/core/config/api.token';
@@ -18,7 +18,7 @@ describe('PermissionService', () => {
   const API_BASE = 'https://api.example.com';
 
   const httpClient = { post: vi.fn() };
-  const authService = { getHttpOptions: vi.fn(() => ({ headers: { Authorization: 'Bearer token' } })) };
+  const authMock = { getHttpOptions: vi.fn(() => ({ headers: { Authorization: 'Bearer token' } })) };
   const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
   function makeReply(roles: Role[]): PermissionReply {
@@ -31,7 +31,7 @@ describe('PermissionService', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: HttpClient, useValue: httpClient },
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: authMock },
         { provide: LogService, useValue: logService },
         { provide: API_URL, useValue: API_BASE },
       ],

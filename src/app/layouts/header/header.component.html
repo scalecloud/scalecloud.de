@@ -11,7 +11,7 @@
     @if(isLoading()) {
       <mat-spinner class="auth-loading" diameter="30"></mat-spinner>
     } @else {
-      @if (authService.user()) {
+      @if (auth.user()) {
         <div>
           <button mat-button routerLink="/dashboard">
             <mat-icon>dashboard</mat-icon>
@@ -21,7 +21,7 @@
             <mat-icon>person</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="authService.signOut()">
+            <button mat-menu-item (click)="auth.signOut()">
               <mat-icon>logout</mat-icon>
               Logout
             </button>

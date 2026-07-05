@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
@@ -13,6 +12,7 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { ResumeSubscriptionComponent } from './resume-subscription/resume-subscription.component';
 import { CancelSubscriptionComponent } from './cancel-subscription/cancel-subscription.component';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
     selector: 'app-cancel-state',
@@ -22,7 +22,7 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
     imports: [MatProgressBar, NgxSkeletonLoaderComponent, ResumeSubscriptionComponent, CancelSubscriptionComponent, LoadingFailedComponent]
 })
 export class CancelStateComponent implements OnInit {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly cancelStateService = inject(CancelStateService);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
@@ -73,7 +73,7 @@ export class CancelStateComponent implements OnInit {
     this.serviceStatus = ServiceStatus.Loading;
 
     try {
-      await this.authService.waitForAuth();
+      await this.auth.waitForAuth();
     } catch (error) {
       this.logService.error("waitForAuth failed: " + error);
       this.serviceStatus = ServiceStatus.Error;

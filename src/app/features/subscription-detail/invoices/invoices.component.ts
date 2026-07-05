@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@ang
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
@@ -18,6 +17,7 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatChip } from '@angular/material/chips';
 import { TitleCasePipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
     selector: 'app-invoices',
@@ -27,7 +27,7 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatChip, MatPaginator, LoadingFailedComponent, TitleCasePipe, CurrencyPipe, DatePipe]
 })
 export class InvoicesComponent implements OnInit {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly invoiceService = inject(InvoicesService);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
@@ -82,7 +82,7 @@ export class InvoicesComponent implements OnInit {
     }
 
     try {
-      await this.authService.waitForAuth();
+      await this.auth.waitForAuth();
 
       const request: ListInvoicesRequest = {
         subscriptionID,

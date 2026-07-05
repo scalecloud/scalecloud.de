@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { VerifyEmailComponent } from './verify-email.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { signal } from '@angular/core';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -21,7 +21,7 @@ describe('VerifyEmailComponent', () => {
 
   // Mocks
   const userSignal = signal<any>(makeUser());
-  const authService = {
+  const authMock = {
     user: userSignal,
     sendVerificationMail: vi.fn(),
     reloadUser: vi.fn(() => Promise.resolve()),
@@ -33,13 +33,13 @@ describe('VerifyEmailComponent', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
 
-    authService.reloadUser.mockResolvedValue(undefined);
-    authService.isLoggedIn.mockResolvedValue(true);
+    authMock.reloadUser.mockResolvedValue(undefined);
+    authMock.isLoggedIn.mockResolvedValue(true);
 
     await TestBed.configureTestingModule({
       imports: [VerifyEmailComponent],
       providers: [
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: authMock },
         { provide: ReturnUrlService, useValue: returnUrlService },
         { provide: SnackBarService, useValue: snackBarService },
       ],
@@ -113,10 +113,10 @@ describe('VerifyEmailComponent', () => {
 
   // ─── sendVerificationMail ────────────────────────────────────────────────────
 
-  it('should call authService.sendVerificationMail when resend is clicked', () => {
+  it('should call auth.sendVerificationMail when resend is clicked', () => {
     vi.advanceTimersByTime(30_000); // let the cooldown finish so the button is enabled
     component.sendVerificationMail();
-    expect(authService.sendVerificationMail).toHaveBeenCalled();
+    expect(authMock.sendVerificationMail).toHaveBeenCalled();
   });
 
   it('should restart the cooldown when resend is clicked', () => {
@@ -143,8 +143,8 @@ describe('VerifyEmailComponent', () => {
   it('should call reloadUser and isLoggedIn, then redirect on success', async () => {
     await component.proceedToCheckout();
 
-    expect(authService.reloadUser).toHaveBeenCalled();
-    expect(authService.isLoggedIn).toHaveBeenCalledWith(true);
+    expect(authMock.reloadUser).toHaveBeenCalled();
+    expect(authMock.isLoggedIn).toHaveBeenCalledWith(true);
     expect(returnUrlService.openReturnURL).toHaveBeenCalledWith('/');
     expect(snackBarService.error).not.toHaveBeenCalled();
   });
@@ -156,7 +156,7 @@ describe('VerifyEmailComponent', () => {
 
   it('should set isProceedToCheckoutLoading to true while the request is in flight', async () => {
     let resolveReload!: () => void;
-    authService.reloadUser.mockReturnValue(
+    authMock.reloadUser.mockReturnValue(
       new Promise<void>((resolve) => {
         resolveReload = resolve;
       }),
@@ -178,7 +178,7 @@ describe('VerifyEmailComponent', () => {
   // ─── proceedToCheckout – failure path ────────────────────────────────────────
 
   it('should show an error snackbar and not redirect when not logged in/verified', async () => {
-    authService.isLoggedIn.mockResolvedValue(false);
+    authMock.isLoggedIn.mockResolvedValue(false);
 
     await component.proceedToCheckout();
 
@@ -187,7 +187,7 @@ describe('VerifyEmailComponent', () => {
   });
 
   it('should reset isProceedToCheckoutLoading to false even when verification fails', async () => {
-    authService.isLoggedIn.mockResolvedValue(false);
+    authMock.isLoggedIn.mockResolvedValue(false);
 
     await component.proceedToCheckout();
 
@@ -195,7 +195,7 @@ describe('VerifyEmailComponent', () => {
   });
 
   it('should reset isProceedToCheckoutLoading to false if reloadUser throws', async () => {
-    authService.reloadUser.mockRejectedValueOnce(new Error('reload failed'));
+    authMock.reloadUser.mockRejectedValueOnce(new Error('reload failed'));
 
     await expect(component.proceedToCheckout()).rejects.toThrow('reload failed');
 

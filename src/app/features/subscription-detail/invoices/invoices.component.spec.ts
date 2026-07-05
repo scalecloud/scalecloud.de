@@ -7,17 +7,17 @@ import { InvoicesComponent } from './invoices.component';
 import { InvoicesService } from './invoices.service';
 import { InvoiceStatus, ListInvoicesReply } from './invoices';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('InvoicesComponent', () => {
   let component: InvoicesComponent;
   let fixture: ComponentFixture<InvoicesComponent>;
 
   let invoicesServiceMock: { getInvoices: ReturnType<typeof vi.fn> };
-  let authServiceMock: { waitForAuth: ReturnType<typeof vi.fn> };
+  let authMock: { waitForAuth: ReturnType<typeof vi.fn> };
   let logServiceMock: { error: ReturnType<typeof vi.fn> };
   let permissionServiceMock: { isBilling: ReturnType<typeof vi.fn> };
   let snackBarServiceMock: { error: ReturnType<typeof vi.fn>; infoDuration: ReturnType<typeof vi.fn> };
@@ -47,7 +47,7 @@ describe('InvoicesComponent', () => {
     vi.clearAllMocks();
 
     invoicesServiceMock = { getInvoices: vi.fn().mockReturnValue(of(buildReply())) };
-    authServiceMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
+    authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
     logServiceMock = { error: vi.fn() };
     permissionServiceMock = { isBilling: vi.fn().mockResolvedValue(true) };
     snackBarServiceMock = { error: vi.fn(), infoDuration: vi.fn() };
@@ -56,7 +56,7 @@ describe('InvoicesComponent', () => {
       imports: [InvoicesComponent],
       providers: [
         { provide: InvoicesService, useValue: invoicesServiceMock },
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: Auth, useValue: authMock },
         { provide: LogService, useValue: logServiceMock },
         { provide: PermissionService, useValue: permissionServiceMock },
         { provide: SnackBarService, useValue: snackBarServiceMock },
@@ -166,7 +166,7 @@ describe('InvoicesComponent', () => {
     });
 
     it('should set status to Error when waitForAuth rejects', async () => {
-      authServiceMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
+      authMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);

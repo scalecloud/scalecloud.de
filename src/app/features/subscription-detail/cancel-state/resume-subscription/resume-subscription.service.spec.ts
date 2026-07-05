@@ -3,9 +3,9 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { API_URL } from 'src/app/core/config/api.token';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { ResumeSubscriptionService } from './resume-subscription.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
+import { Auth } from 'src/app/core/auth/auth';
 
 const API_BASE = 'https://api.example.com';
 const RESUME_URL = `${API_BASE}/dashboard/resume-subscription`;
@@ -29,7 +29,7 @@ describe('ResumeSubscriptionService', () => {
         provideHttpClientTesting(),
         { provide: API_URL, useValue: API_BASE },
         {
-          provide: AuthService,
+          provide: Auth,
           useValue: { getHttpOptions: vi.fn().mockReturnValue(MOCK_HTTP_OPTIONS) },
         },
       ],
@@ -58,7 +58,7 @@ describe('ResumeSubscriptionService', () => {
       req.flush(MOCK_REPLY);
     });
 
-    it('forwards the Authorization header from AuthService', () => {
+    it('forwards the Authorization header from Auth', () => {
       service.resumeSubscription(MOCK_REQUEST).subscribe();
 
       const req = httpTesting.expectOne(RESUME_URL);

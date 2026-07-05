@@ -2,22 +2,22 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { BillingAddressService } from './billing-address.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 import { API_URL } from 'src/app/core/config/api.token';
 import { environment } from 'src/environments/environment';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('BillingAddressService', () => {
   let service: BillingAddressService;
   let httpTestingController: HttpTestingController;
-  const authServiceMock = { getHttpOptions: vi.fn().mockReturnValue({}) };
+  const authMock = { getHttpOptions: vi.fn().mockReturnValue({}) };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         { provide: API_URL, useValue: environment.apiUrl },
-        { provide: AuthService, useValue: authServiceMock }
+        { provide: Auth, useValue: authMock }
       ]
     });
     service = TestBed.inject(BillingAddressService);

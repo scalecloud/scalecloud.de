@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL } from 'src/app/core/config/api.token';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Service()
 export class ResumeSubscriptionService {
   private readonly http = inject(HttpClient);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly apiUrl = inject(API_URL);
 
   private readonly url = `${this.apiUrl}/dashboard/resume-subscription`;
@@ -17,7 +17,7 @@ export class ResumeSubscriptionService {
     return this.http.post<ISubscriptionResumeReply>(
       this.url,
       request,
-      this.authService.getHttpOptions(),
+      this.auth.getHttpOptions(),
     );
   }
 }

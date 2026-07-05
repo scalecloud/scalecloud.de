@@ -6,13 +6,13 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionDetailCardComponent } from './subscription-detail-card.component';
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
 import { CancelStateComponent } from '../cancel-state/cancel-state.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { API_URL } from 'src/app/core/config/api.token';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SubscriptionDetailReply } from './subscription-detail-card';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Factories ───────────────────────────────────────────────────────────────
 
@@ -43,7 +43,7 @@ function makeActivatedRoute(subscriptionID = 'sub_123') {
   };
 }
 
-function makeAuthService() {
+function makeAuth() {
   return {
     waitForAuth: vi.fn().mockResolvedValue(undefined),
     getHttpOptions: vi.fn().mockReturnValue({}),
@@ -81,7 +81,7 @@ describe('SubscriptionDetailCardComponent', () => {
   let component: SubscriptionDetailCardComponent;
   let fixture: ComponentFixture<SubscriptionDetailCardComponent>;
 
-  let authService: ReturnType<typeof makeAuthService>;
+  let auth: ReturnType<typeof makeAuth>;
   let permissionService: ReturnType<typeof makePermissionService>;
   let subscriptionService: ReturnType<typeof makeSubscriptionService>;
   let logService: ReturnType<typeof makeLogService>;
@@ -100,8 +100,8 @@ describe('SubscriptionDetailCardComponent', () => {
       waitForAuthResult = Promise.resolve(),
     } = options;
 
-    authService = makeAuthService();
-    authService.waitForAuth.mockReturnValue(waitForAuthResult);
+    auth = makeAuth();
+    auth.waitForAuth.mockReturnValue(waitForAuthResult);
     permissionService = makePermissionService(hasPermission);
     subscriptionService = makeSubscriptionService(reply);
     logService = makeLogService();
@@ -114,7 +114,7 @@ describe('SubscriptionDetailCardComponent', () => {
         // does not blow up the injector.
         { provide: API_URL, useValue: 'https://api.test' },
         { provide: ActivatedRoute, useValue: makeActivatedRoute(subscriptionID) },
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: auth },
         { provide: PermissionService, useValue: permissionService },
         { provide: SubscriptionDetailCardService, useValue: subscriptionService },
         { provide: LogService, useValue: logService },
@@ -297,7 +297,7 @@ describe('SubscriptionDetailCardComponent', () => {
     beforeEach(async () => {
       // Prevent load from resolving so reply stays undefined
       await setup();
-      authService.waitForAuth.mockReturnValue(new Promise(() => {}));
+      auth.waitForAuth.mockReturnValue(new Promise(() => {}));
       fixture.detectChanges();
     });
 

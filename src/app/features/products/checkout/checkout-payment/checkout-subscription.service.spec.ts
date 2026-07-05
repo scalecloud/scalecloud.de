@@ -5,8 +5,8 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
 import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('CheckoutSubscriptionService', () => {
   let service: CheckoutSubscriptionService;
@@ -23,7 +23,7 @@ describe('CheckoutSubscriptionService', () => {
         provideHttpClientTesting(),
         { provide: API_URL, useValue: fakeApiUrl },
         {
-          provide: AuthService,
+          provide: Auth,
           useValue: {
             getHttpOptions: vi.fn().mockReturnValue(fakeHttpOptions)
           }
@@ -81,7 +81,7 @@ describe('CheckoutSubscriptionService', () => {
     });
   });
 
-  it('should attach auth headers from AuthService.getHttpOptions', () => {
+  it('should attach auth headers from Auth.getHttpOptions', () => {
     const request: CheckoutCreateSubscriptionRequest = {
       productID: 'prod_123',
       quantity: 1

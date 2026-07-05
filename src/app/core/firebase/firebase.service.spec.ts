@@ -22,7 +22,7 @@ import { environment } from 'src/environments/environment';
 // lost track of.
 //
 // FirebaseService is the SDK boundary, so its own spec can't sidestep the
-// problem by substituting FirebaseService (that's what AuthService's spec
+// problem by substituting FirebaseService (that's what Auth's spec
 // does). Instead, FirebaseService now exposes the four SDK factory calls as
 // injection tokens, and this spec overrides those tokens - a plain runtime
 // object swap via Angular DI, unaffected by module-resolution quirks.

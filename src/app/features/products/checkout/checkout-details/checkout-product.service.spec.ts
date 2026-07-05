@@ -5,15 +5,15 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { CheckoutProductService } from './checkout-product.service';
 import { CheckoutProductReply, CheckoutProductRequest } from './checkout-product';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('CheckoutProductService', () => {
   let service: CheckoutProductService;
   let httpMock: HttpTestingController;
 
   const API_BASE = 'https://api.example.test';
-  const authService = {
+  const auth = {
     getHttpOptions: vi.fn(() => ({ headers: { Authorization: 'Bearer test-token' } })),
   };
 
@@ -24,7 +24,7 @@ describe('CheckoutProductService', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: auth },
         { provide: API_URL, useValue: API_BASE },
       ],
     });
@@ -66,13 +66,13 @@ describe('CheckoutProductService', () => {
     expect(actualReply).toEqual(reply);
   });
 
-  it('should attach the auth headers returned by AuthService.getHttpOptions', () => {
+  it('should attach the auth headers returned by Auth.getHttpOptions', () => {
     const request: CheckoutProductRequest = { productID: 'prod_123' };
 
     service.getCheckoutProduct(request).subscribe();
 
     const req = httpMock.expectOne(`${API_BASE}/checkout-integration/get-checkout-product`);
-    expect(authService.getHttpOptions).toHaveBeenCalled();
+    expect(auth.getHttpOptions).toHaveBeenCalled();
     expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
 
     req.flush({});

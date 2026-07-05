@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { AddSeatRequest, AddSeatReply } from '../seats';
 import { API_URL } from 'src/app/core/config/api.token';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AddSeatService {
   private readonly http = inject(HttpClient);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly apiUrl = inject(API_URL);
 
   private readonly url = `${this.apiUrl}/dashboard/subscription/add-seat`;
@@ -19,7 +19,7 @@ export class AddSeatService {
     return this.http.post<AddSeatReply>(
       this.url,
       request,
-      this.authService.getHttpOptions(),
+      this.auth.getHttpOptions(),
     );
   }
 }

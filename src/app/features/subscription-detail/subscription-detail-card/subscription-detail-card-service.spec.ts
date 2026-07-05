@@ -4,9 +4,9 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
 import { SubscriptionDetailReply } from './subscription-detail-card';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -43,17 +43,17 @@ function makeAuthOptions(token = 'Bearer test-token') {
 describe('SubscriptionDetailCardService', () => {
   let service: SubscriptionDetailCardService;
   let http: HttpTestingController;
-  let authService: { getHttpOptions: ReturnType<typeof vi.fn> };
+  let auth: { getHttpOptions: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    authService = { getHttpOptions: vi.fn().mockReturnValue(makeAuthOptions()) };
+    auth = { getHttpOptions: vi.fn().mockReturnValue(makeAuthOptions()) };
 
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: TEST_API_URL },
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: auth },
       ],
     });
 
@@ -103,11 +103,11 @@ describe('SubscriptionDetailCardService', () => {
     service.getSubscriptionDetail('sub_2').subscribe();
     http.expectOne(`${BASE_URL}/sub_2`).flush(makeReply());
 
-    expect(authService.getHttpOptions).toHaveBeenCalledTimes(2);
+    expect(auth.getHttpOptions).toHaveBeenCalledTimes(2);
   });
 
-  it('forwards the Authorization header returned by AuthService', () => {
-    authService.getHttpOptions.mockReturnValue(makeAuthOptions('Bearer my-token'));
+  it('forwards the Authorization header returned by Auth', () => {
+    auth.getHttpOptions.mockReturnValue(makeAuthOptions('Bearer my-token'));
 
     service.getSubscriptionDetail('sub_123').subscribe();
 
@@ -116,8 +116,8 @@ describe('SubscriptionDetailCardService', () => {
     req.flush(makeReply());
   });
 
-  it('forwards a refreshed token when AuthService returns a new one', () => {
-    authService.getHttpOptions
+  it('forwards a refreshed token when Auth returns a new one', () => {
+    auth.getHttpOptions
       .mockReturnValueOnce(makeAuthOptions('Bearer token-v1'))
       .mockReturnValueOnce(makeAuthOptions('Bearer token-v2'));
 

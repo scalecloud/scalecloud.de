@@ -5,8 +5,8 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { InvoicesService } from './invoices.service';
 import { InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from './invoices';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('InvoicesService', () => {
   let service: InvoicesService;
@@ -22,7 +22,7 @@ describe('InvoicesService', () => {
         provideHttpClientTesting(),
         { provide: API_URL, useValue: fakeApiUrl },
         {
-          provide: AuthService,
+          provide: Auth,
           useValue: {
             getHttpOptions: vi.fn().mockReturnValue(fakeHttpOptions)
           }
@@ -70,7 +70,7 @@ describe('InvoicesService', () => {
     req.flush({ subscriptionID: 'sub_123', invoices: [], totalResults: 0 });
   });
 
-  it('should attach auth headers from AuthService.getHttpOptions', () => {
+  it('should attach auth headers from Auth.getHttpOptions', () => {
     const request: ListInvoicesRequest = { subscriptionID: 'sub_123', pageSize: 5 };
 
     service.getInvoices(request).subscribe();

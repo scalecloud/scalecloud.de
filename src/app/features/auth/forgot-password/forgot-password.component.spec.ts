@@ -3,24 +3,24 @@ import { provideRouter } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { ForgotPasswordComponent } from './forgot-password.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('ForgotPasswordComponent', () => {
   let component: ForgotPasswordComponent;
   let fixture: ComponentFixture<ForgotPasswordComponent>;
-  let authService: { forgotPassword: ReturnType<typeof vi.fn> };
+  let authMock: { forgotPassword: ReturnType<typeof vi.fn> };
   let snackBarService: { error: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
-    authService = { forgotPassword: vi.fn().mockResolvedValue(false) };
+    authMock = { forgotPassword: vi.fn().mockResolvedValue(false) };
     snackBarService = { error: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [ForgotPasswordComponent],
       providers: [
         provideRouter([]),
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: authMock },
         { provide: SnackBarService, useValue: snackBarService },
       ],
     }).compileComponents();
@@ -79,13 +79,13 @@ describe('ForgotPasswordComponent', () => {
 
   // ─── forgotPassword – invalid email path ──────────────────────────────────────
 
-  it('should show a snackbar error and not call AuthService when the email is invalid', async () => {
+  it('should show a snackbar error and not call Auth when the email is invalid', async () => {
     component.email.setValue('not-an-email');
 
     await component.forgotPassword();
 
     expect(snackBarService.error).toHaveBeenCalledWith('Please enter a valid E-Mail address');
-    expect(authService.forgotPassword).not.toHaveBeenCalled();
+    expect(authMock.forgotPassword).not.toHaveBeenCalled();
   });
 
   it('should mark the email as touched when submitting with an invalid email', async () => {
@@ -106,12 +106,12 @@ describe('ForgotPasswordComponent', () => {
 
   // ─── forgotPassword – valid email path ────────────────────────────────────────
 
-  it('should call AuthService.forgotPassword with the email value', async () => {
+  it('should call Auth.forgotPassword with the email value', async () => {
     component.email.setValue('user@example.com');
 
     await component.forgotPassword();
 
-    expect(authService.forgotPassword).toHaveBeenCalledWith('user@example.com');
+    expect(authMock.forgotPassword).toHaveBeenCalledWith('user@example.com');
   });
 
   it('should not show a snackbar error when the email is valid', async () => {
@@ -122,8 +122,8 @@ describe('ForgotPasswordComponent', () => {
     expect(snackBarService.error).not.toHaveBeenCalled();
   });
 
-  it('should not start the countdown when AuthService resolves false', async () => {
-    authService.forgotPassword.mockResolvedValue(false);
+  it('should not start the countdown when Auth resolves false', async () => {
+    authMock.forgotPassword.mockResolvedValue(false);
     component.email.setValue('user@example.com');
 
     await component.forgotPassword();
@@ -143,7 +143,7 @@ describe('ForgotPasswordComponent', () => {
     });
 
     it('should disable the button and show the full countdown immediately after a successful request', async () => {
-      authService.forgotPassword.mockResolvedValue(true);
+      authMock.forgotPassword.mockResolvedValue(true);
       component.email.setValue('user@example.com');
 
       await component.forgotPassword();
@@ -153,7 +153,7 @@ describe('ForgotPasswordComponent', () => {
     });
 
     it('should count down by one each second', async () => {
-      authService.forgotPassword.mockResolvedValue(true);
+      authMock.forgotPassword.mockResolvedValue(true);
       component.email.setValue('user@example.com');
 
       await component.forgotPassword();
@@ -166,7 +166,7 @@ describe('ForgotPasswordComponent', () => {
     });
 
     it('should re-enable the button and reset the text once the countdown completes', async () => {
-      authService.forgotPassword.mockResolvedValue(true);
+      authMock.forgotPassword.mockResolvedValue(true);
       component.email.setValue('user@example.com');
 
       await component.forgotPassword();
@@ -177,7 +177,7 @@ describe('ForgotPasswordComponent', () => {
     });
 
     it('should not go below zero if more time passes after completion', async () => {
-      authService.forgotPassword.mockResolvedValue(true);
+      authMock.forgotPassword.mockResolvedValue(true);
       component.email.setValue('user@example.com');
 
       await component.forgotPassword();
@@ -188,7 +188,7 @@ describe('ForgotPasswordComponent', () => {
     });
 
     it('should allow a fresh request and a fresh countdown after the previous one completes', async () => {
-      authService.forgotPassword.mockResolvedValue(true);
+      authMock.forgotPassword.mockResolvedValue(true);
       component.email.setValue('user@example.com');
 
       await component.forgotPassword();
@@ -204,7 +204,7 @@ describe('ForgotPasswordComponent', () => {
   // ─── DOM ─────────────────────────────────────────────────────────────────────
 
   it('should disable the submit button in the DOM while the countdown is active', async () => {
-    authService.forgotPassword.mockResolvedValue(true);
+    authMock.forgotPassword.mockResolvedValue(true);
     component.email.setValue('user@example.com');
 
     await component.forgotPassword();

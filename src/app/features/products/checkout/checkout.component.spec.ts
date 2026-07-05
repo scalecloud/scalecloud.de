@@ -9,12 +9,12 @@ import { PaymentMethodOverviewComponent } from 'src/app/features/dashboard/payme
 import { CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { CheckoutSubscriptionService } from './checkout-payment/checkout-subscription.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Stubs for the child components CheckoutComponent renders ─────────────────
 // CheckoutDetailsComponent and PaymentOverviewComponent each pull in their own
-// large dependency trees (HttpClient, ActivatedRoute -> AuthService ->
+// large dependency trees (HttpClient, ActivatedRoute -> Auth ->
 // ReturnUrlService, etc.) that have nothing to do with what CheckoutComponent
 // itself is responsible for. Stubbing them out keeps this a unit test of
 // CheckoutComponent rather than a full integration test of the whole checkout
@@ -41,7 +41,7 @@ describe('CheckoutComponent', () => {
         provideRouter([]),
         { provide: LogService, useValue: { error: vi.fn() } },
         { provide: SnackBarService, useValue: { info: vi.fn(), error: vi.fn() } },
-        { provide: AuthService, useValue: { waitForAuth: vi.fn(() => Promise.resolve()) } },
+        { provide: Auth, useValue: { waitForAuth: vi.fn(() => Promise.resolve()) } },
         { provide: CheckoutSubscriptionService, useValue: { createCheckoutSubscription: vi.fn() } },
       ],
     })

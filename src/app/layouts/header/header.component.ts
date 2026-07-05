@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { AuthService } from 'src/app/core/auth/auth.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
     selector: 'app-header',
@@ -15,14 +15,14 @@ import { AuthService } from 'src/app/core/auth/auth.service';
     imports: [MatToolbar, MatToolbarRow, MatIconButton, MatIcon, MatButton, RouterLink, MatProgressSpinner, MatMenuTrigger, MatMenu, MatMenuItem]
 })
 export class HeaderComponent {
-  authService = inject(AuthService);
+  auth = inject(Auth);
 
   readonly toggleSideBarForMe = output<void>();
 
-  // authService.user() is `undefined` until the first auth-state event has
+  // auth.user() is `undefined` until the first auth-state event has
   // fired, then becomes `User | null`. So "still loading" is just "we
   // haven't heard from Firebase yet" - no subscription needed.
-  readonly isLoading = computed(() => this.authService.user() === undefined);
+  readonly isLoading = computed(() => this.auth.user() === undefined);
 
   toggleSideBar() {
     this.toggleSideBarForMe.emit(undefined);

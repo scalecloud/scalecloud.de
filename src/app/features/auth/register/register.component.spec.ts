@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { RegisterComponent } from './register.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 // A password that satisfies every PasswordStrengthComponent check.
 const STRONG_PASSWORD = 'Abcdefg1!';
@@ -11,17 +11,17 @@ const STRONG_PASSWORD = 'Abcdefg1!';
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
-  let authService: { register: ReturnType<typeof vi.fn> };
+  let authMock: { register: ReturnType<typeof vi.fn> };
   let returnUrlService: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
-    authService = { register: vi.fn() };
+    authMock = { register: vi.fn() };
     returnUrlService = { openUrlKeepReturnUrl: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [RegisterComponent],
       providers: [
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: authMock },
         { provide: ReturnUrlService, useValue: returnUrlService },
       ],
     }).compileComponents();
@@ -166,21 +166,21 @@ describe('RegisterComponent', () => {
 
   // ─── onSubmit – success path ──────────────────────────────────────────────────
 
-  it('should call AuthService.register with email and password on a fully valid submit', async () => {
+  it('should call Auth.register with email and password on a fully valid submit', async () => {
     fillValidForm();
     await fixture.whenStable();
 
     component.onSubmit();
 
-    expect(authService.register).toHaveBeenCalledWith('user@example.com', STRONG_PASSWORD);
+    expect(authMock.register).toHaveBeenCalledWith('user@example.com', STRONG_PASSWORD);
   });
 
-  it('should not call AuthService.register when the form is invalid', () => {
+  it('should not call Auth.register when the form is invalid', () => {
     component.onSubmit();
-    expect(authService.register).not.toHaveBeenCalled();
+    expect(authMock.register).not.toHaveBeenCalled();
   });
 
-  it('should not call AuthService.register when the password is not strong enough', async () => {
+  it('should not call Auth.register when the password is not strong enough', async () => {
     component.form.controls.email.setValue('user@example.com');
     component.form.controls.password.setValue('weakweak');
     component.form.controls.confirmPassword.setValue('weakweak');
@@ -189,10 +189,10 @@ describe('RegisterComponent', () => {
 
     component.onSubmit();
 
-    expect(authService.register).not.toHaveBeenCalled();
+    expect(authMock.register).not.toHaveBeenCalled();
   });
 
-  it('should not call AuthService.register when passwords do not match', async () => {
+  it('should not call Auth.register when passwords do not match', async () => {
     component.form.controls.email.setValue('user@example.com');
     component.form.controls.password.setValue(STRONG_PASSWORD);
     component.form.controls.confirmPassword.setValue('Different1!');
@@ -201,7 +201,7 @@ describe('RegisterComponent', () => {
 
     component.onSubmit();
 
-    expect(authService.register).not.toHaveBeenCalled();
+    expect(authMock.register).not.toHaveBeenCalled();
   });
 
   it('should mark the form as submitted on submit attempt', () => {

@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, inject, OnInit, viewChild, signal, WritableSignal } from '@angular/core';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { ChangePaymentReply } from './change-payment';
 import { ChangePaymentService } from './change-payment.service';
@@ -11,6 +10,7 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { afterNextRender } from '@angular/core';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
     selector: 'app-change-payment',
@@ -20,7 +20,7 @@ import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
     imports: [StripePaymentElementComponent_1, MatButton, MatIcon]
 })
 export class ChangePaymentComponent implements OnInit {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly logService = inject(LogService);
   private readonly changePaymentService = inject(ChangePaymentService);
   private readonly returnUrlService = inject(ReturnUrlService);
@@ -48,7 +48,7 @@ export class ChangePaymentComponent implements OnInit {
   // Returns the underlying promise so callers (and tests) can await
   // completion of the whole async flow, including the error branch.
   getChangePaymentSetupIntent(): Promise<void> {
-    return this.authService.waitForAuth().then(() => {
+    return this.auth.waitForAuth().then(() => {
       this.changePaymentService.getChangePaymentSetupIntent().subscribe(
         (subscriptionSetupIntentReply: ChangePaymentReply) => {
           this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;

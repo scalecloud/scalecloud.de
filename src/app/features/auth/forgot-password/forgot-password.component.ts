@@ -2,13 +2,13 @@ import { Component, ChangeDetectionStrategy, inject, signal, computed, DestroyRe
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { interval, take } from 'rxjs';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { Auth } from 'src/app/core/auth/auth';
 
 const DEFAULT_DISABLED_SECONDS = 60;
 
@@ -20,7 +20,7 @@ const DEFAULT_DISABLED_SECONDS = 60;
     imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, MatButton, RouterLink]
 })
 export class ForgotPasswordComponent {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly snackBarService = inject(SnackBarService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -45,7 +45,7 @@ export class ForgotPasswordComponent {
       return;
     }
 
-    if (await this.authService.forgotPassword(this.email.value)) {
+    if (await this.auth.forgotPassword(this.email.value)) {
       this.startCountdown();
     }
   }

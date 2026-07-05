@@ -5,13 +5,13 @@ import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { CancelStateComponent } from './cancel-state.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { CancelStateService } from './cancel-state.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { CancelStateReply } from './cancel-state';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
@@ -35,7 +35,7 @@ const mockActivatedRoute = {
   snapshot: { paramMap: { get: vi.fn().mockReturnValue(SUBSCRIPTION_ID) } },
 };
 
-const mockAuthService       = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
+const mockAuth       = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
 const mockLogService        = { error: vi.fn(), info: vi.fn() };
 const mockSnackBarService   = { error: vi.fn() };
 const mockPermissionService = { isBilling: vi.fn().mockResolvedValue(true) };
@@ -62,7 +62,7 @@ describe('CancelStateComponent', () => {
       imports: [CancelStateComponent],
       providers: [
         { provide: ActivatedRoute,     useValue: mockActivatedRoute },
-        { provide: AuthService,        useValue: mockAuthService },
+        { provide: Auth,        useValue: mockAuth },
         { provide: CancelStateService, useValue: mockCancelStateService },
         { provide: LogService,         useValue: mockLogService },
         { provide: SnackBarService,    useValue: mockSnackBarService },
@@ -165,7 +165,7 @@ describe('CancelStateComponent', () => {
     });
 
     it('logs and sets Error status when waitForAuth rejects', async () => {
-      mockAuthService.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
+      mockAuth.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
       await component.getCancelState();
       expect(mockLogService.error).toHaveBeenCalledWith(
         expect.stringContaining('waitForAuth failed')
@@ -176,7 +176,7 @@ describe('CancelStateComponent', () => {
     it('logs and does not call the service when subscriptionID is missing', async () => {
       mockActivatedRoute.snapshot.paramMap.get.mockReturnValueOnce(null);
       vi.clearAllMocks();
-      mockAuthService.waitForAuth.mockResolvedValueOnce(void 0);
+      mockAuth.waitForAuth.mockResolvedValueOnce(void 0);
       await component.getCancelState();
       expect(mockCancelStateService.getCancelState).not.toHaveBeenCalled();
     });

@@ -4,16 +4,16 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { CancelSubscriptionService } from './cancel-subscription.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
 import { API_URL } from 'src/app/core/config/api.token';
 import { environment } from 'src/environments/environment';
+import { Auth } from 'src/app/core/auth/auth';
 
 const EXPECTED_URL = `${environment.apiUrl}/dashboard/cancel-subscription`;
 
 const MOCK_HTTP_OPTIONS = { headers: { Authorization: 'Bearer test-token' } };
 
-const mockAuthService = {
+const mockAuth = {
   getHttpOptions: vi.fn().mockReturnValue(MOCK_HTTP_OPTIONS),
 };
 
@@ -39,7 +39,7 @@ describe('CancelSubscriptionService', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: environment.apiUrl },
-        { provide: AuthService, useValue: mockAuthService },
+        { provide: Auth, useValue: mockAuth },
       ],
     });
 
@@ -72,10 +72,10 @@ describe('CancelSubscriptionService', () => {
       req.flush(MOCK_REPLY);
     });
 
-    it('passes the auth HTTP options from AuthService', () => {
+    it('passes the auth HTTP options from Auth', () => {
       service.cancelSubscription(MOCK_REQUEST).subscribe();
       const req = httpTesting.expectOne(EXPECTED_URL);
-      expect(mockAuthService.getHttpOptions).toHaveBeenCalled();
+      expect(mockAuth.getHttpOptions).toHaveBeenCalled();
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(MOCK_REPLY);
     });

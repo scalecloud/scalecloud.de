@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AddSeatRequest } from '../seats';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { AddSeatService } from './add-seat.service';
@@ -23,6 +22,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
   selector: 'app-add-seat',
@@ -40,7 +40,7 @@ import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
   ],
 })
 export class AddSeatComponent {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly addSeatService = inject(AddSeatService);
@@ -94,7 +94,7 @@ export class AddSeatComponent {
     };
 
     try {
-      await this.authService.waitForAuth();
+      await this.auth.waitForAuth();
     } catch (error) {
       this.isSubmitting.set(false);
       this.logService.error('waitForAuth failed: ' + error);

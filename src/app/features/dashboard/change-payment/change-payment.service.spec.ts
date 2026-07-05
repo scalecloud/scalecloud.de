@@ -7,10 +7,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { vi, describe, beforeEach, afterEach, expect, it } from 'vitest';
 
 import { ChangePaymentService } from './change-payment.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { ChangePaymentReply } from './change-payment';
 import { API_URL } from 'src/app/core/config/api.token';
 import { environment } from 'src/environments/environment';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe(ChangePaymentService.name, () => {
   let service: ChangePaymentService;
@@ -33,7 +33,7 @@ describe(ChangePaymentService.name, () => {
           useValue: environment.apiUrl,
         },
         {
-          provide: AuthService,
+          provide: Auth,
           useValue: {
             getHttpOptions: vi.fn().mockReturnValue(httpOptions),
           },

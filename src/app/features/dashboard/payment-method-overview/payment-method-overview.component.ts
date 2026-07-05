@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
@@ -13,6 +12,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
   selector: 'app-payment-method-overview',
@@ -36,7 +36,7 @@ import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 })
 export class PaymentMethodOverviewComponent implements OnInit {
   private readonly paymentMethodService = inject(PaymentMethodOverviewService);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly logService = inject(LogService);
   private readonly returnUrlService = inject(ReturnUrlService);
 
@@ -86,7 +86,7 @@ export class PaymentMethodOverviewComponent implements OnInit {
   private loadPaymentMethodOverview(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
 
-    this.authService
+    this.auth
       .waitForAuth()
       .then(() => {
         this.paymentMethodService.getPaymentMethodOverview().subscribe({

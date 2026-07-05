@@ -6,7 +6,6 @@ import {
   signal,
   computed,
 } from '@angular/core';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { ListSeatReply, ListSeatRequest, Seat } from './seats';
@@ -31,6 +30,7 @@ import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
   selector: 'app-seats',
@@ -56,7 +56,7 @@ import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
   ],
 })
 export class SeatsComponent implements OnInit {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly seatService = inject(SeatsService);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
@@ -113,7 +113,7 @@ export class SeatsComponent implements OnInit {
   loadSeats(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
 
-    this.authService.waitForAuth().then(() => {
+    this.auth.waitForAuth().then(() => {
       const subscriptionID = this.getSubscriptionID();
       if (!subscriptionID) {
         this.logService.error('SeatsComponent.loadSeats: subscriptionID is null');

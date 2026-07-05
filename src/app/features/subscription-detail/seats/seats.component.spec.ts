@@ -4,7 +4,6 @@ import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { SeatsComponent } from './seats.component';
 import { SeatsService } from './seats.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
@@ -12,6 +11,7 @@ import { ServiceStatus } from 'src/app/shared/service-status';
 import { ListSeatReply } from './seats';
 import { of, throwError } from 'rxjs';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -34,7 +34,7 @@ function makeReply(overrides: Partial<ListSeatReply> = {}): ListSeatReply {
 function buildMocks() {
   return {
     seatsService: { getListSeats: vi.fn() },
-    authService: { waitForAuth: vi.fn().mockResolvedValue(undefined) },
+    auth: { waitForAuth: vi.fn().mockResolvedValue(undefined) },
     logService: { error: vi.fn() },
     snackBarService: { error: vi.fn(), info: vi.fn() },
     returnUrlService: { openUrlAddReturnUrl: vi.fn() },
@@ -58,7 +58,7 @@ describe('SeatsComponent', () => {
       imports: [SeatsComponent],
       providers: [
         { provide: SeatsService, useValue: mocks.seatsService },
-        { provide: AuthService, useValue: mocks.authService },
+        { provide: Auth, useValue: mocks.auth },
         { provide: LogService, useValue: mocks.logService },
         { provide: SnackBarService, useValue: mocks.snackBarService },
         { provide: ReturnUrlService, useValue: mocks.returnUrlService },

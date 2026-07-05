@@ -4,13 +4,13 @@ import { of } from 'rxjs';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { ChangePaymentComponent } from './change-payment.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { ChangePaymentService } from './change-payment.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { StripePaymentElementComponent } from 'src/app/shared/stripe-payment-element/stripe-payment-element.component';
 import { StripeIntent } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ── Stub ──────────────────────────────────────────────────────────────────────
 
@@ -27,7 +27,7 @@ class StripePaymentElementStub {
 
 // ── Mock factories ────────────────────────────────────────────────────────────
 
-const makeAuthService = () => ({
+const makeAuth = () => ({
   waitForAuth: vi.fn().mockResolvedValue(void 0),
 });
 
@@ -54,7 +54,7 @@ describe('ChangePaymentComponent', () => {
   let component: ChangePaymentComponent;
   let stripeStub: StripePaymentElementStub;
 
-  let authService: ReturnType<typeof makeAuthService>;
+  let authMock: ReturnType<typeof makeAuth>;
   let changePaymentService: ReturnType<typeof makeChangePaymentService>;
   let logService: ReturnType<typeof makeLogService>;
   let returnUrlService: ReturnType<typeof makeReturnUrlService>;
@@ -63,7 +63,7 @@ describe('ChangePaymentComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ChangePaymentComponent],
       providers: [
-        { provide: AuthService,          useValue: makeAuthService() },
+        { provide: Auth,          useValue: makeAuth() },
         { provide: ChangePaymentService, useValue: makeChangePaymentService() },
         { provide: LogService,           useValue: makeLogService() },
         { provide: ReturnUrlService,     useValue: makeReturnUrlService() },
@@ -75,7 +75,7 @@ describe('ChangePaymentComponent', () => {
       })
       .compileComponents();
 
-    authService          = TestBed.inject(AuthService)          as unknown as ReturnType<typeof makeAuthService>;
+    authMock          = TestBed.inject(Auth)          as unknown as ReturnType<typeof makeAuth>;
     changePaymentService = TestBed.inject(ChangePaymentService) as unknown as ReturnType<typeof makeChangePaymentService>;
     logService           = TestBed.inject(LogService)           as unknown as ReturnType<typeof makeLogService>;
     returnUrlService     = TestBed.inject(ReturnUrlService)     as unknown as ReturnType<typeof makeReturnUrlService>;
@@ -111,7 +111,7 @@ describe('ChangePaymentComponent', () => {
 
   it('waits for auth before fetching the setup intent', () => {
     // Called once in ngOnInit (step 1) and once in beforeEach step 3.
-    expect(authService.waitForAuth).toHaveBeenCalled();
+    expect(authMock.waitForAuth).toHaveBeenCalled();
     expect(changePaymentService.getChangePaymentSetupIntent).toHaveBeenCalled();
   });
 
@@ -155,7 +155,7 @@ describe('ChangePaymentComponent', () => {
   });
 
   it('logs an error when waitForAuth rejects', async () => {
-    authService.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
+    authMock.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
 
     await component.getChangePaymentSetupIntent();
 
@@ -165,7 +165,7 @@ describe('ChangePaymentComponent', () => {
   });
 
   it('does not fetch the setup intent when waitForAuth rejects', async () => {
-    authService.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
+    authMock.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
     changePaymentService.getChangePaymentSetupIntent.mockClear();
 
     await component.getChangePaymentSetupIntent();

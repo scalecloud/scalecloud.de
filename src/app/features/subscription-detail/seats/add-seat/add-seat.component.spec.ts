@@ -5,12 +5,12 @@ import { of, Subject, throwError } from 'rxjs';
 
 import { AddSeatComponent } from './add-seat.component';
 import { AddSeatService } from './add-seat.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Role } from 'src/app/core/permission/roles';
 import { AddSeatReply } from '../seats';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -32,7 +32,7 @@ describe('AddSeatComponent', () => {
 
   // Mocks
   const addSeatService = { addSeat: vi.fn() };
-  const authService = { waitForAuth: vi.fn(() => Promise.resolve()) };
+  const auth = { waitForAuth: vi.fn(() => Promise.resolve()) };
   const logService = { warn: vi.fn(), error: vi.fn() };
   const snackBarService = { info: vi.fn(), error: vi.fn() };
   const returnUrlService = { openReturnURL: vi.fn() };
@@ -49,7 +49,7 @@ describe('AddSeatComponent', () => {
       providers: [
         provideRouter([]),
         { provide: AddSeatService, useValue: addSeatService },
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: auth },
         { provide: LogService, useValue: logService },
         { provide: SnackBarService, useValue: snackBarService },
         { provide: ReturnUrlService, useValue: returnUrlService },
@@ -353,7 +353,7 @@ describe('AddSeatComponent', () => {
   });
 
   it('should log error and reset isSubmitting when waitForAuth rejects', async () => {
-    authService.waitForAuth.mockRejectedValueOnce(new Error('Auth failed'));
+    auth.waitForAuth.mockRejectedValueOnce(new Error('Auth failed'));
     component.email.setValue('user@example.com');
 
     await component.addSeat();

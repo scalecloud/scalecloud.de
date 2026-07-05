@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, inject, viewChild, signal, computed
 import { AbstractControl, FormBuilder, FormGroup, FormControl, ValidatorFn, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { PasswordMatchComponent } from './password-match/password-match.component';
 import { PasswordStrengthComponent } from './password-strength/password-strength.component';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
@@ -10,6 +9,7 @@ import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 interface RegisterForm {
   email: FormControl<string>;
@@ -27,7 +27,7 @@ interface RegisterForm {
 })
 export class RegisterComponent {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly returnUrlService = inject(ReturnUrlService);
 
   readonly passwordStrength = viewChild(PasswordStrengthComponent);
@@ -89,7 +89,7 @@ export class RegisterComponent {
       return;
     }
 
-    this.authService.register(this.form.controls.email.value, this.form.controls.password.value);
+    this.auth.register(this.form.controls.email.value, this.form.controls.password.value);
   }
 
   onReset(): void {

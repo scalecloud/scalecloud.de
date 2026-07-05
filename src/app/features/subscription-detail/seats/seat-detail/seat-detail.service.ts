@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { SeatDetailRequest, SeatDetailReply, UpdateSeatDetailRequest, UpdateSeatDetailReply, DeleteSeatRequest, DeleteSeatReply } from '../seats';
 import { API_URL } from 'src/app/core/config/api.token';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeatDetailService {
   private readonly http = inject(HttpClient);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
 
   private readonly apiUrl = inject(API_URL);
   private readonly urlGetSeat = `${this.apiUrl}/dashboard/subscription/seat-detail`;
@@ -18,15 +18,15 @@ export class SeatDetailService {
   private readonly urlDeleteSeat = `${this.apiUrl}/dashboard/subscription/delete-seat`;
 
   getSeat(seatDetailRequest: SeatDetailRequest): Observable<SeatDetailReply> {
-    return this.http.post<SeatDetailReply>(this.urlGetSeat, seatDetailRequest, this.authService.getHttpOptions());
+    return this.http.post<SeatDetailReply>(this.urlGetSeat, seatDetailRequest, this.auth.getHttpOptions());
   }
 
   updateSeat(updateSeatDetailRequest: UpdateSeatDetailRequest): Observable<UpdateSeatDetailReply> {
-    return this.http.post<UpdateSeatDetailReply>(this.urlUpdateSeatDetail, updateSeatDetailRequest, this.authService.getHttpOptions());
+    return this.http.post<UpdateSeatDetailReply>(this.urlUpdateSeatDetail, updateSeatDetailRequest, this.auth.getHttpOptions());
   }
 
   deleteSeat(deleteSeatRequest: DeleteSeatRequest): Observable<DeleteSeatReply> {
-    return this.http.post<DeleteSeatReply>(this.urlDeleteSeat, deleteSeatRequest, this.authService.getHttpOptions());;
+    return this.http.post<DeleteSeatReply>(this.urlDeleteSeat, deleteSeatRequest, this.auth.getHttpOptions());;
   }
 
 

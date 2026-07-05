@@ -4,15 +4,15 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { BillingPortalComponent } from './billing-portal.component';
 import { BillingPortalService } from './billing-portal.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { IBillingPortal } from './billing-portal';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('BillingPortalComponent', () => {
   let component: BillingPortalComponent;
   let fixture: ComponentFixture<BillingPortalComponent>;
 
-  const authServiceMock = {
+  const authMock = {
     getHttpOptions: vi.fn().mockReturnValue({})
   };
 
@@ -30,7 +30,7 @@ describe('BillingPortalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BillingPortalComponent],
       providers: [
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: Auth, useValue: authMock },
         { provide: LogService, useValue: logServiceMock },
         { provide: BillingPortalService, useValue: billingPortalServiceMock }
       ]

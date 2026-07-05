@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Component } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { CancelSubscriptionComponent } from './cancel-subscription.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ISubscriptionCancelReply } from './subscription-cancel-request';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
@@ -25,7 +25,7 @@ const mockActivatedRoute = {
   snapshot: { paramMap: { get: vi.fn().mockReturnValue(SUBSCRIPTION_ID) } },
 };
 
-const mockAuthService            = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
+const mockAuth            = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
 const mockLogService             = { error: vi.fn(), info: vi.fn() };
 const mockSnackBarService        = { info: vi.fn(), error: vi.fn() };
 const mockCancelSubscriptionService = {
@@ -64,7 +64,7 @@ describe('CancelSubscriptionComponent', () => {
       imports: [CancelSubscriptionComponent],
       providers: [
         { provide: ActivatedRoute,             useValue: mockActivatedRoute },
-        { provide: AuthService,                useValue: mockAuthService },
+        { provide: Auth,                useValue: mockAuth },
         { provide: CancelSubscriptionService,  useValue: mockCancelSubscriptionService },
         { provide: LogService,                 useValue: mockLogService },
         { provide: SnackBarService,            useValue: mockSnackBarService },

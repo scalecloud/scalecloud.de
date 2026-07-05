@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { CancelSubscriptionService } from './cancel-subscription.service';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmCancelSubscriptionComponent } from './confirm-cancel-subscription/confirm-cancel-subscription.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
   selector: 'app-cancel-subscription',
@@ -18,7 +18,7 @@ import { MatIcon } from '@angular/material/icon';
   imports: [MatButton, MatIcon],
 })
 export class CancelSubscriptionComponent {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly cancelSubscriptionService = inject(CancelSubscriptionService);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);

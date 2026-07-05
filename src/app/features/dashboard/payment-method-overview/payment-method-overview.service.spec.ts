@@ -4,12 +4,12 @@ import { HttpHeaders, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
+import { Auth } from 'src/app/core/auth/auth';
 
 const mockHttpOptions = { headers: new HttpHeaders() };
 
-const authServiceMock = {
+const authMock = {
   getHttpOptions: vi.fn().mockReturnValue(mockHttpOptions),
 };
 
@@ -32,7 +32,7 @@ describe('PaymentMethodOverviewService', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: Auth, useValue: authMock },
         { provide: API_URL, useValue: 'https://api.example.com' },
       ],
     });
@@ -66,6 +66,6 @@ describe('PaymentMethodOverviewService', () => {
     const req = httpMock.expectOne('https://api.example.com/dashboard/get-payment-method-overview');
     req.flush(mockReply);
 
-    expect(authServiceMock.getHttpOptions).toHaveBeenCalledOnce();
+    expect(authMock.getHttpOptions).toHaveBeenCalledOnce();
   });
 });

@@ -6,13 +6,13 @@ import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 
 import { BillingAddressDetailComponent } from './billing-address-detail.component';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { BillingAddressReply } from '../billing-address-model';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 /**
  * NOTE: These mock shapes are inferred from how the component calls
@@ -51,7 +51,7 @@ describe('BillingAddressDetailComponent', () => {
   let component: BillingAddressDetailComponent;
   let fixture: ComponentFixture<BillingAddressDetailComponent>;
 
-  let authServiceMock: { waitForAuth: Mock };
+  let authMock: { waitForAuth: Mock };
   let permissionServiceMock: { isBilling: Mock };
   let billingAddressServiceMock: { getBillingAddress: Mock; updateBillingAddress: Mock };
   let logServiceMock: { error: Mock };
@@ -66,7 +66,7 @@ describe('BillingAddressDetailComponent', () => {
    * since getSubscriptionID() is read in ngOnInit via checkPermissions().
    */
   async function setup(routeOverride?: Partial<ActivatedRoute>) {
-    authServiceMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
+    authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
     permissionServiceMock = { isBilling: vi.fn().mockResolvedValue(true) };
     billingAddressServiceMock = {
       getBillingAddress: vi.fn().mockReturnValue(of(createReply())),
@@ -87,7 +87,7 @@ describe('BillingAddressDetailComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BillingAddressDetailComponent],
       providers: [
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: Auth, useValue: authMock },
         { provide: PermissionService, useValue: permissionServiceMock },
         { provide: BillingAddressService, useValue: billingAddressServiceMock },
         { provide: LogService, useValue: logServiceMock },
@@ -164,7 +164,7 @@ describe('BillingAddressDetailComponent', () => {
       fixture.detectChanges();
       await vi.waitFor(() => expect(billingAddressServiceMock.getBillingAddress).toHaveBeenCalled());
 
-      expect(authServiceMock.waitForAuth).toHaveBeenCalled();
+      expect(authMock.waitForAuth).toHaveBeenCalled();
       expect(billingAddressServiceMock.getBillingAddress).toHaveBeenCalledWith({
         subscriptionID: SUBSCRIPTION_ID,
       });
@@ -219,7 +219,7 @@ describe('BillingAddressDetailComponent', () => {
     });
 
     it('should log and set Error status when waitForAuth rejects', async () => {
-      authServiceMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
+      authMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
 
       await component.reloadBillingAddressDetail();
 
@@ -368,7 +368,7 @@ describe('BillingAddressDetailComponent', () => {
     });
 
     it('should log when waitForAuth rejects during submit', async () => {
-      authServiceMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
+      authMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
       component.form.controls.name.setValue('Valid Name');
       component.form.controls.line1.setValue('Valid Line 1');
       component.form.controls.postalCode.setValue('12345');

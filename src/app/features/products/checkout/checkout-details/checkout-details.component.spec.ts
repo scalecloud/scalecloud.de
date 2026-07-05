@@ -7,11 +7,11 @@ import { Observable, of, throwError, Subject } from 'rxjs';
 import { CheckoutDetailsComponent } from './checkout-details.component';
 import { CheckoutProductService } from './checkout-product.service';
 import { CheckoutProductReply } from './checkout-product';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
 import { ServiceStatus } from 'src/app/shared/service-status';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Stubs for child components rendered by the template ──────────────────────
 // We don't have the real QuantityComponent / LoadingFailedComponent source, so
@@ -81,7 +81,7 @@ describe('CheckoutDetailsComponent', () => {
   let fixture: ComponentFixture<CheckoutDetailsComponent>;
 
   const checkoutProductService = { getCheckoutProduct: vi.fn() };
-  const authService = { waitForAuth: vi.fn(() => Promise.resolve()) };
+  const authMock = { waitForAuth: vi.fn(() => Promise.resolve()) };
   const logService = { error: vi.fn() };
 
   // `settle: false` is for tests that intentionally leave the product request
@@ -94,7 +94,7 @@ describe('CheckoutDetailsComponent', () => {
       providers: [
         provideRouter([]),
         { provide: CheckoutProductService, useValue: checkoutProductService },
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: authMock },
         { provide: LogService, useValue: logService },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
@@ -127,7 +127,7 @@ describe('CheckoutDetailsComponent', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    authService.waitForAuth.mockResolvedValue(undefined);
+    authMock.waitForAuth.mockResolvedValue(undefined);
   });
 
   // ─── Creation & query param handling ─────────────────────────────────────────
@@ -150,7 +150,7 @@ describe('CheckoutDetailsComponent', () => {
     checkoutProductService.getCheckoutProduct.mockReturnValue(of(makeReply()));
     await setup(makeActivatedRouteStub('prod_456'));
 
-    expect(authService.waitForAuth).toHaveBeenCalled();
+    expect(authMock.waitForAuth).toHaveBeenCalled();
     expect(checkoutProductService.getCheckoutProduct).toHaveBeenCalledWith({ productID: 'prod_456' });
   });
 

@@ -4,7 +4,7 @@ import {  signal } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { HeaderComponent } from './header.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -18,10 +18,10 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
 
-  // `user` mirrors AuthService's real signal: undefined until the first
+  // `user` mirrors Auth's real signal: undefined until the first
   // auth-state event, then User | null.
   const userSignal = signal<any>(undefined);
-  const authService = {
+  const auth = {
     user: userSignal,
     signOut: vi.fn(),
   };
@@ -34,7 +34,7 @@ describe('HeaderComponent', () => {
       imports: [HeaderComponent],
       providers: [
         provideRouter([]),
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: auth },
       ],
     }).compileComponents();
 
@@ -129,13 +129,13 @@ describe('HeaderComponent', () => {
     expect(loginButton).toBeFalsy();
   });
 
-  it('should call authService.signOut when Logout is triggered', async () => {
+  it('should call auth.signOut when Logout is triggered', async () => {
     userSignal.set(makeUser());
     await fixture.whenStable();
 
-    component.authService.signOut();
+    component.auth.signOut();
 
-    expect(authService.signOut).toHaveBeenCalled();
+    expect(auth.signOut).toHaveBeenCalled();
   });
 
   // ─── toggleSideBar ────────────────────────────────────────────────────────────

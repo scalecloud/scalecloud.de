@@ -65,7 +65,7 @@ export class FirebaseService {
   /**
    * Thin wrappers around the firebase/auth free functions.
    *
-   * AuthService depends on these methods rather than importing firebase/auth
+   * Auth depends on these methods rather than importing firebase/auth
    * directly, so tests can mock them via Angular DI (TestBed `useValue`),
    * which is a plain runtime object swap. Mocking firebase/auth itself via
    * `vi.mock` is unreliable under the esbuild-bundled Angular unit-test

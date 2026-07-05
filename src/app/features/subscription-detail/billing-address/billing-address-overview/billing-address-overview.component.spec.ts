@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { BillingAddressOverviewComponent } from './billing-address-overview.component';
 import { BillingAddressReply } from '../billing-address-model';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
@@ -13,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 const mockReply: BillingAddressReply = {
   subscriptionID: 'subscription-123',
@@ -27,7 +27,7 @@ const mockReply: BillingAddressReply = {
   phone: '+4912345678',
 };
 
-const authServiceMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
+const authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
 const permissionServiceMock = { isBilling: vi.fn().mockResolvedValue(true) };
 const billingAddressServiceMock = { getBillingAddress: vi.fn().mockReturnValue(of(mockReply)) };
 const routeMock = { snapshot: { paramMap: { get: vi.fn().mockReturnValue('subscription-123') } } };
@@ -38,7 +38,7 @@ const snackBarServiceMock = { error: vi.fn() };
 const returnUrlServiceMock = { openUrlAddReturnUrl: vi.fn() };
 
 const providers = [
-  { provide: AuthService, useValue: authServiceMock },
+  { provide: Auth, useValue: authMock },
   { provide: PermissionService, useValue: permissionServiceMock },
   { provide: BillingAddressService, useValue: billingAddressServiceMock },
   { provide: ActivatedRoute, useValue: routeMock },
@@ -70,7 +70,7 @@ async function createComponent(): Promise<{
  * leaks into every test that runs after it.
  */
 function resetMockDefaults(): void {
-  authServiceMock.waitForAuth.mockResolvedValue(undefined);
+  authMock.waitForAuth.mockResolvedValue(undefined);
   permissionServiceMock.isBilling.mockResolvedValue(true);
   billingAddressServiceMock.getBillingAddress.mockReturnValue(of(mockReply));
   routeMock.snapshot.paramMap.get.mockReturnValue('subscription-123');
@@ -154,7 +154,7 @@ describe('BillingAddressOverviewComponent', () => {
   });
 
   it('should set Error status and log when waitForAuth fails', async () => {
-    authServiceMock.waitForAuth.mockRejectedValue(new Error('Auth error'));
+    authMock.waitForAuth.mockRejectedValue(new Error('Auth error'));
     ({ component } = await createComponent());
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     expect(logServiceMock.error).toHaveBeenCalledWith(

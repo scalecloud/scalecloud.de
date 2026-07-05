@@ -10,9 +10,9 @@ import { PaymentMethodOverviewComponent } from '../dashboard/payment-method-over
 import { InvoicesComponent } from './invoices/invoices.component';
 import { BillingAddressOverviewComponent } from './billing-address/billing-address-overview/billing-address-overview.component';
 import { BillingPortalComponent } from './customer-portal/billing-portal.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL, APP_BASE_URL } from 'src/app/core/config/api.token';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -31,7 +31,7 @@ describe('SubscriptionDetailComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SubscriptionDetailComponent],
       providers: [
-        // Several root services form a chain: AuthService → ReturnUrlService →
+        // Several root services form a chain: Auth → ReturnUrlService →
         // ActivatedRoute + APP_BASE_URL. Mocking the whole chain here is more
         // robust than stubbing individual tokens one error at a time.
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({}) } } },
@@ -39,7 +39,7 @@ describe('SubscriptionDetailComponent', () => {
         { provide: APP_BASE_URL, useValue: 'https://app.test' },
         { provide: ReturnUrlService, useValue: { getReturnUrlDecoded: vi.fn(), openReturnURL: vi.fn(), openUrlKeepReturnUrl: vi.fn() } },
         {
-          provide: AuthService,
+          provide: Auth,
           useValue: {
             waitForAuth: vi.fn().mockResolvedValue(undefined),
             getHttpOptions: vi.fn().mockReturnValue({}),

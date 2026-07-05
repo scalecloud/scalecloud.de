@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { LastCountService } from './subscription-overview/last-count/last-count.service';
@@ -10,6 +9,7 @@ import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { provideRouter } from '@angular/router';
+import { Auth } from 'src/app/core/auth/auth';
 
 const mockSubscriptions: ISubscriptionOverview[] = [
   {
@@ -30,7 +30,7 @@ const mockSubscriptions: ISubscriptionOverview[] = [
   },
 ];
 
-const authServiceMock = {
+const authMock = {
   waitForAuth: vi.fn().mockResolvedValue(undefined),
 };
 
@@ -62,7 +62,7 @@ describe('DashboardComponent', () => {
       imports: [DashboardComponent],
       providers: [
         provideRouter([]),
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: Auth, useValue: authMock },
         { provide: SubscriptionOverviewService, useValue: subscriptionOverviewServiceMock },
         { provide: LogService, useValue: logServiceMock },
         { provide: LastCountService, useValue: lastCountServiceMock },
@@ -106,7 +106,7 @@ describe('DashboardComponent', () => {
   });
 
   it('should set Error status and log when waitForAuth fails', async () => {
-    authServiceMock.waitForAuth.mockRejectedValue(new Error('Auth failed'));
+    authMock.waitForAuth.mockRejectedValue(new Error('Auth failed'));
 
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;

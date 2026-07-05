@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
 import { ActivatedRoute } from '@angular/router';
@@ -20,6 +19,7 @@ import { CountryInputComponent } from '../country-input/country-input.component'
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 /**
  * Typed shape of the billing address form.
@@ -67,7 +67,7 @@ interface BillingAddressFormControls {
 })
 export class BillingAddressDetailComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly permissionService = inject(PermissionService);
   private readonly service = inject(BillingAddressService);
   private readonly route = inject(ActivatedRoute);
@@ -164,7 +164,7 @@ export class BillingAddressDetailComponent implements OnInit {
     this.serviceStatus.set(ServiceStatus.Loading);
 
     try {
-      await this.authService.waitForAuth();
+      await this.auth.waitForAuth();
     } catch (error) {
       this.logService.error('waitForAuth failed: ' + error);
       this.serviceStatus.set(ServiceStatus.Error);
@@ -217,7 +217,7 @@ export class BillingAddressDetailComponent implements OnInit {
     }
 
     try {
-      await this.authService.waitForAuth();
+      await this.auth.waitForAuth();
     } catch (error) {
       this.logService.error('waitForAuth failed: ' + error);
       return;

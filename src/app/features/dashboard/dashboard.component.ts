@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LogService } from 'src/app/core/logging/log.service';
@@ -13,6 +12,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { SubscriptionOverviewComponent } from './subscription-overview/subscription-overview.component';
 import { LoadingFailedComponent } from '../../shared/loading-failed/loading-failed.component';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,7 +34,7 @@ import { LoadingFailedComponent } from '../../shared/loading-failed/loading-fail
   ],
 })
 export class DashboardComponent implements OnInit {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly subscriptionOverviewService = inject(SubscriptionOverviewService);
   private readonly logService = inject(LogService);
   private readonly lastCountService = inject(LastCountService);
@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
   private loadSubscriptionsOverview(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
 
-    this.authService
+    this.auth
       .waitForAuth()
       .then(() => {
         this.subscriptionOverviewService.getSubscriptionsOverview().subscribe({

@@ -4,16 +4,16 @@ import { describe, it, expect, vi } from 'vitest';
 import { of } from 'rxjs';
 
 import { StatusComponent } from './status.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('StatusComponent', () => {
   let component: StatusComponent;
   let fixture: ComponentFixture<StatusComponent>;
 
-  const authService = { waitForAuth: vi.fn(() => Promise.resolve()) };
+  const authMock = { waitForAuth: vi.fn(() => Promise.resolve()) };
   const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
   const snackBarService = { error: vi.fn() };
 
@@ -22,14 +22,14 @@ describe('StatusComponent', () => {
     options: { authError?: Error } = {},
   ): Promise<void> {
     vi.clearAllMocks();
-    authService.waitForAuth.mockImplementation(() =>
+    authMock.waitForAuth.mockImplementation(() =>
       options.authError ? Promise.reject(options.authError) : Promise.resolve(),
     );
 
     await TestBed.configureTestingModule({
       imports: [StatusComponent],
       providers: [
-        { provide: AuthService, useValue: authService },
+        { provide: Auth, useValue: authMock },
         { provide: LogService, useValue: logService },
         { provide: SnackBarService, useValue: snackBarService },
         { provide: ActivatedRoute, useValue: { queryParams: of(queryParams) } },

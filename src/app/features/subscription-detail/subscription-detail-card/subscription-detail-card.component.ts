@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
@@ -17,6 +16,7 @@ import { MatIcon } from '@angular/material/icon';
 import { CancelStateComponent } from '../cancel-state/cancel-state.component';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
     selector: 'app-subscription-detail-card',
@@ -26,7 +26,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
     imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatTooltip, MatIcon, CancelStateComponent, LoadingFailedComponent, CurrencyPipe, DatePipe]
 })
 export class SubscriptionDetailCardComponent implements OnInit {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly permissionService = inject(PermissionService);
   private readonly subscriptionDetailCardService = inject(SubscriptionDetailCardService);
   private readonly route = inject(ActivatedRoute);
@@ -70,7 +70,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
 
   reloadSubscriptionDetail(): void {
     this.serviceStatus = ServiceStatus.Loading;
-    this.authService.waitForAuth().then(() => {
+    this.auth.waitForAuth().then(() => {
       const subscriptionID = this.getSubscriptionID();
       if (subscriptionID == null) {
         this.logService.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');

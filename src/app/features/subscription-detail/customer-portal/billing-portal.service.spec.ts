@@ -4,15 +4,15 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { BillingPortalService } from './billing-portal.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
 import { IBillingPortal } from './billing-portal';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('BillingPortalService', () => {
   const testApiUrl = 'https://api.test.example.com';
   const mockHttpOptions = { headers: { Authorization: 'Bearer test-token' } };
 
-  const authServiceMock = {
+  const authMock = {
     getHttpOptions: vi.fn().mockReturnValue(mockHttpOptions)
   };
 
@@ -27,7 +27,7 @@ describe('BillingPortalService', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: testApiUrl },
-        { provide: AuthService, useValue: authServiceMock }
+        { provide: Auth, useValue: authMock }
       ]
     });
 
@@ -52,7 +52,7 @@ describe('BillingPortalService', () => {
 
     const req = httpMock.expectOne(`${testApiUrl}/dashboard/billing-portal`);
     expect(req.request.method).toBe('GET');
-    expect(authServiceMock.getHttpOptions).toHaveBeenCalled();
+    expect(authMock.getHttpOptions).toHaveBeenCalled();
 
     req.flush(mockResponse);
   });

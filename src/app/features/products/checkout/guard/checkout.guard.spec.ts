@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { checkoutGuard } from './checkout.guard';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 const mockRouter = { navigate: vi.fn() };
-const mockAuthService = {
+const authMock = {
   isLoggedIn: vi.fn(),
   isLoggedInNotVerified: vi.fn(),
 };
@@ -28,7 +28,7 @@ describe('checkoutGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: mockRouter },
-        { provide: AuthService, useValue: mockAuthService },
+        { provide: Auth, useValue: authMock },
         { provide: LogService, useValue: mockLogService },
       ],
     });
@@ -36,8 +36,8 @@ describe('checkoutGuard', () => {
 
   describe('when the user is logged in but unverified', () => {
     beforeEach(() => {
-      mockAuthService.isLoggedInNotVerified.mockResolvedValue(true);
-      mockAuthService.isLoggedIn.mockResolvedValue(false);
+      authMock.isLoggedInNotVerified.mockResolvedValue(true);
+      authMock.isLoggedIn.mockResolvedValue(false);
     });
 
     it('redirects to /verify-email-address', async () => {
@@ -51,7 +51,7 @@ describe('checkoutGuard', () => {
 
     it('does not check isLoggedIn when already determined to be unverified', async () => {
       await runGuard();
-      expect(mockAuthService.isLoggedIn).not.toHaveBeenCalled();
+      expect(authMock.isLoggedIn).not.toHaveBeenCalled();
     });
 
     it('does not log when redirecting unverified users', async () => {
@@ -62,8 +62,8 @@ describe('checkoutGuard', () => {
 
   describe('when the user is not logged in at all', () => {
     beforeEach(() => {
-      mockAuthService.isLoggedInNotVerified.mockResolvedValue(false);
-      mockAuthService.isLoggedIn.mockResolvedValue(false);
+      authMock.isLoggedInNotVerified.mockResolvedValue(false);
+      authMock.isLoggedIn.mockResolvedValue(false);
     });
 
     it('redirects to /register', async () => {
@@ -96,8 +96,8 @@ describe('checkoutGuard', () => {
 
   describe('when the user is fully logged in and verified', () => {
     beforeEach(() => {
-      mockAuthService.isLoggedInNotVerified.mockResolvedValue(false);
-      mockAuthService.isLoggedIn.mockResolvedValue(true);
+      authMock.isLoggedInNotVerified.mockResolvedValue(false);
+      authMock.isLoggedIn.mockResolvedValue(true);
     });
 
     it('allows activation', async () => {

@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleDescriptions } from 'src/app/core/permission/roles';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import {
@@ -37,6 +36,7 @@ import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
   selector: 'app-seat-detail',
@@ -61,7 +61,7 @@ import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
   ],
 })
 export class SeatDetailComponent implements OnInit {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly seatDetailService = inject(SeatDetailService);
@@ -144,7 +144,7 @@ export class SeatDetailComponent implements OnInit {
 
   // ── Data loading ──────────────────────────────────────────────────────────
   loadSeatDetail(): void {
-    this.authService.waitForAuth().then(() => {
+    this.auth.waitForAuth().then(() => {
       const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
       const uid = this.route.snapshot.paramMap.get('uid');
 
@@ -193,7 +193,7 @@ export class SeatDetailComponent implements OnInit {
       seatUpdated: { ...selectedSeat, roles: [...this.pendingRoles()] },
     };
 
-    this.authService.waitForAuth().then(() => {
+    this.auth.waitForAuth().then(() => {
       this.seatDetailService.updateSeat(request).subscribe({
         next: (reply) => {
           if (reply.seat) {
@@ -225,7 +225,7 @@ export class SeatDetailComponent implements OnInit {
 
     const request: DeleteSeatRequest = { seatToDelete };
 
-    this.authService.waitForAuth().then(() => {
+    this.auth.waitForAuth().then(() => {
       this.seatDetailService.deleteSeat(request).subscribe({
         next: (reply) => {
           if (reply?.success) {

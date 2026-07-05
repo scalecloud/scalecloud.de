@@ -1,7 +1,7 @@
 import { inject, Injectable, WritableSignal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { Auth } from '../auth/auth';
 import { LogService } from '../logging/log.service';
 import { Role } from './roles';
 import { PermissionReply, PermissionRequest } from 'src/app/features/subscription-detail/seats/seats';
@@ -17,7 +17,7 @@ interface CacheEntry {
 })
 export class PermissionService {
   private readonly http = inject(HttpClient);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly logService = inject(LogService);
 
   private readonly apiUrl = inject(API_URL);
@@ -67,7 +67,7 @@ export class PermissionService {
   }
 
   getPermissions(request: PermissionRequest): Observable<PermissionReply> {
-    return this.http.post<PermissionReply>(this.urlPermission, request, this.authService.getHttpOptions());
+    return this.http.post<PermissionReply>(this.urlPermission, request, this.auth.getHttpOptions());
   }
 
 }

@@ -3,14 +3,14 @@ import { Router } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi, type Mock } from 'vitest';
 import type { User } from 'firebase/auth';
 
-import { AuthService } from './auth.service';
+import { Auth } from './auth';
 import { LogService } from '../logging/log.service';
 import { SnackBarService } from '../snackbar/snack-bar.service';
 import { FirebaseService } from 'src/app/core/firebase/firebase.service';
 import { ReturnUrlService } from '../redirect/return-url.service';
 
 // ── Firebase mocking note ────────────────────────────────────────────────────
-// AuthService no longer imports firebase/auth directly - it calls the thin
+// Auth no longer imports firebase/auth directly - it calls the thin
 // wrapper methods on FirebaseService instead. That's on purpose: the Angular
 // unit-test runner bundles test files with esbuild ahead of time, and
 // `vi.mock('firebase/auth', ...)` is not reliably applied once that module
@@ -40,8 +40,8 @@ function makeUser(overrides: Partial<User> = {}): User {
   } as unknown as User;
 }
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('Auth', () => {
+  let service: Auth;
   let registrations: Registration[];
 
   const router = { navigate: vi.fn() };
@@ -63,8 +63,8 @@ describe('AuthService', () => {
     signOut: vi.fn(),
   };
 
-  function createService(): AuthService {
-    return TestBed.inject(AuthService);
+  function createService(): Auth {
+    return TestBed.inject(Auth);
   }
 
   /** Resolves the current registration's user.getIdToken() microtask chain. */

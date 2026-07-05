@@ -12,13 +12,13 @@ import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { API_URL, APP_BASE_URL } from 'src/app/core/config/api.token';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
+import { Auth } from 'src/app/core/auth/auth';
 
-// DefaultComponent imports HeaderComponent, which injects AuthService.
+// DefaultComponent imports HeaderComponent, which injects Auth.
 // Without a mock here, Angular's root injector constructs the real
-// AuthService -> real FirebaseService -> real getAnalytics(), which is what
+// Auth -> real FirebaseService -> real getAnalytics(), which is what
 // leaked the blocked happy-dom script load into this spec's run. Reusing the
 // same mock shape as header.component.spec.ts rather than inventing a second one.
 describe('DefaultComponent', () => {
@@ -27,7 +27,7 @@ describe('DefaultComponent', () => {
   let loadingPermissions: WritableSignal<boolean>;
 
   const userSignal = signal<any>(undefined);
-  const authService = {
+  const auth = {
     user: userSignal,
     signOut: vi.fn(),
   };
@@ -62,7 +62,7 @@ describe('DefaultComponent', () => {
         { provide: PermissionService, useValue: { loadingPermissions } },
         { provide: APP_BASE_URL, useValue: 'http://localhost' },
         { provide: API_URL, useValue: 'http://localhost/api' },
-        { provide: AuthService, useValue: authService }
+        { provide: Auth, useValue: auth }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();

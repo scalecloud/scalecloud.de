@@ -3,11 +3,11 @@ import { describe, afterEach, it, expect, vi } from 'vitest';
 import { PaymentMethodOverviewComponent } from './payment-method-overview.component';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 const mockReply: PaymentMethodOverviewReply = {
   has_valid_payment_method: true,
@@ -21,7 +21,7 @@ const paymentMethodServiceMock = {
   getPaymentMethodOverview: vi.fn(),
 };
 
-const authServiceMock = {
+const authMock = {
   waitForAuth: vi.fn(),
 };
 
@@ -59,11 +59,11 @@ async function createComponent(
   vi.resetAllMocks();
 
   if (authPending) {
-    authServiceMock.waitForAuth.mockReturnValue(new Promise<void>(() => {})); // never resolves
+    authMock.waitForAuth.mockReturnValue(new Promise<void>(() => {})); // never resolves
   } else if (authError) {
-    authServiceMock.waitForAuth.mockRejectedValue(new Error('Auth failed'));
+    authMock.waitForAuth.mockRejectedValue(new Error('Auth failed'));
   } else {
-    authServiceMock.waitForAuth.mockResolvedValue(undefined);
+    authMock.waitForAuth.mockResolvedValue(undefined);
   }
 
   paymentMethodServiceMock.getPaymentMethodOverview.mockReturnValue(
@@ -75,7 +75,7 @@ async function createComponent(
     imports: [PaymentMethodOverviewComponent],
     providers: [
       { provide: PaymentMethodOverviewService, useValue: paymentMethodServiceMock },
-      { provide: AuthService, useValue: authServiceMock },
+      { provide: Auth, useValue: authMock },
       { provide: LogService, useValue: logServiceMock },
       { provide: ReturnUrlService, useValue: returnUrlServiceMock },
     ],

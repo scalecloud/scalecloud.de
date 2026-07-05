@@ -5,9 +5,9 @@ import { LogService } from 'src/app/core/logging/log.service';
 import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
 import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { CheckoutSubscriptionService } from './checkout-payment/checkout-subscription.service';
 import { PaymentMethodOverviewComponent } from 'src/app/features/dashboard/payment-method-overview/payment-method-overview.component';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
     selector: 'app-checkout',
@@ -20,7 +20,7 @@ export class CheckoutComponent {
   private readonly logService = inject(LogService);
   private readonly router = inject(Router);
   private readonly snackBarService = inject(SnackBarService);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly checkoutSubscriptionService = inject(CheckoutSubscriptionService);
 
   async createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): Promise<void> {
@@ -32,7 +32,7 @@ export class CheckoutComponent {
     }
 
     try {
-      await this.authService.waitForAuth();
+      await this.auth.waitForAuth();
 
       const checkoutIntegrationReply: CheckoutCreateSubscriptionReply = await firstValueFrom(
         this.checkoutSubscriptionService.createCheckoutSubscription(checkoutIntegrationRequest),

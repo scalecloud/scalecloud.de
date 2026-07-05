@@ -3,16 +3,16 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StatusComponent } from './status.component';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 describe('StatusComponent', () => {
   let component: StatusComponent;
   let fixture: ComponentFixture<StatusComponent>;
 
-  let authServiceMock: { waitForAuth: ReturnType<typeof vi.fn> };
+  let authMock: { waitForAuth: ReturnType<typeof vi.fn> };
   let logServiceMock: {
     info: ReturnType<typeof vi.fn>;
     warn: ReturnType<typeof vi.fn>;
@@ -30,7 +30,7 @@ describe('StatusComponent', () => {
   };
 
   function configureTestBed(paramOverrides: Partial<typeof queryParams> = {}): void {
-    authServiceMock = {
+    authMock = {
       waitForAuth: vi.fn().mockResolvedValue(undefined)
     };
     logServiceMock = {
@@ -59,7 +59,7 @@ describe('StatusComponent', () => {
     TestBed.configureTestingModule({
       imports: [StatusComponent],
       providers: [
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: Auth, useValue: authMock },
         { provide: LogService, useValue: logServiceMock },
         { provide: StripeKeyService, useValue: stripeKeyServiceMock },
         { provide: ReturnUrlService, useValue: returnUrlServiceMock },
@@ -182,7 +182,7 @@ describe('StatusComponent', () => {
   describe('waitForAuth rejection', () => {
     it('should log an error when waitForAuth fails', async () => {
       configureTestBed();
-      authServiceMock.waitForAuth.mockRejectedValue(new Error('not authenticated'));
+      authMock.waitForAuth.mockRejectedValue(new Error('not authenticated'));
 
       await fixture.whenStable();
 

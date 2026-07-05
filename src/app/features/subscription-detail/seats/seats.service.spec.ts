@@ -4,9 +4,9 @@ import { provideHttpClient } from '@angular/common/http';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { SeatsService } from './seats.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
 import { ListSeatReply, ListSeatRequest } from './seats';
+import { Auth } from 'src/app/core/auth/auth';
 
 const MOCK_API_URL = 'https://api.example.com';
 
@@ -27,7 +27,7 @@ const mockReply: ListSeatReply = {
 describe('SeatsService', () => {
   let service: SeatsService;
   let httpMock: HttpTestingController;
-  const authServiceMock = {
+  const authMock = {
     getHttpOptions: vi.fn().mockReturnValue({ headers: {} }),
   };
 
@@ -36,7 +36,7 @@ describe('SeatsService', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: Auth, useValue: authMock },
         { provide: API_URL, useValue: MOCK_API_URL },
       ],
     });
@@ -67,10 +67,10 @@ describe('SeatsService', () => {
     expect(result).toEqual(mockReply);
   });
 
-  it('uses auth headers from AuthService', () => {
+  it('uses auth headers from Auth', () => {
     service.getListSeats(mockRequest).subscribe();
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/list-seats`);
     req.flush(mockReply);
-    expect(authServiceMock.getHttpOptions).toHaveBeenCalledOnce();
+    expect(authMock.getHttpOptions).toHaveBeenCalledOnce();
   });
 });

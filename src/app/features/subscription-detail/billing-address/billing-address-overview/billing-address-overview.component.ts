@@ -1,6 +1,5 @@
 import { Component, signal, computed, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
@@ -19,6 +18,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
   selector: 'app-billing-address-overview',
@@ -42,7 +42,7 @@ import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
   ],
 })
 export class BillingAddressOverviewComponent implements OnInit {
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly permissionService = inject(PermissionService);
   private readonly billingAddressService = inject(BillingAddressService);
   private readonly route = inject(ActivatedRoute);
@@ -114,7 +114,7 @@ export class BillingAddressOverviewComponent implements OnInit {
     this.serviceStatus.set(ServiceStatus.Loading);
 
     try {
-      await this.authService.waitForAuth();
+      await this.auth.waitForAuth();
     } catch (error) {
       this.logService.error(`waitForAuth failed: ${error}`);
       this.serviceStatus.set(ServiceStatus.Error);

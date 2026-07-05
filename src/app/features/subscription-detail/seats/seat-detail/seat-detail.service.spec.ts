@@ -5,7 +5,6 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { firstValueFrom } from 'rxjs';
 
 import { SeatDetailService } from './seat-detail.service';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { API_URL } from 'src/app/core/config/api.token';
 import {
   SeatDetailRequest,
@@ -16,6 +15,7 @@ import {
   DeleteSeatReply,
 } from '../seats';
 import { Role } from 'src/app/core/permission/roles';
+import { Auth } from 'src/app/core/auth/auth';
 
 const MOCK_API_URL = 'https://api.example.com';
 
@@ -34,7 +34,7 @@ describe('SeatDetailService', () => {
   let service: SeatDetailService;
   let httpMock: HttpTestingController;
 
-  const authServiceMock = {
+  const authMock = {
     getHttpOptions: vi.fn().mockReturnValue({ headers: {} }),
   };
 
@@ -43,7 +43,7 @@ describe('SeatDetailService', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: Auth, useValue: authMock },
         { provide: API_URL, useValue: MOCK_API_URL },
       ],
     });
@@ -116,6 +116,6 @@ describe('SeatDetailService', () => {
     req.flush({});
 
     await result$;
-    expect(authServiceMock.getHttpOptions).toHaveBeenCalled();
+    expect(authMock.getHttpOptions).toHaveBeenCalled();
   });
 });

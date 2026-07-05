@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { dashboardGuard } from './dashboard.guard';
-import { AuthService } from '../auth.service';
+import { Auth } from '../auth';
 
 const mockRouter = { navigate: vi.fn() };
-const mockAuthService = {
+const mockAuth = {
   isLoggedIn: vi.fn(),
   isLoggedInNotVerified: vi.fn(),
 };
@@ -26,15 +26,15 @@ describe('dashboardGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: mockRouter },
-        { provide: AuthService, useValue: mockAuthService },
+        { provide: Auth, useValue: mockAuth },
       ],
     });
   });
 
   describe('when the user is logged in but unverified', () => {
     beforeEach(() => {
-      mockAuthService.isLoggedInNotVerified.mockResolvedValue(true);
-      mockAuthService.isLoggedIn.mockResolvedValue(false);
+      mockAuth.isLoggedInNotVerified.mockResolvedValue(true);
+      mockAuth.isLoggedIn.mockResolvedValue(false);
     });
 
     it('redirects to /verify-email-address', async () => {
@@ -48,14 +48,14 @@ describe('dashboardGuard', () => {
 
     it('does not check isLoggedIn when already determined to be unverified', async () => {
       await runGuard();
-      expect(mockAuthService.isLoggedIn).not.toHaveBeenCalled();
+      expect(mockAuth.isLoggedIn).not.toHaveBeenCalled();
     });
   });
 
   describe('when the user is not logged in at all', () => {
     beforeEach(() => {
-      mockAuthService.isLoggedInNotVerified.mockResolvedValue(false);
-      mockAuthService.isLoggedIn.mockResolvedValue(false);
+      mockAuth.isLoggedInNotVerified.mockResolvedValue(false);
+      mockAuth.isLoggedIn.mockResolvedValue(false);
     });
 
     it('redirects to /login', async () => {
@@ -81,8 +81,8 @@ describe('dashboardGuard', () => {
 
   describe('when the user is fully logged in and verified', () => {
     beforeEach(() => {
-      mockAuthService.isLoggedInNotVerified.mockResolvedValue(false);
-      mockAuthService.isLoggedIn.mockResolvedValue(true);
+      mockAuth.isLoggedInNotVerified.mockResolvedValue(false);
+      mockAuth.isLoggedIn.mockResolvedValue(true);
     });
 
     it('allows activation', async () => {

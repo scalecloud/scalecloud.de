@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription';
 import { ActiveComponent } from './active/active.component';
 import { TrailingComponent } from './trailing/trailing.component';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
   selector: 'app-status',
@@ -19,7 +19,7 @@ export class StatusComponent implements OnInit {
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly route = inject(ActivatedRoute);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
 
   readonly checkoutCreateSubscriptionReply = signal<CheckoutCreateSubscriptionReply | undefined>(undefined);
   readonly active = computed(() => this.checkoutCreateSubscriptionReply()?.status === 'active');
@@ -31,7 +31,7 @@ export class StatusComponent implements OnInit {
 
   async checkPaymentIntentStatus(): Promise<void> {
     try {
-      await this.authService.waitForAuth();
+      await this.auth.waitForAuth();
     } catch (error) {
       this.logService.error(`waitForAuth failed: ${error}`);
       this.snackBarService.error('Error: Could not get payment status. Please try again later.');

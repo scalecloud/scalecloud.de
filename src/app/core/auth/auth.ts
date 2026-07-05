@@ -9,7 +9,7 @@ import { FirebaseService } from 'src/app/core/firebase/firebase.service';
 import { ReturnUrlService } from '../redirect/return-url.service';
 
 @Injectable({ providedIn: 'root' })
-export class AuthService {
+export class Auth {
   private readonly router = inject(Router);
   private readonly snackBarService = inject(SnackBarService);
   private readonly logService = inject(LogService);

@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, viewChild, output, computed, resource, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from 'src/app/core/auth/auth.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { QuantityComponent } from '../../subscription-card/quantity/quantity.component';
 import { CheckoutProductRequest } from './checkout-product';
@@ -19,6 +18,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
+import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
     selector: 'app-checkout-details',
@@ -30,7 +30,7 @@ import { LoadingFailedComponent } from '../../../../shared/loading-failed/loadin
 export class CheckoutDetailsComponent {
   private readonly logService = inject(LogService);
   private readonly checkoutProductService = inject(CheckoutProductService);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(Auth);
   private readonly route = inject(ActivatedRoute);
 
   readonly quantityComponent = viewChild(QuantityComponent);
@@ -57,7 +57,7 @@ export class CheckoutDetailsComponent {
       return productID ? { productID } : undefined;
     },
     loader: async ({ params }) => {
-      await this.authService.waitForAuth();
+      await this.auth.waitForAuth();
       return firstValueFrom(this.checkoutProductService.getCheckoutProduct(params));
     },
   });
