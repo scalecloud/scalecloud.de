@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { API_URL } from 'src/app/core/config/api.token';
 import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
 import { Observable } from 'rxjs';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 @Injectable({
   providedIn: 'root'

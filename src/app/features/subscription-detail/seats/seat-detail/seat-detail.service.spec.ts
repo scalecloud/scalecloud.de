@@ -5,7 +5,6 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { firstValueFrom } from 'rxjs';
 
 import { SeatDetailService } from './seat-detail.service';
-import { API_URL } from 'src/app/core/config/api.token';
 import {
   SeatDetailRequest,
   SeatDetailReply,
@@ -16,6 +15,7 @@ import {
 } from '../seats';
 import { Role } from 'src/app/core/permission/roles';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 const MOCK_API_URL = 'https://api.example.com';
 

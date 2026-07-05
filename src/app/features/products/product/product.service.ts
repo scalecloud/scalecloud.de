@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductTiersReply, ProductType } from '../product-model';
-import { API_URL } from 'src/app/core/config/api.token';
+import { API_URL } from 'src/app/core/config/api-token';
 
 @Injectable({
   providedIn: 'root'

@@ -2,10 +2,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { API_URL } from 'src/app/core/config/api.token';
 import { ResumeSubscriptionService } from './resume-subscription.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 const API_BASE = 'https://api.example.com';
 const RESUME_URL = `${API_BASE}/dashboard/resume-subscription`;

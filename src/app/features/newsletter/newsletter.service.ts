@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NewsletterConfirmReply, NewsletterConfirmRequest, NewsletterSubscribeReply, NewsletterSubscribeRequest, NewsletterUnsubscribeReply, NewsletterUnsubscribeRequest } from './newsletter';
-import { API_URL } from 'src/app/core/config/api.token';
+import { API_URL } from 'src/app/core/config/api-token';
 
 @Injectable({
   providedIn: 'root'

@@ -9,10 +9,10 @@ import { CancelStateComponent } from '../cancel-state/cancel-state.component';
 import { LogService } from 'src/app/core/logging/log.service';
 import { PermissionService } from 'src/app/core/permission/permission.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { API_URL } from 'src/app/core/config/api.token';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 // ─── Factories ───────────────────────────────────────────────────────────────
 

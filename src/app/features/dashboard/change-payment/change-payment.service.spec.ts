@@ -8,9 +8,9 @@ import { vi, describe, beforeEach, afterEach, expect, it } from 'vitest';
 
 import { ChangePaymentService } from './change-payment.service';
 import { ChangePaymentReply } from './change-payment';
-import { API_URL } from 'src/app/core/config/api.token';
 import { environment } from 'src/environments/environment';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 describe(ChangePaymentService.name, () => {
   let service: ChangePaymentService;

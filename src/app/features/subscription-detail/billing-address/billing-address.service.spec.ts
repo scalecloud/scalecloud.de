@@ -3,9 +3,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { BillingAddressService } from './billing-address.service';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
-import { API_URL } from 'src/app/core/config/api.token';
 import { environment } from 'src/environments/environment';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 describe('BillingAddressService', () => {
   let service: BillingAddressService;

@@ -5,7 +5,7 @@ import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 import { ProductService } from './product.service';
 import { ProductTiersReply, ProductType } from '../product-model';
-import { API_URL } from 'src/app/core/config/api.token';
+import { API_URL } from 'src/app/core/config/api-token';
 
 describe('ProductService', () => {
   const baseUrl = 'https://api.example.test';

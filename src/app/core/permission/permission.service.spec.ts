@@ -7,8 +7,8 @@ import { PermissionService } from './permission.service';
 import { Auth } from '../auth/auth';
 import { LogService } from '../logging/log.service';
 import { Role } from './roles';
-import { API_URL } from 'src/app/core/config/api.token';
 import { PermissionReply } from 'src/app/features/subscription-detail/seats/seats';
+import { API_URL } from '../config/api-token';
 
 describe('PermissionService', () => {
   let service: PermissionService;

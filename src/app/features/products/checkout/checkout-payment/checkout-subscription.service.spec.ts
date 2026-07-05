@@ -5,8 +5,8 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { CheckoutSubscriptionService } from './checkout-subscription.service';
 import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
-import { API_URL } from 'src/app/core/config/api.token';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 describe('CheckoutSubscriptionService', () => {
   let service: CheckoutSubscriptionService;

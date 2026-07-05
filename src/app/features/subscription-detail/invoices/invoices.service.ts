@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ListInvoicesReply, ListInvoicesRequest } from './invoices';
 import { Observable } from 'rxjs';
-import { API_URL } from 'src/app/core/config/api.token';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 @Injectable({
   providedIn: 'root'

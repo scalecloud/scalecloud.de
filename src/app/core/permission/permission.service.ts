@@ -5,7 +5,7 @@ import { Auth } from '../auth/auth';
 import { LogService } from '../logging/log.service';
 import { Role } from './roles';
 import { PermissionReply, PermissionRequest } from 'src/app/features/subscription-detail/seats/seats';
-import { API_URL } from 'src/app/core/config/api.token';
+import { API_URL } from '../config/api-token';
 
 interface CacheEntry {
   data: PermissionReply;

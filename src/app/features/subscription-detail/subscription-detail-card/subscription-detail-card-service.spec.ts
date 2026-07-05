@@ -4,9 +4,9 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
-import { API_URL } from 'src/app/core/config/api.token';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 

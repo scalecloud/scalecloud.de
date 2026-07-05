@@ -5,9 +5,9 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { CancelSubscriptionService } from './cancel-subscription.service';
 import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
-import { API_URL } from 'src/app/core/config/api.token';
 import { environment } from 'src/environments/environment';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 const EXPECTED_URL = `${environment.apiUrl}/dashboard/cancel-subscription`;
 

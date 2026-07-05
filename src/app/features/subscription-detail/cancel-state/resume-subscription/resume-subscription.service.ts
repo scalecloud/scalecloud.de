@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API_URL } from 'src/app/core/config/api.token';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 @Service()
 export class ResumeSubscriptionService {

@@ -4,7 +4,6 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 import { NewsletterService } from './newsletter.service';
-import { API_URL } from 'src/app/core/config/api.token';
 import {
   NewsletterConfirmReply,
   NewsletterSubscribeReply,
@@ -12,6 +11,7 @@ import {
   NewsletterUnsubscribeReply,
   NewsletterUnsubscribeReplyStatus,
 } from './newsletter';
+import { API_URL } from 'src/app/core/config/api-token';
 
 const apiUrl = 'https://api.example.com';
 

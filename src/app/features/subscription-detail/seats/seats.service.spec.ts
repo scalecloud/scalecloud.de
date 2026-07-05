@@ -4,9 +4,9 @@ import { provideHttpClient } from '@angular/common/http';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { SeatsService } from './seats.service';
-import { API_URL } from 'src/app/core/config/api.token';
 import { ListSeatReply, ListSeatRequest } from './seats';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 const MOCK_API_URL = 'https://api.example.com';
 

@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect } from 'vitest';
 
 import { AddSeatService } from './add-seat.service';
-import { API_URL, APP_BASE_URL } from 'src/app/core/config/api.token';
+import { API_URL, APP_BASE_URL } from 'src/app/core/config/api-token';
 
 describe('AddSeatService', () => {
   let service: AddSeatService;

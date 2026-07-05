@@ -4,8 +4,8 @@ import { HttpHeaders, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { PaymentMethodOverviewReply } from './payment-method-overview';
-import { API_URL } from 'src/app/core/config/api.token';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 const mockHttpOptions = { headers: new HttpHeaders() };
 

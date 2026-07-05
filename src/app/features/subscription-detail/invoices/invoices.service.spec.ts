@@ -5,8 +5,8 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { InvoicesService } from './invoices.service';
 import { InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from './invoices';
-import { API_URL } from 'src/app/core/config/api.token';
 import { Auth } from 'src/app/core/auth/auth';
+import { API_URL } from 'src/app/core/config/api-token';
 
 describe('InvoicesService', () => {
   let service: InvoicesService;
