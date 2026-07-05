@@ -2,15 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
-import { StatusComponent } from './status.component';
+import { Status } from './status';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { StripeKey } from 'src/app/core/stripe/stripe-key';
 
-describe('StatusComponent', () => {
-  let component: StatusComponent;
-  let fixture: ComponentFixture<StatusComponent>;
+describe('Status', () => {
+  let component: Status;
+  let fixture: ComponentFixture<Status>;
 
   let authMock: { waitForAuth: ReturnType<typeof vi.fn> };
   let logMock: {
@@ -57,7 +57,7 @@ describe('StatusComponent', () => {
     const mergedParams = { ...queryParams, ...paramOverrides };
 
     TestBed.configureTestingModule({
-      imports: [StatusComponent],
+      imports: [Status],
       providers: [
         { provide: Auth, useValue: authMock },
         { provide: Log, useValue: logMock },
@@ -74,7 +74,7 @@ describe('StatusComponent', () => {
       ]
     });
 
-    fixture = TestBed.createComponent(StatusComponent);
+    fixture = TestBed.createComponent(Status);
     component = fixture.componentInstance;
   }
 

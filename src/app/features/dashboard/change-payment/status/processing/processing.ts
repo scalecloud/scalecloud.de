@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
@@ -7,15 +7,17 @@ import { MatButton } from '@angular/material/button';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 @Component({
-    selector: 'app-succeeded',
-    templateUrl: './succeeded.component.html',
-    styleUrls: ['./succeeded.component.scss'],
+    selector: 'app-processing',
+    templateUrl: './processing.html',
+    styleUrls: ['./processing.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
 })
-export class SucceededComponent {
+export class Processing {
   private readonly returnUrl = inject(ReturnUrl);
 
   openReturnUrl(): void {
-    this.returnUrl.openReturnURL('/dashboard');
+    this.returnUrl.openReturnURL("/dashboard");
   }
+
 }

@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { ProcessingComponent } from './processing.component';
+import { Succeeded } from './succeeded';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
-describe('ProcessingComponent', () => {
-  let component: ProcessingComponent;
-  let fixture: ComponentFixture<ProcessingComponent>;
+describe('PaymentChangedSucceededComponent', () => {
+  let component: Succeeded;
+  let fixture: ComponentFixture<Succeeded>;
   let returnUrlMock: { openReturnURL: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
@@ -15,13 +15,13 @@ describe('ProcessingComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [ProcessingComponent],
+      imports: [Succeeded],
       providers: [
         { provide: ReturnUrl, useValue: returnUrlMock }
       ]
     });
 
-    fixture = TestBed.createComponent(ProcessingComponent);
+    fixture = TestBed.createComponent(Succeeded);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -30,15 +30,15 @@ describe('ProcessingComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the processing title', () => {
+  it('should display the success title', () => {
     const title: HTMLElement = fixture.nativeElement.querySelector('mat-card-title');
-    expect(title?.textContent).toContain('Processing payment details');
+    expect(title?.textContent).toContain('Success');
   });
 
   it('should display both informational list items', () => {
     const items = fixture.nativeElement.querySelectorAll('mat-list-item');
     expect(items.length).toBe(2);
-    expect(items[0].textContent).toContain('Your payment details are being processed.');
+    expect(items[0].textContent).toContain('Your payment method has been saved.');
     expect(items[1].textContent).toContain('You can manage your Subscription in your Dashboard.');
   });
 

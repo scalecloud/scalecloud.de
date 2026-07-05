@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SucceededComponent } from './succeeded/succeeded.component';
-import { ProcessingComponent } from './processing/processing.component';
-import { RequiresPaymentMethodComponent } from './requires-payment-method/requires-payment-method.component';
+import { Succeeded } from './succeeded/succeeded';
+import { Processing } from './processing/processing';
+import { RequiresPaymentMethod } from './requires-payment-method/requires-payment-method';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { StripeKey } from 'src/app/core/stripe/stripe-key';
@@ -11,11 +11,11 @@ declare const Stripe: any;
 
 @Component({
     selector: 'app-status',
-    templateUrl: './status.component.html',
-    styleUrls: ['./status.component.scss'],
-    imports: [SucceededComponent, ProcessingComponent, RequiresPaymentMethodComponent]
+    templateUrl: './status.html',
+    styleUrls: ['./status.scss'],
+    imports: [Succeeded, Processing, RequiresPaymentMethod]
 })
-export class StatusComponent implements OnInit {
+export class Status implements OnInit {
   private readonly log = inject(Log);
   private readonly route = inject(ActivatedRoute);
   private readonly auth = inject(Auth);

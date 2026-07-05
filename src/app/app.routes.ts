@@ -69,7 +69,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/change-payment/status',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard/change-payment/status/status.component').then(m => m.StatusComponent)
+        loadComponent: () => import('./features/dashboard/change-payment/status/status').then(m => m.Status)
       },
       // Auth - Lazy Loaded
       {

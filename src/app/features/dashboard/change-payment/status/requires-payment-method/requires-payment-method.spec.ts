@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { RequiresPaymentMethodComponent } from './requires-payment-method.component';
+import { RequiresPaymentMethod } from './requires-payment-method';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 describe('PaymentChangedRequiresPaymentMethodComponent', () => {
-  let component: RequiresPaymentMethodComponent;
-  let fixture: ComponentFixture<RequiresPaymentMethodComponent>;
+  let component: RequiresPaymentMethod;
+  let fixture: ComponentFixture<RequiresPaymentMethod>;
   let returnUrlMock: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
@@ -15,13 +15,13 @@ describe('PaymentChangedRequiresPaymentMethodComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [RequiresPaymentMethodComponent],
+      imports: [RequiresPaymentMethod],
       providers: [
         { provide: ReturnUrl, useValue: returnUrlMock }
       ]
     });
 
-    fixture = TestBed.createComponent(RequiresPaymentMethodComponent);
+    fixture = TestBed.createComponent(RequiresPaymentMethod);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
