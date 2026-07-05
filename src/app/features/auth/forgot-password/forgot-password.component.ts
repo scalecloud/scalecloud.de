@@ -2,13 +2,13 @@ import { Component, ChangeDetectionStrategy, inject, signal, computed, DestroyRe
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { interval, take } from 'rxjs';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { Auth } from 'src/app/core/auth/auth';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 const DEFAULT_DISABLED_SECONDS = 60;
 
@@ -21,7 +21,7 @@ const DEFAULT_DISABLED_SECONDS = 60;
 })
 export class ForgotPasswordComponent {
   private readonly auth = inject(Auth);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly email = new FormControl('', {
@@ -41,7 +41,7 @@ export class ForgotPasswordComponent {
   async forgotPassword(): Promise<void> {
     if (this.isEmailInvalid()) {
       this.email.markAsTouched();
-      this.snackBarService.error('Please enter a valid E-Mail address');
+      this.snackBar.error('Please enter a valid E-Mail address');
       return;
     }
 

@@ -5,7 +5,6 @@ import { BillingAddressReply } from '../billing-address-model';
 import { BillingAddressService } from '../billing-address.service';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
@@ -13,6 +12,7 @@ import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 const mockReply: BillingAddressReply = {
   subscriptionID: 'subscription-123',
@@ -34,7 +34,7 @@ const routeMock = { snapshot: { paramMap: { get: vi.fn().mockReturnValue('subscr
 const countryServiceMock = { getCountry: vi.fn().mockReturnValue('Germany') };
 const languageServiceMock = { getLanguage: vi.fn().mockReturnValue('de') };
 const logMock = { error: vi.fn() };
-const snackBarServiceMock = { error: vi.fn() };
+const snackBarMock = { error: vi.fn() };
 const returnUrlMock = { openUrlAddReturnUrl: vi.fn() };
 
 const providers = [
@@ -43,7 +43,7 @@ const providers = [
   { provide: BillingAddressService, useValue: billingAddressServiceMock },
   { provide: ActivatedRoute, useValue: routeMock },
   { provide: Log, useValue: logMock },
-  { provide: SnackBarService, useValue: snackBarServiceMock },
+  { provide: SnackBar, useValue: snackBarMock },
   { provide: ReturnUrl, useValue: returnUrlMock },
   { provide: CountryService, useValue: countryServiceMock },
   { provide: LanguageService, useValue: languageServiceMock },
@@ -133,7 +133,7 @@ describe('BillingAddressOverviewComponent', () => {
     permissionMock.isBilling.mockRejectedValue(new Error('Permission error'));
     ({ component } = await createComponent());
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    expect(snackBarServiceMock.error).toHaveBeenCalledWith(
+    expect(snackBarMock.error).toHaveBeenCalledWith(
       'An error occurred while checking permissions.'
     );
   });
@@ -173,7 +173,7 @@ describe('BillingAddressOverviewComponent', () => {
     routeMock.snapshot.paramMap.get.mockReturnValue(null);
     ({ component } = await createComponent());
     component.edit();
-    expect(snackBarServiceMock.error).toHaveBeenCalledWith(
+    expect(snackBarMock.error).toHaveBeenCalledWith(
       'Could not edit billing address. Please try again later.'
     );
   });

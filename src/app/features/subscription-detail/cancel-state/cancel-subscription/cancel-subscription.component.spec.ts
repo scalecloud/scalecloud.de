@@ -7,10 +7,10 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { CancelSubscriptionComponent } from './cancel-subscription.component';
 import { CancelSubscriptionService } from './cancel-subscription.service';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ISubscriptionCancelReply } from './subscription-cancel-request';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
@@ -27,7 +27,7 @@ const mockActivatedRoute = {
 
 const mockAuth            = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
 const mockLog             = { error: vi.fn(), info: vi.fn() };
-const mockSnackBarService        = { info: vi.fn(), error: vi.fn() };
+const mockSnackBar        = { info: vi.fn(), error: vi.fn() };
 const mockCancelSubscriptionService = {
   cancelSubscription: vi.fn(),
 };
@@ -67,7 +67,7 @@ describe('CancelSubscriptionComponent', () => {
         { provide: Auth,                useValue: mockAuth },
         { provide: CancelSubscriptionService,  useValue: mockCancelSubscriptionService },
         { provide: Log,                 useValue: mockLog },
-        { provide: SnackBarService,            useValue: mockSnackBarService },
+        { provide: SnackBar,            useValue: mockSnackBar },
         { provide: MatDialog,                  useValue: mockDialog },
       ],
     })
@@ -126,7 +126,7 @@ describe('CancelSubscriptionComponent', () => {
 
     it('shows a snackbar with the cancellation date on success', () => {
       component.cancelSubscription();
-      expect(mockSnackBarService.info).toHaveBeenCalledWith(
+      expect(mockSnackBar.info).toHaveBeenCalledWith(
         expect.stringContaining('Your Subscription will cancel at:')
       );
     });
@@ -147,7 +147,7 @@ describe('CancelSubscriptionComponent', () => {
 
       component.cancelSubscription();
 
-      expect(mockSnackBarService.info).not.toHaveBeenCalled();
+      expect(mockSnackBar.info).not.toHaveBeenCalled();
       expect(spy).not.toHaveBeenCalled();
     });
 
@@ -171,7 +171,7 @@ describe('CancelSubscriptionComponent', () => {
     it('formats the cancellation date from the Unix timestamp', () => {
       component.cancelSubscription();
       const expectedDate = new Date(MOCK_REPLY.cancel_at * 1000).toString();
-      expect(mockSnackBarService.info).toHaveBeenCalledWith(
+      expect(mockSnackBar.info).toHaveBeenCalledWith(
         `Your Subscription will cancel at: ${expectedDate}`
       );
     });

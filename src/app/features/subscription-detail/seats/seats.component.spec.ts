@@ -4,7 +4,6 @@ import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { SeatsComponent } from './seats.component';
 import { SeatsService } from './seats.service';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { ListSeatReply } from './seats';
 import { of, throwError } from 'rxjs';
@@ -12,6 +11,7 @@ import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -36,7 +36,7 @@ function buildMocks() {
     seatsService: { getListSeats: vi.fn() },
     auth: { waitForAuth: vi.fn().mockResolvedValue(undefined) },
     log: { error: vi.fn() },
-    snackBarService: { error: vi.fn(), info: vi.fn() },
+    snackBar: { error: vi.fn(), info: vi.fn() },
     returnUrl: { openUrlAddReturnUrl: vi.fn() },
     permission: { isAdministrator: vi.fn().mockResolvedValue(true) },
     route: { snapshot: { paramMap: { get: vi.fn().mockReturnValue('sub-1') } } },
@@ -60,7 +60,7 @@ describe('SeatsComponent', () => {
         { provide: SeatsService, useValue: mocks.seatsService },
         { provide: Auth, useValue: mocks.auth },
         { provide: Log, useValue: mocks.log },
-        { provide: SnackBarService, useValue: mocks.snackBarService },
+        { provide: SnackBar, useValue: mocks.snackBar },
         { provide: ReturnUrl, useValue: mocks.returnUrl },
         { provide: Permission, useValue: mocks.permission },
         { provide: ActivatedRoute, useValue: mocks.route },
@@ -100,7 +100,7 @@ describe('SeatsComponent', () => {
     mocks.permission.isAdministrator.mockRejectedValue(new Error('network'));
     await component.checkPermissions();
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    expect(mocks.snackBarService.error).toHaveBeenCalledOnce();
+    expect(mocks.snackBar.error).toHaveBeenCalledOnce();
   });
 
   // ── loadSeats ───────────────────────────────────────────────────────────────
@@ -186,7 +186,7 @@ describe('SeatsComponent', () => {
   it('addSeat shows error when subscriptionID is missing', () => {
     mocks.route.snapshot.paramMap.get.mockReturnValue(null);
     component.addSeat();
-    expect(mocks.snackBarService.error).toHaveBeenCalledOnce();
+    expect(mocks.snackBar.error).toHaveBeenCalledOnce();
     expect(mocks.returnUrl.openUrlAddReturnUrl).not.toHaveBeenCalled();
   });
 
@@ -201,6 +201,6 @@ describe('SeatsComponent', () => {
   it('openSeatDetail shows error when subscriptionID is missing', () => {
     mocks.route.snapshot.paramMap.get.mockReturnValue(null);
     component.openSeatDetail({ uid: 'u1' } as any);
-    expect(mocks.snackBarService.error).toHaveBeenCalledOnce();
+    expect(mocks.snackBar.error).toHaveBeenCalledOnce();
   });
 });

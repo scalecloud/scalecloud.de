@@ -2,13 +2,13 @@ import { Component, ChangeDetectionStrategy, inject, output } from '@angular/cor
 import { CancelSubscriptionService } from './cancel-subscription.service';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmCancelSubscriptionComponent } from './confirm-cancel-subscription/confirm-cancel-subscription.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
   selector: 'app-cancel-subscription',
@@ -21,7 +21,7 @@ export class CancelSubscriptionComponent {
   private readonly auth = inject(Auth);
   private readonly cancelSubscriptionService = inject(CancelSubscriptionService);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
 
@@ -54,7 +54,7 @@ export class CancelSubscriptionComponent {
         }
         if (reply.cancel_at_period_end) {
           const date = new Date(reply.cancel_at * 1000);
-          this.snackBarService.info(`Your Subscription will cancel at: ${date}`);
+          this.snackBar.info(`Your Subscription will cancel at: ${date}`);
           this.reloadSubscriptionDetail.emit();
         }
       },

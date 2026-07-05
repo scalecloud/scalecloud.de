@@ -3,25 +3,25 @@ import { provideRouter } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { ForgotPasswordComponent } from './forgot-password.component';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 describe('ForgotPasswordComponent', () => {
   let component: ForgotPasswordComponent;
   let fixture: ComponentFixture<ForgotPasswordComponent>;
   let authMock: { forgotPassword: ReturnType<typeof vi.fn> };
-  let snackBarService: { error: ReturnType<typeof vi.fn> };
+  let snackBar: { error: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     authMock = { forgotPassword: vi.fn().mockResolvedValue(false) };
-    snackBarService = { error: vi.fn() };
+    snackBar = { error: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [ForgotPasswordComponent],
       providers: [
         provideRouter([]),
         { provide: Auth, useValue: authMock },
-        { provide: SnackBarService, useValue: snackBarService },
+        { provide: SnackBar, useValue: snackBar },
       ],
     }).compileComponents();
 
@@ -84,7 +84,7 @@ describe('ForgotPasswordComponent', () => {
 
     await component.forgotPassword();
 
-    expect(snackBarService.error).toHaveBeenCalledWith('Please enter a valid E-Mail address');
+    expect(snackBar.error).toHaveBeenCalledWith('Please enter a valid E-Mail address');
     expect(authMock.forgotPassword).not.toHaveBeenCalled();
   });
 
@@ -119,7 +119,7 @@ describe('ForgotPasswordComponent', () => {
 
     await component.forgotPassword();
 
-    expect(snackBarService.error).not.toHaveBeenCalled();
+    expect(snackBar.error).not.toHaveBeenCalled();
   });
 
   it('should not start the countdown when Auth resolves false', async () => {

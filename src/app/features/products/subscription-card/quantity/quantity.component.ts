@@ -9,8 +9,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatInput } from '@angular/material/input';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 const MIN = 1;
 const MAX = 999;
@@ -23,7 +23,7 @@ const MAX = 999;
   imports: [MatInput, ReactiveFormsModule],
 })
 export class QuantityComponent implements OnInit {
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly route           = inject(ActivatedRoute);
 
   readonly quantityControl = new FormControl<number>(MIN, {
@@ -69,7 +69,7 @@ export class QuantityComponent implements OnInit {
         } else if (value > MAX) {
           this.quantityControl.setValue(MAX, { emitEvent: false });
           this.quantity.set(MAX);
-          this.snackBarService.info('If you need more than 999 users, please contact support.');
+          this.snackBar.info('If you need more than 999 users, please contact support.');
         } else {
           this.quantity.set(value);
         }

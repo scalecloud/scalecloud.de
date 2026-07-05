@@ -1,7 +1,6 @@
 import { Component, signal, computed, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { BillingAddressReply, BillingAddressRequest } from '../billing-address-model';
 import { BillingAddressService } from '../billing-address.service';
 import { CountryService } from '../country/country.service';
@@ -19,6 +18,7 @@ import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
   selector: 'app-billing-address-overview',
@@ -47,7 +47,7 @@ export class BillingAddressOverviewComponent implements OnInit {
   private readonly billingAddressService = inject(BillingAddressService);
   private readonly route = inject(ActivatedRoute);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly returnUrl = inject(ReturnUrl);
   private readonly countryService = inject(CountryService);
   private readonly languageService = inject(LanguageService);
@@ -77,7 +77,7 @@ export class BillingAddressOverviewComponent implements OnInit {
   edit(): void {
     const id = this.subscriptionId();
     if (!id) {
-      this.snackBarService.error('Could not edit billing address. Please try again later.');
+      this.snackBar.error('Could not edit billing address. Please try again later.');
       return;
     }
     this.returnUrl.openUrlAddReturnUrl(`/dashboard/subscription/${id}/billing-address`);
@@ -100,7 +100,7 @@ export class BillingAddressOverviewComponent implements OnInit {
       }
     } catch {
       this.serviceStatus.set(ServiceStatus.Error);
-      this.snackBarService.error('An error occurred while checking permissions.');
+      this.snackBar.error('An error occurred while checking permissions.');
     }
   }
 

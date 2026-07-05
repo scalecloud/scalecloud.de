@@ -6,12 +6,12 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { CancelStateComponent } from './cancel-state.component';
 import { CancelStateService } from './cancel-state.service';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { CancelStateReply } from './cancel-state';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
@@ -37,7 +37,7 @@ const mockActivatedRoute = {
 
 const mockAuth       = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
 const mockLog        = { error: vi.fn(), info: vi.fn() };
-const mockSnackBarService   = { error: vi.fn() };
+const mockSnackBar   = { error: vi.fn() };
 const mockPermission = { isBilling: vi.fn().mockResolvedValue(true) };
 
 const MOCK_REPLY: CancelStateReply = {
@@ -65,7 +65,7 @@ describe('CancelStateComponent', () => {
         { provide: Auth,        useValue: mockAuth },
         { provide: CancelStateService, useValue: mockCancelStateService },
         { provide: Log,         useValue: mockLog },
-        { provide: SnackBarService,    useValue: mockSnackBarService },
+        { provide: SnackBar,    useValue: mockSnackBar },
         { provide: Permission,  useValue: mockPermission },
       ],
     })
@@ -125,7 +125,7 @@ describe('CancelStateComponent', () => {
       mockPermission.isBilling.mockRejectedValueOnce(new Error('network'));
       await component.checkPermissions();
       expect(component.serviceStatus).toBe(ServiceStatus.Error);
-      expect(mockSnackBarService.error).toHaveBeenCalledWith(
+      expect(mockSnackBar.error).toHaveBeenCalledWith(
         'An error occurred while checking permissions.'
       );
     });

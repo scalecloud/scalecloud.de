@@ -7,12 +7,12 @@ import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 import { BillingAddressDetailComponent } from './billing-address-detail.component';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { BillingAddressService } from '../billing-address.service';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { BillingAddressReply } from '../billing-address-model';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 /**
  * NOTE: These mock shapes are inferred from how the component calls
@@ -55,7 +55,7 @@ describe('BillingAddressDetailComponent', () => {
   let permissionMock: { isBilling: Mock };
   let billingAddressServiceMock: { getBillingAddress: Mock; updateBillingAddress: Mock };
   let logMock: { error: Mock };
-  let snackBarServiceMock: { info: Mock; error: Mock };
+  let snackBarMock: { info: Mock; error: Mock };
   let returnUrlMock: { openReturnURL: Mock };
   let activatedRouteStub: Partial<ActivatedRoute>;
 
@@ -73,7 +73,7 @@ describe('BillingAddressDetailComponent', () => {
       updateBillingAddress: vi.fn().mockReturnValue(of({ subscriptionID: SUBSCRIPTION_ID })),
     };
     logMock = { error: vi.fn() };
-    snackBarServiceMock = { info: vi.fn(), error: vi.fn() };
+    snackBarMock = { info: vi.fn(), error: vi.fn() };
     returnUrlMock = { openReturnURL: vi.fn() };
     activatedRouteStub = routeOverride ?? createActivatedRouteStub();
 
@@ -91,7 +91,7 @@ describe('BillingAddressDetailComponent', () => {
         { provide: Permission, useValue: permissionMock },
         { provide: BillingAddressService, useValue: billingAddressServiceMock },
         { provide: Log, useValue: logMock },
-        { provide: SnackBarService, useValue: snackBarServiceMock },
+        { provide: SnackBar, useValue: snackBarMock },
         { provide: ReturnUrl, useValue: returnUrlMock },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
@@ -328,7 +328,7 @@ describe('BillingAddressDetailComponent', () => {
           postal_code: '99999',
         },
       });
-      expect(snackBarServiceMock.info).toHaveBeenCalledWith('Billing address updated.');
+      expect(snackBarMock.info).toHaveBeenCalledWith('Billing address updated.');
       expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
     });
 
@@ -343,7 +343,7 @@ describe('BillingAddressDetailComponent', () => {
 
       await component.onSubmit();
 
-      expect(snackBarServiceMock.error).toHaveBeenCalledWith('Could not update billing address. Please retry.');
+      expect(snackBarMock.error).toHaveBeenCalledWith('Could not update billing address. Please retry.');
       expect(returnUrlMock.openReturnURL).not.toHaveBeenCalled();
     });
 
@@ -360,7 +360,7 @@ describe('BillingAddressDetailComponent', () => {
 
       await component.onSubmit();
 
-      expect(snackBarServiceMock.error).toHaveBeenCalledWith(
+      expect(snackBarMock.error).toHaveBeenCalledWith(
         'Currently not possible update billing address. Please try again later.',
       );
       expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');

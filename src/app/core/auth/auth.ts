@@ -4,14 +4,14 @@ import { HttpHeaders } from '@angular/common/http';
 import type { User } from 'firebase/auth';
 
 import { Log } from '../logging/log';
-import { SnackBarService } from '../snackbar/snack-bar.service';
+import { SnackBar } from '../snackbar/snack-bar';
 import { ReturnUrl } from '../redirect/return-url';
 import { Firebase } from '../firebase/firebase';
 
 @Injectable({ providedIn: 'root' })
 export class Auth {
   private readonly router = inject(Router);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBarService = inject(SnackBar);
   private readonly logService = inject(Log);
   private readonly returnUrlService = inject(ReturnUrl);
   private readonly firebase = inject(Firebase);

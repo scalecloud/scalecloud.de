@@ -1,11 +1,9 @@
 import { provideRouter, ActivatedRoute }  from '@angular/router';
 import { ComponentFixture, TestBed }      from '@angular/core/testing';
 import { By }                             from '@angular/platform-browser';
-
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-
 import { QuantityComponent } from './quantity.component';
-import { SnackBarService }   from 'src/app/core/snackbar/snack-bar.service';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -36,7 +34,7 @@ function clickIncrement(fixture: ComponentFixture<QuantityComponent>): void {
 describe('QuantityComponent', () => {
   let component: QuantityComponent;
   let fixture:   ComponentFixture<QuantityComponent>;
-  const snackBarService = { info: vi.fn(), error: vi.fn() };
+  const snackBar = { info: vi.fn(), error: vi.fn() };
 
   async function setup(queryParams: Record<string, string> = {}): Promise<void> {
     vi.clearAllMocks();
@@ -45,7 +43,7 @@ describe('QuantityComponent', () => {
       imports:   [QuantityComponent],
       providers: [
         provideRouter([]),
-        { provide: SnackBarService, useValue: snackBarService },
+        { provide: SnackBar, useValue: snackBar },
         { provide: ActivatedRoute,  useValue: makeRoute(queryParams) },
       ],
     }).compileComponents();
@@ -159,7 +157,7 @@ describe('QuantityComponent', () => {
     it('shows a snackbar when the value exceeds 999', async () => {
       component.quantityControl.setValue(1000);
       await fixture.whenStable();
-      expect(snackBarService.info).toHaveBeenCalledWith(
+      expect(snackBar.info).toHaveBeenCalledWith(
         'If you need more than 999 users, please contact support.',
       );
     });
@@ -167,13 +165,13 @@ describe('QuantityComponent', () => {
     it('does not show a snackbar for valid values', async () => {
       component.quantityControl.setValue(500);
       await fixture.whenStable();
-      expect(snackBarService.info).not.toHaveBeenCalled();
+      expect(snackBar.info).not.toHaveBeenCalled();
     });
 
     it('does not show a snackbar when clamping below 1', async () => {
       component.quantityControl.setValue(0);
       await fixture.whenStable();
-      expect(snackBarService.info).not.toHaveBeenCalled();
+      expect(snackBar.info).not.toHaveBeenCalled();
     });
   });
 

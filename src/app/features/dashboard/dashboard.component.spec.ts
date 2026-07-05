@@ -3,13 +3,13 @@ import { DashboardComponent } from './dashboard.component';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LastCountService } from './subscription-overview/last-count/last-count.service';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { provideRouter } from '@angular/router';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 const mockSubscriptions: ISubscriptionOverview[] = [
   {
@@ -47,7 +47,7 @@ const lastCountServiceMock = {
   set setLastSubscriptionOverviewCount(v: number) {},
 };
 
-const snackBarServiceMock = {
+const snackBarMock = {
   show: vi.fn(),
 };
 
@@ -66,7 +66,7 @@ describe('DashboardComponent', () => {
         { provide: SubscriptionOverviewService, useValue: subscriptionOverviewServiceMock },
         { provide: Log, useValue: logMock },
         { provide: LastCountService, useValue: lastCountServiceMock },
-        { provide: SnackBarService, useValue: snackBarServiceMock },
+        { provide: SnackBar, useValue: snackBarMock },
       ],
     }).compileComponents();
 

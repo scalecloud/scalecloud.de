@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { VerifyEmailComponent } from './verify-email.component';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { signal } from '@angular/core';
 import { Auth } from 'src/app/core/auth/auth';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -28,7 +28,7 @@ describe('VerifyEmailComponent', () => {
     isLoggedIn: vi.fn(() => Promise.resolve(true)),
   };
   const returnUrl = { openReturnURL: vi.fn() };
-  const snackBarService = { error: vi.fn() };
+  const snackBar = { error: vi.fn() };
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -41,7 +41,7 @@ describe('VerifyEmailComponent', () => {
       providers: [
         { provide: Auth, useValue: authMock },
         { provide: ReturnUrl, useValue: returnUrl },
-        { provide: SnackBarService, useValue: snackBarService },
+        { provide: SnackBar, useValue: snackBar },
       ],
     }).compileComponents();
 
@@ -146,7 +146,7 @@ describe('VerifyEmailComponent', () => {
     expect(authMock.reloadUser).toHaveBeenCalled();
     expect(authMock.isLoggedIn).toHaveBeenCalledWith(true);
     expect(returnUrl.openReturnURL).toHaveBeenCalledWith('/');
-    expect(snackBarService.error).not.toHaveBeenCalled();
+    expect(snackBar.error).not.toHaveBeenCalled();
   });
 
   it('should reset isProceedToCheckoutLoading to false after success', async () => {
@@ -182,7 +182,7 @@ describe('VerifyEmailComponent', () => {
 
     await component.proceedToCheckout();
 
-    expect(snackBarService.error).toHaveBeenCalledWith('Please verify your E-Mail address first.');
+    expect(snackBar.error).toHaveBeenCalledWith('Please verify your E-Mail address first.');
     expect(returnUrl.openReturnURL).not.toHaveBeenCalled();
   });
 

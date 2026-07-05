@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CancelStateReply } from './cancel-state';
 import { CancelStateService } from './cancel-state.service';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -13,6 +12,7 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
     selector: 'app-cancel-state',
@@ -25,7 +25,7 @@ export class CancelStateComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly cancelStateService = inject(CancelStateService);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly permission = inject(Permission);
   private readonly route = inject(ActivatedRoute);
 
@@ -64,7 +64,7 @@ export class CancelStateComponent implements OnInit {
       }
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
-      this.snackBarService.error('An error occurred while checking permissions.');
+      this.snackBar.error('An error occurred while checking permissions.');
       this.log.error('SeatsComponent.checkPermissions: error checking permissions', error);
     }
   }

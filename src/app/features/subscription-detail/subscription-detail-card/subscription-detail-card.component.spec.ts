@@ -6,13 +6,13 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionDetailCardComponent } from './subscription-detail-card.component';
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
 import { CancelStateComponent } from '../cancel-state/cancel-state.component';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 // ─── Factories ───────────────────────────────────────────────────────────────
 
@@ -85,7 +85,7 @@ describe('SubscriptionDetailCardComponent', () => {
   let permission: ReturnType<typeof makePermissionService>;
   let subscriptionService: ReturnType<typeof makeSubscriptionService>;
   let log: ReturnType<typeof makeLogService>;
-  let snackBarService: ReturnType<typeof makeSnackBarService>;
+  let snackBar: ReturnType<typeof makeSnackBarService>;
 
   async function setup(options: {
     subscriptionID?: string;
@@ -105,7 +105,7 @@ describe('SubscriptionDetailCardComponent', () => {
     permission = makePermissionService(hasPermission);
     subscriptionService = makeSubscriptionService(reply);
     log = makeLogService();
-    snackBarService = makeSnackBarService();
+    snackBar = makeSnackBarService();
 
     await TestBed.configureTestingModule({
       imports: [SubscriptionDetailCardComponent],
@@ -118,7 +118,7 @@ describe('SubscriptionDetailCardComponent', () => {
         { provide: Permission, useValue: permission },
         { provide: SubscriptionDetailCardService, useValue: subscriptionService },
         { provide: Log, useValue: log },
-        { provide: SnackBarService, useValue: snackBarService },
+        { provide: SnackBar, useValue: snackBar },
       ],
     })
     // CancelStateComponent is a child rendered by the template. Replacing its
@@ -165,7 +165,7 @@ describe('SubscriptionDetailCardComponent', () => {
     await stabilize(fixture);
 
     expect(component.serviceStatus).toBe(ServiceStatus.Error);
-    expect(snackBarService.error).toHaveBeenCalledWith(
+    expect(snackBar.error).toHaveBeenCalledWith(
       'An error occurred while checking permissions.',
     );
   });

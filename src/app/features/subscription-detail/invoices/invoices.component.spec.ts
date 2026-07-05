@@ -7,10 +7,10 @@ import { InvoicesComponent } from './invoices.component';
 import { InvoicesService } from './invoices.service';
 import { InvoiceStatus, ListInvoicesReply } from './invoices';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 describe('InvoicesComponent', () => {
   let component: InvoicesComponent;
@@ -20,7 +20,7 @@ describe('InvoicesComponent', () => {
   let authMock: { waitForAuth: ReturnType<typeof vi.fn> };
   let logMock: { error: ReturnType<typeof vi.fn> };
   let permissionMock: { isBilling: ReturnType<typeof vi.fn> };
-  let snackBarServiceMock: { error: ReturnType<typeof vi.fn>; infoDuration: ReturnType<typeof vi.fn> };
+  let snackBarMock: { error: ReturnType<typeof vi.fn>; infoDuration: ReturnType<typeof vi.fn> };
 
   const subscriptionID = 'sub_123';
 
@@ -50,7 +50,7 @@ describe('InvoicesComponent', () => {
     authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
     logMock = { error: vi.fn() };
     permissionMock = { isBilling: vi.fn().mockResolvedValue(true) };
-    snackBarServiceMock = { error: vi.fn(), infoDuration: vi.fn() };
+    snackBarMock = { error: vi.fn(), infoDuration: vi.fn() };
 
     TestBed.configureTestingModule({
       imports: [InvoicesComponent],
@@ -59,7 +59,7 @@ describe('InvoicesComponent', () => {
         { provide: Auth, useValue: authMock },
         { provide: Log, useValue: logMock },
         { provide: Permission, useValue: permissionMock },
-        { provide: SnackBarService, useValue: snackBarServiceMock },
+        { provide: SnackBar, useValue: snackBarMock },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -123,7 +123,7 @@ describe('InvoicesComponent', () => {
       await fixture.whenStable();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-      expect(snackBarServiceMock.error).toHaveBeenCalledWith('An error occurred while checking permissions.');
+      expect(snackBarMock.error).toHaveBeenCalledWith('An error occurred while checking permissions.');
     });
   });
 
@@ -238,7 +238,7 @@ describe('InvoicesComponent', () => {
 
       component.open(invoice);
 
-      expect(snackBarServiceMock.infoDuration).toHaveBeenCalledWith('Downloading invoice', 2);
+      expect(snackBarMock.infoDuration).toHaveBeenCalledWith('Downloading invoice', 2);
       expect(window.open).toHaveBeenCalledWith(invoice.invoice_pdf, '_self');
     });
 
@@ -247,7 +247,7 @@ describe('InvoicesComponent', () => {
 
       component.open(invoice);
 
-      expect(snackBarServiceMock.error).toHaveBeenCalledWith('Could not download invoice, please contact support');
+      expect(snackBarMock.error).toHaveBeenCalledWith('Could not download invoice, please contact support');
       expect(window.open).not.toHaveBeenCalled();
     });
   });

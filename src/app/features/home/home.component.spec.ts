@@ -4,9 +4,9 @@ import { provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { HomeComponent } from './home.component';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { NewsletterSubscribeComponent } from 'src/app/features/newsletter/newsletter-subscribe/newsletter-subscribe.component';
 import { GlobeComponent } from './globe/globe.component';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 // ─── Stubs ────────────────────────────────────────────────────────────────────
 // HomeComponent only cares that these children are present, not what they do
@@ -25,7 +25,7 @@ describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
 
-  const snackBarService = { errorDuration: vi.fn() };
+  const snackBar = { errorDuration: vi.fn() };
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -34,7 +34,7 @@ describe('HomeComponent', () => {
       imports: [HomeComponent],
       providers: [
         provideRouter([]),
-        { provide: SnackBarService, useValue: snackBarService },
+        { provide: SnackBar, useValue: snackBar },
       ],
     })
       .overrideComponent(HomeComponent, {
@@ -108,13 +108,13 @@ describe('HomeComponent', () => {
   // ─── ngOnInit / SnackBarService ────────────────────────────────────────────────
 
   it('should show an under-construction warning on init', () => {
-    expect(snackBarService.errorDuration).toHaveBeenCalledWith(
+    expect(snackBar.errorDuration).toHaveBeenCalledWith(
       'This Website is currently under construction. Please come back later.',
       30,
     );
   });
 
   it('should show the under-construction warning exactly once', () => {
-    expect(snackBarService.errorDuration).toHaveBeenCalledTimes(1);
+    expect(snackBar.errorDuration).toHaveBeenCalledTimes(1);
   });
 });

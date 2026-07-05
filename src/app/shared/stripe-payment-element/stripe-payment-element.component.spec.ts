@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StripePaymentElementComponent } from './stripe-payment-element.component';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 describe('StripePaymentElementComponent', () => {
   let component: StripePaymentElementComponent;
@@ -16,7 +16,7 @@ describe('StripePaymentElementComponent', () => {
     error: vi.fn()
   };
 
-  const snackBarServiceMock = {
+  const snackBarMock = {
     error: vi.fn()
   };
 
@@ -75,7 +75,7 @@ describe('StripePaymentElementComponent', () => {
       imports: [StripePaymentElementComponent],
       providers: [
         { provide: Log, useValue: logMock },
-        { provide: SnackBarService, useValue: snackBarServiceMock },
+        { provide: SnackBar, useValue: snackBarMock },
         { provide: StripeKeyService, useValue: stripeKeyServiceMock }
       ]
     }).compileComponents();
@@ -128,7 +128,7 @@ describe('StripePaymentElementComponent', () => {
       errorHandler({ error: { message: 'Something went wrong' } });
 
       expect(component.serviceStatus).toBe(ServiceStatus.Error);
-      expect(snackBarServiceMock.error).toHaveBeenCalledWith('Error loading Stripe: Something went wrong');
+      expect(snackBarMock.error).toHaveBeenCalledWith('Error loading Stripe: Something went wrong');
     });
 
     it('should display and report a validation error on "change" when the field is invalid', () => {
@@ -146,7 +146,7 @@ describe('StripePaymentElementComponent', () => {
       changeHandler({ error: { message: 'Invalid postal code' } });
 
       expect(cardErrorsEl.textContent).toBe('Invalid postal code');
-      expect(snackBarServiceMock.error).toHaveBeenCalledWith('Invalid postal code');
+      expect(snackBarMock.error).toHaveBeenCalledWith('Invalid postal code');
 
       document.body.removeChild(cardErrorsEl);
     });
@@ -211,7 +211,7 @@ describe('StripePaymentElementComponent', () => {
         elements: stripeElementsMock,
         confirmParams: { return_url: submitStripePayment.return_url }
       });
-      expect(snackBarServiceMock.error).toHaveBeenCalledWith('Card declined');
+      expect(snackBarMock.error).toHaveBeenCalledWith('Card declined');
     });
 
     it('should call confirmPayment for a PaymentIntent and not show an error on success', async () => {
@@ -228,7 +228,7 @@ describe('StripePaymentElementComponent', () => {
         elements: stripeElementsMock,
         confirmParams: { return_url: submitStripePayment.return_url }
       });
-      expect(snackBarServiceMock.error).not.toHaveBeenCalled();
+      expect(snackBarMock.error).not.toHaveBeenCalled();
     });
   });
 });

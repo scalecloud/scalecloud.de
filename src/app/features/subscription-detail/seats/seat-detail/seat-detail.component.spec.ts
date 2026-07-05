@@ -6,12 +6,12 @@ import { of, Subject } from 'rxjs';
 
 import { SeatDetailComponent } from './seat-detail.component';
 import { SeatDetailService } from './seat-detail.service';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Role } from 'src/app/core/permission/roles';
 import { SeatDetailReply } from '../seats';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -45,7 +45,7 @@ function buildMocks() {
     },
     auth: { waitForAuth: vi.fn().mockResolvedValue(undefined) },
     log: { error: vi.fn() },
-    snackBarService: { error: vi.fn(), info: vi.fn() },
+    snackBar: { error: vi.fn(), info: vi.fn() },
     returnUrl: { openReturnURL: vi.fn() },
     dialog: { open: vi.fn() },
     route: {
@@ -73,7 +73,7 @@ describe('SeatDetailComponent', () => {
         { provide: SeatDetailService, useValue: mocks.seatDetailService },
         { provide: Auth, useValue: mocks.auth },
         { provide: Log, useValue: mocks.log },
-        { provide: SnackBarService, useValue: mocks.snackBarService },
+        { provide: SnackBar, useValue: mocks.snackBar },
         { provide: ReturnUrl, useValue: mocks.returnUrl },
         { provide: MatDialog, useValue: mocks.dialog },
         { provide: ActivatedRoute, useValue: mocks.route },
@@ -275,7 +275,7 @@ describe('SeatDetailComponent', () => {
     component.loadSeatDetail();
     await fixture.whenStable();
     component.updateSeat();
-    expect(mocks.snackBarService.info).toHaveBeenCalledWith('Nothing to update.');
+    expect(mocks.snackBar.info).toHaveBeenCalledWith('Nothing to update.');
     expect(mocks.seatDetailService.updateSeat).not.toHaveBeenCalled();
   });
 
@@ -315,13 +315,13 @@ describe('SeatDetailComponent', () => {
     component.deleteSeat(seat);
     await fixture.whenStable();
 
-    expect(mocks.snackBarService.error).toHaveBeenCalledOnce();
+    expect(mocks.snackBar.error).toHaveBeenCalledOnce();
   });
 
   it('shows error and redirects when subscriptionID is missing on delete', () => {
     mocks.route.snapshot.paramMap.get.mockReturnValue(null);
     component.deleteSeat(makeSeat());
-    expect(mocks.snackBarService.error).toHaveBeenCalledOnce();
+    expect(mocks.snackBar.error).toHaveBeenCalledOnce();
     expect(mocks.returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 

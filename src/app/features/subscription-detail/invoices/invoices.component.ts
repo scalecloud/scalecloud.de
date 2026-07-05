@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@ang
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { firstValueFrom } from 'rxjs';
 import { Invoice, InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from './invoices';
 import { InvoicesService } from './invoices.service';
@@ -18,6 +17,7 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
     selector: 'app-invoices',
@@ -30,7 +30,7 @@ export class InvoicesComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly invoiceService = inject(InvoicesService);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly permission = inject(Permission);
   private readonly route = inject(ActivatedRoute);
 
@@ -67,7 +67,7 @@ export class InvoicesComponent implements OnInit {
       }
     } catch {
       this.serviceStatus.set(ServiceStatus.Error);
-      this.snackBarService.error('An error occurred while checking permissions.');
+      this.snackBar.error('An error occurred while checking permissions.');
     }
   }
 
@@ -127,10 +127,10 @@ export class InvoicesComponent implements OnInit {
   open(invoice: Invoice): void {
     const url = invoice.invoice_pdf;
     if (url) {
-      this.snackBarService.infoDuration('Downloading invoice', 2);
+      this.snackBar.infoDuration('Downloading invoice', 2);
       window.open(url, '_self');
     } else {
-      this.snackBarService.error('Could not download invoice, please contact support');
+      this.snackBar.error('Could not download invoice, please contact support');
     }
   }
 

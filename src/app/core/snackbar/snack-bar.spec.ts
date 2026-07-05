@@ -2,12 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { SnackBarService } from './snack-bar.service';
+import { SnackBar } from './snack-bar';
 import { SnackBarProgress } from './progress/snack-bar-progress';
 import { Log } from '../logging/log';
 
-describe('SnackBarService', () => {
-  let service: SnackBarService;
+describe('SnackBar', () => {
+  let service: SnackBar;
 
   const matSnackBar = { openFromComponent: vi.fn() };
   const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
@@ -24,7 +24,7 @@ describe('SnackBarService', () => {
       ],
     });
 
-    service = TestBed.inject(SnackBarService);
+    service = TestBed.inject(SnackBar);
   });
 
   afterEach(() => {

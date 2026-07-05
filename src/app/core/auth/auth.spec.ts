@@ -5,7 +5,7 @@ import type { User } from 'firebase/auth';
 
 import { Auth } from './auth';
 import { Log } from '../logging/log';
-import { SnackBarService } from '../snackbar/snack-bar.service';
+import { SnackBar } from '../snackbar/snack-bar';
 import { ReturnUrl } from '../redirect/return-url';
 import { Firebase } from '../firebase/firebase';
 
@@ -89,7 +89,7 @@ describe('Auth', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: router },
-        { provide: SnackBarService, useValue: snackBarService },
+        { provide: SnackBar, useValue: snackBarService },
         { provide: Log, useValue: logService },
         { provide: ReturnUrl, useValue: returnUrlService },
         { provide: Firebase, useValue: firebase },

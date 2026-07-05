@@ -4,10 +4,10 @@ import { describe, it, expect, vi } from 'vitest';
 import { of } from 'rxjs';
 
 import { StatusComponent } from './status.component';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 describe('StatusComponent', () => {
   let component: StatusComponent;
@@ -15,7 +15,7 @@ describe('StatusComponent', () => {
 
   const authMock = { waitForAuth: vi.fn(() => Promise.resolve()) };
   const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
-  const snackBarService = { error: vi.fn() };
+  const snackBar = { error: vi.fn() };
 
   async function createComponent(
     queryParams: Partial<CheckoutCreateSubscriptionReply>,
@@ -31,7 +31,7 @@ describe('StatusComponent', () => {
       providers: [
         { provide: Auth, useValue: authMock },
         { provide: Log, useValue: log },
-        { provide: SnackBarService, useValue: snackBarService },
+        { provide: SnackBar, useValue: snackBar },
         { provide: ActivatedRoute, useValue: { queryParams: of(queryParams) } },
       ],
     }).compileComponents();
@@ -73,7 +73,7 @@ describe('StatusComponent', () => {
   it('should show an error snackbar when query params are incomplete', async () => {
     await createComponent({ status: 'active', subscriptionID: '' });
 
-    expect(snackBarService.error).toHaveBeenCalledWith(
+    expect(snackBar.error).toHaveBeenCalledWith(
       'Error: Could not get payment status. Please try again later.',
     );
     expect(component.active()).toBe(false);
@@ -87,7 +87,7 @@ describe('StatusComponent', () => {
     );
 
     expect(log.error).toHaveBeenCalledWith(expect.stringContaining('waitForAuth failed'));
-    expect(snackBarService.error).toHaveBeenCalledWith(
+    expect(snackBar.error).toHaveBeenCalledWith(
       'Error: Could not get payment status. Please try again later.',
     );
     expect(component.checkoutCreateSubscriptionReply()).toBeUndefined();

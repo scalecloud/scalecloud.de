@@ -4,7 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { serviceErrorInterceptor } from './service-error-interceptor';
-import { SnackBarService } from '../snackbar/snack-bar.service';
+import { SnackBar } from '../snackbar/snack-bar';
 import { Log } from '../logging/log';
 
 const mockSnackBarService = { error: vi.fn() };
@@ -23,7 +23,7 @@ describe('serviceErrorInterceptor', () => {
       providers: [
         provideHttpClient(withInterceptors([serviceErrorInterceptor])),
         provideHttpClientTesting(),
-        { provide: SnackBarService, useValue: mockSnackBarService },
+        { provide: SnackBar, useValue: mockSnackBarService },
         { provide: Log, useValue: mockLogService },
       ],
     });

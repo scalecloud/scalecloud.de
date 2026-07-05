@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AddSeatRequest } from '../seats';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { AddSeatService } from './add-seat.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +22,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
   selector: 'app-add-seat',
@@ -42,7 +42,7 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
 export class AddSeatComponent {
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly addSeatService = inject(AddSeatService);
   private readonly returnUrl = inject(ReturnUrl);
   private readonly route = inject(ActivatedRoute);
@@ -78,7 +78,7 @@ export class AddSeatComponent {
     const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
 
     if (!subscriptionID) {
-      this.snackBarService.error(
+      this.snackBar.error(
         'Currently not possible to invite a user. Please try again later.',
       );
       this.returnUrl.openReturnURL('/dashboard');
@@ -107,16 +107,16 @@ export class AddSeatComponent {
       );
 
       if (reply.success) {
-        this.snackBarService.info(`Invitation sent to ${reply.email}.`);
+        this.snackBar.info(`Invitation sent to ${reply.email}.`);
         this.returnUrl.openReturnURL('/dashboard');
       } else {
-        this.snackBarService.error(
+        this.snackBar.error(
           `Could not send invitation to ${reply.email}. Please retry.`,
         );
       }
     } catch (err) {
       this.log.error('addSeat request failed: ' + err);
-      this.snackBarService.error('An unexpected error occurred. Please try again.');
+      this.snackBar.error('An unexpected error occurred. Please try again.');
     } finally {
       this.isSubmitting.set(false);
     }

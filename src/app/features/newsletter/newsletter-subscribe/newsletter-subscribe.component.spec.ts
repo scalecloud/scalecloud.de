@@ -5,15 +5,15 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { NewsletterSubscribeComponent } from './newsletter-subscribe.component';
 import { NewsletterService } from '../newsletter.service';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { NewsletterSubscribeReplyStatus } from '../newsletter';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 describe('NewsletterSubscribeComponent', () => {
   let component: NewsletterSubscribeComponent;
   let fixture: ComponentFixture<NewsletterSubscribeComponent>;
 
   const newsletterService = { subscribeToNewsletter: vi.fn() };
-  const snackBarService = { info: vi.fn(), infoDuration: vi.fn(), warn: vi.fn(), warnDuration: vi.fn(), error: vi.fn(), errorDuration: vi.fn() };
+  const snackBar = { info: vi.fn(), infoDuration: vi.fn(), warn: vi.fn(), warnDuration: vi.fn(), error: vi.fn(), errorDuration: vi.fn() };
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -23,7 +23,7 @@ describe('NewsletterSubscribeComponent', () => {
       providers: [
         provideRouter([]),
         { provide: NewsletterService, useValue: newsletterService },
-        { provide: SnackBarService, useValue: snackBarService },
+        { provide: SnackBar, useValue: snackBar },
       ],
     })
       .compileComponents();
@@ -74,7 +74,7 @@ describe('NewsletterSubscribeComponent', () => {
     component.subscribeToNewsletter();
 
     expect(newsletterService.subscribeToNewsletter).toHaveBeenCalledWith({ email: 'user@example.com' });
-    expect(snackBarService.info).toHaveBeenCalledWith('Please check your E-Mail to confirm your newsletter subscription.');
+    expect(snackBar.info).toHaveBeenCalledWith('Please check your E-Mail to confirm your newsletter subscription.');
     expect(component.email.disabled).toBe(true);
   });
 
@@ -86,7 +86,7 @@ describe('NewsletterSubscribeComponent', () => {
 
     component.subscribeToNewsletter();
 
-    expect(snackBarService.warn).toHaveBeenCalledWith('You have made too many requests. Please wait and try again later.');
+    expect(snackBar.warn).toHaveBeenCalledWith('You have made too many requests. Please wait and try again later.');
     expect(component.email.disabled).toBe(false);
   });
 
@@ -96,7 +96,7 @@ describe('NewsletterSubscribeComponent', () => {
 
     component.subscribeToNewsletter();
 
-    expect(snackBarService.error).toHaveBeenCalledWith('An error occurred while subscribing to the newsletter.');
+    expect(snackBar.error).toHaveBeenCalledWith('An error occurred while subscribing to the newsletter.');
   });
 
   it('resetEMail should clear, re-enable, and clear the error message', () => {

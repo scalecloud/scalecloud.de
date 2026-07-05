@@ -3,7 +3,6 @@ import { ServiceStatus } from 'src/app/shared/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { BillingAddressService } from '../billing-address.service';
 import { ActivatedRoute } from '@angular/router';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -20,6 +19,7 @@ import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 /**
  * Typed shape of the billing address form.
@@ -69,10 +69,10 @@ export class BillingAddressDetailComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly auth = inject(Auth);
   private readonly permission = inject(Permission);
-  private readonly service = inject(BillingAddressService);
+  private readonly billingAddress = inject(BillingAddressService);
   private readonly route = inject(ActivatedRoute);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly returnUrl = inject(ReturnUrl);
 
   // Mutable view state is now signal-backed. With OnPush as the
@@ -178,7 +178,7 @@ export class BillingAddressDetailComponent implements OnInit {
     }
 
     const request: BillingAddressRequest = { subscriptionID };
-    this.service.getBillingAddress(request).subscribe({
+    this.billingAddress.getBillingAddress(request).subscribe({
       next: (reply) => this.applyReply(reply),
       error: () => this.serviceStatus.set(ServiceStatus.Error),
     });
@@ -225,7 +225,7 @@ export class BillingAddressDetailComponent implements OnInit {
 
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.snackBarService.error('Currently not possible update billing address. Please try again later.');
+      this.snackBar.error('Currently not possible update billing address. Please try again later.');
       this.returnUrl.openReturnURL('/dashboard');
       return;
     }
@@ -244,12 +244,12 @@ export class BillingAddressDetailComponent implements OnInit {
       phone: this.f.phone.value,
     };
 
-    this.service.updateBillingAddress(updateBillingAddressRequest).subscribe((reply) => {
+    this.billingAddress.updateBillingAddress(updateBillingAddressRequest).subscribe((reply) => {
       if (reply.subscriptionID) {
-        this.snackBarService.info('Billing address updated.');
+        this.snackBar.info('Billing address updated.');
         this.returnUrl.openReturnURL('/dashboard');
       } else {
-        this.snackBarService.error('Could not update billing address. Please retry.');
+        this.snackBar.error('Could not update billing address. Please retry.');
       }
     });
   }

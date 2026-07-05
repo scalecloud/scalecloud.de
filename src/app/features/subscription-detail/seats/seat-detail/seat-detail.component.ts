@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleDescriptions } from 'src/app/core/permission/roles';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import {
   DeleteSeatRequest,
   Seat,
@@ -37,6 +36,7 @@ import { MatButton } from '@angular/material/button';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
   selector: 'app-seat-detail',
@@ -63,7 +63,7 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
 export class SeatDetailComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly seatDetailService = inject(SeatDetailService);
   private readonly returnUrl = inject(ReturnUrl);
   private readonly route = inject(ActivatedRoute);
@@ -182,7 +182,7 @@ export class SeatDetailComponent implements OnInit {
   // ── Actions ───────────────────────────────────────────────────────────────
   updateSeat(): void {
     if (!this.canUpdate()) {
-      this.snackBarService.info('Nothing to update.');
+      this.snackBar.info('Nothing to update.');
       return;
     }
 
@@ -197,10 +197,10 @@ export class SeatDetailComponent implements OnInit {
       this.seatDetailService.updateSeat(request).subscribe({
         next: (reply) => {
           if (reply.seat) {
-            this.snackBarService.info('User updated.');
+            this.snackBar.info('User updated.');
             this.returnUrl.openReturnURL('/dashboard');
           } else {
-            this.snackBarService.error('Could not update user. Please try again later.');
+            this.snackBar.error('Could not update user. Please try again later.');
           }
         },
       });
@@ -218,7 +218,7 @@ export class SeatDetailComponent implements OnInit {
 
     if (!subscriptionID) {
       this.log.error('SeatDetailComponent.deleteSeat: subscriptionID is null');
-      this.snackBarService.error('Currently not possible to delete a user. Please try again later.');
+      this.snackBar.error('Currently not possible to delete a user. Please try again later.');
       this.returnUrl.openReturnURL('/dashboard');
       return;
     }
@@ -229,10 +229,10 @@ export class SeatDetailComponent implements OnInit {
       this.seatDetailService.deleteSeat(request).subscribe({
         next: (reply) => {
           if (reply?.success) {
-            this.snackBarService.info(`Removed ${reply.deletedSeat.email}.`);
+            this.snackBar.info(`Removed ${reply.deletedSeat.email}.`);
             this.returnUrl.openReturnURL('/dashboard');
           } else {
-            this.snackBarService.error(
+            this.snackBar.error(
               `Could not remove ${seatToDelete?.email}. Please retry.`
             );
           }

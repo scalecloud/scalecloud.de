@@ -4,11 +4,11 @@ import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ConfirmResumeSubscriptionComponent } from './confirm-resume-subscription/confirm-resume-subscription.component';
 import { ResumeSubscriptionService } from './resume-subscription.service';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
   selector: 'app-resume-subscription',
@@ -20,7 +20,7 @@ import { Log } from 'src/app/core/logging/log';
 export class ResumeSubscriptionComponent {
   private readonly resumeSubscriptionService = inject(ResumeSubscriptionService);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
   private readonly destroyRef = takeUntilDestroyed();
@@ -58,9 +58,9 @@ export class ResumeSubscriptionComponent {
             'ResumeSubscriptionComponent.resumeSubscription: reply is null',
           );
         } else if (reply.cancel_at_period_end) {
-          this.snackBarService.error('Your Subscription is still canceled.');
+          this.snackBar.error('Your Subscription is still canceled.');
         } else {
-          this.snackBarService.info('Your Subscription has been resumed.');
+          this.snackBar.info('Your Subscription has been resumed.');
           this.reloadSubscriptionDetail.emit();
         }
       });

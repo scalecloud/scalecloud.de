@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription';
 import { ActiveComponent } from './active/active.component';
 import { TrailingComponent } from './trailing/trailing.component';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
   selector: 'app-status',
@@ -17,7 +17,7 @@ import { Log } from 'src/app/core/logging/log';
 })
 export class StatusComponent implements OnInit {
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly route = inject(ActivatedRoute);
   private readonly auth = inject(Auth);
 
@@ -34,7 +34,7 @@ export class StatusComponent implements OnInit {
       await this.auth.waitForAuth();
     } catch (error) {
       this.log.error(`waitForAuth failed: ${error}`);
-      this.snackBarService.error('Error: Could not get payment status. Please try again later.');
+      this.snackBar.error('Error: Could not get payment status. Please try again later.');
       return;
     }
 
@@ -43,7 +43,7 @@ export class StatusComponent implements OnInit {
     const allValuesSet = Object.values(reply).every((value) => Boolean(value));
 
     if (!allValuesSet) {
-      this.snackBarService.error('Error: Could not get payment status. Please try again later.');
+      this.snackBar.error('Error: Could not get payment status. Please try again later.');
       return;
     }
 

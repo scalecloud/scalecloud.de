@@ -3,7 +3,6 @@ import { SubscriptionDetailReply } from './subscription-detail-card';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
@@ -17,6 +16,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
     selector: 'app-subscription-detail-card',
@@ -31,7 +31,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
   private readonly subscriptionDetailCardService = inject(SubscriptionDetailCardService);
   private readonly route = inject(ActivatedRoute);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
 
 
   reply: SubscriptionDetailReply | undefined;
@@ -63,7 +63,7 @@ export class SubscriptionDetailCardComponent implements OnInit {
       }
     } catch (error) {
       this.serviceStatus = ServiceStatus.Error;
-      this.snackBarService.error('An error occurred while checking permissions.');
+      this.snackBar.error('An error occurred while checking permissions.');
       this.log.error('SeatsComponent.checkPermissions: error checking permissions', error);
     }
   }

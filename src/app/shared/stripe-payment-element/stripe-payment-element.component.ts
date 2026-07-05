@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
@@ -11,6 +10,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { FormsModule } from '@angular/forms';
 import { LoadingFailedComponent } from '../loading-failed/loading-failed.component';
 import { Log } from 'src/app/core/logging/log';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 declare const Stripe: any;
 
@@ -23,7 +23,7 @@ declare const Stripe: any;
 })
 export class StripePaymentElementComponent {
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly stripeKeyService = inject(StripeKeyService);
 
   ServiceStatus = ServiceStatus;
@@ -73,7 +73,7 @@ export class StripePaymentElementComponent {
 
       paymentElement.on('error', (event: any) => {
         this.serviceStatus = ServiceStatus.Error;
-        this.snackBarService.error("Error loading Stripe: " + event.error.message);
+        this.snackBar.error("Error loading Stripe: " + event.error.message);
       });
 
       paymentElement.addEventListener('change', (event: { error: { message: string | null; }; }) => {
@@ -82,7 +82,7 @@ export class StripePaymentElementComponent {
           if (event.error) {
             displayError.textContent = event.error.message;
             if (displayError.textContent) {
-              this.snackBarService.error(displayError.textContent);
+              this.snackBar.error(displayError.textContent);
             }
           } else {
             displayError.textContent = '';
@@ -106,7 +106,7 @@ export class StripePaymentElementComponent {
         }
       });
       if (stripeError) {
-        this.snackBarService.error(stripeError.message);
+        this.snackBar.error(stripeError.message);
       }
     }
     else if (this.initStripePayment.intent == StripeIntent.PaymentIntent) {
@@ -117,7 +117,7 @@ export class StripePaymentElementComponent {
         }
       });
       if (stripeError) {
-        this.snackBarService.error(stripeError.message);
+        this.snackBar.error(stripeError.message);
       }
     }
   }

@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { SeatsService } from './seats.service';
 import { ListSeatReply, ListSeatRequest, Seat } from './seats';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { ActivatedRoute } from '@angular/router';
@@ -31,6 +30,7 @@ import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
   selector: 'app-seats',
@@ -59,7 +59,7 @@ export class SeatsComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly seatService = inject(SeatsService);
   private readonly log = inject(Log);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly returnUrl = inject(ReturnUrl);
   private readonly permission = inject(Permission);
   private readonly route = inject(ActivatedRoute);
@@ -106,7 +106,7 @@ export class SeatsComponent implements OnInit {
       }
     } catch {
       this.serviceStatus.set(ServiceStatus.Error);
-      this.snackBarService.error('An error occurred while checking permissions.');
+      this.snackBar.error('An error occurred while checking permissions.');
     }
   }
 
@@ -151,7 +151,7 @@ export class SeatsComponent implements OnInit {
   addSeat(): void {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.snackBarService.error('Could not add seat. Please try again later.');
+      this.snackBar.error('Could not add seat. Please try again later.');
       return;
     }
     this.returnUrl.openUrlAddReturnUrl(
@@ -162,7 +162,7 @@ export class SeatsComponent implements OnInit {
   openSeatDetail(seat: Seat): void {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
-      this.snackBarService.error('Could not open seat detail. Please try again later.');
+      this.snackBar.error('Could not open seat detail. Please try again later.');
       return;
     }
     this.returnUrl.openUrlAddReturnUrl(

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, DestroyRef, signal, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { NewsletterService } from '../newsletter.service';
 import { NewsletterSubscribeReplyStatus, NewsletterSubscribeRequest } from '../newsletter';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
@@ -11,6 +10,7 @@ import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/f
 import { MatInput } from '@angular/material/input';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 @Component({
     selector: 'app-newsletter-subscribe',
@@ -37,7 +37,7 @@ import { RouterLink } from '@angular/router';
     ],
 })
 export class NewsletterSubscribeComponent {
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
   private readonly newsletterService = inject(NewsletterService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -70,17 +70,17 @@ export class NewsletterSubscribeComponent {
         .subscribe({
           next: reply => {
             if (reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.SUCCESS) {
-              this.snackBarService.info('Please check your E-Mail to confirm your newsletter subscription.');
+              this.snackBar.info('Please check your E-Mail to confirm your newsletter subscription.');
               this.email.disable();
             } else if (reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.INVALID_EMAIL) {
-              this.snackBarService.error('The E-Mail address is invalid.');
+              this.snackBar.error('The E-Mail address is invalid.');
               this.errorMessage.set('Not a valid E-Mail address.');
             } else if (reply.newsletterSubscribeReplyStatus === NewsletterSubscribeReplyStatus.RATE_LIMIT) {
-              this.snackBarService.warn('You have made too many requests. Please wait and try again later.');
+              this.snackBar.warn('You have made too many requests. Please wait and try again later.');
             }
           },
           error: () => {
-            this.snackBarService.error('An error occurred while subscribing to the newsletter.');
+            this.snackBar.error('An error occurred while subscribing to the newsletter.');
           },
         });
     }

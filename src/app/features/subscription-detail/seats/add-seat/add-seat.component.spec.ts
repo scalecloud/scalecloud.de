@@ -5,12 +5,12 @@ import { of, Subject, throwError } from 'rxjs';
 
 import { AddSeatComponent } from './add-seat.component';
 import { AddSeatService } from './add-seat.service';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Role } from 'src/app/core/permission/roles';
 import { AddSeatReply } from '../seats';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -34,7 +34,7 @@ describe('AddSeatComponent', () => {
   const addSeatService = { addSeat: vi.fn() };
   const auth = { waitForAuth: vi.fn(() => Promise.resolve()) };
   const log = { warn: vi.fn(), error: vi.fn() };
-  const snackBarService = { info: vi.fn(), error: vi.fn() };
+  const snackBar = { info: vi.fn(), error: vi.fn() };
   const returnUrl = { openReturnURL: vi.fn() };
 
   const activatedRouteStub = {
@@ -51,7 +51,7 @@ describe('AddSeatComponent', () => {
         { provide: AddSeatService, useValue: addSeatService },
         { provide: Auth, useValue: auth },
         { provide: Log, useValue: log },
-        { provide: SnackBarService, useValue: snackBarService },
+        { provide: SnackBar, useValue: snackBar },
         { provide: ReturnUrl, useValue: returnUrl },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
@@ -248,7 +248,7 @@ describe('AddSeatComponent', () => {
       email: 'invited@example.com',
       roles: [Role.Administrator],
     });
-    expect(snackBarService.info).toHaveBeenCalledWith('Invitation sent to invited@example.com.');
+    expect(snackBar.info).toHaveBeenCalledWith('Invitation sent to invited@example.com.');
     expect(returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
@@ -298,7 +298,7 @@ describe('AddSeatComponent', () => {
 
     await component.addSeat();
 
-    expect(snackBarService.error).toHaveBeenCalledWith(
+    expect(snackBar.error).toHaveBeenCalledWith(
       'Could not send invitation to fail@example.com. Please retry.',
     );
     expect(returnUrl.openReturnURL).not.toHaveBeenCalled();
@@ -319,7 +319,7 @@ describe('AddSeatComponent', () => {
 
     await component.addSeat();
 
-    expect(snackBarService.error).toHaveBeenCalledWith(
+    expect(snackBar.error).toHaveBeenCalledWith(
       'An unexpected error occurred. Please try again.',
     );
     expect(log.error).toHaveBeenCalled();
@@ -332,7 +332,7 @@ describe('AddSeatComponent', () => {
 
     await component.addSeat();
 
-    expect(snackBarService.error).toHaveBeenCalledWith(
+    expect(snackBar.error).toHaveBeenCalledWith(
       'Currently not possible to invite a user. Please try again later.',
     );
     expect(returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');

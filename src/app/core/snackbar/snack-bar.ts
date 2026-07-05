@@ -8,7 +8,7 @@ type SnackBarCssClass = 'snackbar-info' | 'snackbar-warn' | 'snackbar-error';
 @Injectable({
   providedIn: 'root',
 })
-export class SnackBarService {
+export class SnackBar {
   private readonly snackBar = inject(MatSnackBar);
   private readonly logService = inject(Log);
 

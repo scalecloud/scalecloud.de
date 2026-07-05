@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
-import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Auth } from 'src/app/core/auth/auth';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
 const RESEND_COOLDOWN_SECONDS = 30;
 
@@ -19,7 +19,7 @@ const RESEND_COOLDOWN_SECONDS = 30;
 export class VerifyEmailComponent implements OnInit, OnDestroy {
   readonly auth = inject(Auth);
   private readonly returnUrl = inject(ReturnUrl);
-  private readonly snackBarService = inject(SnackBarService);
+  private readonly snackBar = inject(SnackBar);
 
   private readonly secondsRemaining = signal(0);
   readonly isResendDisabled = computed(() => this.secondsRemaining() > 0);
@@ -54,7 +54,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
       if (await this.auth.isLoggedIn(true)) {
         this.returnUrl.openReturnURL('/');
       } else {
-        this.snackBarService.error('Please verify your E-Mail address first.');
+        this.snackBar.error('Please verify your E-Mail address first.');
       }
     } finally {
       this.isProceedToCheckoutLoading.set(false);
