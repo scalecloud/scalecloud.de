@@ -2,12 +2,12 @@ import { Routes } from '@angular/router';
 
 
 
-import { dashboardGuard } from './core/auth/guards/dashboard.guard';
-import { loginGuard } from './core/auth/guards/login.guard';
-import { registerGuard } from './core/auth/guards/register.guard';
-import { forgotPasswordGuard } from './core/auth/guards/forgot-password.guard';
-import { verifyEMailGuard } from './core/auth/guards/verify-email.guard';
-import { checkoutGuard } from './features/products/checkout/guard/checkout.guard';
+import { dashboardGuard } from './core/auth/guards/dashboard-guard';
+import { loginGuard } from './core/auth/guards/login-guard';
+import { registerGuard } from './core/auth/guards/register-guard';
+import { forgotPasswordGuard } from './core/auth/guards/forgot-password-guard';
+import { verifyEmailGuard } from './core/auth/guards/verify-email-guard';
+import { checkoutGuard } from './features/products/checkout/guard/checkout-guard';
 
 export const routes: Routes = [
   {
@@ -84,7 +84,7 @@ export const routes: Routes = [
       },
       {
         path: 'verify-email-address',
-        canActivate: [verifyEMailGuard],
+        canActivate: [verifyEmailGuard],
         loadComponent: () => import('./features/auth/verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
       },
       {

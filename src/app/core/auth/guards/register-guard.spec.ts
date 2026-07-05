@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { verifyEMailGuard } from './verify-email.guard';
+import { registerGuard } from './register-guard';
 import { Auth } from '../auth';
 
 const mockRouter = { navigate: vi.fn() };
@@ -11,14 +11,13 @@ const mockAuth = {
   isLoggedInNotVerified: vi.fn(),
 };
 
-/** Run the guard inside Angular's DI context */
 function runGuard(): Promise<boolean> {
   return TestBed.runInInjectionContext(() =>
-    verifyEMailGuard({} as any, {} as any) as Promise<boolean>
+    registerGuard({} as any, {} as any) as Promise<boolean>
   );
 }
 
-describe('verifyEMailGuard', () => {
+describe('registerGuard', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -44,17 +43,22 @@ describe('verifyEMailGuard', () => {
     it('blocks activation', async () => {
       expect(await runGuard()).toBe(false);
     });
+
+    it('does not check verification status when already logged in', async () => {
+      await runGuard();
+      expect(mockAuth.isLoggedInNotVerified).not.toHaveBeenCalled();
+    });
   });
 
-  describe('when the user is not logged in and not in a pending-verification state', () => {
+  describe('when the user is logged in but unverified', () => {
     beforeEach(() => {
       mockAuth.isLoggedIn.mockResolvedValue(false);
-      mockAuth.isLoggedInNotVerified.mockResolvedValue(false);
+      mockAuth.isLoggedInNotVerified.mockResolvedValue(true);
     });
 
-    it('redirects to /login', async () => {
+    it('redirects to /verify-email-address', async () => {
       await runGuard();
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/verify-email-address']);
     });
 
     it('blocks activation', async () => {
@@ -62,10 +66,10 @@ describe('verifyEMailGuard', () => {
     });
   });
 
-  describe('when the user is logged in but unverified (the verify-email page is intended for them)', () => {
+  describe('when the user is not logged in and not pending verification (the register page is intended for them)', () => {
     beforeEach(() => {
       mockAuth.isLoggedIn.mockResolvedValue(false);
-      mockAuth.isLoggedInNotVerified.mockResolvedValue(true);
+      mockAuth.isLoggedInNotVerified.mockResolvedValue(false);
     });
 
     it('allows activation', async () => {

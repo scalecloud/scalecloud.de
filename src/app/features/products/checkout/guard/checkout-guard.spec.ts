@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { checkoutGuard } from './checkout.guard';
+import { checkoutGuard } from './checkout-guard';
 import { LogService } from 'src/app/core/logging/log.service';
 import { Auth } from 'src/app/core/auth/auth';
 
