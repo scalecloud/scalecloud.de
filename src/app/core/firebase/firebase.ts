@@ -51,7 +51,7 @@ export const GET_PERFORMANCE = new InjectionToken<typeof getPerformance>('getPer
 });
 
 @Injectable({ providedIn: 'root' })
-export class FirebaseService {
+export class Firebase {
   private readonly initializeAppFn = inject(INITIALIZE_APP);
   private readonly getAuthFn = inject(GET_AUTH);
   private readonly getAnalyticsFn = inject(GET_ANALYTICS);

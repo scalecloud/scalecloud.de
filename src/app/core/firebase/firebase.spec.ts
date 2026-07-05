@@ -2,12 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import {
-  FirebaseService,
+  Firebase,
   INITIALIZE_APP,
   GET_AUTH,
   GET_ANALYTICS,
   GET_PERFORMANCE,
-} from './firebase.service';
+} from './firebase';
 import { environment } from 'src/environments/environment';
 
 // ── Firebase mocking note ────────────────────────────────────────────────────
@@ -27,8 +27,8 @@ import { environment } from 'src/environments/environment';
 // injection tokens, and this spec overrides those tokens - a plain runtime
 // object swap via Angular DI, unaffected by module-resolution quirks.
 
-describe('FirebaseService', () => {
-  let service: FirebaseService;
+describe('Firebase', () => {
+  let service: Firebase;
 
   const mockApp = { name: '[DEFAULT]', options: {}, automaticDataCollectionEnabled: false };
   const mockAuth = { currentUser: null, app: mockApp };
@@ -56,7 +56,7 @@ describe('FirebaseService', () => {
     // providedIn: 'root' + field initializers means construction (and the
     // initializeApp/getAuth/getAnalytics/getPerformance calls) happens here,
     // fresh, every test - only guaranteed if the previous module was reset.
-    service = TestBed.inject(FirebaseService);
+    service = TestBed.inject(Firebase);
   });
 
   afterEach(() => {

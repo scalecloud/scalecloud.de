@@ -6,8 +6,8 @@ import type { User } from 'firebase/auth';
 import { Auth } from './auth';
 import { LogService } from '../logging/log.service';
 import { SnackBarService } from '../snackbar/snack-bar.service';
-import { FirebaseService } from 'src/app/core/firebase/firebase.service';
 import { ReturnUrlService } from '../redirect/return-url.service';
+import { Firebase } from '../firebase/firebase';
 
 // ── Firebase mocking note ────────────────────────────────────────────────────
 // Auth no longer imports firebase/auth directly - it calls the thin
@@ -53,7 +53,7 @@ describe('Auth', () => {
     getReturnUrlDecoded: vi.fn(() => 'https://example.com/verify'),
   };
   const firebaseAuth = { currentUser: null as User | null };
-  const firebaseService = {
+  const firebase = {
     auth: firebaseAuth,
     onAuthStateChanged: vi.fn(),
     signInWithEmailAndPassword: vi.fn(),
@@ -78,7 +78,7 @@ describe('Auth', () => {
     registrations = [];
     firebaseAuth.currentUser = null;
 
-    (firebaseService.onAuthStateChanged as unknown as Mock).mockImplementation(
+    (firebase.onAuthStateChanged as unknown as Mock).mockImplementation(
       (next: AuthStateCallback, error?: (err: Error) => void) => {
         const unsubscribe = vi.fn();
         registrations.push({ next, error, unsubscribe });
@@ -92,7 +92,7 @@ describe('Auth', () => {
         { provide: SnackBarService, useValue: snackBarService },
         { provide: LogService, useValue: logService },
         { provide: ReturnUrlService, useValue: returnUrlService },
-        { provide: FirebaseService, useValue: firebaseService },
+        { provide: Firebase, useValue: firebase },
       ],
     });
 
@@ -109,7 +109,7 @@ describe('Auth', () => {
   });
 
   it('should register exactly one onAuthStateChanged listener on construction', () => {
-    expect(firebaseService.onAuthStateChanged).toHaveBeenCalledTimes(1);
+    expect(firebase.onAuthStateChanged).toHaveBeenCalledTimes(1);
     expect(registrations).toHaveLength(1);
   });
 
@@ -191,17 +191,17 @@ describe('Auth', () => {
   describe('login', () => {
     it('should sign in, update the user, and open the return URL on success', async () => {
       const user = makeUser();
-      (firebaseService.signInWithEmailAndPassword as unknown as Mock).mockResolvedValue({ user });
+      (firebase.signInWithEmailAndPassword as unknown as Mock).mockResolvedValue({ user });
 
       await service.login('user@example.com', 'secret');
 
-      expect(firebaseService.signInWithEmailAndPassword).toHaveBeenCalledWith('user@example.com', 'secret');
+      expect(firebase.signInWithEmailAndPassword).toHaveBeenCalledWith('user@example.com', 'secret');
       expect(service.user()).toBe(user);
       expect(returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
     });
 
     it('should show an error snackbar and not navigate on failure', async () => {
-      (firebaseService.signInWithEmailAndPassword as unknown as Mock).mockRejectedValue(new Error('bad credentials'));
+      (firebase.signInWithEmailAndPassword as unknown as Mock).mockRejectedValue(new Error('bad credentials'));
 
       await service.login('user@example.com', 'wrong');
 
@@ -213,14 +213,14 @@ describe('Auth', () => {
   describe('register', () => {
     it('should create the account, set the user, and send a verification mail on success', async () => {
       const user = makeUser();
-      (firebaseService.createUserWithEmailAndPassword as unknown as Mock).mockResolvedValue({ user });
-      (firebaseService.sendEmailVerification as unknown as Mock).mockResolvedValue(undefined);
+      (firebase.createUserWithEmailAndPassword as unknown as Mock).mockResolvedValue({ user });
+      (firebase.sendEmailVerification as unknown as Mock).mockResolvedValue(undefined);
       firebaseAuth.currentUser = user;
 
       await service.register('new@example.com', 'secret');
 
       expect(service.user()).toBe(user);
-      expect(firebaseService.sendEmailVerification).toHaveBeenCalledWith(user, { url: 'https://example.com/verify' });
+      expect(firebase.sendEmailVerification).toHaveBeenCalledWith(user, { url: 'https://example.com/verify' });
       expect(snackBarService.infoDuration).toHaveBeenCalledWith(
         'Please check your E-Mail for verification.',
         30,
@@ -229,7 +229,7 @@ describe('Auth', () => {
     });
 
     it('should show an error snackbar on failure', async () => {
-      (firebaseService.createUserWithEmailAndPassword as unknown as Mock).mockRejectedValue(new Error('email in use'));
+      (firebase.createUserWithEmailAndPassword as unknown as Mock).mockRejectedValue(new Error('email in use'));
 
       await service.register('new@example.com', 'secret');
 
@@ -244,13 +244,13 @@ describe('Auth', () => {
       await service.sendVerificationMail();
 
       expect(snackBarService.error).toHaveBeenCalledWith('No user logged in.');
-      expect(firebaseService.sendEmailVerification).not.toHaveBeenCalled();
+      expect(firebase.sendEmailVerification).not.toHaveBeenCalled();
     });
 
     it('should show an error snackbar when sendEmailVerification fails', async () => {
       const user = makeUser();
       firebaseAuth.currentUser = user;
-      (firebaseService.sendEmailVerification as unknown as Mock).mockRejectedValue(new Error('quota exceeded'));
+      (firebase.sendEmailVerification as unknown as Mock).mockRejectedValue(new Error('quota exceeded'));
 
       await service.sendVerificationMail();
 
@@ -260,7 +260,7 @@ describe('Auth', () => {
 
   describe('forgotPassword', () => {
     it('should return true and show an info snackbar on success', async () => {
-      (firebaseService.sendPasswordResetEmail as unknown as Mock).mockResolvedValue(undefined);
+      (firebase.sendPasswordResetEmail as unknown as Mock).mockResolvedValue(undefined);
 
       const result = await service.forgotPassword('user@example.com');
 
@@ -272,7 +272,7 @@ describe('Auth', () => {
     });
 
     it('should return false and show an error snackbar on failure', async () => {
-      (firebaseService.sendPasswordResetEmail as unknown as Mock).mockRejectedValue(new Error('no such user'));
+      (firebase.sendPasswordResetEmail as unknown as Mock).mockRejectedValue(new Error('no such user'));
 
       const result = await service.forgotPassword('missing@example.com');
 
@@ -317,7 +317,7 @@ describe('Auth', () => {
 
       await service.authStateReady();
 
-      expect(firebaseService.onAuthStateChanged).not.toHaveBeenCalled();
+      expect(firebase.onAuthStateChanged).not.toHaveBeenCalled();
     });
 
     it('should wait for the next auth state event when user is still undefined', async () => {
@@ -419,11 +419,11 @@ describe('Auth', () => {
 
   describe('signOut', () => {
     it('should sign out and navigate to the root route', async () => {
-      (firebaseService.signOut as unknown as Mock).mockResolvedValue(undefined);
+      (firebase.signOut as unknown as Mock).mockResolvedValue(undefined);
 
       await service.signOut();
 
-      expect(firebaseService.signOut).toHaveBeenCalled();
+      expect(firebase.signOut).toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledWith(['/']);
     });
   });
