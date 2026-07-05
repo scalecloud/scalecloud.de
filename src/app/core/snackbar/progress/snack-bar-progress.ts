@@ -13,15 +13,15 @@ export interface SnackBarProgressData {
 
 @Component({
   selector: 'app-snack-bar-progress',
-  templateUrl: './snack-bar-progress.component.html',
-  styleUrls: ['./snack-bar-progress.component.scss'],
+  templateUrl: './snack-bar-progress.html',
+  styleUrls: ['./snack-bar-progress.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatProgressBar],
 })
-export class SnackBarProgressComponent {
+export class SnackBarProgress {
   readonly data = inject<SnackBarProgressData>(MAT_SNACK_BAR_DATA);
 
-  private readonly snackBarRef = inject<MatSnackBarRef<SnackBarProgressComponent>>(MatSnackBarRef);
+  private readonly snackBarRef = inject<MatSnackBarRef<SnackBarProgress>>(MatSnackBarRef);
   private readonly destroyRef = inject(DestroyRef);
 
   /** 0-100 progress value, drives the mat-progress-bar. */

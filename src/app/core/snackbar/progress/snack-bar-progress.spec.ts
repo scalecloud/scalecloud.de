@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { Subject } from 'rxjs';
 
-import { SnackBarProgressComponent, SnackBarProgressData } from './snack-bar-progress.component';
+import { SnackBarProgress, SnackBarProgressData } from './snack-bar-progress';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
-describe('SnackBarProgressComponent', () => {
-  let component: SnackBarProgressComponent;
-  let fixture: ComponentFixture<SnackBarProgressComponent>;
+describe('SnackBarProgress', () => {
+  let component: SnackBarProgress;
+  let fixture: ComponentFixture<SnackBarProgress>;
   let afterOpened$: Subject<void>;
 
   const data: SnackBarProgressData = { message: 'Saved', time: '09:00:00', duration: 5 };
@@ -22,14 +22,14 @@ describe('SnackBarProgressComponent', () => {
     snackBarRef.containerInstance.snackBarConfig.duration = 5000;
 
     await TestBed.configureTestingModule({
-      imports: [SnackBarProgressComponent],
+      imports: [SnackBarProgress],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: data },
         { provide: MatSnackBarRef, useValue: snackBarRef },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SnackBarProgressComponent);
+    fixture = TestBed.createComponent(SnackBarProgress);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -99,7 +99,7 @@ describe('SnackBarProgressComponent', () => {
 
   it('should handle a zero duration by dropping straight to 0', async () => {
     snackBarRef.containerInstance.snackBarConfig.duration = 0;
-    fixture = TestBed.createComponent(SnackBarProgressComponent);
+    fixture = TestBed.createComponent(SnackBarProgress);
     component = fixture.componentInstance;
     await fixture.whenStable();
 

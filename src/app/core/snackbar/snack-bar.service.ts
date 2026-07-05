@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Log } from '../logging/log';
-import { SnackBarProgressComponent, SnackBarProgressData } from './progress/snack-bar-progress.component';
+import { SnackBarProgress, SnackBarProgressData } from './progress/snack-bar-progress';
 
 type SnackBarCssClass = 'snackbar-info' | 'snackbar-warn' | 'snackbar-error';
 
@@ -50,7 +50,7 @@ export class SnackBarService {
 
     const data: SnackBarProgressData = { message, time, duration };
 
-    this.snackBar.openFromComponent(SnackBarProgressComponent, {
+    this.snackBar.openFromComponent(SnackBarProgress, {
       duration: duration * 1000,
       panelClass: [cssClass],
       data,

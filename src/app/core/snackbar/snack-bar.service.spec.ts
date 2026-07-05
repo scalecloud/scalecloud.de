@@ -3,7 +3,7 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SnackBarService } from './snack-bar.service';
-import { SnackBarProgressComponent } from './progress/snack-bar-progress.component';
+import { SnackBarProgress } from './progress/snack-bar-progress';
 import { Log } from '../logging/log';
 
 describe('SnackBarService', () => {
@@ -39,7 +39,7 @@ describe('SnackBarService', () => {
     service.info('Hello');
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
-      SnackBarProgressComponent,
+      SnackBarProgress,
       expect.objectContaining({
         duration: 8000,
         panelClass: ['snackbar-info'],
@@ -53,7 +53,7 @@ describe('SnackBarService', () => {
     service.infoDuration('Hello', 3);
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
-      SnackBarProgressComponent,
+      SnackBarProgress,
       expect.objectContaining({ duration: 3000, panelClass: ['snackbar-info'] }),
     );
   });
@@ -62,7 +62,7 @@ describe('SnackBarService', () => {
     service.warn('Careful');
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
-      SnackBarProgressComponent,
+      SnackBarProgress,
       expect.objectContaining({ duration: 8000, panelClass: ['snackbar-warn'] }),
     );
     expect(logService.warn).toHaveBeenCalledWith('Careful');
@@ -72,7 +72,7 @@ describe('SnackBarService', () => {
     service.warnDuration('Careful', 5);
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
-      SnackBarProgressComponent,
+      SnackBarProgress,
       expect.objectContaining({ duration: 5000, panelClass: ['snackbar-warn'] }),
     );
   });
@@ -81,7 +81,7 @@ describe('SnackBarService', () => {
     service.error('Broken');
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
-      SnackBarProgressComponent,
+      SnackBarProgress,
       expect.objectContaining({ duration: 8000, panelClass: ['snackbar-error'] }),
     );
     expect(logService.error).toHaveBeenCalledWith('Broken');
@@ -91,7 +91,7 @@ describe('SnackBarService', () => {
     service.errorDuration('Broken', 12);
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
-      SnackBarProgressComponent,
+      SnackBarProgress,
       expect.objectContaining({ duration: 12000, panelClass: ['snackbar-error'] }),
     );
   });
@@ -102,7 +102,7 @@ describe('SnackBarService', () => {
     service.info('Midnight message');
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
-      SnackBarProgressComponent,
+      SnackBarProgress,
       expect.objectContaining({ data: expect.objectContaining({ time: '00:04:09' }) }),
     );
   });
