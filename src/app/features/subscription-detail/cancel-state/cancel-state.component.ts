@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { LogService } from 'src/app/core/logging/log.service';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { CancelStateReply } from './cancel-state';
@@ -13,6 +12,7 @@ import { ResumeSubscriptionComponent } from './resume-subscription/resume-subscr
 import { CancelSubscriptionComponent } from './cancel-subscription/cancel-subscription.component';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { Auth } from 'src/app/core/auth/auth';
+import { Permission } from 'src/app/core/permission/permission';
 
 @Component({
     selector: 'app-cancel-state',
@@ -26,7 +26,7 @@ export class CancelStateComponent implements OnInit {
   private readonly cancelStateService = inject(CancelStateService);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
-  private readonly permissionService = inject(PermissionService);
+  private readonly permission = inject(Permission);
   private readonly route = inject(ActivatedRoute);
 
 
@@ -56,7 +56,7 @@ export class CancelStateComponent implements OnInit {
     }
 
     try {
-      const hasPermission = await this.permissionService.isBilling(subscriptionID);
+      const hasPermission = await this.permission.isBilling(subscriptionID);
       if (hasPermission) {
         this.getCancelState();
       } else {

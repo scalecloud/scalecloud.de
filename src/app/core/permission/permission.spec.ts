@@ -3,15 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { of, throwError, Subject } from 'rxjs';
 
-import { PermissionService } from './permission.service';
+import { Permission } from './permission';
 import { Auth } from '../auth/auth';
 import { LogService } from '../logging/log.service';
 import { Role } from './roles';
 import { PermissionReply } from 'src/app/features/subscription-detail/seats/seats';
 import { API_URL } from '../config/api-token';
 
-describe('PermissionService', () => {
-  let service: PermissionService;
+describe('Permission', () => {
+  let service: Permission;
 
   const SUBSCRIPTION_ID = 'sub-1';
   const OTHER_SUBSCRIPTION_ID = 'sub-2';
@@ -37,7 +37,7 @@ describe('PermissionService', () => {
       ],
     });
 
-    service = TestBed.inject(PermissionService);
+    service = TestBed.inject(Permission);
   });
 
   afterEach(() => {

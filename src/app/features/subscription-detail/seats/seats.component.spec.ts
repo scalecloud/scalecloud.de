@@ -6,12 +6,12 @@ import { SeatsComponent } from './seats.component';
 import { SeatsService } from './seats.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { ListSeatReply } from './seats';
 import { of, throwError } from 'rxjs';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Permission } from 'src/app/core/permission/permission';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -38,7 +38,7 @@ function buildMocks() {
     logService: { error: vi.fn() },
     snackBarService: { error: vi.fn(), info: vi.fn() },
     returnUrlService: { openUrlAddReturnUrl: vi.fn() },
-    permissionService: { isAdministrator: vi.fn().mockResolvedValue(true) },
+    permission: { isAdministrator: vi.fn().mockResolvedValue(true) },
     route: { snapshot: { paramMap: { get: vi.fn().mockReturnValue('sub-1') } } },
   };
 }
@@ -62,7 +62,7 @@ describe('SeatsComponent', () => {
         { provide: LogService, useValue: mocks.logService },
         { provide: SnackBarService, useValue: mocks.snackBarService },
         { provide: ReturnUrlService, useValue: mocks.returnUrlService },
-        { provide: PermissionService, useValue: mocks.permissionService },
+        { provide: Permission, useValue: mocks.permission },
         { provide: ActivatedRoute, useValue: mocks.route },
       ],
     }).compileComponents();
@@ -91,13 +91,13 @@ describe('SeatsComponent', () => {
   });
 
   it('sets NoPermission when user is not an administrator', async () => {
-    mocks.permissionService.isAdministrator.mockResolvedValue(false);
+    mocks.permission.isAdministrator.mockResolvedValue(false);
     await component.checkPermissions();
     expect(component.serviceStatus()).toBe(ServiceStatus.NoPermission);
   });
 
   it('sets Error and shows snackbar when permission check throws', async () => {
-    mocks.permissionService.isAdministrator.mockRejectedValue(new Error('network'));
+    mocks.permission.isAdministrator.mockRejectedValue(new Error('network'));
     await component.checkPermissions();
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     expect(mocks.snackBarService.error).toHaveBeenCalledOnce();

@@ -3,7 +3,6 @@ import { ServiceStatus } from 'src/app/shared/service-status';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/core/logging/log.service';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { firstValueFrom } from 'rxjs';
 import { Invoice, InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from './invoices';
@@ -18,6 +17,7 @@ import { MatChip } from '@angular/material/chips';
 import { TitleCasePipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { Auth } from 'src/app/core/auth/auth';
+import { Permission } from 'src/app/core/permission/permission';
 
 @Component({
     selector: 'app-invoices',
@@ -31,7 +31,7 @@ export class InvoicesComponent implements OnInit {
   private readonly invoiceService = inject(InvoicesService);
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
-  private readonly permissionService = inject(PermissionService);
+  private readonly permission = inject(Permission);
   private readonly route = inject(ActivatedRoute);
 
   readonly InvoiceStatus = InvoiceStatus;
@@ -59,7 +59,7 @@ export class InvoicesComponent implements OnInit {
     }
 
     try {
-      const hasPermission = await this.permissionService.isBilling(subscriptionID);
+      const hasPermission = await this.permission.isBilling(subscriptionID);
       if (hasPermission) {
         await this.getInvoices();
       } else {

@@ -8,10 +8,10 @@ import { CancelStateComponent } from './cancel-state.component';
 import { CancelStateService } from './cancel-state.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { CancelStateReply } from './cancel-state';
 import { Auth } from 'src/app/core/auth/auth';
+import { Permission } from 'src/app/core/permission/permission';
 
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
@@ -38,7 +38,7 @@ const mockActivatedRoute = {
 const mockAuth       = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
 const mockLogService        = { error: vi.fn(), info: vi.fn() };
 const mockSnackBarService   = { error: vi.fn() };
-const mockPermissionService = { isBilling: vi.fn().mockResolvedValue(true) };
+const mockPermission = { isBilling: vi.fn().mockResolvedValue(true) };
 
 const MOCK_REPLY: CancelStateReply = {
   subscriptionID:       SUBSCRIPTION_ID,
@@ -66,7 +66,7 @@ describe('CancelStateComponent', () => {
         { provide: CancelStateService, useValue: mockCancelStateService },
         { provide: LogService,         useValue: mockLogService },
         { provide: SnackBarService,    useValue: mockSnackBarService },
-        { provide: PermissionService,  useValue: mockPermissionService },
+        { provide: Permission,  useValue: mockPermission },
       ],
     })
     .overrideComponent(CancelStateComponent, {
@@ -110,19 +110,19 @@ describe('CancelStateComponent', () => {
 
   describe('checkPermissions', () => {
     it('calls getCancelState when the user has billing permission', async () => {
-      mockPermissionService.isBilling.mockResolvedValueOnce(true);
+      mockPermission.isBilling.mockResolvedValueOnce(true);
       await component.checkPermissions();
       expect(mockCancelStateService.getCancelState).toHaveBeenCalledWith(SUBSCRIPTION_ID);
     });
 
     it('sets serviceStatus to NoPermission when the user lacks billing permission', async () => {
-      mockPermissionService.isBilling.mockResolvedValueOnce(false);
+      mockPermission.isBilling.mockResolvedValueOnce(false);
       await component.checkPermissions();
       expect(component.serviceStatus).toBe(ServiceStatus.NoPermission);
     });
 
     it('sets serviceStatus to Error and shows a snackbar when permission check throws', async () => {
-      mockPermissionService.isBilling.mockRejectedValueOnce(new Error('network'));
+      mockPermission.isBilling.mockRejectedValueOnce(new Error('network'));
       await component.checkPermissions();
       expect(component.serviceStatus).toBe(ServiceStatus.Error);
       expect(mockSnackBarService.error).toHaveBeenCalledWith(

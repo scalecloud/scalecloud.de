@@ -15,7 +15,7 @@ interface CacheEntry {
 @Injectable({
   providedIn: 'root'
 })
-export class PermissionService {
+export class Permission {
   private readonly http = inject(HttpClient);
   private readonly auth = inject(Auth);
   private readonly logService = inject(LogService);

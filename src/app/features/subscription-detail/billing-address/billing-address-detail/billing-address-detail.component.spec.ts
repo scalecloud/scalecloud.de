@@ -6,13 +6,13 @@ import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 
 import { BillingAddressDetailComponent } from './billing-address-detail.component';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
 import { LogService } from 'src/app/core/logging/log.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { BillingAddressReply } from '../billing-address-model';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Permission } from 'src/app/core/permission/permission';
 
 /**
  * NOTE: These mock shapes are inferred from how the component calls
@@ -52,7 +52,7 @@ describe('BillingAddressDetailComponent', () => {
   let fixture: ComponentFixture<BillingAddressDetailComponent>;
 
   let authMock: { waitForAuth: Mock };
-  let permissionServiceMock: { isBilling: Mock };
+  let permissionMock: { isBilling: Mock };
   let billingAddressServiceMock: { getBillingAddress: Mock; updateBillingAddress: Mock };
   let logServiceMock: { error: Mock };
   let snackBarServiceMock: { info: Mock; error: Mock };
@@ -67,7 +67,7 @@ describe('BillingAddressDetailComponent', () => {
    */
   async function setup(routeOverride?: Partial<ActivatedRoute>) {
     authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
-    permissionServiceMock = { isBilling: vi.fn().mockResolvedValue(true) };
+    permissionMock = { isBilling: vi.fn().mockResolvedValue(true) };
     billingAddressServiceMock = {
       getBillingAddress: vi.fn().mockReturnValue(of(createReply())),
       updateBillingAddress: vi.fn().mockReturnValue(of({ subscriptionID: SUBSCRIPTION_ID })),
@@ -88,7 +88,7 @@ describe('BillingAddressDetailComponent', () => {
       imports: [BillingAddressDetailComponent],
       providers: [
         { provide: Auth, useValue: authMock },
-        { provide: PermissionService, useValue: permissionServiceMock },
+        { provide: Permission, useValue: permissionMock },
         { provide: BillingAddressService, useValue: billingAddressServiceMock },
         { provide: LogService, useValue: logServiceMock },
         { provide: SnackBarService, useValue: snackBarServiceMock },
@@ -136,23 +136,23 @@ describe('BillingAddressDetailComponent', () => {
       expect(logServiceMock.error).toHaveBeenCalledWith(
         expect.stringContaining('subscriptionID is null'),
       );
-      expect(permissionServiceMock.isBilling).not.toHaveBeenCalled();
+      expect(permissionMock.isBilling).not.toHaveBeenCalled();
     });
 
     it('should set NoPermission status when the user lacks billing permission', async () => {
       await setup();
-      permissionServiceMock.isBilling.mockResolvedValue(false);
+      permissionMock.isBilling.mockResolvedValue(false);
 
       fixture.detectChanges();
       await vi.waitFor(() => expect(component.serviceStatus()).toBe(ServiceStatus.NoPermission));
 
-      expect(permissionServiceMock.isBilling).toHaveBeenCalledWith(SUBSCRIPTION_ID);
+      expect(permissionMock.isBilling).toHaveBeenCalledWith(SUBSCRIPTION_ID);
       expect(billingAddressServiceMock.getBillingAddress).not.toHaveBeenCalled();
     });
 
     it('should set Error status when the permission check throws', async () => {
       await setup();
-      permissionServiceMock.isBilling.mockRejectedValue(new Error('permission service down'));
+      permissionMock.isBilling.mockRejectedValue(new Error('permission service down'));
 
       fixture.detectChanges();
       await vi.waitFor(() => expect(component.serviceStatus()).toBe(ServiceStatus.Error));

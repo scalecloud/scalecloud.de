@@ -7,12 +7,12 @@ import { SubscriptionDetailCardComponent } from './subscription-detail-card.comp
 import { SubscriptionDetailCardService } from './subscription-detail-card-service';
 import { CancelStateComponent } from '../cancel-state/cancel-state.component';
 import { LogService } from 'src/app/core/logging/log.service';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SubscriptionDetailReply } from './subscription-detail-card';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
+import { Permission } from 'src/app/core/permission/permission';
 
 // ─── Factories ───────────────────────────────────────────────────────────────
 
@@ -82,7 +82,7 @@ describe('SubscriptionDetailCardComponent', () => {
   let fixture: ComponentFixture<SubscriptionDetailCardComponent>;
 
   let auth: ReturnType<typeof makeAuth>;
-  let permissionService: ReturnType<typeof makePermissionService>;
+  let permission: ReturnType<typeof makePermissionService>;
   let subscriptionService: ReturnType<typeof makeSubscriptionService>;
   let logService: ReturnType<typeof makeLogService>;
   let snackBarService: ReturnType<typeof makeSnackBarService>;
@@ -102,7 +102,7 @@ describe('SubscriptionDetailCardComponent', () => {
 
     auth = makeAuth();
     auth.waitForAuth.mockReturnValue(waitForAuthResult);
-    permissionService = makePermissionService(hasPermission);
+    permission = makePermissionService(hasPermission);
     subscriptionService = makeSubscriptionService(reply);
     logService = makeLogService();
     snackBarService = makeSnackBarService();
@@ -115,7 +115,7 @@ describe('SubscriptionDetailCardComponent', () => {
         { provide: API_URL, useValue: 'https://api.test' },
         { provide: ActivatedRoute, useValue: makeActivatedRoute(subscriptionID) },
         { provide: Auth, useValue: auth },
-        { provide: PermissionService, useValue: permissionService },
+        { provide: Permission, useValue: permission },
         { provide: SubscriptionDetailCardService, useValue: subscriptionService },
         { provide: LogService, useValue: logService },
         { provide: SnackBarService, useValue: snackBarService },
@@ -145,7 +145,7 @@ describe('SubscriptionDetailCardComponent', () => {
     await setup();
     await stabilize(fixture);
 
-    expect(permissionService.isUser).toHaveBeenCalledWith('sub_123');
+    expect(permission.isUser).toHaveBeenCalledWith('sub_123');
     expect(subscriptionService.getSubscriptionDetail).toHaveBeenCalledWith('sub_123');
     expect(component.serviceStatus).toBe(ServiceStatus.Success);
   });
@@ -160,7 +160,7 @@ describe('SubscriptionDetailCardComponent', () => {
 
   it('sets serviceStatus to Error and shows a snackbar when permission check throws', async () => {
     await setup();
-    permissionService.isUser.mockRejectedValue(new Error('network'));
+    permission.isUser.mockRejectedValue(new Error('network'));
 
     await stabilize(fixture);
 

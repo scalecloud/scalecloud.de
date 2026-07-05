@@ -10,7 +10,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
-import { serviceErrorInterceptor } from './app/core/interceptor/service-error-interceptor.service';
+import { serviceErrorInterceptor } from './app/core/interceptor/service-error-interceptor';
 import { API_URL, APP_BASE_URL } from './app/core/config/api-token';
 import { STRIPE_PUBLIC_KEY } from './app/core/stripe/stripe-key.service';
 

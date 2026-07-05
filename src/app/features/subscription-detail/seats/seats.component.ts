@@ -12,7 +12,6 @@ import { ListSeatReply, ListSeatRequest, Seat } from './seats';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ActivatedRoute } from '@angular/router';
 import {
   MatCard,
@@ -31,6 +30,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Permission } from 'src/app/core/permission/permission';
 
 @Component({
   selector: 'app-seats',
@@ -61,7 +61,7 @@ export class SeatsComponent implements OnInit {
   private readonly logService = inject(LogService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly returnUrlService = inject(ReturnUrlService);
-  private readonly permissionService = inject(PermissionService);
+  private readonly permission = inject(Permission);
   private readonly route = inject(ActivatedRoute);
 
   readonly ServiceStatus = ServiceStatus;
@@ -98,7 +98,7 @@ export class SeatsComponent implements OnInit {
     }
 
     try {
-      const hasPermission = await this.permissionService.isAdministrator(subscriptionID);
+      const hasPermission = await this.permission.isAdministrator(subscriptionID);
       if (hasPermission) {
         this.loadSeats();
       } else {

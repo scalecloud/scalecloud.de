@@ -3,7 +3,7 @@ import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
-import { serviceErrorInterceptor } from './service-error-interceptor.service';
+import { serviceErrorInterceptor } from './service-error-interceptor';
 import { SnackBarService } from '../snackbar/snack-bar.service';
 import { LogService } from '../logging/log.service';
 

@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
 import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/core/logging/log.service';
@@ -20,6 +19,7 @@ import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Permission } from 'src/app/core/permission/permission';
 
 /**
  * Typed shape of the billing address form.
@@ -68,7 +68,7 @@ interface BillingAddressFormControls {
 export class BillingAddressDetailComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly auth = inject(Auth);
-  private readonly permissionService = inject(PermissionService);
+  private readonly permission = inject(Permission);
   private readonly service = inject(BillingAddressService);
   private readonly route = inject(ActivatedRoute);
   private readonly logService = inject(LogService);
@@ -143,7 +143,7 @@ export class BillingAddressDetailComponent implements OnInit {
     }
 
     try {
-      const hasPermission = await this.permissionService.isBilling(subscriptionID);
+      const hasPermission = await this.permission.isBilling(subscriptionID);
       if (hasPermission) {
         await this.reloadBillingAddressDetail();
       } else {

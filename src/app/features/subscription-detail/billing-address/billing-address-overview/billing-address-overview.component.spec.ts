@@ -3,7 +3,6 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { BillingAddressOverviewComponent } from './billing-address-overview.component';
 import { BillingAddressReply } from '../billing-address-model';
 import { LogService } from 'src/app/core/logging/log.service';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { BillingAddressService } from '../billing-address.service';
 import { CountryService } from '../country/country.service';
 import { LanguageService } from '../country/language.service';
@@ -13,6 +12,7 @@ import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Permission } from 'src/app/core/permission/permission';
 
 const mockReply: BillingAddressReply = {
   subscriptionID: 'subscription-123',
@@ -28,7 +28,7 @@ const mockReply: BillingAddressReply = {
 };
 
 const authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
-const permissionServiceMock = { isBilling: vi.fn().mockResolvedValue(true) };
+const permissionMock = { isBilling: vi.fn().mockResolvedValue(true) };
 const billingAddressServiceMock = { getBillingAddress: vi.fn().mockReturnValue(of(mockReply)) };
 const routeMock = { snapshot: { paramMap: { get: vi.fn().mockReturnValue('subscription-123') } } };
 const countryServiceMock = { getCountry: vi.fn().mockReturnValue('Germany') };
@@ -39,7 +39,7 @@ const returnUrlServiceMock = { openUrlAddReturnUrl: vi.fn() };
 
 const providers = [
   { provide: Auth, useValue: authMock },
-  { provide: PermissionService, useValue: permissionServiceMock },
+  { provide: Permission, useValue: permissionMock },
   { provide: BillingAddressService, useValue: billingAddressServiceMock },
   { provide: ActivatedRoute, useValue: routeMock },
   { provide: LogService, useValue: logServiceMock },
@@ -71,7 +71,7 @@ async function createComponent(): Promise<{
  */
 function resetMockDefaults(): void {
   authMock.waitForAuth.mockResolvedValue(undefined);
-  permissionServiceMock.isBilling.mockResolvedValue(true);
+  permissionMock.isBilling.mockResolvedValue(true);
   billingAddressServiceMock.getBillingAddress.mockReturnValue(of(mockReply));
   routeMock.snapshot.paramMap.get.mockReturnValue('subscription-123');
   countryServiceMock.getCountry.mockReturnValue('Germany');
@@ -124,13 +124,13 @@ describe('BillingAddressOverviewComponent', () => {
   });
 
   it('should set NoPermission status when permission is denied', async () => {
-    permissionServiceMock.isBilling.mockResolvedValue(false);
+    permissionMock.isBilling.mockResolvedValue(false);
     ({ component } = await createComponent());
     expect(component.serviceStatus()).toBe(ServiceStatus.NoPermission);
   });
 
   it('should set Error status when permission check throws', async () => {
-    permissionServiceMock.isBilling.mockRejectedValue(new Error('Permission error'));
+    permissionMock.isBilling.mockRejectedValue(new Error('Permission error'));
     ({ component } = await createComponent());
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     expect(snackBarServiceMock.error).toHaveBeenCalledWith(

@@ -1,7 +1,6 @@
 import { Component, signal, computed, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LogService } from 'src/app/core/logging/log.service';
-import { PermissionService } from 'src/app/core/permission/permission.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { BillingAddressReply, BillingAddressRequest } from '../billing-address-model';
@@ -19,6 +18,7 @@ import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
 import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { Permission } from 'src/app/core/permission/permission';
 
 @Component({
   selector: 'app-billing-address-overview',
@@ -43,7 +43,7 @@ import { Auth } from 'src/app/core/auth/auth';
 })
 export class BillingAddressOverviewComponent implements OnInit {
   private readonly auth = inject(Auth);
-  private readonly permissionService = inject(PermissionService);
+  private readonly permission = inject(Permission);
   private readonly billingAddressService = inject(BillingAddressService);
   private readonly route = inject(ActivatedRoute);
   private readonly logService = inject(LogService);
@@ -92,7 +92,7 @@ export class BillingAddressOverviewComponent implements OnInit {
     }
 
     try {
-      const hasPermission = await this.permissionService.isBilling(id);
+      const hasPermission = await this.permission.isBilling(id);
       if (hasPermission) {
         await this.loadBillingAddress();
       } else {
