@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, viewChild, input, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { NextcloudProduct } from '../nextcloud/nextcloud-product';
-import { SynologyProduct } from '../synology/synology-product';
+import { NextcloudProduct } from '../nextcloud-page/nextcloud-product';
+import { SynologyProduct } from '../synology-page/synology-product';
 import { QuantityComponent } from './quantity/quantity.component';
 import { MatCard, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';

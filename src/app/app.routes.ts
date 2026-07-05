@@ -7,123 +7,123 @@ import { loginGuard } from './core/auth/guards/login-guard';
 import { registerGuard } from './core/auth/guards/register-guard';
 import { forgotPasswordGuard } from './core/auth/guards/forgot-password-guard';
 import { verifyEmailGuard } from './core/auth/guards/verify-email-guard';
-import { checkoutGuard } from './features/products/checkout/guard/checkout-guard';
+import { checkoutGuard } from './features/products/checkout-page/guard/checkout-guard';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./layouts/default/default.component').then(m => m.DefaultComponent),
+    loadComponent: () => import('./layouts/default/default').then(m => m.Default),
     children: [
       {
         path: '',
-        loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent)
+        loadComponent: () => import('./features/home-page/home-page').then(m => m.HomePage)
       },
       {
         path: 'nextcloud',
-        loadComponent: () => import('./features/products/nextcloud/nextcloud.component').then(m => m.NextcloudComponent)
+        loadComponent: () => import('./features/products/nextcloud-page/nextcloud-page').then(m => m.NextcloudPage)
       },
       {
         path: 'synology',
-        loadComponent: () => import('./features/products/synology/synology.component').then(m => m.SynologyComponent)
+        loadComponent: () => import('./features/products/synology-page/synology-page').then(m => m.SynologyPage)
       },
       {
         path: 'checkout',
         canActivate: [checkoutGuard],
-        loadComponent: () => import('./features/products/checkout/checkout.component').then(m => m.CheckoutComponent)
+        loadComponent: () => import('./features/products/checkout-page/checkout-page').then(m => m.CheckoutPage)
       },
       {
         path: 'checkout/status',
-        loadComponent: () => import('./features/products/checkout/status/status.component').then(m => m.StatusComponent)
+        loadComponent: () => import('./features/change-payment-status-page/change-payment-status-page').then(m => m.ChangePaymentStatusPage)
       },
       // Account/Dashboard - Lazy Loaded
       {
         path: 'dashboard',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+        loadComponent: () => import('./features/dashboard-page/dashboard-page').then(m => m.DashboardPage)
       },
       {
         path: 'dashboard/subscription/:subscriptionID',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/subscription-detail/subscription-detail.component').then(m => m.SubscriptionDetailComponent)
+        loadComponent: () => import('./features/subscription-detail-page/subscription-detail-page').then(m => m.SubscriptionDetailPage)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/add-seat',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/subscription-detail/seats/add-seat/add-seat.component').then(m => m.AddSeatComponent)
+        loadComponent: () => import('./features/subscription-detail-page/seats/add-seat-page/add-seat-page').then(m => m.AddSeatPage)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/subscription-detail/seats/seat-detail/seat-detail.component').then(m => m.SeatDetailComponent)
+        loadComponent: () => import('./features/subscription-detail-page/seats/seat-detail-page/seat-detail-page').then(m => m.SeatDetailPage)
       },
       {
         path: 'dashboard/subscription/:subscriptionID/billing-address',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/subscription-detail/billing-address/billing-address-detail/billing-address-detail.component').then(m => m.BillingAddressDetailComponent)
+        loadComponent: () => import('./features/subscription-detail-page/billing-address/billing-address-detail-page/billing-address-detail-page').then(m => m.BillingAddressDetailPage)
       },
       {
         path: 'dashboard/change-payment',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard/change-payment/change-payment.component').then(m => m.ChangePaymentComponent)
+        loadComponent: () => import('./features/dashboard-page/change-payment-page/change-payment-page').then(m => m.ChangePaymentPage)
       },
       {
         path: 'dashboard/change-payment/status',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard/change-payment/status/status').then(m => m.Status)
+        loadComponent: () => import('./features/change-payment-status-page/change-payment-status-page').then(m => m.ChangePaymentStatusPage)
       },
       // Auth - Lazy Loaded
       {
         path: 'login',
         canActivate: [loginGuard],
-        loadComponent: () => import('./features/auth/login/login').then(m => m.Login)
+        loadComponent: () => import('./features/auth/login-page/login-page').then(m => m.LoginPage)
       },
       {
         path: 'register',
         canActivate: [registerGuard],
-        loadComponent: () => import('./features/auth/register/register').then(m => m.Register)
+        loadComponent: () => import('./features/auth/register-page/register-page').then(m => m.RegisterPage)
       },
       {
         path: 'verify-email-address',
         canActivate: [verifyEmailGuard],
-        loadComponent: () => import('./features/auth/verify-email/verify-email').then(m => m.VerifyEmail)
+        loadComponent: () => import('./features/auth/verify-email-page/verify-email-page').then(m => m.VerifyEmailPage)
       },
       {
         path: 'forgot-password',
         canActivate: [forgotPasswordGuard],
-        loadComponent: () => import('./features/auth/forgot-password/forgot-password').then(m => m.ForgotPassword)
+        loadComponent: () => import('./features/auth/forgot-password-page/forgot-password-page').then(m => m.ForgotPasswordPage)
       },
       // Footer - Lazy Loaded
       {
         path: 'privacy-policy',
-        loadComponent: () => import('./features/privacy/privacy.component').then(m => m.PrivacyComponent)
+        loadComponent: () => import('./features/privacy-page/privacy-page').then(m => m.PrivacyPage)
       },
       {
         path: 'imprint',
-        loadComponent: () => import('./features/imprint/imprint.component').then(m => m.ImprintComponent)
+        loadComponent: () => import('./features/imprint-page/imprint-page').then(m => m.ImprintPage)
       },
       {
         path: 'terms',
-        loadComponent: () => import('./features/terms/terms.component').then(m => m.TermsComponent)
+        loadComponent: () => import('./features/terms-page/terms-page').then(m => m.TermsPage)
       },
       {
         path: 'contact',
-        loadComponent: () => import('./features/contact/contact').then(m => m.Contact)
+        loadComponent: () => import('./features/contact-page/contact-page').then(m => m.ContactPage)
       },
       {
         path: 'legal',
-        loadComponent: () => import('./features/legal/legal.component').then(m => m.LegalComponent)
+        loadComponent: () => import('./features/legal-page/legal-page').then(m => m.LegalPage)
       },
       // Newsletter - Lazy Loaded
       {
         path: 'newsletter/confirm/:verificationToken',
-        loadComponent: () => import('./features/newsletter/newsletter-confirm/newsletter-confirm.component').then(m => m.NewsletterConfirmComponent)
+        loadComponent: () => import('./features/newsletter/newsletter-confirm-page/newsletter-confirm-page').then(m => m.NewsletterConfirmPage)
       },
       {
         path: 'newsletter/unsubscribe/:unsubscribeToken',
-        loadComponent: () => import('./features/newsletter/newsletter-unsubscribe/newsletter-unsubscribe.component').then(m => m.NewsletterUnsubscribeComponent)
+        loadComponent: () => import('./features/newsletter/newsletter-unsubscribe-page/newsletter-unsubscribe-page').then(m => m.NewsletterUnsubscribePage)
       },
       // Wildcard
-      { path: '**', loadComponent: () => import('./features/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent) }
+      { path: '**', loadComponent: () => import('./features/page-not-found-page/page-not-found-page').then(m => m.PageNotFoundPage) }
     ]
   }
 ];

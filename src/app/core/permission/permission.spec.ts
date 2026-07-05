@@ -2,13 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { of, throwError, Subject } from 'rxjs';
-
 import { Permission } from './permission';
 import { Auth } from '../auth/auth';
 import { Log } from '../logging/log';
 import { Role } from './roles';
-import { PermissionReply } from 'src/app/features/subscription-detail/seats/seats';
 import { API_URL } from '../config/api-token';
+import { PermissionReply } from 'src/app/features/subscription-detail-page/seats/seats';
 
 describe('Permission', () => {
   let service: Permission;

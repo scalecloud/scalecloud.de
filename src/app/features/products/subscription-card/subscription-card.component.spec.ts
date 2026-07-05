@@ -3,8 +3,8 @@ import { provideRouter, Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { SubscriptionCardComponent } from './subscription-card.component';
-import { NextcloudProduct } from '../nextcloud/nextcloud-product';
-import { SynologyProduct } from '../synology/synology-product';
+import { NextcloudProduct } from '../nextcloud-page/nextcloud-product';
+import { SynologyProduct } from '../synology-page/synology-product';
 
 describe('SubscriptionCardComponent', () => {
   let fixture: ComponentFixture<SubscriptionCardComponent>;

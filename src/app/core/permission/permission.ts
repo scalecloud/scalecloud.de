@@ -4,8 +4,8 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { Auth } from '../auth/auth';
 import { Log } from '../logging/log';
 import { Role } from './roles';
-import { PermissionReply, PermissionRequest } from 'src/app/features/subscription-detail/seats/seats';
 import { API_URL } from '../config/api-token';
+import { PermissionReply, PermissionRequest } from 'src/app/features/subscription-detail-page/seats/seats';
 
 interface CacheEntry {
   data: PermissionReply;
