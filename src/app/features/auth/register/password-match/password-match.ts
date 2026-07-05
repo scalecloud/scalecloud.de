@@ -3,12 +3,12 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-password-match',
-    templateUrl: './password-match.component.html',
-    styleUrls: ['./password-match.component.scss'],
+    templateUrl: './password-match.html',
+    styleUrls: ['./password-match.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatIcon]
 })
-export class PasswordMatchComponent {
+export class PasswordMatch {
   readonly password = input<string | undefined>(undefined);
   readonly confirmPassword = input<string | undefined>(undefined);
 

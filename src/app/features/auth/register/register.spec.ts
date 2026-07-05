@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { RegisterComponent } from './register.component';
+import { Register } from './register';
 import { Auth } from 'src/app/core/auth/auth';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 // A password that satisfies every PasswordStrengthComponent check.
 const STRONG_PASSWORD = 'Abcdefg1!';
 
-describe('RegisterComponent', () => {
-  let component: RegisterComponent;
-  let fixture: ComponentFixture<RegisterComponent>;
+describe('Register', () => {
+  let component: Register;
+  let fixture: ComponentFixture<Register>;
   let authMock: { register: ReturnType<typeof vi.fn> };
   let returnUrl: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
 
@@ -19,14 +19,14 @@ describe('RegisterComponent', () => {
     returnUrl = { openUrlKeepReturnUrl: vi.fn() };
 
     await TestBed.configureTestingModule({
-      imports: [RegisterComponent],
+      imports: [Register],
       providers: [
         { provide: Auth, useValue: authMock },
         { provide: ReturnUrl, useValue: returnUrl },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RegisterComponent);
+    fixture = TestBed.createComponent(Register);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

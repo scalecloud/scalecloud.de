@@ -2,8 +2,8 @@ import { Component, ChangeDetectionStrategy, inject, viewChild, signal, computed
 import { AbstractControl, FormBuilder, FormGroup, FormControl, ValidatorFn, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
-import { PasswordMatchComponent } from './password-match/password-match.component';
-import { PasswordStrengthComponent } from './password-strength/password-strength.component';
+import { PasswordMatch } from './password-match/password-match';
+import { PasswordStrength } from './password-strength/password-strength';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
@@ -20,18 +20,18 @@ interface RegisterForm {
 
 @Component({
     selector: 'app-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss'],
+    templateUrl: './register.html',
+    styleUrls: ['./register.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardContent, MatButton, FormsModule, ReactiveFormsModule, MatCardTitle, MatFormField, MatLabel, MatInput, MatError, PasswordStrengthComponent, PasswordMatchComponent]
+    imports: [MatCard, MatCardContent, MatButton, FormsModule, ReactiveFormsModule, MatCardTitle, MatFormField, MatLabel, MatInput, MatError, PasswordStrength, PasswordMatch]
 })
-export class RegisterComponent {
+export class Register {
   private readonly formBuilder = inject(FormBuilder);
   private readonly auth = inject(Auth);
   private readonly returnUrl = inject(ReturnUrl);
 
-  readonly passwordStrength = viewChild(PasswordStrengthComponent);
-  readonly passwordMatch = viewChild(PasswordMatchComponent);
+  readonly passwordStrength = viewChild(PasswordStrength);
+  readonly passwordMatch = viewChild(PasswordMatch);
 
   readonly form: FormGroup<RegisterForm> = this.formBuilder.group(
     {

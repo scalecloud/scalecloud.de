@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
-import { ForgotPasswordComponent } from './forgot-password.component';
+import { ForgotPassword } from './forgot-password';
 import { Auth } from 'src/app/core/auth/auth';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 
-describe('ForgotPasswordComponent', () => {
-  let component: ForgotPasswordComponent;
-  let fixture: ComponentFixture<ForgotPasswordComponent>;
+describe('ForgotPassword', () => {
+  let component: ForgotPassword;
+  let fixture: ComponentFixture<ForgotPassword>;
   let authMock: { forgotPassword: ReturnType<typeof vi.fn> };
   let snackBar: { error: ReturnType<typeof vi.fn> };
 
@@ -17,7 +17,7 @@ describe('ForgotPasswordComponent', () => {
     snackBar = { error: vi.fn() };
 
     await TestBed.configureTestingModule({
-      imports: [ForgotPasswordComponent],
+      imports: [ForgotPassword],
       providers: [
         provideRouter([]),
         { provide: Auth, useValue: authMock },
@@ -25,7 +25,7 @@ describe('ForgotPasswordComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ForgotPasswordComponent);
+    fixture = TestBed.createComponent(ForgotPassword);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

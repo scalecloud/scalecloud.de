@@ -8,12 +8,12 @@ export interface PasswordStrengthCheck {
 
 @Component({
     selector: 'app-password-strength',
-    templateUrl: './password-strength.component.html',
-    styleUrls: ['./password-strength.component.scss'],
+    templateUrl: './password-strength.html',
+    styleUrls: ['./password-strength.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatIcon]
 })
-export class PasswordStrengthComponent {
+export class PasswordStrength {
   readonly password = input<string | undefined>(undefined);
 
   readonly containsLower = computed(() => /[a-z]/.test(this.password() ?? ''));

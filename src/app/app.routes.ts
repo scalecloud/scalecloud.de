@@ -75,22 +75,22 @@ export const routes: Routes = [
       {
         path: 'login',
         canActivate: [loginGuard],
-        loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent)
+        loadComponent: () => import('./features/auth/login/login').then(m => m.Login)
       },
       {
         path: 'register',
         canActivate: [registerGuard],
-        loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent)
+        loadComponent: () => import('./features/auth/register/register').then(m => m.Register)
       },
       {
         path: 'verify-email-address',
         canActivate: [verifyEmailGuard],
-        loadComponent: () => import('./features/auth/verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
+        loadComponent: () => import('./features/auth/verify-email/verify-email').then(m => m.VerifyEmail)
       },
       {
         path: 'forgot-password',
         canActivate: [forgotPasswordGuard],
-        loadComponent: () => import('./features/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
+        loadComponent: () => import('./features/auth/forgot-password/forgot-password').then(m => m.ForgotPassword)
       },
       // Footer - Lazy Loaded
       {
@@ -107,7 +107,7 @@ export const routes: Routes = [
       },
       {
         path: 'contact',
-        loadComponent: () => import('./features/contact/contact.component').then(m => m.ContactComponent)
+        loadComponent: () => import('./features/contact/contact').then(m => m.Contact)
       },
       {
         path: 'legal',

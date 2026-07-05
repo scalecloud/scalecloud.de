@@ -14,12 +14,12 @@ const DEFAULT_DISABLED_SECONDS = 60;
 
 @Component({
     selector: 'app-forgot-password',
-    templateUrl: './forgot-password.component.html',
-    styleUrls: ['./forgot-password.component.scss'],
+    templateUrl: './forgot-password.html',
+    styleUrls: ['./forgot-password.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, MatButton, RouterLink]
 })
-export class ForgotPasswordComponent {
+export class ForgotPassword {
   private readonly auth = inject(Auth);
   private readonly snackBar = inject(SnackBar);
   private readonly destroyRef = inject(DestroyRef);

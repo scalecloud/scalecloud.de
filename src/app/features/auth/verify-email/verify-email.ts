@@ -11,12 +11,12 @@ const RESEND_COOLDOWN_SECONDS = 30;
 
 @Component({
   selector: 'app-verify-email',
-  templateUrl: './verify-email.component.html',
-  styleUrls: ['./verify-email.component.scss'],
+  templateUrl: './verify-email.html',
+  styleUrls: ['./verify-email.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardTitle, MatCardContent, MatButton, MatIcon, MatProgressSpinner],
 })
-export class VerifyEmailComponent implements OnInit, OnDestroy {
+export class VerifyEmail implements OnInit, OnDestroy {
   readonly auth = inject(Auth);
   private readonly returnUrl = inject(ReturnUrl);
   private readonly snackBar = inject(SnackBar);

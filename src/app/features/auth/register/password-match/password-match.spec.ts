@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect } from 'vitest';
 
-import { PasswordMatchComponent } from './password-match.component';
+import { PasswordMatch } from './password-match';
 
-describe('PasswordMatchComponent', () => {
-  let component: PasswordMatchComponent;
-  let fixture: ComponentFixture<PasswordMatchComponent>;
+describe('PasswordMatch', () => {
+  let component: PasswordMatch;
+  let fixture: ComponentFixture<PasswordMatch>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PasswordMatchComponent],
+      imports: [PasswordMatch],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PasswordMatchComponent);
+    fixture = TestBed.createComponent(PasswordMatch);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
-import { VerifyEmailComponent } from './verify-email.component';
+import { VerifyEmail } from './verify-email';
 import { signal } from '@angular/core';
 import { Auth } from 'src/app/core/auth/auth';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
@@ -15,9 +15,9 @@ function makeUser(overrides: Partial<{ email: string }> = {}) {
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
 
-describe('VerifyEmailComponent', () => {
-  let component: VerifyEmailComponent;
-  let fixture: ComponentFixture<VerifyEmailComponent>;
+describe('VerifyEmail', () => {
+  let component: VerifyEmail;
+  let fixture: ComponentFixture<VerifyEmail>;
 
   // Mocks
   const userSignal = signal<any>(makeUser());
@@ -37,7 +37,7 @@ describe('VerifyEmailComponent', () => {
     authMock.isLoggedIn.mockResolvedValue(true);
 
     await TestBed.configureTestingModule({
-      imports: [VerifyEmailComponent],
+      imports: [VerifyEmail],
       providers: [
         { provide: Auth, useValue: authMock },
         { provide: ReturnUrl, useValue: returnUrl },
@@ -54,7 +54,7 @@ describe('VerifyEmailComponent', () => {
     // timers would freeze forever, hanging the test past the hook timeout.
     vi.useFakeTimers();
 
-    fixture = TestBed.createComponent(VerifyEmailComponent);
+    fixture = TestBed.createComponent(VerifyEmail);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

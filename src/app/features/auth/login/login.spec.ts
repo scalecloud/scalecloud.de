@@ -3,14 +3,14 @@ import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { LoginComponent } from './login.component';
+import { Login } from './login';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+describe('Login', () => {
+  let component: Login;
+  let fixture: ComponentFixture<Login>;
   let authMock: { login: ReturnType<typeof vi.fn> };
   let logService: { warn: ReturnType<typeof vi.fn> };
   let returnUrl: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
@@ -21,7 +21,7 @@ describe('LoginComponent', () => {
     returnUrl = { openUrlKeepReturnUrl: vi.fn() };
 
     await TestBed.configureTestingModule({
-      imports: [LoginComponent],
+      imports: [Login],
       providers: [
         provideRouter([]),
         { provide: Auth, useValue: authMock },
@@ -32,7 +32,7 @@ describe('LoginComponent', () => {
   });
 
   beforeEach(async () => {
-    fixture = TestBed.createComponent(LoginComponent);
+    fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
