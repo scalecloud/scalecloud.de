@@ -1,11 +1,11 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { SucceededComponent } from './succeeded/succeeded.component';
 import { ProcessingComponent } from './processing/processing.component';
 import { RequiresPaymentMethodComponent } from './requires-payment-method/requires-payment-method.component';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { StripeKey } from 'src/app/core/stripe/stripe-key';
 
 declare const Stripe: any;
 
@@ -19,7 +19,7 @@ export class StatusComponent implements OnInit {
   private readonly log = inject(Log);
   private readonly route = inject(ActivatedRoute);
   private readonly auth = inject(Auth);
-  private readonly stripeKeyService = inject(StripeKeyService);
+  private readonly stripeKey = inject(StripeKey);
 
   setup_intent: string | undefined;
   setup_intent_client_secret: string | undefined;
@@ -50,7 +50,7 @@ export class StatusComponent implements OnInit {
   checkPaymentIntentStatus(): void {
     this.auth.waitForAuth().then(() => {
       // Your Stripe public key
-      const publicKey = this.stripeKeyService.getPublicKey();
+      const publicKey = this.stripeKey.getPublicKey();
       if (publicKey == undefined) {
         this.log.error('Cannot display status because publicKey is undefined.');
       }

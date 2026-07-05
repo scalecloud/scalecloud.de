@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
-import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { MatCard, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -11,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { LoadingFailedComponent } from '../loading-failed/loading-failed.component';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { StripeKey } from 'src/app/core/stripe/stripe-key';
 
 declare const Stripe: any;
 
@@ -24,7 +24,7 @@ declare const Stripe: any;
 export class StripePaymentElementComponent {
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
-  private readonly stripeKeyService = inject(StripeKeyService);
+  private readonly stripeKey = inject(StripeKey);
 
   ServiceStatus = ServiceStatus;
   serviceStatus = ServiceStatus.Loading;
@@ -34,7 +34,7 @@ export class StripePaymentElementComponent {
 
   initPaymentElement(initStripePayment: InitStripePayment): void {
     // Your Stripe public key
-    const publicKey = this.stripeKeyService.getPublicKey();
+    const publicKey = this.stripeKey.getPublicKey();
     if (publicKey == undefined) {
       this.log.error("Cannot display Payment because publicKey is undefined.")
       this.serviceStatus = ServiceStatus.Error;

@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StripePaymentElementComponent } from './stripe-payment-element.component';
-import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { StripeKey } from 'src/app/core/stripe/stripe-key';
 
 describe('StripePaymentElementComponent', () => {
   let component: StripePaymentElementComponent;
@@ -20,7 +20,7 @@ describe('StripePaymentElementComponent', () => {
     error: vi.fn()
   };
 
-  const stripeKeyServiceMock = {
+  const stripeKeyMock = {
     getPublicKey: vi.fn()
   };
 
@@ -69,14 +69,14 @@ describe('StripePaymentElementComponent', () => {
     stripeGlobalMock = vi.fn().mockReturnValue(stripeInstanceMock);
     (globalThis as any).Stripe = stripeGlobalMock;
 
-    stripeKeyServiceMock.getPublicKey.mockReturnValue('pk_test_123');
+    stripeKeyMock.getPublicKey.mockReturnValue('pk_test_123');
 
     await TestBed.configureTestingModule({
       imports: [StripePaymentElementComponent],
       providers: [
         { provide: Log, useValue: logMock },
         { provide: SnackBar, useValue: snackBarMock },
-        { provide: StripeKeyService, useValue: stripeKeyServiceMock }
+        { provide: StripeKey, useValue: stripeKeyMock }
       ]
     }).compileComponents();
 
@@ -97,7 +97,7 @@ describe('StripePaymentElementComponent', () => {
     it('should initialize Stripe with the public key and mount both elements', () => {
       component.initPaymentElement(initStripePayment);
 
-      expect(stripeKeyServiceMock.getPublicKey).toHaveBeenCalled();
+      expect(stripeKeyMock.getPublicKey).toHaveBeenCalled();
       expect(stripeGlobalMock).toHaveBeenCalledWith('pk_test_123');
       expect(stripeInstanceMock.elements).toHaveBeenCalledWith(
         expect.objectContaining({ clientSecret: initStripePayment.client_secret })
@@ -171,7 +171,7 @@ describe('StripePaymentElementComponent', () => {
     });
 
     it('should log an error and set an error state when the public key is undefined, without touching Stripe', () => {
-      stripeKeyServiceMock.getPublicKey.mockReturnValue(undefined);
+      stripeKeyMock.getPublicKey.mockReturnValue(undefined);
 
       expect(() => component.initPaymentElement(initStripePayment)).not.toThrow();
 

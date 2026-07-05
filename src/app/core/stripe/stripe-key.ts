@@ -6,7 +6,7 @@ export const STRIPE_PUBLIC_KEY = new InjectionToken<string>('STRIPE_PUBLIC_KEY')
 @Injectable({
   providedIn: 'root'
 })
-export class StripeKeyService {
+export class StripeKey {
   private readonly publicKey = inject(STRIPE_PUBLIC_KEY);
   private readonly logService = inject(Log);
 

@@ -3,10 +3,10 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StatusComponent } from './status.component';
-import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { StripeKey } from 'src/app/core/stripe/stripe-key';
 
 describe('StatusComponent', () => {
   let component: StatusComponent;
@@ -18,7 +18,7 @@ describe('StatusComponent', () => {
     warn: ReturnType<typeof vi.fn>;
     error: ReturnType<typeof vi.fn>;
   };
-  let stripeKeyServiceMock: { getPublicKey: ReturnType<typeof vi.fn> };
+  let stripeKeyMock: { getPublicKey: ReturnType<typeof vi.fn> };
   let returnUrlMock: { openReturnURL: ReturnType<typeof vi.fn> };
   let retrieveSetupIntentMock: ReturnType<typeof vi.fn>;
   let stripeFactoryMock: ReturnType<typeof vi.fn>;
@@ -38,7 +38,7 @@ describe('StatusComponent', () => {
       warn: vi.fn(),
       error: vi.fn()
     };
-    stripeKeyServiceMock = {
+    stripeKeyMock = {
       getPublicKey: vi.fn().mockReturnValue('pk_test_123')
     };
     // The real child components (succeeded/processing/requires-payment-method)
@@ -61,7 +61,7 @@ describe('StatusComponent', () => {
       providers: [
         { provide: Auth, useValue: authMock },
         { provide: Log, useValue: logMock },
-        { provide: StripeKeyService, useValue: stripeKeyServiceMock },
+        { provide: StripeKey, useValue: stripeKeyMock },
         { provide: ReturnUrl, useValue: returnUrlMock },
         {
           provide: ActivatedRoute,
@@ -170,7 +170,7 @@ describe('StatusComponent', () => {
   describe('missing public key', () => {
     it('should log an error and not call Stripe when the public key is undefined', async () => {
       configureTestBed();
-      stripeKeyServiceMock.getPublicKey.mockReturnValue(undefined);
+      stripeKeyMock.getPublicKey.mockReturnValue(undefined);
 
       await fixture.whenStable();
 

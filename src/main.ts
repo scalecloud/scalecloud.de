@@ -12,7 +12,7 @@ import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { serviceErrorInterceptor } from './app/core/interceptor/service-error-interceptor';
 import { API_URL, APP_BASE_URL } from './app/core/config/api-token';
-import { STRIPE_PUBLIC_KEY } from './app/core/stripe/stripe-key.service';
+import { STRIPE_PUBLIC_KEY } from './app/core/stripe/stripe-key';
 
 Sentry.init({
   dsn: "https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784",

@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { StripeKeyService, STRIPE_PUBLIC_KEY } from './stripe-key.service';
+import { StripeKey, STRIPE_PUBLIC_KEY } from './stripe-key';
 import { Log } from '../logging/log';
 
-describe('StripeKeyService', () => {
-  let service: StripeKeyService;
+describe('StripeKey', () => {
+  let service: StripeKey;
 
   const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
@@ -19,7 +19,7 @@ describe('StripeKeyService', () => {
       ],
     });
 
-    service = TestBed.inject(StripeKeyService);
+    service = TestBed.inject(StripeKey);
   }
 
   describe('with a configured public key', () => {
