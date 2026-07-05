@@ -7,7 +7,7 @@ import { APP_BASE_URL } from '../config/api-token';
 @Injectable({
   providedIn: 'root'
 })
-export class ReturnUrlService {
+export class ReturnUrl {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly logService = inject(Log);

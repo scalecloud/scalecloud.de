@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { RegisterComponent } from './register.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 // A password that satisfies every PasswordStrengthComponent check.
 const STRONG_PASSWORD = 'Abcdefg1!';
@@ -12,17 +12,17 @@ describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
   let authMock: { register: ReturnType<typeof vi.fn> };
-  let returnUrlService: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
+  let returnUrl: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     authMock = { register: vi.fn() };
-    returnUrlService = { openUrlKeepReturnUrl: vi.fn() };
+    returnUrl = { openUrlKeepReturnUrl: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [RegisterComponent],
       providers: [
         { provide: Auth, useValue: authMock },
-        { provide: ReturnUrlService, useValue: returnUrlService },
+        { provide: ReturnUrl, useValue: returnUrl },
       ],
     }).compileComponents();
 
@@ -257,6 +257,6 @@ describe('RegisterComponent', () => {
 
   it('should call ReturnUrlService.openUrlKeepReturnUrl with /login when Login is clicked', () => {
     component.openUrlKeepReturnUrl();
-    expect(returnUrlService.openUrlKeepReturnUrl).toHaveBeenCalledWith('/login');
+    expect(returnUrl.openUrlKeepReturnUrl).toHaveBeenCalledWith('/login');
   });
 });

@@ -15,10 +15,10 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 @Component({
   selector: 'app-billing-address-overview',
@@ -48,7 +48,7 @@ export class BillingAddressOverviewComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
   private readonly countryService = inject(CountryService);
   private readonly languageService = inject(LanguageService);
 
@@ -80,7 +80,7 @@ export class BillingAddressOverviewComponent implements OnInit {
       this.snackBarService.error('Could not edit billing address. Please try again later.');
       return;
     }
-    this.returnUrlService.openUrlAddReturnUrl(`/dashboard/subscription/${id}/billing-address`);
+    this.returnUrl.openUrlAddReturnUrl(`/dashboard/subscription/${id}/billing-address`);
   }
 
   private async checkPermissions(): Promise<void> {

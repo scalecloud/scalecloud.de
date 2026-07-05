@@ -2,22 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { ProcessingComponent } from './processing.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 describe('ProcessingComponent', () => {
   let component: ProcessingComponent;
   let fixture: ComponentFixture<ProcessingComponent>;
-  let returnUrlServiceMock: { openReturnURL: ReturnType<typeof vi.fn> };
+  let returnUrlMock: { openReturnURL: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    returnUrlServiceMock = {
+    returnUrlMock = {
       openReturnURL: vi.fn()
     };
 
     TestBed.configureTestingModule({
       imports: [ProcessingComponent],
       providers: [
-        { provide: ReturnUrlService, useValue: returnUrlServiceMock }
+        { provide: ReturnUrl, useValue: returnUrlMock }
       ]
     });
 
@@ -50,8 +50,8 @@ describe('ProcessingComponent', () => {
 
   it('should call returnUrlService.openReturnURL with "/dashboard" when openReturnUrl is invoked', () => {
     component.openReturnUrl();
-    expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledTimes(1);
-    expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(returnUrlMock.openReturnURL).toHaveBeenCalledTimes(1);
+    expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   it('should call openReturnUrl when the Return button is clicked', async () => {
@@ -59,7 +59,7 @@ describe('ProcessingComponent', () => {
     button.click();
     await fixture.whenStable();
 
-    expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledTimes(1);
-    expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(returnUrlMock.openReturnURL).toHaveBeenCalledTimes(1);
+    expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 });

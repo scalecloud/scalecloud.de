@@ -9,9 +9,9 @@ import { SeatDetailService } from './seat-detail.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Role } from 'src/app/core/permission/roles';
 import { SeatDetailReply } from '../seats';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -46,7 +46,7 @@ function buildMocks() {
     auth: { waitForAuth: vi.fn().mockResolvedValue(undefined) },
     log: { error: vi.fn() },
     snackBarService: { error: vi.fn(), info: vi.fn() },
-    returnUrlService: { openReturnURL: vi.fn() },
+    returnUrl: { openReturnURL: vi.fn() },
     dialog: { open: vi.fn() },
     route: {
       snapshot: {
@@ -74,7 +74,7 @@ describe('SeatDetailComponent', () => {
         { provide: Auth, useValue: mocks.auth },
         { provide: Log, useValue: mocks.log },
         { provide: SnackBarService, useValue: mocks.snackBarService },
-        { provide: ReturnUrlService, useValue: mocks.returnUrlService },
+        { provide: ReturnUrl, useValue: mocks.returnUrl },
         { provide: MatDialog, useValue: mocks.dialog },
         { provide: ActivatedRoute, useValue: mocks.route },
       ],
@@ -289,7 +289,7 @@ describe('SeatDetailComponent', () => {
     await fixture.whenStable();
 
     expect(mocks.seatDetailService.updateSeat).toHaveBeenCalledOnce();
-    expect(mocks.returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(mocks.returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   // ── deleteSeat ──────────────────────────────────────────────────────────────
@@ -303,7 +303,7 @@ describe('SeatDetailComponent', () => {
     await fixture.whenStable();
 
     expect(mocks.seatDetailService.deleteSeat).toHaveBeenCalledOnce();
-    expect(mocks.returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(mocks.returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   it('shows error when deleteSeat fails (success: false)', async () => {
@@ -322,13 +322,13 @@ describe('SeatDetailComponent', () => {
     mocks.route.snapshot.paramMap.get.mockReturnValue(null);
     component.deleteSeat(makeSeat());
     expect(mocks.snackBarService.error).toHaveBeenCalledOnce();
-    expect(mocks.returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(mocks.returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   // ── cancel ───────────────────────────────────────────────────────────────────
   it('cancel navigates to dashboard', () => {
     component.cancel();
-    expect(mocks.returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(mocks.returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   // ── Keyboard accessibility ────────────────────────────────────────────────────

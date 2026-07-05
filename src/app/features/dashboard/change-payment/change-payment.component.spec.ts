@@ -8,9 +8,9 @@ import { ChangePaymentService } from './change-payment.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { StripePaymentElementComponent } from 'src/app/shared/stripe-payment-element/stripe-payment-element.component';
 import { StripeIntent } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 // ── Stub ──────────────────────────────────────────────────────────────────────
 
@@ -42,7 +42,7 @@ const makeLogService = () => ({
   error: vi.fn(),
 });
 
-const makeReturnUrlService = () => ({
+const makeReturnUrl = () => ({
   getSpecifiedUrlWithReturnUrl: vi.fn().mockReturnValue('/dashboard/change-payment/status'),
   openReturnURL: vi.fn(),
 });
@@ -57,7 +57,7 @@ describe('ChangePaymentComponent', () => {
   let authMock: ReturnType<typeof makeAuth>;
   let changePaymentService: ReturnType<typeof makeChangePaymentService>;
   let logService: ReturnType<typeof makeLogService>;
-  let returnUrlService: ReturnType<typeof makeReturnUrlService>;
+  let returnUrlService: ReturnType<typeof makeReturnUrl>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -66,7 +66,7 @@ describe('ChangePaymentComponent', () => {
         { provide: Auth,          useValue: makeAuth() },
         { provide: ChangePaymentService, useValue: makeChangePaymentService() },
         { provide: Log,           useValue: makeLogService() },
-        { provide: ReturnUrlService,     useValue: makeReturnUrlService() },
+        { provide: ReturnUrl,     useValue: makeReturnUrl() },
       ],
     })
       .overrideComponent(ChangePaymentComponent, {
@@ -78,7 +78,7 @@ describe('ChangePaymentComponent', () => {
     authMock          = TestBed.inject(Auth)          as unknown as ReturnType<typeof makeAuth>;
     changePaymentService = TestBed.inject(ChangePaymentService) as unknown as ReturnType<typeof makeChangePaymentService>;
     logService           = TestBed.inject(Log)           as unknown as ReturnType<typeof makeLogService>;
-    returnUrlService     = TestBed.inject(ReturnUrlService)     as unknown as ReturnType<typeof makeReturnUrlService>;
+    returnUrlService     = TestBed.inject(ReturnUrl)     as unknown as ReturnType<typeof makeReturnUrl>;
 
     fixture   = TestBed.createComponent(ChangePaymentComponent);
     component = fixture.componentInstance;

@@ -8,10 +8,10 @@ import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { ListSeatReply } from './seats';
 import { of, throwError } from 'rxjs';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -37,7 +37,7 @@ function buildMocks() {
     auth: { waitForAuth: vi.fn().mockResolvedValue(undefined) },
     log: { error: vi.fn() },
     snackBarService: { error: vi.fn(), info: vi.fn() },
-    returnUrlService: { openUrlAddReturnUrl: vi.fn() },
+    returnUrl: { openUrlAddReturnUrl: vi.fn() },
     permission: { isAdministrator: vi.fn().mockResolvedValue(true) },
     route: { snapshot: { paramMap: { get: vi.fn().mockReturnValue('sub-1') } } },
   };
@@ -61,7 +61,7 @@ describe('SeatsComponent', () => {
         { provide: Auth, useValue: mocks.auth },
         { provide: Log, useValue: mocks.log },
         { provide: SnackBarService, useValue: mocks.snackBarService },
-        { provide: ReturnUrlService, useValue: mocks.returnUrlService },
+        { provide: ReturnUrl, useValue: mocks.returnUrl },
         { provide: Permission, useValue: mocks.permission },
         { provide: ActivatedRoute, useValue: mocks.route },
       ],
@@ -178,7 +178,7 @@ describe('SeatsComponent', () => {
   // ── Navigation helpers ──────────────────────────────────────────────────────
   it('addSeat navigates to add-seat URL', () => {
     component.addSeat();
-    expect(mocks.returnUrlService.openUrlAddReturnUrl).toHaveBeenCalledWith(
+    expect(mocks.returnUrl.openUrlAddReturnUrl).toHaveBeenCalledWith(
       '/dashboard/subscription/sub-1/add-seat'
     );
   });
@@ -187,13 +187,13 @@ describe('SeatsComponent', () => {
     mocks.route.snapshot.paramMap.get.mockReturnValue(null);
     component.addSeat();
     expect(mocks.snackBarService.error).toHaveBeenCalledOnce();
-    expect(mocks.returnUrlService.openUrlAddReturnUrl).not.toHaveBeenCalled();
+    expect(mocks.returnUrl.openUrlAddReturnUrl).not.toHaveBeenCalled();
   });
 
   it('openSeatDetail navigates to seat-detail URL', () => {
     const seat = { uid: 'u1', email: 'a@b.com' } as any;
     component.openSeatDetail(seat);
-    expect(mocks.returnUrlService.openUrlAddReturnUrl).toHaveBeenCalledWith(
+    expect(mocks.returnUrl.openUrlAddReturnUrl).toHaveBeenCalledWith(
       '/dashboard/subscription/sub-1/u1/seat-detail'
     );
   });

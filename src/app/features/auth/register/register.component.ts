@@ -8,8 +8,8 @@ import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 interface RegisterForm {
   email: FormControl<string>;
@@ -28,7 +28,7 @@ interface RegisterForm {
 export class RegisterComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly auth = inject(Auth);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
 
   readonly passwordStrength = viewChild(PasswordStrengthComponent);
   readonly passwordMatch = viewChild(PasswordMatchComponent);
@@ -140,6 +140,6 @@ export class RegisterComponent {
   }
 
   openUrlKeepReturnUrl(): void {
-    this.returnUrlService.openUrlKeepReturnUrl('/login');
+    this.returnUrl.openUrlKeepReturnUrl('/login');
   }
 }

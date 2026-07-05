@@ -4,8 +4,8 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 const RESEND_COOLDOWN_SECONDS = 30;
 
@@ -18,7 +18,7 @@ const RESEND_COOLDOWN_SECONDS = 30;
 })
 export class VerifyEmailComponent implements OnInit, OnDestroy {
   readonly auth = inject(Auth);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
   private readonly snackBarService = inject(SnackBarService);
 
   private readonly secondsRemaining = signal(0);
@@ -52,7 +52,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     try {
       await this.auth.reloadUser();
       if (await this.auth.isLoggedIn(true)) {
-        this.returnUrlService.openReturnURL('/');
+        this.returnUrl.openReturnURL('/');
       } else {
         this.snackBarService.error('Please verify your E-Mail address first.');
       }

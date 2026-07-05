@@ -5,9 +5,9 @@ import { PaymentMethodOverviewReply } from './payment-method-overview';
 import { PaymentMethodOverviewService } from './payment-method-overview.service';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 const mockReply: PaymentMethodOverviewReply = {
   has_valid_payment_method: true,
@@ -29,7 +29,7 @@ const logMock = {
   error: vi.fn(),
 };
 
-const returnUrlServiceMock = {
+const returnUrlMock = {
   openUrlAddReturnUrl: vi.fn(),
 };
 
@@ -77,7 +77,7 @@ async function createComponent(
       { provide: PaymentMethodOverviewService, useValue: paymentMethodServiceMock },
       { provide: Auth, useValue: authMock },
       { provide: Log, useValue: logMock },
-      { provide: ReturnUrlService, useValue: returnUrlServiceMock },
+      { provide: ReturnUrl, useValue: returnUrlMock },
     ],
   }).compileComponents();
 
@@ -215,6 +215,6 @@ describe('PaymentOverviewComponent', () => {
   it('should call returnUrlService when openUrlChangePaymentMethod is called', async () => {
     const { component } = await createComponent();
     component.openUrlChangePaymentMethod();
-    expect(returnUrlServiceMock.openUrlAddReturnUrl).toHaveBeenCalledWith('/dashboard/change-payment');
+    expect(returnUrlMock.openUrlAddReturnUrl).toHaveBeenCalledWith('/dashboard/change-payment');
   });
 });

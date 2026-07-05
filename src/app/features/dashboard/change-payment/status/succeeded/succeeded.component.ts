@@ -4,7 +4,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 @Component({
     selector: 'app-succeeded',
@@ -13,9 +13,9 @@ import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
     imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
 })
 export class SucceededComponent {
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
 
   openReturnUrl(): void {
-    this.returnUrlService.openReturnURL('/dashboard');
+    this.returnUrl.openReturnURL('/dashboard');
   }
 }

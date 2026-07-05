@@ -2,22 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { RequiresPaymentMethodComponent } from './requires-payment-method.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 describe('PaymentChangedRequiresPaymentMethodComponent', () => {
   let component: RequiresPaymentMethodComponent;
   let fixture: ComponentFixture<RequiresPaymentMethodComponent>;
-  let returnUrlServiceMock: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
+  let returnUrlMock: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    returnUrlServiceMock = {
+    returnUrlMock = {
       openUrlKeepReturnUrl: vi.fn()
     };
 
     TestBed.configureTestingModule({
       imports: [RequiresPaymentMethodComponent],
       providers: [
-        { provide: ReturnUrlService, useValue: returnUrlServiceMock }
+        { provide: ReturnUrl, useValue: returnUrlMock }
       ]
     });
 
@@ -50,8 +50,8 @@ describe('PaymentChangedRequiresPaymentMethodComponent', () => {
 
   it('should call returnUrlService.openUrlKeepReturnUrl with "/change-payment" when openChangePayment is invoked', () => {
     component.openChangePayment();
-    expect(returnUrlServiceMock.openUrlKeepReturnUrl).toHaveBeenCalledTimes(1);
-    expect(returnUrlServiceMock.openUrlKeepReturnUrl).toHaveBeenCalledWith('/change-payment');
+    expect(returnUrlMock.openUrlKeepReturnUrl).toHaveBeenCalledTimes(1);
+    expect(returnUrlMock.openUrlKeepReturnUrl).toHaveBeenCalledWith('/change-payment');
   });
 
   it('should call openChangePayment when the Dashboard button is clicked', async () => {
@@ -59,7 +59,7 @@ describe('PaymentChangedRequiresPaymentMethodComponent', () => {
     button.click();
     await fixture.whenStable();
 
-    expect(returnUrlServiceMock.openUrlKeepReturnUrl).toHaveBeenCalledTimes(1);
-    expect(returnUrlServiceMock.openUrlKeepReturnUrl).toHaveBeenCalledWith('/change-payment');
+    expect(returnUrlMock.openUrlKeepReturnUrl).toHaveBeenCalledTimes(1);
+    expect(returnUrlMock.openUrlKeepReturnUrl).toHaveBeenCalledWith('/change-payment');
   });
 });

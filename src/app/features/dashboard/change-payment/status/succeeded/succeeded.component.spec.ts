@@ -2,22 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { SucceededComponent } from './succeeded.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 describe('PaymentChangedSucceededComponent', () => {
   let component: SucceededComponent;
   let fixture: ComponentFixture<SucceededComponent>;
-  let returnUrlServiceMock: { openReturnURL: ReturnType<typeof vi.fn> };
+  let returnUrlMock: { openReturnURL: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    returnUrlServiceMock = {
+    returnUrlMock = {
       openReturnURL: vi.fn()
     };
 
     TestBed.configureTestingModule({
       imports: [SucceededComponent],
       providers: [
-        { provide: ReturnUrlService, useValue: returnUrlServiceMock }
+        { provide: ReturnUrl, useValue: returnUrlMock }
       ]
     });
 
@@ -50,8 +50,8 @@ describe('PaymentChangedSucceededComponent', () => {
 
   it('should call returnUrlService.openReturnURL with "/dashboard" when openReturnUrl is invoked', () => {
     component.openReturnUrl();
-    expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledTimes(1);
-    expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(returnUrlMock.openReturnURL).toHaveBeenCalledTimes(1);
+    expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   it('should call openReturnUrl when the Return button is clicked', async () => {
@@ -59,7 +59,7 @@ describe('PaymentChangedSucceededComponent', () => {
     button.click();
     await fixture.whenStable();
 
-    expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledTimes(1);
-    expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(returnUrlMock.openReturnURL).toHaveBeenCalledTimes(1);
+    expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 });

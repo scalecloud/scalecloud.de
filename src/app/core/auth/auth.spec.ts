@@ -6,7 +6,7 @@ import type { User } from 'firebase/auth';
 import { Auth } from './auth';
 import { Log } from '../logging/log';
 import { SnackBarService } from '../snackbar/snack-bar.service';
-import { ReturnUrlService } from '../redirect/return-url.service';
+import { ReturnUrl } from '../redirect/return-url';
 import { Firebase } from '../firebase/firebase';
 
 // ── Firebase mocking note ────────────────────────────────────────────────────
@@ -91,7 +91,7 @@ describe('Auth', () => {
         { provide: Router, useValue: router },
         { provide: SnackBarService, useValue: snackBarService },
         { provide: Log, useValue: logService },
-        { provide: ReturnUrlService, useValue: returnUrlService },
+        { provide: ReturnUrl, useValue: returnUrlService },
         { provide: Firebase, useValue: firebase },
       ],
     });

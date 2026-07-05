@@ -10,9 +10,9 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 @Component({
   selector: 'app-payment-method-overview',
@@ -38,7 +38,7 @@ export class PaymentMethodOverviewComponent implements OnInit {
   private readonly paymentMethodService = inject(PaymentMethodOverviewService);
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
 
   readonly ServiceStatus = ServiceStatus;
   readonly reply = signal<PaymentMethodOverviewReply | null>(null);
@@ -80,7 +80,7 @@ export class PaymentMethodOverviewComponent implements OnInit {
   }
 
   openUrlChangePaymentMethod(): void {
-    this.returnUrlService.openUrlAddReturnUrl('/dashboard/change-payment');
+    this.returnUrl.openUrlAddReturnUrl('/dashboard/change-payment');
   }
 
   private loadPaymentMethodOverview(): void {

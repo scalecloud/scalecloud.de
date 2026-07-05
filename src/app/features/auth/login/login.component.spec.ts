@@ -4,21 +4,21 @@ import { By } from '@angular/platform-browser';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { LoginComponent } from './login.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authMock: { login: ReturnType<typeof vi.fn> };
   let logService: { warn: ReturnType<typeof vi.fn> };
-  let returnUrlService: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
+  let returnUrl: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     authMock = { login: vi.fn() };
     logService = { warn: vi.fn() };
-    returnUrlService = { openUrlKeepReturnUrl: vi.fn() };
+    returnUrl = { openUrlKeepReturnUrl: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
@@ -26,7 +26,7 @@ describe('LoginComponent', () => {
         provideRouter([]),
         { provide: Auth, useValue: authMock },
         { provide: Log, useValue: logService },
-        { provide: ReturnUrlService, useValue: returnUrlService },
+        { provide: ReturnUrl, useValue: returnUrl },
       ],
     }).compileComponents();
   });
@@ -137,7 +137,7 @@ describe('LoginComponent', () => {
   it('should call ReturnUrlService.openUrlKeepReturnUrl with /register when Register is clicked', () => {
     component.openUrlKeepReturnUrl();
 
-    expect(returnUrlService.openUrlKeepReturnUrl).toHaveBeenCalledWith('/register');
+    expect(returnUrl.openUrlKeepReturnUrl).toHaveBeenCalledWith('/register');
   });
 
   it('should trigger login() when the Login button is clicked', async () => {

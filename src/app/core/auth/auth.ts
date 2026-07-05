@@ -5,7 +5,7 @@ import type { User } from 'firebase/auth';
 
 import { Log } from '../logging/log';
 import { SnackBarService } from '../snackbar/snack-bar.service';
-import { ReturnUrlService } from '../redirect/return-url.service';
+import { ReturnUrl } from '../redirect/return-url';
 import { Firebase } from '../firebase/firebase';
 
 @Injectable({ providedIn: 'root' })
@@ -13,7 +13,7 @@ export class Auth {
   private readonly router = inject(Router);
   private readonly snackBarService = inject(SnackBarService);
   private readonly logService = inject(Log);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrlService = inject(ReturnUrl);
   private readonly firebase = inject(Firebase);
   private readonly destroyRef = inject(DestroyRef);
 

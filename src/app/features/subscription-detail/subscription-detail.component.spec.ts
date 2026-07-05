@@ -10,9 +10,9 @@ import { PaymentMethodOverviewComponent } from '../dashboard/payment-method-over
 import { InvoicesComponent } from './invoices/invoices.component';
 import { BillingAddressOverviewComponent } from './billing-address/billing-address-overview/billing-address-overview.component';
 import { BillingPortalComponent } from './customer-portal/billing-portal.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL, APP_BASE_URL } from 'src/app/core/config/api-token';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -37,7 +37,7 @@ describe('SubscriptionDetailComponent', () => {
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({}) } } },
         { provide: API_URL, useValue: 'https://api.test' },
         { provide: APP_BASE_URL, useValue: 'https://app.test' },
-        { provide: ReturnUrlService, useValue: { getReturnUrlDecoded: vi.fn(), openReturnURL: vi.fn(), openUrlKeepReturnUrl: vi.fn() } },
+        { provide: ReturnUrl, useValue: { getReturnUrlDecoded: vi.fn(), openReturnURL: vi.fn(), openUrlKeepReturnUrl: vi.fn() } },
         {
           provide: Auth,
           useValue: {

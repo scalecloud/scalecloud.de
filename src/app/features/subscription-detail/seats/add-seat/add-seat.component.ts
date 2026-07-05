@@ -20,9 +20,9 @@ import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 @Component({
   selector: 'app-add-seat',
@@ -44,7 +44,7 @@ export class AddSeatComponent {
   private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly addSeatService = inject(AddSeatService);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
   private readonly route = inject(ActivatedRoute);
 
   readonly email = new FormControl('', {
@@ -81,7 +81,7 @@ export class AddSeatComponent {
       this.snackBarService.error(
         'Currently not possible to invite a user. Please try again later.',
       );
-      this.returnUrlService.openReturnURL('/dashboard');
+      this.returnUrl.openReturnURL('/dashboard');
       return;
     }
 
@@ -108,7 +108,7 @@ export class AddSeatComponent {
 
       if (reply.success) {
         this.snackBarService.info(`Invitation sent to ${reply.email}.`);
-        this.returnUrlService.openReturnURL('/dashboard');
+        this.returnUrl.openReturnURL('/dashboard');
       } else {
         this.snackBarService.error(
           `Could not send invitation to ${reply.email}. Please retry.`,

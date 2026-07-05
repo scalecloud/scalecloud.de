@@ -16,10 +16,10 @@ import { MatInput } from '@angular/material/input';
 import { CountryInputComponent } from '../country-input/country-input.component';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 /**
  * Typed shape of the billing address form.
@@ -73,7 +73,7 @@ export class BillingAddressDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
 
   // Mutable view state is now signal-backed. With OnPush as the
   // baseline strategy, plain field mutations would not reliably
@@ -226,7 +226,7 @@ export class BillingAddressDetailComponent implements OnInit {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
       this.snackBarService.error('Currently not possible update billing address. Please try again later.');
-      this.returnUrlService.openReturnURL('/dashboard');
+      this.returnUrl.openReturnURL('/dashboard');
       return;
     }
 
@@ -247,7 +247,7 @@ export class BillingAddressDetailComponent implements OnInit {
     this.service.updateBillingAddress(updateBillingAddressRequest).subscribe((reply) => {
       if (reply.subscriptionID) {
         this.snackBarService.info('Billing address updated.');
-        this.returnUrlService.openReturnURL('/dashboard');
+        this.returnUrl.openReturnURL('/dashboard');
       } else {
         this.snackBarService.error('Could not update billing address. Please retry.');
       }
@@ -255,6 +255,6 @@ export class BillingAddressDetailComponent implements OnInit {
   }
 
   cancel(): void {
-    this.returnUrlService.openReturnURL('/dashboard');
+    this.returnUrl.openReturnURL('/dashboard');
   }
 }

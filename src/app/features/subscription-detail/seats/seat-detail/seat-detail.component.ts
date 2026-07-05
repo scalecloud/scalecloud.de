@@ -34,9 +34,9 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 @Component({
   selector: 'app-seat-detail',
@@ -65,7 +65,7 @@ export class SeatDetailComponent implements OnInit {
   private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
   private readonly seatDetailService = inject(SeatDetailService);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
 
@@ -198,7 +198,7 @@ export class SeatDetailComponent implements OnInit {
         next: (reply) => {
           if (reply.seat) {
             this.snackBarService.info('User updated.');
-            this.returnUrlService.openReturnURL('/dashboard');
+            this.returnUrl.openReturnURL('/dashboard');
           } else {
             this.snackBarService.error('Could not update user. Please try again later.');
           }
@@ -210,7 +210,7 @@ export class SeatDetailComponent implements OnInit {
   }
 
   cancel(): void {
-    this.returnUrlService.openReturnURL('/dashboard');
+    this.returnUrl.openReturnURL('/dashboard');
   }
 
   deleteSeat(seatToDelete: Seat): void {
@@ -219,7 +219,7 @@ export class SeatDetailComponent implements OnInit {
     if (!subscriptionID) {
       this.log.error('SeatDetailComponent.deleteSeat: subscriptionID is null');
       this.snackBarService.error('Currently not possible to delete a user. Please try again later.');
-      this.returnUrlService.openReturnURL('/dashboard');
+      this.returnUrl.openReturnURL('/dashboard');
       return;
     }
 
@@ -230,7 +230,7 @@ export class SeatDetailComponent implements OnInit {
         next: (reply) => {
           if (reply?.success) {
             this.snackBarService.info(`Removed ${reply.deletedSeat.email}.`);
-            this.returnUrlService.openReturnURL('/dashboard');
+            this.returnUrl.openReturnURL('/dashboard');
           } else {
             this.snackBarService.error(
               `Could not remove ${seatToDelete?.email}. Please retry.`

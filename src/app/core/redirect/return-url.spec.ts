@@ -4,12 +4,12 @@ import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Location } from '@angular/common';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { ReturnUrlService } from './return-url.service';
+import { ReturnUrl } from './return-url';
 import { Log } from '../logging/log';
 import { APP_BASE_URL } from '../config/api-token';
 
-describe('ReturnUrlService', () => {
-  let service: ReturnUrlService;
+describe('ReturnUrl', () => {
+  let service: ReturnUrl;
 
   const BASE_URL = 'https://base.example.com';
 
@@ -54,7 +54,7 @@ describe('ReturnUrlService', () => {
       ],
     });
 
-    service = TestBed.inject(ReturnUrlService);
+    service = TestBed.inject(ReturnUrl);
   });
 
   it('should be created', () => {

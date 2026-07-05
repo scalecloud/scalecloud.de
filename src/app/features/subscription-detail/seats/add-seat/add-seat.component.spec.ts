@@ -8,9 +8,9 @@ import { AddSeatService } from './add-seat.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { Role } from 'src/app/core/permission/roles';
 import { AddSeatReply } from '../seats';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -35,7 +35,7 @@ describe('AddSeatComponent', () => {
   const auth = { waitForAuth: vi.fn(() => Promise.resolve()) };
   const log = { warn: vi.fn(), error: vi.fn() };
   const snackBarService = { info: vi.fn(), error: vi.fn() };
-  const returnUrlService = { openReturnURL: vi.fn() };
+  const returnUrl = { openReturnURL: vi.fn() };
 
   const activatedRouteStub = {
     snapshot: { paramMap: { get: vi.fn(() => SUBSCRIPTION_ID) } },
@@ -52,7 +52,7 @@ describe('AddSeatComponent', () => {
         { provide: Auth, useValue: auth },
         { provide: Log, useValue: log },
         { provide: SnackBarService, useValue: snackBarService },
-        { provide: ReturnUrlService, useValue: returnUrlService },
+        { provide: ReturnUrl, useValue: returnUrl },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
     }).compileComponents();
@@ -249,7 +249,7 @@ describe('AddSeatComponent', () => {
       roles: [Role.Administrator],
     });
     expect(snackBarService.info).toHaveBeenCalledWith('Invitation sent to invited@example.com.');
-    expect(returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   it('should call addSeat with an empty roles array when no roles are selected', async () => {
@@ -301,7 +301,7 @@ describe('AddSeatComponent', () => {
     expect(snackBarService.error).toHaveBeenCalledWith(
       'Could not send invitation to fail@example.com. Please retry.',
     );
-    expect(returnUrlService.openReturnURL).not.toHaveBeenCalled();
+    expect(returnUrl.openReturnURL).not.toHaveBeenCalled();
   });
 
   it('should reset isSubmitting to false after a failed reply', async () => {
@@ -335,7 +335,7 @@ describe('AddSeatComponent', () => {
     expect(snackBarService.error).toHaveBeenCalledWith(
       'Currently not possible to invite a user. Please try again later.',
     );
-    expect(returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
     expect(addSeatService.addSeat).not.toHaveBeenCalled();
 
     activatedRouteStub.snapshot.paramMap.get.mockReturnValue(SUBSCRIPTION_ID);

@@ -9,10 +9,10 @@ import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { of, throwError } from 'rxjs';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 const mockReply: BillingAddressReply = {
   subscriptionID: 'subscription-123',
@@ -35,7 +35,7 @@ const countryServiceMock = { getCountry: vi.fn().mockReturnValue('Germany') };
 const languageServiceMock = { getLanguage: vi.fn().mockReturnValue('de') };
 const logMock = { error: vi.fn() };
 const snackBarServiceMock = { error: vi.fn() };
-const returnUrlServiceMock = { openUrlAddReturnUrl: vi.fn() };
+const returnUrlMock = { openUrlAddReturnUrl: vi.fn() };
 
 const providers = [
   { provide: Auth, useValue: authMock },
@@ -44,7 +44,7 @@ const providers = [
   { provide: ActivatedRoute, useValue: routeMock },
   { provide: Log, useValue: logMock },
   { provide: SnackBarService, useValue: snackBarServiceMock },
-  { provide: ReturnUrlService, useValue: returnUrlServiceMock },
+  { provide: ReturnUrl, useValue: returnUrlMock },
   { provide: CountryService, useValue: countryServiceMock },
   { provide: LanguageService, useValue: languageServiceMock },
 ];
@@ -164,7 +164,7 @@ describe('BillingAddressOverviewComponent', () => {
 
   it('should navigate to billing address edit page', () => {
     component.edit();
-    expect(returnUrlServiceMock.openUrlAddReturnUrl).toHaveBeenCalledWith(
+    expect(returnUrlMock.openUrlAddReturnUrl).toHaveBeenCalledWith(
       '/dashboard/subscription/subscription-123/billing-address'
     );
   });

@@ -27,10 +27,10 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 @Component({
   selector: 'app-seats',
@@ -60,7 +60,7 @@ export class SeatsComponent implements OnInit {
   private readonly seatService = inject(SeatsService);
   private readonly log = inject(Log);
   private readonly snackBarService = inject(SnackBarService);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
   private readonly permission = inject(Permission);
   private readonly route = inject(ActivatedRoute);
 
@@ -154,7 +154,7 @@ export class SeatsComponent implements OnInit {
       this.snackBarService.error('Could not add seat. Please try again later.');
       return;
     }
-    this.returnUrlService.openUrlAddReturnUrl(
+    this.returnUrl.openUrlAddReturnUrl(
       `/dashboard/subscription/${subscriptionID}/add-seat`
     );
   }
@@ -165,7 +165,7 @@ export class SeatsComponent implements OnInit {
       this.snackBarService.error('Could not open seat detail. Please try again later.');
       return;
     }
-    this.returnUrlService.openUrlAddReturnUrl(
+    this.returnUrl.openUrlAddReturnUrl(
       `/dashboard/subscription/${subscriptionID}/${seat.uid}/seat-detail`
     );
   }

@@ -4,9 +4,9 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { StatusComponent } from './status.component';
 import { StripeKeyService } from 'src/app/core/stripe/stripe-key.service';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 describe('StatusComponent', () => {
   let component: StatusComponent;
@@ -19,7 +19,7 @@ describe('StatusComponent', () => {
     error: ReturnType<typeof vi.fn>;
   };
   let stripeKeyServiceMock: { getPublicKey: ReturnType<typeof vi.fn> };
-  let returnUrlServiceMock: { openReturnURL: ReturnType<typeof vi.fn> };
+  let returnUrlMock: { openReturnURL: ReturnType<typeof vi.fn> };
   let retrieveSetupIntentMock: ReturnType<typeof vi.fn>;
   let stripeFactoryMock: ReturnType<typeof vi.fn>;
 
@@ -45,7 +45,7 @@ describe('StatusComponent', () => {
     // inject ReturnUrlService, whose real constructor needs APP_BASE_URL.
     // Mocking the service here avoids having to satisfy that token in tests
     // that don't care about return-URL behavior.
-    returnUrlServiceMock = {
+    returnUrlMock = {
       openReturnURL: vi.fn()
     };
     retrieveSetupIntentMock = vi.fn();
@@ -62,7 +62,7 @@ describe('StatusComponent', () => {
         { provide: Auth, useValue: authMock },
         { provide: Log, useValue: logMock },
         { provide: StripeKeyService, useValue: stripeKeyServiceMock },
-        { provide: ReturnUrlService, useValue: returnUrlServiceMock },
+        { provide: ReturnUrl, useValue: returnUrlMock },
         {
           provide: ActivatedRoute,
           useValue: {

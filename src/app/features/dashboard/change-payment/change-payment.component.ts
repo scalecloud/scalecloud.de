@@ -8,9 +8,9 @@ import { StripePaymentElementComponent as StripePaymentElementComponent_1 } from
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { afterNextRender } from '@angular/core';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 @Component({
     selector: 'app-change-payment',
@@ -23,7 +23,7 @@ export class ChangePaymentComponent implements OnInit {
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
   private readonly changePaymentService = inject(ChangePaymentService);
-  private readonly returnUrlService = inject(ReturnUrlService);
+  private readonly returnUrl = inject(ReturnUrl);
 
   private readonly _stripePaymentElementComponentRef = viewChild(StripePaymentElementComponent);
 
@@ -69,7 +69,7 @@ export class ChangePaymentComponent implements OnInit {
   changePaymentMethod(): void {
     const stripePaymentElementComponent = this.stripePaymentElementComponent();
     if (stripePaymentElementComponent) {
-      const returnUrl = this.returnUrlService.getSpecifiedUrlWithReturnUrl('/dashboard/change-payment/status');
+      const returnUrl = this.returnUrl.getSpecifiedUrlWithReturnUrl('/dashboard/change-payment/status');
       this.log.info('returnUrl: ' + returnUrl);
       const submitStripePayment: SubmitStripePayment = {
         return_url: returnUrl,
@@ -81,7 +81,7 @@ export class ChangePaymentComponent implements OnInit {
   }
 
   cancel(): void {
-    this.returnUrlService.openReturnURL('/dashboard');
+    this.returnUrl.openReturnURL('/dashboard');
   }
 
   isSuccess(): boolean {

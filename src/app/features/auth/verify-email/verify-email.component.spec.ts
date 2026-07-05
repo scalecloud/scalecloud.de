@@ -4,8 +4,8 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { VerifyEmailComponent } from './verify-email.component';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { signal } from '@angular/core';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -27,7 +27,7 @@ describe('VerifyEmailComponent', () => {
     reloadUser: vi.fn(() => Promise.resolve()),
     isLoggedIn: vi.fn(() => Promise.resolve(true)),
   };
-  const returnUrlService = { openReturnURL: vi.fn() };
+  const returnUrl = { openReturnURL: vi.fn() };
   const snackBarService = { error: vi.fn() };
 
   beforeEach(async () => {
@@ -40,7 +40,7 @@ describe('VerifyEmailComponent', () => {
       imports: [VerifyEmailComponent],
       providers: [
         { provide: Auth, useValue: authMock },
-        { provide: ReturnUrlService, useValue: returnUrlService },
+        { provide: ReturnUrl, useValue: returnUrl },
         { provide: SnackBarService, useValue: snackBarService },
       ],
     }).compileComponents();
@@ -145,7 +145,7 @@ describe('VerifyEmailComponent', () => {
 
     expect(authMock.reloadUser).toHaveBeenCalled();
     expect(authMock.isLoggedIn).toHaveBeenCalledWith(true);
-    expect(returnUrlService.openReturnURL).toHaveBeenCalledWith('/');
+    expect(returnUrl.openReturnURL).toHaveBeenCalledWith('/');
     expect(snackBarService.error).not.toHaveBeenCalled();
   });
 
@@ -183,7 +183,7 @@ describe('VerifyEmailComponent', () => {
     await component.proceedToCheckout();
 
     expect(snackBarService.error).toHaveBeenCalledWith('Please verify your E-Mail address first.');
-    expect(returnUrlService.openReturnURL).not.toHaveBeenCalled();
+    expect(returnUrl.openReturnURL).not.toHaveBeenCalled();
   });
 
   it('should reset isProceedToCheckoutLoading to false even when verification fails', async () => {

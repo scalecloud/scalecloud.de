@@ -9,10 +9,10 @@ import { ServiceStatus } from 'src/app/shared/service-status';
 import { BillingAddressService } from '../billing-address.service';
 import { SnackBarService } from 'src/app/core/snackbar/snack-bar.service';
 import { BillingAddressReply } from '../billing-address-model';
-import { ReturnUrlService } from 'src/app/core/redirect/return-url.service';
 import { Auth } from 'src/app/core/auth/auth';
 import { Permission } from 'src/app/core/permission/permission';
 import { Log } from 'src/app/core/logging/log';
+import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 /**
  * NOTE: These mock shapes are inferred from how the component calls
@@ -56,7 +56,7 @@ describe('BillingAddressDetailComponent', () => {
   let billingAddressServiceMock: { getBillingAddress: Mock; updateBillingAddress: Mock };
   let logMock: { error: Mock };
   let snackBarServiceMock: { info: Mock; error: Mock };
-  let returnUrlServiceMock: { openReturnURL: Mock };
+  let returnUrlMock: { openReturnURL: Mock };
   let activatedRouteStub: Partial<ActivatedRoute>;
 
   /**
@@ -74,7 +74,7 @@ describe('BillingAddressDetailComponent', () => {
     };
     logMock = { error: vi.fn() };
     snackBarServiceMock = { info: vi.fn(), error: vi.fn() };
-    returnUrlServiceMock = { openReturnURL: vi.fn() };
+    returnUrlMock = { openReturnURL: vi.fn() };
     activatedRouteStub = routeOverride ?? createActivatedRouteStub();
 
     // Allows setup() to be called more than once within a single test
@@ -92,7 +92,7 @@ describe('BillingAddressDetailComponent', () => {
         { provide: BillingAddressService, useValue: billingAddressServiceMock },
         { provide: Log, useValue: logMock },
         { provide: SnackBarService, useValue: snackBarServiceMock },
-        { provide: ReturnUrlService, useValue: returnUrlServiceMock },
+        { provide: ReturnUrl, useValue: returnUrlMock },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
     }).compileComponents();
@@ -329,7 +329,7 @@ describe('BillingAddressDetailComponent', () => {
         },
       });
       expect(snackBarServiceMock.info).toHaveBeenCalledWith('Billing address updated.');
-      expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
+      expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
     });
 
     it('should show an error snackbar when the update reply has no subscriptionID', async () => {
@@ -344,7 +344,7 @@ describe('BillingAddressDetailComponent', () => {
       await component.onSubmit();
 
       expect(snackBarServiceMock.error).toHaveBeenCalledWith('Could not update billing address. Please retry.');
-      expect(returnUrlServiceMock.openReturnURL).not.toHaveBeenCalled();
+      expect(returnUrlMock.openReturnURL).not.toHaveBeenCalled();
     });
 
     it('should show an error snackbar and redirect when subscriptionID is missing at submit time', async () => {
@@ -363,7 +363,7 @@ describe('BillingAddressDetailComponent', () => {
       expect(snackBarServiceMock.error).toHaveBeenCalledWith(
         'Currently not possible update billing address. Please try again later.',
       );
-      expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
+      expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
       expect(billingAddressServiceMock.updateBillingAddress).not.toHaveBeenCalled();
     });
 
@@ -392,7 +392,7 @@ describe('BillingAddressDetailComponent', () => {
 
     it('should navigate back to the dashboard', () => {
       component.cancel();
-      expect(returnUrlServiceMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
+      expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');
     });
   });
 });
