@@ -20,7 +20,7 @@ import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
     imports: [TitleCard, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCard, LoadingFailed]
 })
 export class SynologyPage implements OnInit {
-  private readonly productService = inject(ProductClient);
+  private readonly productClient = inject(ProductClient);
 
   readonly ServiceStatus = ServiceStatus;
   readonly productType = ProductType.Synology;
@@ -37,7 +37,7 @@ export class SynologyPage implements OnInit {
 
   getSynologyProducts(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
-    this.productService.getProductTiers(this.productType)
+    this.productClient.getProductTiers(this.productType)
       .subscribe({
         next: reply => {
           this.synologyProducts.set(reply.productTiers);

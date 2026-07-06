@@ -21,7 +21,7 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
 export class ChangePaymentPage implements OnInit {
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
-  private readonly changePaymentService = inject(ChangePaymentClient);
+  private readonly changePaymentClient = inject(ChangePaymentClient);
   private readonly returnUrl = inject(ReturnUrl);
 
   private readonly _stripePaymentElementComponentRef = viewChild(StripePaymentElement);
@@ -48,7 +48,7 @@ export class ChangePaymentPage implements OnInit {
   // completion of the whole async flow, including the error branch.
   getChangePaymentSetupIntent(): Promise<void> {
     return this.auth.waitForAuth().then(() => {
-      this.changePaymentService.getChangePaymentSetupIntent().subscribe(
+      this.changePaymentClient.getChangePaymentSetupIntent().subscribe(
         (subscriptionSetupIntentReply: ChangePaymentReply) => {
           this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
 

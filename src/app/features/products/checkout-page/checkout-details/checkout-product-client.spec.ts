@@ -8,7 +8,7 @@ import { CheckoutProductRequest, CheckoutProductReply } from './checkout-product
 import { CheckoutProductClient } from './checkout-product-client';
 
 describe('CheckoutProductClient', () => {
-  let service: CheckoutProductClient;
+  let checkoutProductClient: CheckoutProductClient;
   let httpMock: HttpTestingController;
 
   const API_BASE = 'https://api.example.test';
@@ -28,7 +28,7 @@ describe('CheckoutProductClient', () => {
       ],
     });
 
-    service = TestBed.inject(CheckoutProductClient);
+    checkoutProductClient = TestBed.inject(CheckoutProductClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -37,7 +37,7 @@ describe('CheckoutProductClient', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(checkoutProductClient).toBeTruthy();
   });
 
   it('should POST the request body to the get-checkout-product endpoint', () => {
@@ -54,7 +54,7 @@ describe('CheckoutProductClient', () => {
     };
 
     let actualReply: CheckoutProductReply | undefined;
-    service.getCheckoutProduct(request).subscribe((response) => (actualReply = response));
+    checkoutProductClient.getCheckoutProduct(request).subscribe((response) => (actualReply = response));
 
     const req = httpMock.expectOne(`${API_BASE}/checkout-integration/get-checkout-product`);
     expect(req.request.method).toBe('POST');
@@ -68,7 +68,7 @@ describe('CheckoutProductClient', () => {
   it('should attach the auth headers returned by Auth.getHttpOptions', () => {
     const request: CheckoutProductRequest = { productID: 'prod_123' };
 
-    service.getCheckoutProduct(request).subscribe();
+    checkoutProductClient.getCheckoutProduct(request).subscribe();
 
     const req = httpMock.expectOne(`${API_BASE}/checkout-integration/get-checkout-product`);
     expect(auth.getHttpOptions).toHaveBeenCalled();
@@ -81,7 +81,7 @@ describe('CheckoutProductClient', () => {
     const request: CheckoutProductRequest = { productID: 'prod_123' };
     let caughtError: unknown;
 
-    service.getCheckoutProduct(request).subscribe({
+    checkoutProductClient.getCheckoutProduct(request).subscribe({
       error: (err) => (caughtError = err),
     });
 

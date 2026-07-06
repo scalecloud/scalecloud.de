@@ -9,7 +9,7 @@ import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
 describe('InvoicesClient', () => {
-  let service: InvoicesClient;
+  let invoicesClient: InvoicesClient;
   let httpMock: HttpTestingController;
 
   const fakeApiUrl = 'https://api.example.test';
@@ -30,7 +30,7 @@ describe('InvoicesClient', () => {
       ]
     });
 
-    service = TestBed.inject(InvoicesClient);
+    invoicesClient = TestBed.inject(InvoicesClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -39,7 +39,7 @@ describe('InvoicesClient', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(invoicesClient).toBeTruthy();
   });
 
   it('should POST to the correct invoices endpoint', () => {
@@ -48,7 +48,7 @@ describe('InvoicesClient', () => {
       pageSize: 5
     };
 
-    service.getInvoices(request).subscribe();
+    invoicesClient.getInvoices(request).subscribe();
 
     const req = httpMock.expectOne(`${fakeApiUrl}/dashboard/subscription/invoices`);
     expect(req.request.method).toBe('POST');
@@ -63,7 +63,7 @@ describe('InvoicesClient', () => {
       endingBefore: undefined
     };
 
-    service.getInvoices(request).subscribe();
+    invoicesClient.getInvoices(request).subscribe();
 
     const req = httpMock.expectOne(`${fakeApiUrl}/dashboard/subscription/invoices`);
     expect(req.request.body).toEqual(request);
@@ -73,7 +73,7 @@ describe('InvoicesClient', () => {
   it('should attach auth headers from Auth.getHttpOptions', () => {
     const request: ListInvoicesRequest = { subscriptionID: 'sub_123', pageSize: 5 };
 
-    service.getInvoices(request).subscribe();
+    invoicesClient.getInvoices(request).subscribe();
 
     const req = httpMock.expectOne(`${fakeApiUrl}/dashboard/subscription/invoices`);
     expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
@@ -99,7 +99,7 @@ describe('InvoicesClient', () => {
     };
 
     const resultPromise = new Promise<ListInvoicesReply>((resolve) => {
-      service.getInvoices(request).subscribe((reply) => resolve(reply));
+      invoicesClient.getInvoices(request).subscribe((reply) => resolve(reply));
     });
 
     const req = httpMock.expectOne(`${fakeApiUrl}/dashboard/subscription/invoices`);
@@ -113,7 +113,7 @@ describe('InvoicesClient', () => {
     const request: ListInvoicesRequest = { subscriptionID: 'sub_123', pageSize: 5 };
 
     const errorPromise = new Promise<unknown>((resolve) => {
-      service.getInvoices(request).subscribe({
+      invoicesClient.getInvoices(request).subscribe({
         next: () => resolve(undefined),
         error: (err) => resolve(err)
       });

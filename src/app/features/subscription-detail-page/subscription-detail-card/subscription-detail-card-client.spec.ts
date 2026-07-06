@@ -40,7 +40,7 @@ function makeAuthOptions(token = 'Bearer test-token') {
 // ─── Suite ───────────────────────────────────────────────────────────────────
 
 describe('SubscriptionDetailCardClient', () => {
-  let service: SubscriptionDetailCardClient;
+  let subscriptionDetailCardClient: SubscriptionDetailCardClient;
   let http: HttpTestingController;
   let auth: { getHttpOptions: ReturnType<typeof vi.fn> };
 
@@ -56,7 +56,7 @@ describe('SubscriptionDetailCardClient', () => {
       ],
     });
 
-    service = TestBed.inject(SubscriptionDetailCardClient);
+    subscriptionDetailCardClient = TestBed.inject(SubscriptionDetailCardClient);
     http = TestBed.inject(HttpTestingController);
   });
 
@@ -65,13 +65,13 @@ describe('SubscriptionDetailCardClient', () => {
   // ── Creation ──────────────────────────────────────────────────────────────
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(subscriptionDetailCardClient).toBeTruthy();
   });
 
   // ── URL construction ──────────────────────────────────────────────────────
 
   it('sends a GET to the correct URL for a given id', () => {
-    service.getSubscriptionDetail('sub_123').subscribe();
+    subscriptionDetailCardClient.getSubscriptionDetail('sub_123').subscribe();
 
     const req = http.expectOne(`${BASE_URL}/sub_123`);
     expect(req.request.method).toBe('GET');
@@ -79,14 +79,14 @@ describe('SubscriptionDetailCardClient', () => {
   });
 
   it('interpolates the id into the URL correctly', () => {
-    service.getSubscriptionDetail('abc-456').subscribe();
+    subscriptionDetailCardClient.getSubscriptionDetail('abc-456').subscribe();
 
     http.expectOne(`${BASE_URL}/abc-456`).flush(makeReply());
     // if we reach here without http.verify() throwing, the URL was correct
   });
 
   it('treats each id as a separate URL segment — no double slashes', () => {
-    service.getSubscriptionDetail('xyz').subscribe();
+    subscriptionDetailCardClient.getSubscriptionDetail('xyz').subscribe();
 
     const req = http.expectOne(`${BASE_URL}/xyz`);
     expect(req.request.url).not.toContain('//dashboard');
@@ -96,10 +96,10 @@ describe('SubscriptionDetailCardClient', () => {
   // ── Auth headers ──────────────────────────────────────────────────────────
 
   it('calls getHttpOptions() on every request', () => {
-    service.getSubscriptionDetail('sub_1').subscribe();
+    subscriptionDetailCardClient.getSubscriptionDetail('sub_1').subscribe();
     http.expectOne(`${BASE_URL}/sub_1`).flush(makeReply());
 
-    service.getSubscriptionDetail('sub_2').subscribe();
+    subscriptionDetailCardClient.getSubscriptionDetail('sub_2').subscribe();
     http.expectOne(`${BASE_URL}/sub_2`).flush(makeReply());
 
     expect(auth.getHttpOptions).toHaveBeenCalledTimes(2);
@@ -108,7 +108,7 @@ describe('SubscriptionDetailCardClient', () => {
   it('forwards the Authorization header returned by Auth', () => {
     auth.getHttpOptions.mockReturnValue(makeAuthOptions('Bearer my-token'));
 
-    service.getSubscriptionDetail('sub_123').subscribe();
+    subscriptionDetailCardClient.getSubscriptionDetail('sub_123').subscribe();
 
     const req = http.expectOne(`${BASE_URL}/sub_123`);
     expect(req.request.headers.get('Authorization')).toBe('Bearer my-token');
@@ -120,12 +120,12 @@ describe('SubscriptionDetailCardClient', () => {
       .mockReturnValueOnce(makeAuthOptions('Bearer token-v1'))
       .mockReturnValueOnce(makeAuthOptions('Bearer token-v2'));
 
-    service.getSubscriptionDetail('a').subscribe();
+    subscriptionDetailCardClient.getSubscriptionDetail('a').subscribe();
     const reqA = http.expectOne(`${BASE_URL}/a`);
     expect(reqA.request.headers.get('Authorization')).toBe('Bearer token-v1');
     reqA.flush(makeReply());
 
-    service.getSubscriptionDetail('b').subscribe();
+    subscriptionDetailCardClient.getSubscriptionDetail('b').subscribe();
     const reqB = http.expectOne(`${BASE_URL}/b`);
     expect(reqB.request.headers.get('Authorization')).toBe('Bearer token-v2');
     reqB.flush(makeReply());
@@ -137,7 +137,7 @@ describe('SubscriptionDetailCardClient', () => {
     const reply = makeReply({ id: 'sub_abc', product_name: 'Enterprise', user_count: 10 });
     let result: SubscriptionDetailReply | undefined;
 
-    service.getSubscriptionDetail('sub_abc').subscribe(r => (result = r));
+    subscriptionDetailCardClient.getSubscriptionDetail('sub_abc').subscribe(r => (result = r));
     http.expectOne(`${BASE_URL}/sub_abc`).flush(reply);
 
     expect(result).toEqual(reply);
@@ -146,7 +146,7 @@ describe('SubscriptionDetailCardClient', () => {
   it('completes the observable after a single emission', () => {
     let completed = false;
 
-    service.getSubscriptionDetail('sub_123').subscribe({ complete: () => (completed = true) });
+    subscriptionDetailCardClient.getSubscriptionDetail('sub_123').subscribe({ complete: () => (completed = true) });
     http.expectOne(`${BASE_URL}/sub_123`).flush(makeReply());
 
     expect(completed).toBe(true);
@@ -157,7 +157,7 @@ describe('SubscriptionDetailCardClient', () => {
   it('propagates a 404 error to the subscriber', () => {
     let caughtError: unknown;
 
-    service.getSubscriptionDetail('missing').subscribe({ error: e => (caughtError = e) });
+    subscriptionDetailCardClient.getSubscriptionDetail('missing').subscribe({ error: e => (caughtError = e) });
     http.expectOne(`${BASE_URL}/missing`)
       .flush('Not found', { status: 404, statusText: 'Not Found' });
 
@@ -167,7 +167,7 @@ describe('SubscriptionDetailCardClient', () => {
   it('propagates a 500 error to the subscriber', () => {
     let caughtError: unknown;
 
-    service.getSubscriptionDetail('sub_err').subscribe({ error: e => (caughtError = e) });
+    subscriptionDetailCardClient.getSubscriptionDetail('sub_err').subscribe({ error: e => (caughtError = e) });
     http.expectOne(`${BASE_URL}/sub_err`)
       .flush('Server error', { status: 500, statusText: 'Internal Server Error' });
 
@@ -177,7 +177,7 @@ describe('SubscriptionDetailCardClient', () => {
   it('propagates a 401 error to the subscriber', () => {
     let caughtError: unknown;
 
-    service.getSubscriptionDetail('sub_unauth').subscribe({ error: e => (caughtError = e) });
+    subscriptionDetailCardClient.getSubscriptionDetail('sub_unauth').subscribe({ error: e => (caughtError = e) });
     http.expectOne(`${BASE_URL}/sub_unauth`)
       .flush('Unauthorized', { status: 401, statusText: 'Unauthorized' });
 
@@ -192,8 +192,8 @@ describe('SubscriptionDetailCardClient', () => {
     let resultA: SubscriptionDetailReply | undefined;
     let resultB: SubscriptionDetailReply | undefined;
 
-    service.getSubscriptionDetail('aaa').subscribe(r => (resultA = r));
-    service.getSubscriptionDetail('bbb').subscribe(r => (resultB = r));
+    subscriptionDetailCardClient.getSubscriptionDetail('aaa').subscribe(r => (resultA = r));
+    subscriptionDetailCardClient.getSubscriptionDetail('bbb').subscribe(r => (resultB = r));
 
     http.expectOne(`${BASE_URL}/aaa`).flush(replyA);
     http.expectOne(`${BASE_URL}/bbb`).flush(replyB);

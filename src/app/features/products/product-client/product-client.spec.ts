@@ -10,7 +10,7 @@ import { API_URL } from 'src/app/core/config/api-token';
 describe('ProductClient', () => {
   const baseUrl = 'https://api.example.test';
 
-  let service: ProductClient;
+  let productClient: ProductClient;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('ProductClient', () => {
       ],
     });
 
-    service = TestBed.inject(ProductClient);
+    productClient = TestBed.inject(ProductClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -33,7 +33,7 @@ describe('ProductClient', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(productClient).toBeTruthy();
   });
 
   it('GETs the tiers endpoint for the given product type', () => {
@@ -42,7 +42,7 @@ describe('ProductClient', () => {
       productTiers: [],
     };
 
-    service.getProductTiers(ProductType.Nextcloud).subscribe(reply => {
+    productClient.getProductTiers(ProductType.Nextcloud).subscribe(reply => {
       expect(reply).toEqual(mockReply);
     });
 
@@ -52,7 +52,7 @@ describe('ProductClient', () => {
   });
 
   it('lowercases the product type when building the URL', () => {
-    service.getProductTiers(ProductType.Synology).subscribe();
+    productClient.getProductTiers(ProductType.Synology).subscribe();
 
     const req = httpMock.expectOne(`${baseUrl}/product/tiers/synology`);
     req.flush({ productType: ProductType.Synology, productTiers: [] });

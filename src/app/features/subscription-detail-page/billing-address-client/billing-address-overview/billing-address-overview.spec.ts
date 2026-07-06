@@ -29,10 +29,10 @@ const mockReply: BillingAddressReply = {
 
 const authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
 const permissionStoreMock = { isBilling: vi.fn().mockResolvedValue(true) };
-const billingAddressServiceMock = { getBillingAddress: vi.fn().mockReturnValue(of(mockReply)) };
+const billingAddressClientMock = { getBillingAddress: vi.fn().mockReturnValue(of(mockReply)) };
 const routeMock = { snapshot: { paramMap: { get: vi.fn().mockReturnValue('subscription-123') } } };
-const countryServiceMock = { getCountry: vi.fn().mockReturnValue('Germany') };
-const languageServiceMock = { getLanguage: vi.fn().mockReturnValue('de') };
+const countryLookupMock = { getCountry: vi.fn().mockReturnValue('Germany') };
+const languageStoreMock = { getLanguage: vi.fn().mockReturnValue('de') };
 const logMock = { error: vi.fn() };
 const snackBarMock = { error: vi.fn() };
 const returnUrlMock = { openUrlAddReturnUrl: vi.fn() };
@@ -40,13 +40,13 @@ const returnUrlMock = { openUrlAddReturnUrl: vi.fn() };
 const providers = [
   { provide: Auth, useValue: authMock },
   { provide: PermissionStore, useValue: permissionStoreMock },
-  { provide: BillingAddressClient, useValue: billingAddressServiceMock },
+  { provide: BillingAddressClient, useValue: billingAddressClientMock },
   { provide: ActivatedRoute, useValue: routeMock },
   { provide: Log, useValue: logMock },
   { provide: SnackBar, useValue: snackBarMock },
   { provide: ReturnUrl, useValue: returnUrlMock },
-  { provide: CountryLookup, useValue: countryServiceMock },
-  { provide: LanguageStore, useValue: languageServiceMock },
+  { provide: CountryLookup, useValue: countryLookupMock },
+  { provide: LanguageStore, useValue: languageStoreMock },
 ];
 
 async function createComponent(): Promise<{
@@ -72,10 +72,10 @@ async function createComponent(): Promise<{
 function resetMockDefaults(): void {
   authMock.waitForAuth.mockResolvedValue(undefined);
   permissionStoreMock.isBilling.mockResolvedValue(true);
-  billingAddressServiceMock.getBillingAddress.mockReturnValue(of(mockReply));
+  billingAddressClientMock.getBillingAddress.mockReturnValue(of(mockReply));
   routeMock.snapshot.paramMap.get.mockReturnValue('subscription-123');
-  countryServiceMock.getCountry.mockReturnValue('Germany');
-  languageServiceMock.getLanguage.mockReturnValue('de');
+  countryLookupMock.getCountry.mockReturnValue('Germany');
+  languageStoreMock.getLanguage.mockReturnValue('de');
 }
 
 describe('BillingAddressOverview', () => {
@@ -146,7 +146,7 @@ describe('BillingAddressOverview', () => {
   });
 
   it('should set Error status when getBillingAddress fails', async () => {
-    billingAddressServiceMock.getBillingAddress.mockReturnValue(
+    billingAddressClientMock.getBillingAddress.mockReturnValue(
       throwError(() => new Error('API error'))
     );
     ({ component } = await createComponent());

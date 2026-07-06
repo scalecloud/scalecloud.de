@@ -25,7 +25,7 @@ const MOCK_REPLY: CancelStateReply = {
 };
 
 describe('CancelStateClient', () => {
-  let service:       CancelStateClient;
+  let cancelStateClient:       CancelStateClient;
   let httpTesting:   HttpTestingController;
 
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe('CancelStateClient', () => {
       ],
     });
 
-    service     = TestBed.inject(CancelStateClient);
+    cancelStateClient     = TestBed.inject(CancelStateClient);
     httpTesting = TestBed.inject(HttpTestingController);
   });
 
@@ -49,14 +49,14 @@ describe('CancelStateClient', () => {
   // ── Creation ───────────────────────────────────────────────────────────
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(cancelStateClient).toBeTruthy();
   });
 
   // ── getCancelState ─────────────────────────────────────────────────────
 
   describe('getCancelState', () => {
     it('makes a GET request to the correct URL', () => {
-      service.getCancelState(SUBSCRIPTION_ID).subscribe();
+      cancelStateClient.getCancelState(SUBSCRIPTION_ID).subscribe();
       const req = httpTesting.expectOne(EXPECTED_URL);
       expect(req.request.method).toBe('GET');
       req.flush(MOCK_REPLY);
@@ -64,14 +64,14 @@ describe('CancelStateClient', () => {
 
     it('constructs the URL with the provided subscription ID', () => {
       const otherId = 'sub-xyz-999';
-      service.getCancelState(otherId).subscribe();
+      cancelStateClient.getCancelState(otherId).subscribe();
       const req = httpTesting.expectOne(`${BASE_URL}/${otherId}/cancel-state`);
       req.flush(MOCK_REPLY);
       expect(req.request.url).toContain(otherId);
     });
 
     it('passes the auth HTTP options from Auth', () => {
-      service.getCancelState(SUBSCRIPTION_ID).subscribe();
+      cancelStateClient.getCancelState(SUBSCRIPTION_ID).subscribe();
       const req = httpTesting.expectOne(EXPECTED_URL);
       expect(mockAuth.getHttpOptions).toHaveBeenCalled();
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
@@ -80,14 +80,14 @@ describe('CancelStateClient', () => {
 
     it('returns the reply from the server', () => {
       let result: CancelStateReply | undefined;
-      service.getCancelState(SUBSCRIPTION_ID).subscribe(r => (result = r));
+      cancelStateClient.getCancelState(SUBSCRIPTION_ID).subscribe(r => (result = r));
       httpTesting.expectOne(EXPECTED_URL).flush(MOCK_REPLY);
       expect(result).toEqual(MOCK_REPLY);
     });
 
     it('surfaces HTTP errors to the subscriber', () => {
       let errorStatus: number | undefined;
-      service.getCancelState(SUBSCRIPTION_ID).subscribe({
+      cancelStateClient.getCancelState(SUBSCRIPTION_ID).subscribe({
         error: (e) => (errorStatus = e.status),
       });
       httpTesting.expectOne(EXPECTED_URL).flush(null, { status: 500, statusText: 'Server Error' });

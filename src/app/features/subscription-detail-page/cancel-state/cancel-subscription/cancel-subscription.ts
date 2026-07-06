@@ -19,7 +19,7 @@ import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 })
 export class CancelSubscription {
   private readonly auth = inject(Auth);
-  private readonly cancelSubscriptionService = inject(CancelSubscriptionClient);
+  private readonly cancelSubscriptionClient = inject(CancelSubscriptionClient);
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
   private readonly route = inject(ActivatedRoute);
@@ -46,7 +46,7 @@ export class CancelSubscription {
 
     const request: SubscriptionCancelRequest = { subscriptionID };
 
-    this.cancelSubscriptionService.cancelSubscription(request).subscribe({
+    this.cancelSubscriptionClient.cancelSubscription(request).subscribe({
       next: (reply: SubscriptionCancelReply) => {
         if (!reply) {
           this.log.error('CancelSubscriptionComponent.cancelSubscription: reply is null');

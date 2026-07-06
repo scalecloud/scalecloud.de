@@ -23,7 +23,7 @@ function makeSeat(overrides = {}) {
 }
 
 describe('SeatDetailClient', () => {
-  let service: SeatDetailClient;
+  let seatDetailClient: SeatDetailClient;
   let httpMock: HttpTestingController;
 
   const authMock = {
@@ -40,14 +40,14 @@ describe('SeatDetailClient', () => {
       ],
     });
 
-    service = TestBed.inject(SeatDetailClient);
+    seatDetailClient = TestBed.inject(SeatDetailClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => httpMock.verify());
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(seatDetailClient).toBeTruthy();
   });
 
   // ── getSeat ────────────────────────────────────────────────────────────────
@@ -56,7 +56,7 @@ describe('SeatDetailClient', () => {
     const request: SeatDetailRequest = { subscriptionID: 'sub-1', uid: 'u1' };
     const reply: SeatDetailReply = { selectedSeat: makeSeat(), mySeat: makeSeat({ uid: 'me' }) };
 
-    const result$ = firstValueFrom(service.getSeat(request));
+    const result$ = firstValueFrom(seatDetailClient.getSeat(request));
 
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/seat-detail`);
     expect(req.request.method).toBe('POST');
@@ -72,7 +72,7 @@ describe('SeatDetailClient', () => {
     const request: UpdateSeatDetailRequest = { seatUpdated: makeSeat() };
     const reply: UpdateSeatDetailReply = { seat: makeSeat() };
 
-    const result$ = firstValueFrom(service.updateSeat(request));
+    const result$ = firstValueFrom(seatDetailClient.updateSeat(request));
 
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/update-seat`);
     expect(req.request.method).toBe('POST');
@@ -89,7 +89,7 @@ describe('SeatDetailClient', () => {
     const request: DeleteSeatRequest = { seatToDelete: seat };
     const reply: DeleteSeatReply = { deletedSeat: seat, success: true };
 
-    const result$ = firstValueFrom(service.deleteSeat(request));
+    const result$ = firstValueFrom(seatDetailClient.deleteSeat(request));
 
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/delete-seat`);
     expect(req.request.method).toBe('POST');
@@ -102,7 +102,7 @@ describe('SeatDetailClient', () => {
   // ── Auth headers ───────────────────────────────────────────────────────────
 
   it('attaches auth headers on every call', async () => {
-    const result$ = firstValueFrom(service.getSeat({ subscriptionID: 'sub-1', uid: 'u1' }));
+    const result$ = firstValueFrom(seatDetailClient.getSeat({ subscriptionID: 'sub-1', uid: 'u1' }));
 
     const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/seat-detail`);
     req.flush({});

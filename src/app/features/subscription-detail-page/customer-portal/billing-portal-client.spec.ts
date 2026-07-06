@@ -16,7 +16,7 @@ describe('BillingPortalClient', () => {
     getHttpOptions: vi.fn().mockReturnValue(mockHttpOptions)
   };
 
-  let service: BillingPortalClient;
+  let billingPortalClient: BillingPortalClient;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -31,7 +31,7 @@ describe('BillingPortalClient', () => {
       ]
     });
 
-    service = TestBed.inject(BillingPortalClient);
+    billingPortalClient = TestBed.inject(BillingPortalClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -40,13 +40,13 @@ describe('BillingPortalClient', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(billingPortalClient).toBeTruthy();
   });
 
   it('should GET the billing portal from the correct url using auth http options', () => {
     const mockResponse: IBillingPortal = { url: 'https://billing.example.com/session/abc' };
 
-    service.getBillingPortal().subscribe((result) => {
+    billingPortalClient.getBillingPortal().subscribe((result) => {
       expect(result).toEqual(mockResponse);
     });
 

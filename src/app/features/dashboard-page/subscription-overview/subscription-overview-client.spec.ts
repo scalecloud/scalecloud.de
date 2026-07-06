@@ -8,7 +8,7 @@ import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
 describe('SubscriptionOverviewClient', () => {
-  let service: SubscriptionOverviewClient;
+  let subscriptionOverviewClient: SubscriptionOverviewClient;
   let httpTestingController: HttpTestingController;
   const authMock = { getHttpOptions: vi.fn().mockReturnValue({}) };
 
@@ -20,7 +20,7 @@ describe('SubscriptionOverviewClient', () => {
         { provide: Auth, useValue: authMock }
       ]
     });
-    service = TestBed.inject(SubscriptionOverviewClient);
+    subscriptionOverviewClient = TestBed.inject(SubscriptionOverviewClient);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
@@ -29,13 +29,13 @@ describe('SubscriptionOverviewClient', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(subscriptionOverviewClient).toBeTruthy();
   });
 
   it('should request subscription overview', () => {
     const mockOverview = [{ id: 'sub-1', name: 'Test Subscription' }];
 
-    service.getSubscriptionsOverview().subscribe((result) => {
+    subscriptionOverviewClient.getSubscriptionsOverview().subscribe((result) => {
       expect(result).toEqual(mockOverview);
     });
 

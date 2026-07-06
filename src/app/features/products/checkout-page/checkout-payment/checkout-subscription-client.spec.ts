@@ -8,7 +8,7 @@ import { API_URL } from 'src/app/core/config/api-token';
 import { CheckoutSubscriptionClient } from './checkout-subscription-client';
 
 describe('CheckoutSubscriptionClient', () => {
-  let service: CheckoutSubscriptionClient;
+  let checkoutSubscriptionClient: CheckoutSubscriptionClient;
   let httpMock: HttpTestingController;
 
   const fakeApiUrl = 'https://api.example.test';
@@ -30,7 +30,7 @@ describe('CheckoutSubscriptionClient', () => {
       ]
     });
 
-    service = TestBed.inject(CheckoutSubscriptionClient);
+    checkoutSubscriptionClient = TestBed.inject(CheckoutSubscriptionClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -39,7 +39,7 @@ describe('CheckoutSubscriptionClient', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(checkoutSubscriptionClient).toBeTruthy();
   });
 
   it('should POST to the correct checkout-subscription endpoint', () => {
@@ -48,7 +48,7 @@ describe('CheckoutSubscriptionClient', () => {
       quantity: 1
     };
 
-    service.createCheckoutSubscription(request).subscribe();
+    checkoutSubscriptionClient.createCheckoutSubscription(request).subscribe();
 
     const req = httpMock.expectOne(expectedUrl);
     expect(req.request.method).toBe('POST');
@@ -67,7 +67,7 @@ describe('CheckoutSubscriptionClient', () => {
       quantity: 3
     };
 
-    service.createCheckoutSubscription(request).subscribe();
+    checkoutSubscriptionClient.createCheckoutSubscription(request).subscribe();
 
     const req = httpMock.expectOne(expectedUrl);
     expect(req.request.body).toEqual(request);
@@ -86,7 +86,7 @@ describe('CheckoutSubscriptionClient', () => {
       quantity: 1
     };
 
-    service.createCheckoutSubscription(request).subscribe();
+    checkoutSubscriptionClient.createCheckoutSubscription(request).subscribe();
 
     const req = httpMock.expectOne(expectedUrl);
     expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
@@ -113,7 +113,7 @@ describe('CheckoutSubscriptionClient', () => {
     };
 
     const resultPromise = new Promise<CheckoutCreateSubscriptionReply>((resolve) => {
-      service.createCheckoutSubscription(request).subscribe((reply) => resolve(reply));
+      checkoutSubscriptionClient.createCheckoutSubscription(request).subscribe((reply) => resolve(reply));
     });
 
     const req = httpMock.expectOne(expectedUrl);
@@ -130,7 +130,7 @@ describe('CheckoutSubscriptionClient', () => {
     };
 
     const errorPromise = new Promise<unknown>((resolve) => {
-      service.createCheckoutSubscription(request).subscribe({
+      checkoutSubscriptionClient.createCheckoutSubscription(request).subscribe({
         next: () => resolve(undefined),
         error: (err) => resolve(err)
       });

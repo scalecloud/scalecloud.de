@@ -13,7 +13,7 @@ import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
 describe(ChangePaymentClient.name, () => {
-  let service: ChangePaymentClient;
+  let changePaymentClient: ChangePaymentClient;
   let httpMock: HttpTestingController;
 
   const httpOptions = {
@@ -41,7 +41,7 @@ describe(ChangePaymentClient.name, () => {
       ],
     });
 
-    service = TestBed.inject(ChangePaymentClient);
+    changePaymentClient = TestBed.inject(ChangePaymentClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -56,7 +56,7 @@ describe(ChangePaymentClient.name, () => {
       email: 'john@example.com',
     };
 
-    service.getChangePaymentSetupIntent().subscribe(reply => {
+    changePaymentClient.getChangePaymentSetupIntent().subscribe(reply => {
       expect(reply).toEqual(expected);
     });
 

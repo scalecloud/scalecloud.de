@@ -22,7 +22,7 @@ const mockReply: PaymentMethodOverviewReply = {
 };
 
 describe('PaymentMethodOverviewClient', () => {
-  let service: PaymentMethodOverviewClient;
+  let paymentMethodOverviewClient: PaymentMethodOverviewClient;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -37,7 +37,7 @@ describe('PaymentMethodOverviewClient', () => {
       ],
     });
 
-    service = TestBed.inject(PaymentMethodOverviewClient);
+    paymentMethodOverviewClient = TestBed.inject(PaymentMethodOverviewClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -46,11 +46,11 @@ describe('PaymentMethodOverviewClient', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(paymentMethodOverviewClient).toBeTruthy();
   });
 
   it('should POST to the correct URL and return the response', () => {
-    service.getPaymentMethodOverview().subscribe((result) => {
+    paymentMethodOverviewClient.getPaymentMethodOverview().subscribe((result) => {
       expect(result).toEqual(mockReply);
     });
 
@@ -60,8 +60,8 @@ describe('PaymentMethodOverviewClient', () => {
     req.flush(mockReply);
   });
 
-  it('should call getHttpOptions on the auth service', () => {
-    service.getPaymentMethodOverview().subscribe();
+  it('should call getHttpOptions on auth', () => {
+    paymentMethodOverviewClient.getPaymentMethodOverview().subscribe();
 
     const req = httpMock.expectOne('https://api.example.com/dashboard/get-payment-method-overview');
     req.flush(mockReply);

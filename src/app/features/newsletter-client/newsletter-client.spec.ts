@@ -15,7 +15,7 @@ import { NewsletterClient } from './newsletter-client';
 const apiUrl = 'https://api.example.com';
 
 describe('NewsletterClient', () => {
-  let service: NewsletterClient;
+  let newsletterClient: NewsletterClient;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe('NewsletterClient', () => {
       ],
     });
 
-    service = TestBed.inject(NewsletterClient);
+    newsletterClient = TestBed.inject(NewsletterClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -36,7 +36,7 @@ describe('NewsletterClient', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(newsletterClient).toBeTruthy();
   });
 
   it('should POST to /newsletter/subscribe with the E-Mail address', () => {
@@ -45,7 +45,7 @@ describe('NewsletterClient', () => {
       email: 'user@example.com',
     };
 
-    service.subscribeToNewsletter({ email: 'user@example.com' }).subscribe(result => {
+    newsletterClient.subscribeToNewsletter({ email: 'user@example.com' }).subscribe(result => {
       expect(result).toEqual(reply);
     });
 
@@ -58,7 +58,7 @@ describe('NewsletterClient', () => {
   it('should POST to /newsletter/confirm with the verification token', () => {
     const reply: NewsletterConfirmReply = { confirmed: true };
 
-    service.confirmNewsletterEMail({ verificationToken: 'token-123' }).subscribe(result => {
+    newsletterClient.confirmNewsletterEMail({ verificationToken: 'token-123' }).subscribe(result => {
       expect(result).toEqual(reply);
     });
 
@@ -73,7 +73,7 @@ describe('NewsletterClient', () => {
       newsletterUnsubscribeReplyStatus: NewsletterUnsubscribeReplyStatus.UNSUBSCRIBED,
     };
 
-    service.unsubscribeFromNewsletter({ unsubscribeToken: 'token-456' }).subscribe(result => {
+    newsletterClient.unsubscribeFromNewsletter({ unsubscribeToken: 'token-456' }).subscribe(result => {
       expect(result).toEqual(reply);
     });
 

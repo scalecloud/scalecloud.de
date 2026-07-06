@@ -8,7 +8,7 @@ import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
 describe('BillingAddressClient', () => {
-  let service: BillingAddressClient;
+  let billingAddressClient: BillingAddressClient;
   let httpTestingController: HttpTestingController;
   const authMock = { getHttpOptions: vi.fn().mockReturnValue({}) };
 
@@ -20,7 +20,7 @@ describe('BillingAddressClient', () => {
         { provide: Auth, useValue: authMock }
       ]
     });
-    service = TestBed.inject(BillingAddressClient);
+    billingAddressClient = TestBed.inject(BillingAddressClient);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
@@ -29,14 +29,14 @@ describe('BillingAddressClient', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(billingAddressClient).toBeTruthy();
   });
 
   it('should post billing address request', () => {
     const request = { subscriptionID: '123' };
     const response = { name: 'Test User', address: { line1: 'Street 1', line2: '', postal_code: '12345', city: 'Test City', country: 'DE' }, phone: '+4912345678' };
 
-    service.getBillingAddress(request).subscribe((reply) => {
+    billingAddressClient.getBillingAddress(request).subscribe((reply) => {
       expect(reply).toEqual(response);
     });
 

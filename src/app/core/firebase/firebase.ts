@@ -26,8 +26,8 @@ import { environment } from 'src/environments/environment';
  * `vi.mock` on a bare module specifier once that module is reached from more
  * than one source file with different mock shapes - it silently falls
  * through to the real SDK instead of the mock (see the identical note in
- * auth.service.spec.ts, which hit this with 'firebase/auth' and worked
- * around it by substituting FirebaseService itself via DI). FirebaseService
+ * auth.spec.ts, which hit this with 'firebase/auth' and worked
+ * around it by substituting Firebase itself via DI). Firebase
  * is the SDK boundary, so it can't be substituted from within its own spec -
  * these tokens push the same DI-substitution trick one level deeper instead.
  * Angular's DI is a plain runtime object swap and isn't affected by the

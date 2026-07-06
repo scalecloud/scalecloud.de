@@ -27,7 +27,7 @@ const MOCK_REPLY: SubscriptionCancelReply = {
 };
 
 describe('CancelSubscriptionClient', () => {
-  let service:     CancelSubscriptionClient;
+  let cancelSubscriptionClient:     CancelSubscriptionClient;
   let httpTesting: HttpTestingController;
 
   beforeEach(() => {
@@ -42,7 +42,7 @@ describe('CancelSubscriptionClient', () => {
       ],
     });
 
-    service     = TestBed.inject(CancelSubscriptionClient);
+    cancelSubscriptionClient     = TestBed.inject(CancelSubscriptionClient);
     httpTesting = TestBed.inject(HttpTestingController);
   });
 
@@ -51,28 +51,28 @@ describe('CancelSubscriptionClient', () => {
   // ── Creation ───────────────────────────────────────────────────────────
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(cancelSubscriptionClient).toBeTruthy();
   });
 
   // ── cancelSubscription ─────────────────────────────────────────────────
 
   describe('cancelSubscription', () => {
     it('makes a POST request to the correct URL', () => {
-      service.cancelSubscription(MOCK_REQUEST).subscribe();
+      cancelSubscriptionClient.cancelSubscription(MOCK_REQUEST).subscribe();
       const req = httpTesting.expectOne(EXPECTED_URL);
       expect(req.request.method).toBe('POST');
       req.flush(MOCK_REPLY);
     });
 
     it('sends the request body with the correct subscriptionID', () => {
-      service.cancelSubscription(MOCK_REQUEST).subscribe();
+      cancelSubscriptionClient.cancelSubscription(MOCK_REQUEST).subscribe();
       const req = httpTesting.expectOne(EXPECTED_URL);
       expect(req.request.body).toEqual(MOCK_REQUEST);
       req.flush(MOCK_REPLY);
     });
 
     it('passes the auth HTTP options from Auth', () => {
-      service.cancelSubscription(MOCK_REQUEST).subscribe();
+      cancelSubscriptionClient.cancelSubscription(MOCK_REQUEST).subscribe();
       const req = httpTesting.expectOne(EXPECTED_URL);
       expect(mockAuth.getHttpOptions).toHaveBeenCalled();
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
@@ -81,14 +81,14 @@ describe('CancelSubscriptionClient', () => {
 
     it('returns the reply from the server', () => {
       let result: SubscriptionCancelReply | undefined;
-      service.cancelSubscription(MOCK_REQUEST).subscribe(r => (result = r));
+      cancelSubscriptionClient.cancelSubscription(MOCK_REQUEST).subscribe(r => (result = r));
       httpTesting.expectOne(EXPECTED_URL).flush(MOCK_REPLY);
       expect(result).toEqual(MOCK_REPLY);
     });
 
     it('surfaces HTTP errors to the subscriber', () => {
       let errorStatus: number | undefined;
-      service.cancelSubscription(MOCK_REQUEST).subscribe({
+      cancelSubscriptionClient.cancelSubscription(MOCK_REQUEST).subscribe({
         error: (e) => (errorStatus = e.status),
       });
       httpTesting.expectOne(EXPECTED_URL).flush(null, { status: 500, statusText: 'Server Error' });
@@ -97,7 +97,7 @@ describe('CancelSubscriptionClient', () => {
 
     it('surfaces 403 errors to the subscriber', () => {
       let errorStatus: number | undefined;
-      service.cancelSubscription(MOCK_REQUEST).subscribe({
+      cancelSubscriptionClient.cancelSubscription(MOCK_REQUEST).subscribe({
         error: (e) => (errorStatus = e.status),
       });
       httpTesting.expectOne(EXPECTED_URL).flush(null, { status: 403, statusText: 'Forbidden' });

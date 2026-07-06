@@ -146,15 +146,6 @@ export class CountryInput {
     return this.languageStore.getLanguage() === Language.EN ? country.nameEN : country.nameDE;
   }
 
-  /**
-   * Fixed: previously declared to return `string` but
-   * CountryService.getCountryCode() returns `string | undefined`,
-   * which would fail under strict null checks. Also previously
-   * unused anywhere in the codebase — kept since it's a reasonable
-   * public API for a parent that wants the code rather than the
-   * emitted control's raw (display-name) value, but flagging that
-   * dead-code status in case it should be removed instead.
-   */
   getSelectedCountryCode(): string | undefined {
     return this.countryLookup.getCountryCode(this.languageStore.getLanguage(), this.countryControl.value);
   }

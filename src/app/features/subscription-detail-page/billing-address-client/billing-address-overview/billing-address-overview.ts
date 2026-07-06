@@ -1,6 +1,5 @@
 import { Component, signal, computed, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ServiceStatus } from 'src/app/shared/client-status';
 import { BillingAddressReply, BillingAddressRequest } from '../billing-address-model';
 import { BillingAddressClient } from '../billing-address-client';
 import { CountryLookup } from '../country-lookup/country-lookup';
@@ -19,6 +18,7 @@ import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
+import { ServiceStatus } from 'src/app/shared/client-status';
 
 @Component({
   selector: 'app-billing-address-overview',

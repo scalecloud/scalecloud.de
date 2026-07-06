@@ -35,7 +35,7 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
   ],
 })
 export class PaymentMethodOverview implements OnInit {
-  private readonly paymentMethodService = inject(PaymentMethodOverviewClient);
+  private readonly paymentMethodClient = inject(PaymentMethodOverviewClient);
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
   private readonly returnUrl = inject(ReturnUrl);
@@ -89,7 +89,7 @@ export class PaymentMethodOverview implements OnInit {
     this.auth
       .waitForAuth()
       .then(() => {
-        this.paymentMethodService.getPaymentMethodOverview().subscribe({
+        this.paymentMethodClient.getPaymentMethodOverview().subscribe({
           next: (data) => {
             this.reply.set(data);
             this.serviceStatus.set(ServiceStatus.Success);

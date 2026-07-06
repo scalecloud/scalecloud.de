@@ -5,7 +5,7 @@ import { API_URL, APP_BASE_URL } from 'src/app/core/config/api-token';
 import { AddSeatClient } from './add-seat-client';
 
 describe('AddSeatClient', () => {
-  let service: AddSeatClient;
+  let addSeatClient: AddSeatClient;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,10 +15,10 @@ describe('AddSeatClient', () => {
         { provide: APP_BASE_URL, useValue: 'http://localhost' },
       ],
     });
-    service = TestBed.inject(AddSeatClient);
+    addSeatClient = TestBed.inject(AddSeatClient);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(addSeatClient).toBeTruthy();
   });
 });
