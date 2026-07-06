@@ -5,13 +5,13 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { of, Subject } from 'rxjs';
 
 import { SeatDetailPage } from './seat-detail-page';
-import { SeatDetailService } from './seat-detail.service';
-import { Role } from 'src/app/core/permission/roles';
-import { SeatDetailReply } from '../seats';
+import { SeatDetailReply } from '../seats-model';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { Role } from 'src/app/core/permission-store/roles';
+import { SeatDetailClient } from './seat-detail-client';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -38,7 +38,7 @@ function makeReply(overrides: Partial<SeatDetailReply> = {}): SeatDetailReply {
 
 function buildMocks() {
   return {
-    seatDetailService: {
+    seatDetailClient: {
       getSeat: vi.fn(),
       updateSeat: vi.fn(),
       deleteSeat: vi.fn(),
@@ -65,12 +65,12 @@ describe('SeatDetailPage', () => {
 
   beforeEach(async () => {
     mocks = buildMocks();
-    mocks.seatDetailService.getSeat.mockReturnValue(of(makeReply()));
+    mocks.seatDetailClient.getSeat.mockReturnValue(of(makeReply()));
 
     await TestBed.configureTestingModule({
       imports: [SeatDetailPage],
       providers: [
-        { provide: SeatDetailService, useValue: mocks.seatDetailService },
+        { provide: SeatDetailClient, useValue: mocks.seatDetailClient },
         { provide: Auth, useValue: mocks.auth },
         { provide: Log, useValue: mocks.log },
         { provide: SnackBar, useValue: mocks.snackBar },
@@ -133,7 +133,7 @@ describe('SeatDetailPage', () => {
 
   // ── toggleRoleSelection ─────────────────────────────────────────────────────
   it('adds a role when it is not already selected', async () => {
-    mocks.seatDetailService.getSeat.mockReturnValue(
+    mocks.seatDetailClient.getSeat.mockReturnValue(
       of(makeReply({ selectedSeat: makeSeat({ roles: [] }) }))
     );
     component.loadSeatDetail();
@@ -157,7 +157,7 @@ describe('SeatDetailPage', () => {
       afterClosed: () => afterClosedSubject.asObservable(),
     } as MatDialogRef<any>);
 
-    mocks.seatDetailService.getSeat.mockReturnValue(
+    mocks.seatDetailClient.getSeat.mockReturnValue(
       of(makeReply({ selectedSeat: makeSeat({ roles: [] }) }))
     );
     component.loadSeatDetail();
@@ -178,7 +178,7 @@ describe('SeatDetailPage', () => {
       afterClosed: () => afterClosedSubject.asObservable(),
     } as MatDialogRef<any>);
 
-    mocks.seatDetailService.getSeat.mockReturnValue(
+    mocks.seatDetailClient.getSeat.mockReturnValue(
       of(makeReply({ selectedSeat: makeSeat({ roles: [] }) }))
     );
     component.loadSeatDetail();
@@ -222,7 +222,7 @@ describe('SeatDetailPage', () => {
   });
 
   it('canDelete is false when selected seat has Owner role', async () => {
-    mocks.seatDetailService.getSeat.mockReturnValue(
+    mocks.seatDetailClient.getSeat.mockReturnValue(
       of(makeReply({ selectedSeat: makeSeat({ roles: [Role.Owner] }) }))
     );
     component.loadSeatDetail();
@@ -231,7 +231,7 @@ describe('SeatDetailPage', () => {
   });
 
   it('canDelete is false when I am not an administrator', async () => {
-    mocks.seatDetailService.getSeat.mockReturnValue(
+    mocks.seatDetailClient.getSeat.mockReturnValue(
       of(makeReply({ mySeat: makeSeat({ uid: 'me', roles: [] }) }))
     );
     component.loadSeatDetail();
@@ -247,7 +247,7 @@ describe('SeatDetailPage', () => {
   });
 
   it('owner chip is disabled when I am not owner', async () => {
-    mocks.seatDetailService.getSeat.mockReturnValue(
+    mocks.seatDetailClient.getSeat.mockReturnValue(
       of(makeReply({ mySeat: makeSeat({ uid: 'me', roles: [Role.Administrator] }) }))
     );
     component.loadSeatDetail();
@@ -256,7 +256,7 @@ describe('SeatDetailPage', () => {
   });
 
   it('owner chip is disabled when selected seat is already owner', async () => {
-    mocks.seatDetailService.getSeat.mockReturnValue(
+    mocks.seatDetailClient.getSeat.mockReturnValue(
       of(makeReply({ selectedSeat: makeSeat({ roles: [Role.Owner] }) }))
     );
     component.loadSeatDetail();
@@ -276,11 +276,11 @@ describe('SeatDetailPage', () => {
     await fixture.whenStable();
     component.updateSeat();
     expect(mocks.snackBar.info).toHaveBeenCalledWith('Nothing to update.');
-    expect(mocks.seatDetailService.updateSeat).not.toHaveBeenCalled();
+    expect(mocks.seatDetailClient.updateSeat).not.toHaveBeenCalled();
   });
 
   it('calls updateSeat and redirects on success', async () => {
-    mocks.seatDetailService.updateSeat.mockReturnValue(of({ seat: makeSeat() }));
+    mocks.seatDetailClient.updateSeat.mockReturnValue(of({ seat: makeSeat() }));
     component.loadSeatDetail();
     await fixture.whenStable();
 
@@ -288,27 +288,27 @@ describe('SeatDetailPage', () => {
     component.updateSeat();
     await fixture.whenStable();
 
-    expect(mocks.seatDetailService.updateSeat).toHaveBeenCalledOnce();
+    expect(mocks.seatDetailClient.updateSeat).toHaveBeenCalledOnce();
     expect(mocks.returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   // ── deleteSeat ──────────────────────────────────────────────────────────────
   it('calls deleteSeat and redirects on success', async () => {
     const seat = makeSeat();
-    mocks.seatDetailService.deleteSeat.mockReturnValue(of({ success: true, deletedSeat: seat }));
+    mocks.seatDetailClient.deleteSeat.mockReturnValue(of({ success: true, deletedSeat: seat }));
     component.loadSeatDetail();
     await fixture.whenStable();
 
     component.deleteSeat(seat);
     await fixture.whenStable();
 
-    expect(mocks.seatDetailService.deleteSeat).toHaveBeenCalledOnce();
+    expect(mocks.seatDetailClient.deleteSeat).toHaveBeenCalledOnce();
     expect(mocks.returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   it('shows error when deleteSeat fails (success: false)', async () => {
     const seat = makeSeat();
-    mocks.seatDetailService.deleteSeat.mockReturnValue(of({ success: false, deletedSeat: seat }));
+    mocks.seatDetailClient.deleteSeat.mockReturnValue(of({ success: false, deletedSeat: seat }));
     component.loadSeatDetail();
     await fixture.whenStable();
 

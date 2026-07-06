@@ -14,7 +14,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { Auth } from 'src/app/core/auth/auth';
 import { APP_BASE_URL, API_URL } from 'src/app/core/config/api-token';
-import { Permission } from 'src/app/core/permission/permission';
+import { PermissionStore } from 'src/app/core/permission-store/permission-store';
 
 // DefaultComponent imports HeaderComponent, which injects Auth.
 // Without a mock here, Angular's root injector constructs the real
@@ -59,7 +59,7 @@ describe('Default', () => {
           provide: ActivatedRoute,
           useValue: { snapshot: { paramMap: { get: () => null } } }
         },
-        { provide: Permission, useValue: { loadingPermissions } },
+        { provide: PermissionStore, useValue: { loadingPermissions } },
         { provide: APP_BASE_URL, useValue: 'http://localhost' },
         { provide: API_URL, useValue: 'http://localhost/api' },
         { provide: Auth, useValue: auth }

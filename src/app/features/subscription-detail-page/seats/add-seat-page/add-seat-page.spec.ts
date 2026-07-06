@@ -2,15 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, ActivatedRoute } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { of, Subject, throwError } from 'rxjs';
-
 import { AddSeatPage } from './add-seat-page';
-import { AddSeatService } from './add-seat.service';
-import { Role } from 'src/app/core/permission/roles';
-import { AddSeatReply } from '../seats';
+import { AddSeatReply } from '../seats-model';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { AddSeatClient } from './add-seat-client';
+import { Role } from 'src/app/core/permission-store/roles';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -31,7 +30,7 @@ describe('AddSeatPage', () => {
   let fixture: ComponentFixture<AddSeatPage>;
 
   // Mocks
-  const addSeatService = { addSeat: vi.fn() };
+  const addSeatClient = { addSeat: vi.fn() };
   const auth = { waitForAuth: vi.fn(() => Promise.resolve()) };
   const log = { warn: vi.fn(), error: vi.fn() };
   const snackBar = { info: vi.fn(), error: vi.fn() };
@@ -48,7 +47,7 @@ describe('AddSeatPage', () => {
       imports: [AddSeatPage],
       providers: [
         provideRouter([]),
-        { provide: AddSeatService, useValue: addSeatService },
+        { provide: AddSeatClient, useValue: addSeatClient },
         { provide: Auth, useValue: auth },
         { provide: Log, useValue: log },
         { provide: SnackBar, useValue: snackBar },
@@ -130,7 +129,7 @@ describe('AddSeatPage', () => {
     await fixture.whenStable();
 
     expect(component.email.touched).toBe(true);
-    expect(addSeatService.addSeat).not.toHaveBeenCalled();
+    expect(addSeatClient.addSeat).not.toHaveBeenCalled();
   });
 
   // ─── isEmailInvalid signal ───────────────────────────────────────────────────
@@ -237,13 +236,13 @@ describe('AddSeatPage', () => {
   // ─── addSeat – success path ──────────────────────────────────────────────────
 
   it('should call addSeat service and show success snackbar on success', async () => {
-    addSeatService.addSeat.mockReturnValue(of(makeSuccessReply('invited@example.com')));
+    addSeatClient.addSeat.mockReturnValue(of(makeSuccessReply('invited@example.com')));
     component.email.setValue('invited@example.com');
     component.toggleRoleSelection(Role.Administrator);
 
     await component.addSeat();
 
-    expect(addSeatService.addSeat).toHaveBeenCalledWith({
+    expect(addSeatClient.addSeat).toHaveBeenCalledWith({
       subscriptionID: SUBSCRIPTION_ID,
       email: 'invited@example.com',
       roles: [Role.Administrator],
@@ -253,18 +252,18 @@ describe('AddSeatPage', () => {
   });
 
   it('should call addSeat with an empty roles array when no roles are selected', async () => {
-    addSeatService.addSeat.mockReturnValue(of(makeSuccessReply()));
+    addSeatClient.addSeat.mockReturnValue(of(makeSuccessReply()));
     component.email.setValue('user@example.com');
 
     await component.addSeat();
 
-    expect(addSeatService.addSeat).toHaveBeenCalledWith(
+    expect(addSeatClient.addSeat).toHaveBeenCalledWith(
       expect.objectContaining({ roles: [] }),
     );
   });
 
   it('should reset isSubmitting to false after a successful request', async () => {
-    addSeatService.addSeat.mockReturnValue(of(makeSuccessReply()));
+    addSeatClient.addSeat.mockReturnValue(of(makeSuccessReply()));
     component.email.setValue('user@example.com');
 
     await component.addSeat();
@@ -274,7 +273,7 @@ describe('AddSeatPage', () => {
 
   it('should set isSubmitting to true while the request is in flight', async () => {
     const subject = new Subject<AddSeatReply>();
-    addSeatService.addSeat.mockReturnValue(subject.asObservable());
+    addSeatClient.addSeat.mockReturnValue(subject.asObservable());
     component.email.setValue('user@example.com');
 
     const addSeatPromise = component.addSeat();
@@ -293,7 +292,7 @@ describe('AddSeatPage', () => {
   // ─── addSeat – failure path ──────────────────────────────────────────────────
 
   it('should show error snackbar when reply.success is false', async () => {
-    addSeatService.addSeat.mockReturnValue(of(makeFailReply('fail@example.com')));
+    addSeatClient.addSeat.mockReturnValue(of(makeFailReply('fail@example.com')));
     component.email.setValue('fail@example.com');
 
     await component.addSeat();
@@ -305,7 +304,7 @@ describe('AddSeatPage', () => {
   });
 
   it('should reset isSubmitting to false after a failed reply', async () => {
-    addSeatService.addSeat.mockReturnValue(of(makeFailReply()));
+    addSeatClient.addSeat.mockReturnValue(of(makeFailReply()));
     component.email.setValue('user@example.com');
 
     await component.addSeat();
@@ -314,7 +313,7 @@ describe('AddSeatPage', () => {
   });
 
   it('should show error snackbar and log when the HTTP request throws', async () => {
-    addSeatService.addSeat.mockReturnValue(throwError(() => new Error('Network error')));
+    addSeatClient.addSeat.mockReturnValue(throwError(() => new Error('Network error')));
     component.email.setValue('user@example.com');
 
     await component.addSeat();
@@ -336,7 +335,7 @@ describe('AddSeatPage', () => {
       'Currently not possible to invite a user. Please try again later.',
     );
     expect(returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
-    expect(addSeatService.addSeat).not.toHaveBeenCalled();
+    expect(addSeatClient.addSeat).not.toHaveBeenCalled();
 
     activatedRouteStub.snapshot.paramMap.get.mockReturnValue(SUBSCRIPTION_ID);
   });
@@ -363,6 +362,6 @@ describe('AddSeatPage', () => {
     );
     expect(component.isSubmitting()).toBe(false);
     // HTTP call must not be made after auth failure
-    expect(addSeatService.addSeat).not.toHaveBeenCalled();
+    expect(addSeatClient.addSeat).not.toHaveBeenCalled();
   });
 });

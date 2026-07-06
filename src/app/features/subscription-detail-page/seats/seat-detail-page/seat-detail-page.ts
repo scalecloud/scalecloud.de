@@ -8,17 +8,15 @@ import {
   linkedSignal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Role, RoleDescriptions } from 'src/app/core/permission/roles';
 import {
   DeleteSeatRequest,
   Seat,
   SeatDetailReply,
   SeatDetailRequest,
   UpdateSeatDetailRequest,
-} from '../seats';
-import { SeatDetailService } from './seat-detail.service';
+} from '../seats-model';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmOwnerTransferComponent } from './confirm-owner-transfer/confirm-owner-transfer.component';
+import { ConfirmOwnerTransfer } from './confirm-owner-transfer/confirm-owner-transfer';
 import {
   MatCard,
   MatCardTitle,
@@ -37,6 +35,8 @@ import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { SeatDetailClient } from './seat-detail-client';
+import { Role, RoleDescriptions } from 'src/app/core/permission-store/roles';
 
 @Component({
   selector: 'app-seat-detail-page',
@@ -64,7 +64,7 @@ export class SeatDetailPage implements OnInit {
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
-  private readonly seatDetailService = inject(SeatDetailService);
+  private readonly seatDetail = inject(SeatDetailClient);
   private readonly returnUrl = inject(ReturnUrl);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
@@ -126,7 +126,7 @@ export class SeatDetailPage implements OnInit {
   }
 
   private confirmOwnerTransfer(role: Role): void {
-    const dialogRef = this.dialog.open(ConfirmOwnerTransferComponent, {
+    const dialogRef = this.dialog.open(ConfirmOwnerTransfer, {
       data: { email: this.seatDetailReply()?.selectedSeat?.email },
     });
 
@@ -162,7 +162,7 @@ export class SeatDetailPage implements OnInit {
       const request: SeatDetailRequest = { subscriptionID, uid };
       this.loading.set(true);
 
-      this.seatDetailService.getSeat(request).subscribe({
+      this.seatDetail.getSeat(request).subscribe({
         next: (reply) => {
           this.seatDetailReply.set(reply);
           this.loading.set(false);
@@ -194,7 +194,7 @@ export class SeatDetailPage implements OnInit {
     };
 
     this.auth.waitForAuth().then(() => {
-      this.seatDetailService.updateSeat(request).subscribe({
+      this.seatDetail.updateSeat(request).subscribe({
         next: (reply) => {
           if (reply.seat) {
             this.snackBar.info('User updated.');
@@ -226,7 +226,7 @@ export class SeatDetailPage implements OnInit {
     const request: DeleteSeatRequest = { seatToDelete };
 
     this.auth.waitForAuth().then(() => {
-      this.seatDetailService.deleteSeat(request).subscribe({
+      this.seatDetail.deleteSeat(request).subscribe({
         next: (reply) => {
           if (reply?.success) {
             this.snackBar.info(`Removed ${reply.deletedSeat.email}.`);

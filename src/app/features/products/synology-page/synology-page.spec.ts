@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SynologyPage } from './synology-page';
-import { ProductService } from '../product/product.service';
+import { ProductClient } from '../product-client/product-client';
 import { ServiceStatus } from 'src/app/shared/service-status';
 import { SynologyProduct } from './synology-product';
 
@@ -34,7 +34,7 @@ describe('SynologyPage', () => {
         // router config is enough to satisfy that DI requirement; nothing here
         // reads actual route params, so no ActivatedRoute stub is needed.
         provideRouter([]),
-        { provide: ProductService, useValue: productServiceMock }
+        { provide: ProductClient, useValue: productServiceMock }
       ]
     }).compileComponents();
 

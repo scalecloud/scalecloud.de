@@ -3,9 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { CheckoutPage } from './checkout-page';
-import { CheckoutDetailsComponent } from './checkout-details/checkout-details.component';
+import { CheckoutDetails } from './checkout-details/checkout-details';
 import { CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
-import { CheckoutSubscriptionService } from './checkout-payment/checkout-subscription.service';
+import { CheckoutSubscriptionClient } from './checkout-payment/checkout-subscription-client';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -41,11 +41,11 @@ describe('CheckoutPage', () => {
         { provide: Log, useValue: { error: vi.fn() } },
         { provide: SnackBar, useValue: { info: vi.fn(), error: vi.fn() } },
         { provide: Auth, useValue: { waitForAuth: vi.fn(() => Promise.resolve()) } },
-        { provide: CheckoutSubscriptionService, useValue: { createCheckoutSubscription: vi.fn() } },
+        { provide: CheckoutSubscriptionClient, useValue: { createCheckoutSubscription: vi.fn() } },
       ],
     })
       .overrideComponent(CheckoutPage, {
-        remove: { imports: [PaymentMethodOverviewComponent, CheckoutDetailsComponent] },
+        remove: { imports: [PaymentMethodOverviewComponent, CheckoutDetails] },
         add: { imports: [MockPaymentMethodOverviewComponent, MockCheckoutDetailsComponent] },
       })
       .compileComponents();

@@ -5,7 +5,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { HomePage } from './home-page';
 import { GlobeComponent } from './globe/globe.component';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
-import { NewsletterSubscribe } from '../newsletter/newsletter-subscribe/newsletter-subscribe';
+import { NewsletterSubscribe } from '../newsletter-client/newsletter-subscribe/newsletter-subscribe';
 
 // ─── Stubs ────────────────────────────────────────────────────────────────────
 // HomeComponent only cares that these children are present, not what they do

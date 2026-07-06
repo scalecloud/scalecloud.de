@@ -1,15 +1,15 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { NextcloudProduct } from './nextcloud-product';
 import { ProductType } from '../product-model';
-import { ProductService } from '../product/product.service';
+import { ProductClient } from '../product-client/product-client';
 import { ServiceStatus } from 'src/app/shared/service-status';
-import { TitleCardComponent } from '../title-card/title-card.component';
+import { TitleCard } from '../title-card/title-card';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
-import { SubscriptionCardComponent } from '../subscription-card/subscription-card.component';
+import { SubscriptionCard } from '../subscription-card/subscription-card';
 import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
 
 @Component({
@@ -17,10 +17,10 @@ import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-f
     templateUrl: './nextcloud-page.html',
     styleUrls: ['./nextcloud-page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TitleCardComponent, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCardComponent, LoadingFailedComponent]
+    imports: [TitleCard, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCard, LoadingFailedComponent]
 })
 export class NextcloudPage implements OnInit {
-  private readonly productService = inject(ProductService);
+  private readonly productService = inject(ProductClient);
 
   readonly ServiceStatus = ServiceStatus;
   readonly productType = ProductType.Nextcloud;

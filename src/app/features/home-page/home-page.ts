@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { GlobeComponent } from './globe/globe.component';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
-import { NewsletterSubscribe } from '../newsletter/newsletter-subscribe/newsletter-subscribe';
+import { NewsletterSubscribe } from '../newsletter-client/newsletter-subscribe/newsletter-subscribe';
 
 @Component({
     selector: 'app-home-page',

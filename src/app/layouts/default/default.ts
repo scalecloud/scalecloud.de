@@ -5,7 +5,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
-import { Permission } from 'src/app/core/permission/permission';
+import { PermissionStore } from 'src/app/core/permission-store/permission-store';
 
 @Component({
     selector: 'app-default',
@@ -15,11 +15,11 @@ import { Permission } from 'src/app/core/permission/permission';
     imports: [HeaderComponent, MatProgressBar, MatDrawerContainer, MatDrawer, SidebarComponent, MatDrawerContent, RouterOutlet, FooterComponent]
 })
 export class Default {
-  private readonly permission = inject(Permission);
+  private readonly permissionStore = inject(PermissionStore);
 
   readonly isExpanded = signal(true);
   readonly isShowing = signal(false);
-  readonly isLoading: Signal<boolean> = this.permission.loadingPermissions;
+  readonly isLoading: Signal<boolean> = this.permissionStore.loadingPermissions;
 
   sideBarToggler(): void {
     this.isExpanded.update((expanded) => !expanded);

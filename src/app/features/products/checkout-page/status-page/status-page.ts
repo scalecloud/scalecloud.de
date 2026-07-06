@@ -2,18 +2,18 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } 
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { CheckoutCreateSubscriptionReply } from '../checkout-create-subscription';
-import { ActiveComponent } from './active/active.component';
+import { Active } from './active/active';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
-import { TrailingComponent } from './trailing/trailing.component';
+import { Trailing } from './trailing/trailing';
 
 @Component({
   selector: 'app-status-page',
   templateUrl: './status-page.html',
   styleUrl: './status-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ActiveComponent, TrailingComponent],
+  imports: [Active, Trailing],
 })
 export class StatusPage implements OnInit {
   private readonly log = inject(Log);

@@ -59,7 +59,7 @@ export const routes: Routes = [
       {
         path: 'dashboard/subscription/:subscriptionID/billing-address',
         canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/subscription-detail-page/billing-address/billing-address-detail-page/billing-address-detail-page').then(m => m.BillingAddressDetailPage)
+        loadComponent: () => import('./features/subscription-detail-page/billing-address-client/billing-address-detail-page/billing-address-detail-page').then(m => m.BillingAddressDetailPage)
       },
       {
         path: 'dashboard/change-payment',
@@ -116,11 +116,11 @@ export const routes: Routes = [
       // Newsletter - Lazy Loaded
       {
         path: 'newsletter/confirm/:verificationToken',
-        loadComponent: () => import('./features/newsletter/newsletter-confirm-page/newsletter-confirm-page').then(m => m.NewsletterConfirmPage)
+        loadComponent: () => import('./features/newsletter-client/newsletter-confirm-page/newsletter-confirm-page').then(m => m.NewsletterConfirmPage)
       },
       {
         path: 'newsletter/unsubscribe/:unsubscribeToken',
-        loadComponent: () => import('./features/newsletter/newsletter-unsubscribe-page/newsletter-unsubscribe-page').then(m => m.NewsletterUnsubscribePage)
+        loadComponent: () => import('./features/newsletter-client/newsletter-unsubscribe-page/newsletter-unsubscribe-page').then(m => m.NewsletterUnsubscribePage)
       },
       // Wildcard
       { path: '**', loadComponent: () => import('./features/page-not-found-page/page-not-found-page').then(m => m.PageNotFoundPage) }

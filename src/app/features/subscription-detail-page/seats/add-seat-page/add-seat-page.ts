@@ -6,11 +6,9 @@ import {
   computed,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AddSeatRequest } from '../seats';
-import { AddSeatService } from './add-seat.service';
+import { AddSeatRequest } from '../seats-model';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RoleDescriptions, Role } from 'src/app/core/permission/roles';
 import { firstValueFrom } from 'rxjs';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
@@ -23,6 +21,8 @@ import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { AddSeatClient } from './add-seat-client';
+import { Role, RoleDescriptions } from 'src/app/core/permission-store/roles';
 
 @Component({
   selector: 'app-add-seat-page',
@@ -43,7 +43,7 @@ export class AddSeatPage {
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
-  private readonly addSeatService = inject(AddSeatService);
+  private readonly addSeatClient = inject(AddSeatClient);
   private readonly returnUrl = inject(ReturnUrl);
   private readonly route = inject(ActivatedRoute);
 
@@ -103,7 +103,7 @@ export class AddSeatPage {
 
     try {
       const reply = await firstValueFrom(
-        this.addSeatService.addSeat(addSeatRequest),
+        this.addSeatClient.addSeat(addSeatRequest),
       );
 
       if (reply.success) {
