@@ -48,7 +48,7 @@ describe('PaymentChangedRequiresPaymentMethodComponent', () => {
     expect(button.textContent).toContain('Dashboard');
   });
 
-  it('should call returnUrlService.openUrlKeepReturnUrl with "/change-payment" when openChangePayment is invoked', () => {
+  it('should call returnUrl.openUrlKeepReturnUrl with "/change-payment" when openChangePayment is invoked', () => {
     component.openChangePayment();
     expect(returnUrlMock.openUrlKeepReturnUrl).toHaveBeenCalledTimes(1);
     expect(returnUrlMock.openUrlKeepReturnUrl).toHaveBeenCalledWith('/change-payment');

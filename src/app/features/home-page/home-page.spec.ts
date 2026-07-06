@@ -104,7 +104,7 @@ describe('HomePage', () => {
     expect(buttons.length).toBe(2);
   });
 
-  // ─── ngOnInit / SnackBarService ────────────────────────────────────────────────
+  // ─── ngOnInit / SnackBar ────────────────────────────────────────────────
 
   it('should show an under-construction warning on init', () => {
     expect(snackBar.errorDuration).toHaveBeenCalledWith(

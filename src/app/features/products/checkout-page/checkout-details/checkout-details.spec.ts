@@ -81,7 +81,7 @@ describe('CheckoutDetails', () => {
 
   const checkoutProductService = { getCheckoutProduct: vi.fn() };
   const authMock = { waitForAuth: vi.fn(() => Promise.resolve()) };
-  const logService = { error: vi.fn() };
+  const log = { error: vi.fn() };
 
   // `settle: false` is for tests that intentionally leave the product request
   // pending (e.g. an open Subject that never emits). In those cases the
@@ -94,7 +94,7 @@ describe('CheckoutDetails', () => {
         provideRouter([]),
         { provide: CheckoutProductClient, useValue: checkoutProductService },
         { provide: Auth, useValue: authMock },
-        { provide: Log, useValue: logService },
+        { provide: Log, useValue: log },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
     })
@@ -141,7 +141,7 @@ describe('CheckoutDetails', () => {
     await setup(makeActivatedRouteStub(null));
 
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    expect(logService.error).toHaveBeenCalledWith('Could not determine productID from the query params.');
+    expect(log.error).toHaveBeenCalledWith('Could not determine productID from the query params.');
     expect(checkoutProductService.getCheckoutProduct).not.toHaveBeenCalled();
   });
 
@@ -259,6 +259,6 @@ describe('CheckoutDetails', () => {
     component.startSubscription();
 
     expect(emitSpy).not.toHaveBeenCalled();
-    expect(logService.error).toHaveBeenCalledWith('Cannot start subscription without a loaded product.');
+    expect(log.error).toHaveBeenCalledWith('Cannot start subscription without a loaded product.');
   });
 });

@@ -10,7 +10,7 @@ import { API_URL } from '../config/api-token';
 import { PermissionReply } from 'src/app/features/subscription-detail-page/seats/seats-model';
 
 describe('PermissionStore', () => {
-  let service: PermissionStore;
+  let permissionStore: PermissionStore;
 
   const SUBSCRIPTION_ID = 'sub-1';
   const OTHER_SUBSCRIPTION_ID = 'sub-2';
@@ -18,7 +18,7 @@ describe('PermissionStore', () => {
 
   const httpClient = { post: vi.fn() };
   const authMock = { getHttpOptions: vi.fn(() => ({ headers: { Authorization: 'Bearer token' } })) };
-  const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
+  const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
   function makeReply(roles: Role[]): PermissionReply {
     return { mySeat: { roles } } as PermissionReply;
@@ -31,12 +31,12 @@ describe('PermissionStore', () => {
       providers: [
         { provide: HttpClient, useValue: httpClient },
         { provide: Auth, useValue: authMock },
-        { provide: Log, useValue: logService },
+        { provide: Log, useValue: log },
         { provide: API_URL, useValue: API_BASE },
       ],
     });
 
-    service = TestBed.inject(PermissionStore);
+    permissionStore = TestBed.inject(PermissionStore);
   });
 
   afterEach(() => {
@@ -44,18 +44,18 @@ describe('PermissionStore', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(permissionStore).toBeTruthy();
   });
 
   it('should start with loadingPermissions false', () => {
-    expect(service.loadingPermissions()).toBe(false);
+    expect(permissionStore.loadingPermissions()).toBe(false);
   });
 
   describe('getPermissions', () => {
     it('should POST to the permission endpoint with the subscriptionID and auth headers', () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.Owner])));
 
-      service.getPermissions({ subscriptionID: SUBSCRIPTION_ID });
+      permissionStore.getPermissions({ subscriptionID: SUBSCRIPTION_ID });
 
       expect(httpClient.post).toHaveBeenCalledWith(
         `${API_BASE}/dashboard/subscription/permission`,
@@ -69,7 +69,7 @@ describe('PermissionStore', () => {
     it('should return true when the requested role is present', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.Administrator])));
 
-      const result = await service.hasPermission(SUBSCRIPTION_ID, Role.Administrator);
+      const result = await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Administrator);
 
       expect(result).toBe(true);
     });
@@ -77,7 +77,7 @@ describe('PermissionStore', () => {
     it('should return false when the requested role is absent', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.User])));
 
-      const result = await service.hasPermission(SUBSCRIPTION_ID, Role.Administrator);
+      const result = await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Administrator);
 
       expect(result).toBe(false);
     });
@@ -86,22 +86,22 @@ describe('PermissionStore', () => {
       const subject = new Subject<PermissionReply>();
       httpClient.post.mockReturnValue(subject.asObservable());
 
-      const pending = service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      const pending = permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
       await Promise.resolve();
-      expect(service.loadingPermissions()).toBe(true);
+      expect(permissionStore.loadingPermissions()).toBe(true);
 
       subject.next(makeReply([Role.Owner]));
       subject.complete();
       await pending;
 
-      expect(service.loadingPermissions()).toBe(false);
+      expect(permissionStore.loadingPermissions()).toBe(false);
     });
 
     it('should cache the reply and not issue a second HTTP call within the cache window', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.Owner])));
 
-      await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
-      await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
 
       expect(httpClient.post).toHaveBeenCalledTimes(1);
     });
@@ -109,8 +109,8 @@ describe('PermissionStore', () => {
     it('should reuse the cached reply for a different role on the same subscription', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.Owner, Role.Administrator])));
 
-      await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
-      const result = await service.hasPermission(SUBSCRIPTION_ID, Role.Administrator);
+      await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      const result = await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Administrator);
 
       expect(httpClient.post).toHaveBeenCalledTimes(1);
       expect(result).toBe(true);
@@ -119,8 +119,8 @@ describe('PermissionStore', () => {
     it('should not share the cache across different subscriptionIDs', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.Owner])));
 
-      await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
-      await service.hasPermission(OTHER_SUBSCRIPTION_ID, Role.Owner);
+      await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      await permissionStore.hasPermission(OTHER_SUBSCRIPTION_ID, Role.Owner);
 
       expect(httpClient.post).toHaveBeenCalledTimes(2);
     });
@@ -131,10 +131,10 @@ describe('PermissionStore', () => {
       const now = Date.now();
       vi.setSystemTime(now);
 
-      await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
 
       vi.setSystemTime(now + 61_000);
-      await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
 
       expect(httpClient.post).toHaveBeenCalledTimes(2);
     });
@@ -142,26 +142,26 @@ describe('PermissionStore', () => {
     it('should log an error and return false when the HTTP call fails', async () => {
       httpClient.post.mockReturnValue(throwError(() => new Error('network down')));
 
-      const result = await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      const result = await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
 
       expect(result).toBe(false);
-      expect(logService.error).toHaveBeenCalledWith('hasPermission failed: network down');
+      expect(log.error).toHaveBeenCalledWith('hasPermission failed: network down');
     });
 
     it('should reset loadingPermissions to false even when the request fails', async () => {
       httpClient.post.mockReturnValue(throwError(() => new Error('boom')));
 
-      await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
 
-      expect(service.loadingPermissions()).toBe(false);
+      expect(permissionStore.loadingPermissions()).toBe(false);
     });
 
     it('should not cache a failed request', async () => {
       httpClient.post.mockReturnValueOnce(throwError(() => new Error('boom')));
       httpClient.post.mockReturnValueOnce(of(makeReply([Role.Owner])));
 
-      const first = await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
-      const second = await service.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      const first = await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
+      const second = await permissionStore.hasPermission(SUBSCRIPTION_ID, Role.Owner);
 
       expect(first).toBe(false);
       expect(second).toBe(true);
@@ -172,27 +172,27 @@ describe('PermissionStore', () => {
   describe('role convenience methods', () => {
     it('isOwner should resolve true when the Owner role is present', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.Owner])));
-      expect(await service.isOwner(SUBSCRIPTION_ID)).toBe(true);
+      expect(await permissionStore.isOwner(SUBSCRIPTION_ID)).toBe(true);
     });
 
     it('isAdministrator should resolve true when the Administrator role is present', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.Administrator])));
-      expect(await service.isAdministrator(SUBSCRIPTION_ID)).toBe(true);
+      expect(await permissionStore.isAdministrator(SUBSCRIPTION_ID)).toBe(true);
     });
 
     it('isUser should resolve true when the User role is present', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.User])));
-      expect(await service.isUser(SUBSCRIPTION_ID)).toBe(true);
+      expect(await permissionStore.isUser(SUBSCRIPTION_ID)).toBe(true);
     });
 
     it('isBilling should resolve true when the Billing role is present', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.Billing])));
-      expect(await service.isBilling(SUBSCRIPTION_ID)).toBe(true);
+      expect(await permissionStore.isBilling(SUBSCRIPTION_ID)).toBe(true);
     });
 
     it('isOwner should resolve false when the Owner role is absent', async () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.User])));
-      expect(await service.isOwner(SUBSCRIPTION_ID)).toBe(false);
+      expect(await permissionStore.isOwner(SUBSCRIPTION_ID)).toBe(false);
     });
   });
 });

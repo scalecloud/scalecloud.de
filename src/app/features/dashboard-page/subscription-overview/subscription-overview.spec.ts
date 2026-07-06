@@ -4,12 +4,12 @@ import { By }                             from '@angular/platform-browser';
 
 import { describe, beforeEach, it, expect } from 'vitest';
 
-import { SubscriptionOverviewComponent } from './subscription-overview.component';
-import { ISubscriptionOverview }         from './subscription-overview';
+import { SubscriptionOverview } from './subscription-overview';
+import { SubscriptionOverviewModel } from './subscription-overview-model';
 
 // ── Fixtures ──────────────────────────────────────────────────────────────────
 
-const MOCK_SUBSCRIPTION: ISubscriptionOverview = {
+const MOCK_SUBSCRIPTION: SubscriptionOverviewModel = {
   id:            'sub-123',
   active:        true,
   productName:   'Pro Plan',
@@ -43,19 +43,19 @@ async function setInput<T>(
 
 // ── Suite ─────────────────────────────────────────────────────────────────────
 
-describe('SubscriptionOverviewComponent', () => {
-  let component: SubscriptionOverviewComponent;
-  let fixture:   ComponentFixture<SubscriptionOverviewComponent>;
+describe('SubscriptionOverview', () => {
+  let component: SubscriptionOverview;
+  let fixture:   ComponentFixture<SubscriptionOverview>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:   [SubscriptionOverviewComponent],
+      imports:   [SubscriptionOverview],
       providers: [
         provideRouter([]),
       ],
     }).compileComponents();
 
-    fixture   = TestBed.createComponent(SubscriptionOverviewComponent);
+    fixture   = TestBed.createComponent(SubscriptionOverview);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -88,7 +88,7 @@ describe('SubscriptionOverviewComponent', () => {
     // ── Logic ──────────────────────────────────────────────────────────────────
 
     it('exposes id, active, productName, and productType via the input signal', () => {
-      const sub = component.subscriptionOverview();
+      const sub = component.subscriptionOverviewModel();
       expect(sub?.id).toBe('sub-123');
       expect(sub?.active).toBe(true);
       expect(sub?.productName).toBe('Pro Plan');
@@ -116,7 +116,7 @@ describe('SubscriptionOverviewComponent', () => {
 
     it('reflects an inactive subscription on the signal', async () => {
       await setInput(fixture, 'subscriptionOverview', { ...MOCK_SUBSCRIPTION, active: false });
-      expect(component.subscriptionOverview()?.active).toBe(false);
+      expect(component.subscriptionOverviewModel()?.active).toBe(false);
     });
 
     // ── DOM / template ─────────────────────────────────────────────────────────

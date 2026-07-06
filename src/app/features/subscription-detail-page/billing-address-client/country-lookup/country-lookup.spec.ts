@@ -6,13 +6,13 @@ import { Language } from './language-model';
 
 describe('CountryLookup', () => {
   let service: CountryLookup;
-  let logServiceMock: { warn: Mock; error: Mock };
+  let logMock: { warn: Mock; error: Mock };
 
   beforeEach(() => {
-    logServiceMock = { warn: vi.fn(), error: vi.fn() };
+    logMock = { warn: vi.fn(), error: vi.fn() };
 
     TestBed.configureTestingModule({
-      providers: [{ provide: Log, useValue: logServiceMock }],
+      providers: [{ provide: Log, useValue: logMock }],
     });
     service = TestBed.inject(CountryLookup);
   });
@@ -34,7 +34,7 @@ describe('CountryLookup', () => {
       const result = service.getCountry(Language.EN, 'ZZ');
 
       expect(result).toBe('ZZ');
-      expect(logServiceMock.warn).toHaveBeenCalledWith(expect.stringContaining('ZZ'));
+      expect(logMock.warn).toHaveBeenCalledWith(expect.stringContaining('ZZ'));
     });
 
     it('should look up codes case-sensitively, matching the dataset format', () => {
@@ -45,7 +45,7 @@ describe('CountryLookup', () => {
       const result = service.getCountry(Language.EN, 'de');
 
       expect(result).toBe('de');
-      expect(logServiceMock.warn).toHaveBeenCalled();
+      expect(logMock.warn).toHaveBeenCalled();
     });
   });
 
@@ -62,7 +62,7 @@ describe('CountryLookup', () => {
       const result = service.getCountryCode(Language.EN, 'Not A Real Country');
 
       expect(result).toBeUndefined();
-      expect(logServiceMock.error).toHaveBeenCalledWith(expect.stringContaining('Not A Real Country'));
+      expect(logMock.error).toHaveBeenCalledWith(expect.stringContaining('Not A Real Country'));
     });
 
     it('should not match an English name when looking up by German language', () => {

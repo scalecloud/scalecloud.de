@@ -12,12 +12,12 @@ describe('LoginPage', () => {
   let component: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
   let authMock: { login: ReturnType<typeof vi.fn> };
-  let logService: { warn: ReturnType<typeof vi.fn> };
+  let log: { warn: ReturnType<typeof vi.fn> };
   let returnUrl: { openUrlKeepReturnUrl: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     authMock = { login: vi.fn() };
-    logService = { warn: vi.fn() };
+    log = { warn: vi.fn() };
     returnUrl = { openUrlKeepReturnUrl: vi.fn() };
 
     await TestBed.configureTestingModule({
@@ -25,7 +25,7 @@ describe('LoginPage', () => {
       providers: [
         provideRouter([]),
         { provide: Auth, useValue: authMock },
-        { provide: Log, useValue: logService },
+        { provide: Log, useValue: log },
         { provide: ReturnUrl, useValue: returnUrl },
       ],
     }).compileComponents();
@@ -57,7 +57,7 @@ describe('LoginPage', () => {
     await fixture.whenStable();
 
     expect(authMock.login).toHaveBeenCalledWith('user@example.com', 'correct-password');
-    expect(logService.warn).not.toHaveBeenCalled();
+    expect(log.warn).not.toHaveBeenCalled();
   });
 
   it('should warn and not call login when the email is empty', async () => {
@@ -67,7 +67,7 @@ describe('LoginPage', () => {
     component.login();
     await fixture.whenStable();
 
-    expect(logService.warn).toHaveBeenCalledWith('Invalid inputs in Login.');
+    expect(log.warn).toHaveBeenCalledWith('Invalid inputs in Login.');
     expect(authMock.login).not.toHaveBeenCalled();
   });
 
@@ -78,7 +78,7 @@ describe('LoginPage', () => {
     component.login();
     await fixture.whenStable();
 
-    expect(logService.warn).toHaveBeenCalledWith('Invalid inputs in Login.');
+    expect(log.warn).toHaveBeenCalledWith('Invalid inputs in Login.');
     expect(authMock.login).not.toHaveBeenCalled();
   });
 
@@ -89,7 +89,7 @@ describe('LoginPage', () => {
     component.login();
     await fixture.whenStable();
 
-    expect(logService.warn).toHaveBeenCalledWith('Invalid inputs in Login.');
+    expect(log.warn).toHaveBeenCalledWith('Invalid inputs in Login.');
     expect(authMock.login).not.toHaveBeenCalled();
   });
 
@@ -134,7 +134,7 @@ describe('LoginPage', () => {
     expect(errors.length).toBe(2);
   });
 
-  it('should call ReturnUrlService.openUrlKeepReturnUrl with /register when Register is clicked', () => {
+  it('should call ReturnUrl.openUrlKeepReturnUrl with /register when Register is clicked', () => {
     component.openUrlKeepReturnUrl();
 
     expect(returnUrl.openUrlKeepReturnUrl).toHaveBeenCalledWith('/register');

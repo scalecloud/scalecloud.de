@@ -9,12 +9,12 @@ import { CheckoutSubscriptionClient } from './checkout-payment/checkout-subscrip
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
-import { PaymentMethodOverview } from '../../dashboard-page/payment-method-overview-client/payment-method-overview';
+import { PaymentMethodOverview } from '../../dashboard-page/payment-method-overview/payment-method-overview';
 
 // ─── Stubs for the child components CheckoutComponent renders ─────────────────
 // CheckoutDetailsComponent and PaymentOverviewComponent each pull in their own
 // large dependency trees (HttpClient, ActivatedRoute -> Auth ->
-// ReturnUrlService, etc.) that have nothing to do with what CheckoutComponent
+// ReturnUrl, etc.) that have nothing to do with what CheckoutComponent
 // itself is responsible for. Stubbing them out keeps this a unit test of
 // CheckoutComponent rather than a full integration test of the whole checkout
 // page, and avoids needing to recreate that entire dependency graph here.

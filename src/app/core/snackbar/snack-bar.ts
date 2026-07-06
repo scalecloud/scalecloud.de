@@ -10,7 +10,7 @@ type SnackBarCssClass = 'snackbar-info' | 'snackbar-warn' | 'snackbar-error';
 })
 export class SnackBar {
   private readonly snackBar = inject(MatSnackBar);
-  private readonly logService = inject(Log);
+  private readonly log = inject(Log);
 
   private readonly defaultDuration = 8;
 
@@ -20,7 +20,7 @@ export class SnackBar {
 
   infoDuration(message: string, duration: number) {
     this.showMessage(message, duration, 'snackbar-info');
-    this.logService.info(message);
+    this.log.info(message);
   }
 
   warn(message: string) {
@@ -29,7 +29,7 @@ export class SnackBar {
 
   warnDuration(message: string, duration: number) {
     this.showMessage(message, duration, 'snackbar-warn');
-    this.logService.warn(message);
+    this.log.warn(message);
   }
 
   error(message: string) {
@@ -38,7 +38,7 @@ export class SnackBar {
 
   errorDuration(message: string, duration: number) {
     this.showMessage(message, duration, 'snackbar-error');
-    this.logService.error(message);
+    this.log.error(message);
   }
 
   private showMessage(message: string, duration: number, cssClass: SnackBarCssClass) {

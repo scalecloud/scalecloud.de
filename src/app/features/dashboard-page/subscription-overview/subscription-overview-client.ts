@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ISubscriptionOverview } from './subscription-overview';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
+import { SubscriptionOverviewModel } from './subscription-overview-model';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class SubscriptionOverviewService {
+export class SubscriptionOverviewClient {
   private readonly http = inject(HttpClient);
   private readonly auth = inject(Auth);
 
@@ -17,8 +17,8 @@ export class SubscriptionOverviewService {
   private readonly apiUrl = inject(API_URL);
   private readonly url = `${this.apiUrl}/dashboard/subscriptions`;
 
-  getSubscriptionsOverview(): Observable<ISubscriptionOverview[]> {
-    return this.http.get<ISubscriptionOverview[]>(this.url, this.auth.getHttpOptions());
+  getSubscriptionsOverview(): Observable<SubscriptionOverviewModel[]> {
+    return this.http.get<SubscriptionOverviewModel[]>(this.url, this.auth.getHttpOptions());
   }
 
 }

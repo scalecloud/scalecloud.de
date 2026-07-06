@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class LastCountService {
+export class LastCountStore {
 
   private lastSubscriptionOverviewCount = 1;
 

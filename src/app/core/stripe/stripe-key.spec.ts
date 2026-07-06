@@ -5,9 +5,9 @@ import { StripeKey, STRIPE_PUBLIC_KEY } from './stripe-key';
 import { Log } from '../logging/log';
 
 describe('StripeKey', () => {
-  let service: StripeKey;
+  let stripeKey: StripeKey;
 
-  const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
+  const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
   function configureWithKey(publicKey: string | undefined) {
     vi.clearAllMocks();
@@ -15,11 +15,11 @@ describe('StripeKey', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: STRIPE_PUBLIC_KEY, useValue: publicKey },
-        { provide: Log, useValue: logService },
+        { provide: Log, useValue: log },
       ],
     });
 
-    service = TestBed.inject(StripeKey);
+    stripeKey = TestBed.inject(StripeKey);
   }
 
   describe('with a configured public key', () => {
@@ -28,17 +28,17 @@ describe('StripeKey', () => {
     });
 
     it('should be created', () => {
-      expect(service).toBeTruthy();
+      expect(stripeKey).toBeTruthy();
     });
 
     it('should return the public key', () => {
-      expect(service.getPublicKey()).toBe('pk_test_123');
+      expect(stripeKey.getPublicKey()).toBe('pk_test_123');
     });
 
     it('should log an info message', () => {
-      service.getPublicKey();
-      expect(logService.info).toHaveBeenCalledWith('Using Stripe public key');
-      expect(logService.error).not.toHaveBeenCalled();
+      stripeKey.getPublicKey();
+      expect(log.info).toHaveBeenCalledWith('Using Stripe public key');
+      expect(log.error).not.toHaveBeenCalled();
     });
   });
 
@@ -48,13 +48,13 @@ describe('StripeKey', () => {
     });
 
     it('should return undefined', () => {
-      expect(service.getPublicKey()).toBeUndefined();
+      expect(stripeKey.getPublicKey()).toBeUndefined();
     });
 
     it('should log an error message', () => {
-      service.getPublicKey();
-      expect(logService.error).toHaveBeenCalledWith('Could not get Stripe public key.');
-      expect(logService.info).not.toHaveBeenCalled();
+      stripeKey.getPublicKey();
+      expect(log.error).toHaveBeenCalledWith('Could not get Stripe public key.');
+      expect(log.info).not.toHaveBeenCalled();
     });
   });
 
@@ -64,12 +64,12 @@ describe('StripeKey', () => {
     });
 
     it('should treat it as missing and return undefined', () => {
-      expect(service.getPublicKey()).toBeUndefined();
+      expect(stripeKey.getPublicKey()).toBeUndefined();
     });
 
     it('should log an error message', () => {
-      service.getPublicKey();
-      expect(logService.error).toHaveBeenCalledWith('Could not get Stripe public key.');
+      stripeKey.getPublicKey();
+      expect(log.error).toHaveBeenCalledWith('Could not get Stripe public key.');
     });
   });
 });

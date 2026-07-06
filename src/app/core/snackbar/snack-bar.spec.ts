@@ -7,10 +7,10 @@ import { SnackBarProgress } from './progress/snack-bar-progress';
 import { Log } from '../logging/log';
 
 describe('SnackBar', () => {
-  let service: SnackBar;
+  let snackBar: SnackBar;
 
   const matSnackBar = { openFromComponent: vi.fn() };
-  const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
+  const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -20,11 +20,11 @@ describe('SnackBar', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: MatSnackBar, useValue: matSnackBar },
-        { provide: Log, useValue: logService },
+        { provide: Log, useValue: log },
       ],
     });
 
-    service = TestBed.inject(SnackBar);
+    snackBar = TestBed.inject(SnackBar);
   });
 
   afterEach(() => {
@@ -32,11 +32,11 @@ describe('SnackBar', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(snackBar).toBeTruthy();
   });
 
   it('should open an info snackbar with the default duration', () => {
-    service.info('Hello');
+    snackBar.info('Hello');
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
       SnackBarProgress,
@@ -46,11 +46,11 @@ describe('SnackBar', () => {
         data: { message: 'Hello', time: '09:05:03', duration: 8 },
       }),
     );
-    expect(logService.info).toHaveBeenCalledWith('Hello');
+    expect(log.info).toHaveBeenCalledWith('Hello');
   });
 
   it('should open an info snackbar with a custom duration', () => {
-    service.infoDuration('Hello', 3);
+    snackBar.infoDuration('Hello', 3);
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
       SnackBarProgress,
@@ -59,17 +59,17 @@ describe('SnackBar', () => {
   });
 
   it('should open a warn snackbar with the default duration', () => {
-    service.warn('Careful');
+    snackBar.warn('Careful');
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
       SnackBarProgress,
       expect.objectContaining({ duration: 8000, panelClass: ['snackbar-warn'] }),
     );
-    expect(logService.warn).toHaveBeenCalledWith('Careful');
+    expect(log.warn).toHaveBeenCalledWith('Careful');
   });
 
   it('should open a warn snackbar with a custom duration', () => {
-    service.warnDuration('Careful', 5);
+    snackBar.warnDuration('Careful', 5);
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
       SnackBarProgress,
@@ -78,17 +78,17 @@ describe('SnackBar', () => {
   });
 
   it('should open an error snackbar with the default duration', () => {
-    service.error('Broken');
+    snackBar.error('Broken');
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
       SnackBarProgress,
       expect.objectContaining({ duration: 8000, panelClass: ['snackbar-error'] }),
     );
-    expect(logService.error).toHaveBeenCalledWith('Broken');
+    expect(log.error).toHaveBeenCalledWith('Broken');
   });
 
   it('should open an error snackbar with a custom duration', () => {
-    service.errorDuration('Broken', 12);
+    snackBar.errorDuration('Broken', 12);
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
       SnackBarProgress,
@@ -99,7 +99,7 @@ describe('SnackBar', () => {
   it('should format the current time as HH:MM:SS in the snackbar data', () => {
     vi.setSystemTime(new Date(2026, 0, 1, 0, 4, 9));
 
-    service.info('Midnight message');
+    snackBar.info('Midnight message');
 
     expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
       SnackBarProgress,

@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { SubscriptionOverviewService } from './subscription-overview.service';
+import { SubscriptionOverviewClient } from './subscription-overview-client';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 import { environment } from 'src/environments/environment';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
-describe('SubscriptionOverviewService', () => {
-  let service: SubscriptionOverviewService;
+describe('SubscriptionOverviewClient', () => {
+  let service: SubscriptionOverviewClient;
   let httpTestingController: HttpTestingController;
   const authMock = { getHttpOptions: vi.fn().mockReturnValue({}) };
 
@@ -20,7 +20,7 @@ describe('SubscriptionOverviewService', () => {
         { provide: Auth, useValue: authMock }
       ]
     });
-    service = TestBed.inject(SubscriptionOverviewService);
+    service = TestBed.inject(SubscriptionOverviewClient);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 

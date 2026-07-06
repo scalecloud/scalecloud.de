@@ -48,7 +48,7 @@ describe('PaymentChangedSucceededComponent', () => {
     expect(button.textContent).toContain('Return');
   });
 
-  it('should call returnUrlService.openReturnURL with "/dashboard" when openReturnUrl is invoked', () => {
+  it('should call returnUrl.openReturnURL with "/dashboard" when openReturnUrl is invoked', () => {
     component.openReturnUrl();
     expect(returnUrlMock.openReturnURL).toHaveBeenCalledTimes(1);
     expect(returnUrlMock.openReturnURL).toHaveBeenCalledWith('/dashboard');

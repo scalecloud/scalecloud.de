@@ -8,16 +8,16 @@ export const STRIPE_PUBLIC_KEY = new InjectionToken<string>('STRIPE_PUBLIC_KEY')
 })
 export class StripeKey {
   private readonly publicKey = inject(STRIPE_PUBLIC_KEY);
-  private readonly logService = inject(Log);
+  private readonly log = inject(Log);
 
 
   getPublicKey(): string | undefined {
     if (!this.publicKey) {
-      this.logService.error('Could not get Stripe public key.');
+      this.log.error('Could not get Stripe public key.');
       return undefined;
     }
 
-    this.logService.info('Using Stripe public key');
+    this.log.info('Using Stripe public key');
     return this.publicKey;
   }
 }

@@ -11,14 +11,14 @@ import { Firebase } from '../firebase/firebase';
 
 // ── Firebase mocking note ────────────────────────────────────────────────────
 // Auth no longer imports firebase/auth directly - it calls the thin
-// wrapper methods on FirebaseService instead. That's on purpose: the Angular
+// wrapper methods on Firebase instead. That's on purpose: the Angular
 // unit-test runner bundles test files with esbuild ahead of time, and
 // `vi.mock('firebase/auth', ...)` is not reliably applied once that module
 // is reached from more than one source file with different mock shapes
 // (it silently falls through to the real SDK instead of the mock). Angular's
-// own DI substitution below (`{ provide: FirebaseService, useValue: ... }`)
+// own DI substitution below (`{ provide: Firebase, useValue: ... }`)
 // is a plain runtime object swap and isn't affected by that limitation, so
-// all the firebase/auth mocking now happens on `firebaseService` directly.
+// all the firebase/auth mocking now happens on `firebase` directly.
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -41,13 +41,13 @@ function makeUser(overrides: Partial<User> = {}): User {
 }
 
 describe('Auth', () => {
-  let service: Auth;
+  let auth: Auth;
   let registrations: Registration[];
 
   const router = { navigate: vi.fn() };
-  const snackBarService = { info: vi.fn(), infoDuration: vi.fn(), warn: vi.fn(), warnDuration: vi.fn(), error: vi.fn(), errorDuration: vi.fn() };
-  const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
-  const returnUrlService = {
+  const snackBarClient = { info: vi.fn(), infoDuration: vi.fn(), warn: vi.fn(), warnDuration: vi.fn(), error: vi.fn(), errorDuration: vi.fn() };
+  const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
+  const returnUrl = {
     openReturnURL: vi.fn(),
     openUrlKeepReturnUrl: vi.fn(),
     getReturnUrlDecoded: vi.fn(() => 'https://example.com/verify'),
@@ -89,14 +89,14 @@ describe('Auth', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: router },
-        { provide: SnackBar, useValue: snackBarService },
-        { provide: Log, useValue: logService },
-        { provide: ReturnUrl, useValue: returnUrlService },
+        { provide: SnackBar, useValue: snackBarClient },
+        { provide: Log, useValue: log },
+        { provide: ReturnUrl, useValue: returnUrl },
         { provide: Firebase, useValue: firebase },
       ],
     });
 
-    service = createService();
+    auth = createService();
   });
 
   afterEach(() => {
@@ -105,7 +105,7 @@ describe('Auth', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(auth).toBeTruthy();
   });
 
   it('should register exactly one onAuthStateChanged listener on construction', () => {
@@ -133,8 +133,8 @@ describe('Auth', () => {
       registrations[0].next(user);
       await flush();
 
-      expect(service.user()).toBe(user);
-      expect(service.token()).toBe('fresh-token');
+      expect(auth.user()).toBe(user);
+      expect(auth.token()).toBe('fresh-token');
     });
 
     it('should set user() and token() to null when signed out', async () => {
@@ -144,8 +144,8 @@ describe('Auth', () => {
       registrations[0].next(null);
       await flush();
 
-      expect(service.user()).toBeNull();
-      expect(service.token()).toBeNull();
+      expect(auth.user()).toBeNull();
+      expect(auth.token()).toBeNull();
     });
 
     it('should log an error and set token() to null when getIdToken() rejects', async () => {
@@ -154,24 +154,24 @@ describe('Auth', () => {
       registrations[0].next(user);
       await flush();
 
-      expect(logService.error).toHaveBeenCalledWith('Could not refresh ID token: token error');
-      expect(service.token()).toBeNull();
+      expect(log.error).toHaveBeenCalledWith('Could not refresh ID token: token error');
+      expect(auth.token()).toBeNull();
     });
 
     it('should log an error when the auth state listener itself errors', () => {
       registrations[0].error?.(new Error('listener broke'));
 
-      expect(logService.error).toHaveBeenCalledWith('Auth state listener failed: listener broke');
+      expect(log.error).toHaveBeenCalledWith('Auth state listener failed: listener broke');
     });
 
     it('isAuthenticated should be true only for a verified user', async () => {
       registrations[0].next(makeUser({ emailVerified: true }));
       await flush();
-      expect(service.isAuthenticated()).toBe(true);
+      expect(auth.isAuthenticated()).toBe(true);
 
       registrations[0].next(makeUser({ emailVerified: false }));
       await flush();
-      expect(service.isAuthenticated()).toBe(false);
+      expect(auth.isAuthenticated()).toBe(false);
     });
   });
 
@@ -180,11 +180,11 @@ describe('Auth', () => {
       registrations[0].next(makeUser({ getIdToken: vi.fn(async () => 'abc-123') }));
       await flush();
 
-      expect(service.getHttpOptions().headers.get('Authorization')).toBe('abc-123');
+      expect(auth.getHttpOptions().headers.get('Authorization')).toBe('abc-123');
     });
 
     it('should send an empty Authorization header when there is no token', () => {
-      expect(service.getHttpOptions().headers.get('Authorization')).toBe('');
+      expect(auth.getHttpOptions().headers.get('Authorization')).toBe('');
     });
   });
 
@@ -193,20 +193,20 @@ describe('Auth', () => {
       const user = makeUser();
       (firebase.signInWithEmailAndPassword as unknown as Mock).mockResolvedValue({ user });
 
-      await service.login('user@example.com', 'secret');
+      await auth.login('user@example.com', 'secret');
 
       expect(firebase.signInWithEmailAndPassword).toHaveBeenCalledWith('user@example.com', 'secret');
-      expect(service.user()).toBe(user);
-      expect(returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
+      expect(auth.user()).toBe(user);
+      expect(returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
     });
 
     it('should show an error snackbar and not navigate on failure', async () => {
       (firebase.signInWithEmailAndPassword as unknown as Mock).mockRejectedValue(new Error('bad credentials'));
 
-      await service.login('user@example.com', 'wrong');
+      await auth.login('user@example.com', 'wrong');
 
-      expect(snackBarService.error).toHaveBeenCalledWith('bad credentials');
-      expect(returnUrlService.openReturnURL).not.toHaveBeenCalled();
+      expect(snackBarClient.error).toHaveBeenCalledWith('bad credentials');
+      expect(returnUrl.openReturnURL).not.toHaveBeenCalled();
     });
   });
 
@@ -217,23 +217,23 @@ describe('Auth', () => {
       (firebase.sendEmailVerification as unknown as Mock).mockResolvedValue(undefined);
       firebaseAuth.currentUser = user;
 
-      await service.register('new@example.com', 'secret');
+      await auth.register('new@example.com', 'secret');
 
-      expect(service.user()).toBe(user);
+      expect(auth.user()).toBe(user);
       expect(firebase.sendEmailVerification).toHaveBeenCalledWith(user, { url: 'https://example.com/verify' });
-      expect(snackBarService.infoDuration).toHaveBeenCalledWith(
+      expect(snackBarClient.infoDuration).toHaveBeenCalledWith(
         'Please check your E-Mail for verification.',
         30,
       );
-      expect(returnUrlService.openUrlKeepReturnUrl).toHaveBeenCalledWith('/verify-email-address');
+      expect(returnUrl.openUrlKeepReturnUrl).toHaveBeenCalledWith('/verify-email-address');
     });
 
     it('should show an error snackbar on failure', async () => {
       (firebase.createUserWithEmailAndPassword as unknown as Mock).mockRejectedValue(new Error('email in use'));
 
-      await service.register('new@example.com', 'secret');
+      await auth.register('new@example.com', 'secret');
 
-      expect(snackBarService.error).toHaveBeenCalledWith('email in use');
+      expect(snackBarClient.error).toHaveBeenCalledWith('email in use');
     });
   });
 
@@ -241,9 +241,9 @@ describe('Auth', () => {
     it('should show an error and not call sendEmailVerification when no user is logged in', async () => {
       firebaseAuth.currentUser = null;
 
-      await service.sendVerificationMail();
+      await auth.sendVerificationMail();
 
-      expect(snackBarService.error).toHaveBeenCalledWith('No user logged in.');
+      expect(snackBarClient.error).toHaveBeenCalledWith('No user logged in.');
       expect(firebase.sendEmailVerification).not.toHaveBeenCalled();
     });
 
@@ -252,9 +252,9 @@ describe('Auth', () => {
       firebaseAuth.currentUser = user;
       (firebase.sendEmailVerification as unknown as Mock).mockRejectedValue(new Error('quota exceeded'));
 
-      await service.sendVerificationMail();
+      await auth.sendVerificationMail();
 
-      expect(snackBarService.error).toHaveBeenCalledWith('quota exceeded');
+      expect(snackBarClient.error).toHaveBeenCalledWith('quota exceeded');
     });
   });
 
@@ -262,10 +262,10 @@ describe('Auth', () => {
     it('should return true and show an info snackbar on success', async () => {
       (firebase.sendPasswordResetEmail as unknown as Mock).mockResolvedValue(undefined);
 
-      const result = await service.forgotPassword('user@example.com');
+      const result = await auth.forgotPassword('user@example.com');
 
       expect(result).toBe(true);
-      expect(snackBarService.infoDuration).toHaveBeenCalledWith(
+      expect(snackBarClient.infoDuration).toHaveBeenCalledWith(
         'Please check your E-Mail for further instructions.',
         30,
       );
@@ -274,10 +274,10 @@ describe('Auth', () => {
     it('should return false and show an error snackbar on failure', async () => {
       (firebase.sendPasswordResetEmail as unknown as Mock).mockRejectedValue(new Error('no such user'));
 
-      const result = await service.forgotPassword('missing@example.com');
+      const result = await auth.forgotPassword('missing@example.com');
 
       expect(result).toBe(false);
-      expect(snackBarService.error).toHaveBeenCalledWith('no such user');
+      expect(snackBarClient.error).toHaveBeenCalledWith('no such user');
     });
   });
 
@@ -287,7 +287,7 @@ describe('Auth', () => {
       registrations[0].next(user);
       await flush();
 
-      await service.reloadUser();
+      await auth.reloadUser();
 
       expect(user.reload).toHaveBeenCalled();
     });
@@ -297,15 +297,15 @@ describe('Auth', () => {
       registrations[0].next(user);
       await flush();
 
-      await service.reloadUser();
+      await auth.reloadUser();
 
-      expect(logService.error).toHaveBeenCalledWith('reload failed');
+      expect(log.error).toHaveBeenCalledWith('reload failed');
     });
 
     it('should log an error when there is no user to reload', async () => {
-      await service.reloadUser();
+      await auth.reloadUser();
 
-      expect(logService.error).toHaveBeenCalledWith('Could not reload user, because user is null.');
+      expect(log.error).toHaveBeenCalledWith('Could not reload user, because user is null.');
     });
   });
 
@@ -315,41 +315,41 @@ describe('Auth', () => {
       await flush();
       vi.clearAllMocks();
 
-      await service.authStateReady();
+      await auth.authStateReady();
 
       expect(firebase.onAuthStateChanged).not.toHaveBeenCalled();
     });
 
     it('should wait for the next auth state event when user is still undefined', async () => {
       const user = makeUser();
-      const readyPromise = service.authStateReady();
+      const readyPromise = auth.authStateReady();
 
       expect(registrations).toHaveLength(2);
       registrations[1].next(user);
       await readyPromise;
 
-      expect(service.user()).toBe(user);
+      expect(auth.user()).toBe(user);
     });
 
     it('should log a warning when no auth state event arrives before the timeout', async () => {
       vi.useFakeTimers();
-      const readyPromise = service.authStateReady();
+      const readyPromise = auth.authStateReady();
 
       await vi.advanceTimersByTimeAsync(4000);
       await readyPromise;
 
-      expect(logService.warn).toHaveBeenCalledWith('Auth state timeout');
+      expect(log.warn).toHaveBeenCalledWith('Auth state timeout');
     });
 
     it('should fetch the token from currentUser when token is still undefined', async () => {
       const user = makeUser({ getIdToken: vi.fn(async () => 'late-token') });
       firebaseAuth.currentUser = user;
-      const readyPromise = service.authStateReady();
+      const readyPromise = auth.authStateReady();
 
       registrations[1].next(user);
       await readyPromise;
 
-      expect(service.token()).toBe('late-token');
+      expect(auth.token()).toBe('late-token');
     });
   });
 
@@ -357,17 +357,17 @@ describe('Auth', () => {
     it('should resolve once a user is present after authStateReady', async () => {
       const user = makeUser();
       firebaseAuth.currentUser = user;
-      const waitPromise = service.waitForAuth();
+      const waitPromise = auth.waitForAuth();
 
       registrations[1].next(user);
       await waitPromise;
 
-      expect(service.user()).toBe(user);
+      expect(auth.user()).toBe(user);
     });
 
     it('should keep waiting through a null emission until a real user arrives', async () => {
       firebaseAuth.currentUser = null;
-      const waitPromise = service.waitForAuth();
+      const waitPromise = auth.waitForAuth();
 
       registrations[1].next(null);
 
@@ -386,7 +386,7 @@ describe('Auth', () => {
 
       await waitPromise;
 
-      expect(service.user()).toBe(user);
+      expect(auth.user()).toBe(user);
     });
   });
 
@@ -395,25 +395,25 @@ describe('Auth', () => {
       registrations[0].next(makeUser({ emailVerified: true }));
       await flush();
 
-      expect(await service.isLoggedIn(false)).toBe(true);
+      expect(await auth.isLoggedIn(false)).toBe(true);
     });
 
     it('isLoggedIn should be false for an unverified user', async () => {
       registrations[0].next(makeUser({ emailVerified: false }));
       await flush();
 
-      expect(await service.isLoggedIn(false)).toBe(false);
+      expect(await auth.isLoggedIn(false)).toBe(false);
     });
 
     it('isLoggedInNotVerified should be true for an unverified user', async () => {
       registrations[0].next(makeUser({ emailVerified: false }));
       await flush();
 
-      expect(await service.isLoggedInNotVerified(false)).toBe(true);
+      expect(await auth.isLoggedInNotVerified(false)).toBe(true);
     });
 
     it('isLoggedInNotVerified should be false when there is no user', async () => {
-      await expect(service.isLoggedInNotVerified(false)).resolves.toBe(false);
+      await expect(auth.isLoggedInNotVerified(false)).resolves.toBe(false);
     });
   });
 
@@ -421,7 +421,7 @@ describe('Auth', () => {
     it('should sign out and navigate to the root route', async () => {
       (firebase.signOut as unknown as Mock).mockResolvedValue(undefined);
 
-      await service.signOut();
+      await auth.signOut();
 
       expect(firebase.signOut).toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledWith(['/']);

@@ -4,14 +4,14 @@ import { Log } from './log';
 import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('Log', () => {
-  let service: Log;
+  let log: Log;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Log);
+    log = TestBed.inject(Log);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(log).toBeTruthy();
   });
 });

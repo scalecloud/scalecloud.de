@@ -5,8 +5,8 @@ import { SnackBar } from '../snackbar/snack-bar';
 import { Log } from '../logging/log';
 
 export const serviceErrorInterceptor: HttpInterceptorFn = (req, next) => {
-  const snackBarService = inject(SnackBar);
-  const logService = inject(Log);
+  const snackBar = inject(SnackBar);
+  const log = inject(Log);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -16,7 +16,7 @@ export const serviceErrorInterceptor: HttpInterceptorFn = (req, next) => {
         if (backendError) {
           return `${base} Backend: ${backendError}`;
         }
-        logService.error(`missing backend error message in ${logLabel} error`);
+        log.error(`missing backend error message in ${logLabel} error`);
         return base;
       };
 
@@ -53,7 +53,7 @@ export const serviceErrorInterceptor: HttpInterceptorFn = (req, next) => {
           break;
       }
 
-      snackBarService.error(errorMessage);
+      snackBar.error(errorMessage);
       return throwError(() => new Error(errorMessage));
     })
   );

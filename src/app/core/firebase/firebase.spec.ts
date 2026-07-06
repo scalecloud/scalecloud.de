@@ -16,19 +16,19 @@ import { environment } from 'src/environments/environment';
 // runner once a module like 'firebase/auth' is reached from more than one
 // source file with different mock shapes - it silently falls through to the
 // real SDK instead of the mock (same root cause documented in
-// auth.service.spec.ts). The tell was concrete: the "0 calls" assertion
+// auth.spec.ts). The tell was concrete: the "0 calls" assertion
 // failures showed up alongside real Firebase Analytics network calls in the
 // test log, meaning the actual SDK ran - not a mock the assertions merely
 // lost track of.
 //
-// FirebaseService is the SDK boundary, so its own spec can't sidestep the
-// problem by substituting FirebaseService (that's what Auth's spec
-// does). Instead, FirebaseService now exposes the four SDK factory calls as
+// Firebase is the SDK boundary, so its own spec can't sidestep the
+// problem by substituting Firebase (that's what Auth's spec
+// does). Instead, Firebase now exposes the four SDK factory calls as
 // injection tokens, and this spec overrides those tokens - a plain runtime
 // object swap via Angular DI, unaffected by module-resolution quirks.
 
 describe('Firebase', () => {
-  let service: Firebase;
+  let firebase: Firebase;
 
   const mockApp = { name: '[DEFAULT]', options: {}, automaticDataCollectionEnabled: false };
   const mockAuth = { currentUser: null, app: mockApp };
@@ -56,7 +56,7 @@ describe('Firebase', () => {
     // providedIn: 'root' + field initializers means construction (and the
     // initializeApp/getAuth/getAnalytics/getPerformance calls) happens here,
     // fresh, every test - only guaranteed if the previous module was reset.
-    service = TestBed.inject(Firebase);
+    firebase = TestBed.inject(Firebase);
   });
 
   afterEach(() => {
@@ -67,7 +67,7 @@ describe('Firebase', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(firebase).toBeTruthy();
   });
 
   it('initialises the Firebase app with the environment config', () => {
@@ -77,18 +77,18 @@ describe('Firebase', () => {
   it('exposes the Auth instance', () => {
     // Identity check, not just shape - proves the DI override actually flows
     // through rather than the real SDK coincidentally having the same shape.
-    expect(service.auth).toBe(mockAuth);
-    expect(service.auth).toHaveProperty('currentUser');
+    expect(firebase.auth).toBe(mockAuth);
+    expect(firebase.auth).toHaveProperty('currentUser');
   });
 
   it('exposes the Analytics instance', () => {
-    expect(service.analytics).toBe(mockAnalytics);
-    expect(service.analytics).toHaveProperty('app');
+    expect(firebase.analytics).toBe(mockAnalytics);
+    expect(firebase.analytics).toHaveProperty('app');
   });
 
   it('exposes the Performance instance', () => {
-    expect(service.perf).toBe(mockPerf);
-    expect(service.perf).toHaveProperty('app');
+    expect(firebase.perf).toBe(mockPerf);
+    expect(firebase.perf).toHaveProperty('app');
   });
 
   it('initialises all SDK modules', () => {

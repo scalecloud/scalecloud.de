@@ -50,7 +50,7 @@ function makeAuth() {
   };
 }
 
-function makePermissionService(hasPermission = true) {
+function makePermissionStore(hasPermission = true) {
   return { isUser: vi.fn().mockResolvedValue(hasPermission) };
 }
 
@@ -60,11 +60,11 @@ function makeSubscriptionService(reply = makeReply()) {
   };
 }
 
-function makeLogService() {
+function makeLog() {
   return { error: vi.fn() };
 }
 
-function makeSnackBarService() {
+function makeSnackBar() {
   return { error: vi.fn() };
 }
 
@@ -82,10 +82,10 @@ describe('SubscriptionDetailCard', () => {
   let fixture: ComponentFixture<SubscriptionDetailCard>;
 
   let auth: ReturnType<typeof makeAuth>;
-  let permission: ReturnType<typeof makePermissionService>;
+  let permissionStore: ReturnType<typeof makePermissionStore>;
   let subscriptionDetailCardClient: ReturnType<typeof makeSubscriptionService>;
-  let log: ReturnType<typeof makeLogService>;
-  let snackBar: ReturnType<typeof makeSnackBarService>;
+  let log: ReturnType<typeof makeLog>;
+  let snackBar: ReturnType<typeof makeSnackBar>;
 
   async function setup(options: {
     subscriptionID?: string;
@@ -102,10 +102,10 @@ describe('SubscriptionDetailCard', () => {
 
     auth = makeAuth();
     auth.waitForAuth.mockReturnValue(waitForAuthResult);
-    permission = makePermissionService(hasPermission);
+    permissionStore = makePermissionStore(hasPermission);
     subscriptionDetailCardClient = makeSubscriptionService(reply);
-    log = makeLogService();
-    snackBar = makeSnackBarService();
+    log = makeLog();
+    snackBar = makeSnackBar();
 
     await TestBed.configureTestingModule({
       imports: [SubscriptionDetailCard],
@@ -115,7 +115,7 @@ describe('SubscriptionDetailCard', () => {
         { provide: API_URL, useValue: 'https://api.test' },
         { provide: ActivatedRoute, useValue: makeActivatedRoute(subscriptionID) },
         { provide: Auth, useValue: auth },
-        { provide: PermissionStore, useValue: permission },
+        { provide: PermissionStore, useValue: permissionStore },
         { provide: SubscriptionDetailCardClient, useValue: subscriptionDetailCardClient },
         { provide: Log, useValue: log },
         { provide: SnackBar, useValue: snackBar },
@@ -145,7 +145,7 @@ describe('SubscriptionDetailCard', () => {
     await setup();
     await stabilize(fixture);
 
-    expect(permission.isUser).toHaveBeenCalledWith('sub_123');
+    expect(permissionStore.isUser).toHaveBeenCalledWith('sub_123');
     expect(subscriptionDetailCardClient.getSubscriptionDetail).toHaveBeenCalledWith('sub_123');
     expect(component.serviceStatus).toBe(ServiceStatus.Success);
   });
@@ -160,7 +160,7 @@ describe('SubscriptionDetailCard', () => {
 
   it('sets serviceStatus to Error and shows a snackbar when permission check throws', async () => {
     await setup();
-    permission.isUser.mockRejectedValue(new Error('network'));
+    permissionStore.isUser.mockRejectedValue(new Error('network'));
 
     await stabilize(fixture);
 
@@ -201,7 +201,7 @@ describe('SubscriptionDetailCard', () => {
     await setup({ waitForAuthResult: rejected });
 
     // Two stabilize passes are needed because the async chain has two hops:
-    //   1. permissionService.isUser() resolves  → reloadSubscriptionDetail() is called
+    //   1. permissionStore.isUser() resolves  → reloadSubscriptionDetail() is called
     //   2. waitForAuth() rejects                → .catch() sets ServiceStatus.Error
     // A single whenStable() only drains the first hop.
     await stabilize(fixture);

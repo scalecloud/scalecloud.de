@@ -10,7 +10,7 @@ import { APP_BASE_URL } from '../config/api-token';
 export class ReturnUrl {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly logService = inject(Log);
+  private readonly log = inject(Log);
   private readonly document = inject<Document>(DOCUMENT);
   private readonly location = inject(Location);
   private readonly baseURL = inject(APP_BASE_URL);
@@ -22,7 +22,7 @@ export class ReturnUrl {
       this.router.navigate([url], { queryParams: { returnUrl: retUrl } });
     }
     else {
-      this.logService.error('ReturnUrl not in query params.');
+      this.log.error('ReturnUrl not in query params.');
       this.router.navigateByUrl(url);
     }
   }
@@ -32,11 +32,11 @@ export class ReturnUrl {
     if (returnURL) {
       const returnUrlDecoded = decodeURIComponent(returnURL);
       const urlTree: UrlTree = this.router.parseUrl(returnUrlDecoded || defaultUrl);
-      this.logService.info('Opening returnUrl: ' + urlTree.toString());
+      this.log.info('Opening returnUrl: ' + urlTree.toString());
       this.router.navigateByUrl(urlTree);
     }
     else {
-      this.logService.error('ReturnUrl not in query params. Open defaultUrl: ' + defaultUrl);
+      this.log.error('ReturnUrl not in query params. Open defaultUrl: ' + defaultUrl);
       this.router.navigate([defaultUrl]);
     }
   }
@@ -51,7 +51,7 @@ export class ReturnUrl {
       continueUrl = domain + specifiedRoute + "?" + queryString;
     }
     if (continueUrl === this.baseURL) {
-      this.logService.error('getSpecifiedUrlWithReturnUrl failed: ' + continueUrl);
+      this.log.error('getSpecifiedUrlWithReturnUrl failed: ' + continueUrl);
     }
     return continueUrl;
   }
@@ -69,7 +69,7 @@ export class ReturnUrl {
       }
     }
     if (continueUrl === this.baseURL) {
-      this.logService.error('getReturnUrlDecoded failed: ' + continueUrl);
+      this.log.error('getReturnUrlDecoded failed: ' + continueUrl);
     }
     return continueUrl;
   }

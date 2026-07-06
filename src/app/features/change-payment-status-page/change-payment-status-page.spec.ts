@@ -42,7 +42,7 @@ describe('ChangePaymentStatusPage', () => {
       getPublicKey: vi.fn().mockReturnValue('pk_test_123')
     };
     // The real child components (succeeded/processing/requires-payment-method)
-    // inject ReturnUrlService, whose real constructor needs APP_BASE_URL.
+    // inject ReturnUrl, whose real constructor needs APP_BASE_URL.
     // Mocking the service here avoids having to satisfy that token in tests
     // that don't care about return-URL behavior.
     returnUrlMock = {

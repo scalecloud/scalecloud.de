@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardPage } from './dashboard-page';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
-import { LastCountService } from './subscription-overview/last-count/last-count.service';
+import { SubscriptionOverviewClient } from './subscription-overview/subscription-overview-client';
+import { LastCountStore } from './subscription-overview/last-count/last-count-store';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { of, throwError } from 'rxjs';
-import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { provideRouter } from '@angular/router';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
+import { SubscriptionOverviewModel } from './subscription-overview/subscription-overview-model';
 
-const mockSubscriptions: ISubscriptionOverview[] = [
+const mockSubscriptions: SubscriptionOverviewModel[] = [
   {
     id: '1',
     active: true,
@@ -34,7 +34,7 @@ const authMock = {
   waitForAuth: vi.fn().mockResolvedValue(undefined),
 };
 
-const subscriptionOverviewServiceMock = {
+const subscriptionOverviewClientMock = {
   getSubscriptionsOverview: vi.fn().mockReturnValue(of(mockSubscriptions)),
 };
 
@@ -42,7 +42,7 @@ const logMock = {
   error: vi.fn(),
 };
 
-const lastCountServiceMock = {
+const lastCountStoreMock = {
   getLastSubscriptionOverviewCount: 2,
   set setLastSubscriptionOverviewCount(v: number) {},
 };
@@ -63,9 +63,9 @@ describe('DashboardPage', () => {
       providers: [
         provideRouter([]),
         { provide: Auth, useValue: authMock },
-        { provide: SubscriptionOverviewService, useValue: subscriptionOverviewServiceMock },
+        { provide: SubscriptionOverviewClient, useValue: subscriptionOverviewClientMock },
         { provide: Log, useValue: logMock },
-        { provide: LastCountService, useValue: lastCountServiceMock },
+        { provide: LastCountStore, useValue: lastCountStoreMock },
         { provide: SnackBar, useValue: snackBarMock },
       ],
     }).compileComponents();
@@ -90,11 +90,11 @@ describe('DashboardPage', () => {
   });
 
   it('should produce the correct number of skeleton items', () => {
-    expect(component.skeletonItems().length).toBe(lastCountServiceMock.getLastSubscriptionOverviewCount);
+    expect(component.skeletonItems().length).toBe(lastCountStoreMock.getLastSubscriptionOverviewCount);
   });
 
   it('should set Error status when getSubscriptionsOverview fails', async () => {
-    subscriptionOverviewServiceMock.getSubscriptionsOverview.mockReturnValue(
+    subscriptionOverviewClientMock.getSubscriptionsOverview.mockReturnValue(
       throwError(() => new Error('API error'))
     );
 

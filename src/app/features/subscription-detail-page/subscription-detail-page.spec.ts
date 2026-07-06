@@ -6,7 +6,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionDetailPage } from './subscription-detail-page';
 import { SubscriptionDetailCard } from './subscription-detail-card/subscription-detail-card';
 import { Seats } from './seats/seats';
-import { PaymentMethodOverview } from '../dashboard-page/payment-method-overview-client/payment-method-overview';
+import { PaymentMethodOverview } from '../dashboard-page/payment-method-overview/payment-method-overview';
 import { Invoices } from './invoices/invoices';
 import { BillingAddressOverview } from './billing-address-client/billing-address-overview/billing-address-overview';
 import { BillingPortal } from './customer-portal/billing-portal';
@@ -31,7 +31,7 @@ describe('SubscriptionDetailPage', () => {
     await TestBed.configureTestingModule({
       imports: [SubscriptionDetailPage],
       providers: [
-        // Several root services form a chain: Auth → ReturnUrlService →
+        // Several root services form a chain: Auth → ReturnUrl →
         // ActivatedRoute + APP_BASE_URL. Mocking the whole chain here is more
         // robust than stubbing individual tokens one error at a time.
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({}) } } },

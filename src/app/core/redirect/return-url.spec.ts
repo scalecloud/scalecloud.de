@@ -9,7 +9,7 @@ import { Log } from '../logging/log';
 import { APP_BASE_URL } from '../config/api-token';
 
 describe('ReturnUrl', () => {
-  let service: ReturnUrl;
+  let returnUrl: ReturnUrl;
 
   const BASE_URL = 'https://base.example.com';
 
@@ -18,7 +18,7 @@ describe('ReturnUrl', () => {
     navigateByUrl: vi.fn(),
     parseUrl: vi.fn((url: string) => ({ toString: () => url }) as UrlTree),
   };
-  const logService = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
+  const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
   const location = { path: vi.fn(() => '/current/path') };
   const documentMock = { location: { origin: 'https://example.com' } };
 
@@ -47,25 +47,25 @@ describe('ReturnUrl', () => {
       providers: [
         { provide: Router, useValue: router },
         { provide: ActivatedRoute, useValue: activatedRoute },
-        { provide: Log, useValue: logService },
+        { provide: Log, useValue: log },
         { provide: DOCUMENT, useValue: documentMock },
         { provide: Location, useValue: location },
         { provide: APP_BASE_URL, useValue: BASE_URL },
       ],
     });
 
-    service = TestBed.inject(ReturnUrl);
+    returnUrl = TestBed.inject(ReturnUrl);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(returnUrl).toBeTruthy();
   });
 
   describe('openUrlKeepReturnUrl', () => {
     it('should navigate keeping the decoded returnUrl as a query param', () => {
       queryParamMap.set('returnUrl', encodeURIComponent('/dashboard?x=1'));
 
-      service.openUrlKeepReturnUrl('/next');
+      returnUrl.openUrlKeepReturnUrl('/next');
 
       expect(router.navigate).toHaveBeenCalledWith(['/next'], {
         queryParams: { returnUrl: '/dashboard?x=1' },
@@ -74,9 +74,9 @@ describe('ReturnUrl', () => {
     });
 
     it('should log an error and navigateByUrl when returnUrl is missing', () => {
-      service.openUrlKeepReturnUrl('/next');
+      returnUrl.openUrlKeepReturnUrl('/next');
 
-      expect(logService.error).toHaveBeenCalledWith('ReturnUrl not in query params.');
+      expect(log.error).toHaveBeenCalledWith('ReturnUrl not in query params.');
       expect(router.navigateByUrl).toHaveBeenCalledWith('/next');
     });
   });
@@ -85,17 +85,17 @@ describe('ReturnUrl', () => {
     it('should navigate to the parsed decoded returnUrl and log info', () => {
       queryParamMap.set('returnUrl', encodeURIComponent('/settings'));
 
-      service.openReturnURL('/default');
+      returnUrl.openReturnURL('/default');
 
       expect(router.parseUrl).toHaveBeenCalledWith('/settings');
-      expect(logService.info).toHaveBeenCalledWith('Opening returnUrl: /settings');
+      expect(log.info).toHaveBeenCalledWith('Opening returnUrl: /settings');
       expect(router.navigateByUrl).toHaveBeenCalled();
     });
 
     it('should log an error and navigate to defaultUrl when returnUrl is missing', () => {
-      service.openReturnURL('/default');
+      returnUrl.openReturnURL('/default');
 
-      expect(logService.error).toHaveBeenCalledWith(
+      expect(log.error).toHaveBeenCalledWith(
         'ReturnUrl not in query params. Open defaultUrl: /default',
       );
       expect(router.navigate).toHaveBeenCalledWith(['/default']);
@@ -106,17 +106,17 @@ describe('ReturnUrl', () => {
     it('should build a url from domain + route + query params', () => {
       queryParams = { foo: 'bar' };
 
-      const result = service.getSpecifiedUrlWithReturnUrl('/invite');
+      const result = returnUrl.getSpecifiedUrlWithReturnUrl('/invite');
 
       expect(result).toBe('https://example.com/invite?foo=bar');
-      expect(logService.error).not.toHaveBeenCalled();
+      expect(log.error).not.toHaveBeenCalled();
     });
 
     it('should fall back to baseURL and log an error when the route does not start with /', () => {
-      const result = service.getSpecifiedUrlWithReturnUrl('invite');
+      const result = returnUrl.getSpecifiedUrlWithReturnUrl('invite');
 
       expect(result).toBe(BASE_URL);
-      expect(logService.error).toHaveBeenCalledWith(
+      expect(log.error).toHaveBeenCalledWith(
         'getSpecifiedUrlWithReturnUrl failed: ' + BASE_URL,
       );
     });
@@ -126,23 +126,23 @@ describe('ReturnUrl', () => {
     it('should return domain + decoded path when returnUrl starts with /', () => {
       queryParamMap.set('returnUrl', encodeURIComponent('/profile'));
 
-      const result = service.getReturnUrlDecoded();
+      const result = returnUrl.getReturnUrlDecoded();
 
       expect(result).toBe('https://example.com/profile');
-      expect(logService.error).not.toHaveBeenCalled();
+      expect(log.error).not.toHaveBeenCalled();
     });
 
     it('should fall back to baseURL and log an error when returnUrl is missing', () => {
-      const result = service.getReturnUrlDecoded();
+      const result = returnUrl.getReturnUrlDecoded();
 
       expect(result).toBe(BASE_URL);
-      expect(logService.error).toHaveBeenCalledWith('getReturnUrlDecoded failed: ' + BASE_URL);
+      expect(log.error).toHaveBeenCalledWith('getReturnUrlDecoded failed: ' + BASE_URL);
     });
 
     it('should fall back to baseURL when the decoded returnUrl does not start with /', () => {
       queryParamMap.set('returnUrl', encodeURIComponent('https://evil.example.com/x'));
 
-      const result = service.getReturnUrlDecoded();
+      const result = returnUrl.getReturnUrlDecoded();
 
       expect(result).toBe(BASE_URL);
     });
@@ -152,7 +152,7 @@ describe('ReturnUrl', () => {
     it('should navigate with the current location path as the returnUrl', () => {
       location.path.mockReturnValue('/current/path?x=1');
 
-      service.openUrlAddReturnUrl('/login');
+      returnUrl.openUrlAddReturnUrl('/login');
 
       expect(router.navigate).toHaveBeenCalledWith(['/login'], {
         queryParams: { returnUrl: '/current/path?x=1' },

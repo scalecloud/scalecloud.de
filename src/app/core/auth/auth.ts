@@ -11,9 +11,9 @@ import { Firebase } from '../firebase/firebase';
 @Injectable({ providedIn: 'root' })
 export class Auth {
   private readonly router = inject(Router);
-  private readonly snackBarService = inject(SnackBar);
-  private readonly logService = inject(Log);
-  private readonly returnUrlService = inject(ReturnUrl);
+  private readonly snackBar = inject(SnackBar);
+  private readonly log = inject(Log);
+  private readonly returnUrl = inject(ReturnUrl);
   private readonly firebase = inject(Firebase);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -30,7 +30,7 @@ export class Auth {
   constructor() {
     const unsubscribe = this.firebase.onAuthStateChanged(
       (user) => this.handleAuthStateChanged(user),
-      (error) => this.logService.error('Auth state listener failed: ' + error.message),
+      (error) => this.log.error('Auth state listener failed: ' + error.message),
     );
     this.destroyRef.onDestroy(unsubscribe);
   }
@@ -46,7 +46,7 @@ export class Auth {
     try {
       this.tokenSignal.set(await user.getIdToken());
     } catch (error) {
-      this.logService.error('Could not refresh ID token: ' + (error as Error).message);
+      this.log.error('Could not refresh ID token: ' + (error as Error).message);
       this.tokenSignal.set(null);
     }
   }
@@ -63,9 +63,9 @@ export class Auth {
     try {
       const result = await this.firebase.signInWithEmailAndPassword(email, password);
       this.userSignal.set(result.user);
-      this.returnUrlService.openReturnURL('/dashboard');
+      this.returnUrl.openReturnURL('/dashboard');
     } catch (error) {
-      this.snackBarService.error((error as Error).message);
+      this.snackBar.error((error as Error).message);
     }
   }
 
@@ -75,35 +75,35 @@ export class Auth {
       this.userSignal.set(result.user);
       await this.sendVerificationMail();
     } catch (error) {
-      this.snackBarService.error((error as Error).message);
+      this.snackBar.error((error as Error).message);
     }
   }
 
   async sendVerificationMail(): Promise<void> {
     const user = this.firebase.auth.currentUser;
     if (!user) {
-      this.snackBarService.error('No user logged in.');
+      this.snackBar.error('No user logged in.');
       return;
     }
 
-    const actionCodeSettings = { url: this.returnUrlService.getReturnUrlDecoded() };
+    const actionCodeSettings = { url: this.returnUrl.getReturnUrlDecoded() };
 
     try {
       await this.firebase.sendEmailVerification(user, actionCodeSettings);
-      this.snackBarService.infoDuration('Please check your E-Mail for verification.', 30);
-      this.returnUrlService.openUrlKeepReturnUrl('/verify-email-address');
+      this.snackBar.infoDuration('Please check your E-Mail for verification.', 30);
+      this.returnUrl.openUrlKeepReturnUrl('/verify-email-address');
     } catch (error) {
-      this.snackBarService.error((error as Error).message);
+      this.snackBar.error((error as Error).message);
     }
   }
 
   async forgotPassword(passwordResetEmail: string): Promise<boolean> {
     try {
       await this.firebase.sendPasswordResetEmail(passwordResetEmail);
-      this.snackBarService.infoDuration('Please check your E-Mail for further instructions.', 30);
+      this.snackBar.infoDuration('Please check your E-Mail for further instructions.', 30);
       return true;
     } catch (error) {
-      this.snackBarService.error((error as Error).message);
+      this.snackBar.error((error as Error).message);
       return false;
     }
   }
@@ -111,13 +111,13 @@ export class Auth {
   async reloadUser(): Promise<void> {
     const user = this.user();
     if (!user) {
-      this.logService.error('Could not reload user, because user is null.');
+      this.log.error('Could not reload user, because user is null.');
       return;
     }
     try {
       await user.reload();
     } catch (error) {
-      this.logService.error((error as Error).message);
+      this.log.error((error as Error).message);
     }
   }
 
@@ -126,7 +126,7 @@ export class Auth {
 
     if (this.user() === undefined) {
       await this.waitForNextAuthStateChange(timeoutDuration).catch((error) =>
-        this.logService.warn((error as Error).message),
+        this.log.warn((error as Error).message),
       );
     }
 

@@ -7,7 +7,7 @@ import { CheckoutSubscriptionClient } from './checkout-payment/checkout-subscrip
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
-import { PaymentMethodOverview } from '../../dashboard-page/payment-method-overview-client/payment-method-overview';
+import { PaymentMethodOverview } from '../../dashboard-page/payment-method-overview/payment-method-overview';
 
 @Component({
     selector: 'app-checkout-page',

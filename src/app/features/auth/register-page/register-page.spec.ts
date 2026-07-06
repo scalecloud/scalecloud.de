@@ -255,7 +255,7 @@ describe('RegisterPage', () => {
 
   // ─── Navigation ──────────────────────────────────────────────────────────────
 
-  it('should call ReturnUrlService.openUrlKeepReturnUrl with /login when Login is clicked', () => {
+  it('should call ReturnUrl.openUrlKeepReturnUrl with /login when Login is clicked', () => {
     component.openUrlKeepReturnUrl();
     expect(returnUrl.openUrlKeepReturnUrl).toHaveBeenCalledWith('/login');
   });

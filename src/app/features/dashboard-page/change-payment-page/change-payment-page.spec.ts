@@ -37,7 +37,7 @@ const makeChangePaymentService = () => ({
   ),
 });
 
-const makeLogService = () => ({
+const makeLog = () => ({
   info: vi.fn(),
   error: vi.fn(),
 });
@@ -56,8 +56,8 @@ describe('ChangePaymentPage', () => {
 
   let authMock: ReturnType<typeof makeAuth>;
   let changePaymentService: ReturnType<typeof makeChangePaymentService>;
-  let logService: ReturnType<typeof makeLogService>;
-  let returnUrlService: ReturnType<typeof makeReturnUrl>;
+  let log: ReturnType<typeof makeLog>;
+  let returnUrl: ReturnType<typeof makeReturnUrl>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -65,7 +65,7 @@ describe('ChangePaymentPage', () => {
       providers: [
         { provide: Auth,          useValue: makeAuth() },
         { provide: ChangePaymentClient, useValue: makeChangePaymentService() },
-        { provide: Log,           useValue: makeLogService() },
+        { provide: Log,           useValue: makeLog() },
         { provide: ReturnUrl,     useValue: makeReturnUrl() },
       ],
     })
@@ -77,8 +77,8 @@ describe('ChangePaymentPage', () => {
 
     authMock          = TestBed.inject(Auth)          as unknown as ReturnType<typeof makeAuth>;
     changePaymentService = TestBed.inject(ChangePaymentClient) as unknown as ReturnType<typeof makeChangePaymentService>;
-    logService           = TestBed.inject(Log)           as unknown as ReturnType<typeof makeLogService>;
-    returnUrlService     = TestBed.inject(ReturnUrl)     as unknown as ReturnType<typeof makeReturnUrl>;
+    log           = TestBed.inject(Log)           as unknown as ReturnType<typeof makeLog>;
+    returnUrl     = TestBed.inject(ReturnUrl)     as unknown as ReturnType<typeof makeReturnUrl>;
 
     fixture   = TestBed.createComponent(ChangePaymentPage);
     component = fixture.componentInstance;
@@ -151,7 +151,7 @@ describe('ChangePaymentPage', () => {
     await expect(component.getChangePaymentSetupIntent()).resolves.toBeUndefined();
     // No init call possible without a Stripe element, and no error logged either
     // — this path is a normal race (view not yet rendered), not a failure.
-    expect(logService.error).not.toHaveBeenCalled();
+    expect(log.error).not.toHaveBeenCalled();
   });
 
   it('logs an error when waitForAuth rejects', async () => {
@@ -159,7 +159,7 @@ describe('ChangePaymentPage', () => {
 
     await component.getChangePaymentSetupIntent();
 
-    expect(logService.error).toHaveBeenCalledWith(
+    expect(log.error).toHaveBeenCalledWith(
       expect.stringContaining('waitForAuth failed'),
     );
   });
@@ -186,7 +186,7 @@ describe('ChangePaymentPage', () => {
   it('logs the return URL before submitting', () => {
     component.changePaymentMethod();
 
-    expect(logService.info).toHaveBeenCalledWith(
+    expect(log.info).toHaveBeenCalledWith(
       expect.stringContaining('/dashboard/change-payment/status'),
     );
   });
@@ -196,7 +196,7 @@ describe('ChangePaymentPage', () => {
 
     component.changePaymentMethod();
 
-    expect(logService.error).toHaveBeenCalledWith(
+    expect(log.error).toHaveBeenCalledWith(
       'PaymentElementComponent is undefined.',
     );
   });
@@ -214,7 +214,7 @@ describe('ChangePaymentPage', () => {
   it('navigates to /dashboard on cancel', () => {
     component.cancel();
 
-    expect(returnUrlService.openReturnURL).toHaveBeenCalledWith('/dashboard');
+    expect(returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
   // ── isSuccess ──────────────────────────────────────────────────────────────

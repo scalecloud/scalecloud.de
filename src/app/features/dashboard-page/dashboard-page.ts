@@ -1,14 +1,14 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
-import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
-import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
+import { SubscriptionOverviewModel } from './subscription-overview/subscription-overview-model';
+import { SubscriptionOverviewClient } from './subscription-overview/subscription-overview-client';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { LastCountService } from './subscription-overview/last-count/last-count.service';
+import { LastCountStore } from './subscription-overview/last-count/last-count-store';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
-import { SubscriptionOverviewComponent } from './subscription-overview/subscription-overview.component';
+import { SubscriptionOverview } from './subscription-overview/subscription-overview';
 import { LoadingFailed } from '../../shared/loading-failed/loading-failed';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
@@ -28,21 +28,21 @@ import { Log } from 'src/app/core/logging/log';
     MatCardContent,
     MatList,
     MatListItem,
-    SubscriptionOverviewComponent,
+    SubscriptionOverview,
     LoadingFailed,
   ],
 })
 export class DashboardPage implements OnInit {
   private readonly auth = inject(Auth);
-  private readonly subscriptionOverviewService = inject(SubscriptionOverviewService);
+  private readonly subscriptionOverviewStore = inject(SubscriptionOverviewClient);
   private readonly log = inject(Log);
-  private readonly lastCountService = inject(LastCountService);
+  private readonly lastCountStore = inject(LastCountStore);
 
   readonly ServiceStatus = ServiceStatus;
-  readonly reply = signal<ISubscriptionOverview[]>([]);
+  readonly reply = signal<SubscriptionOverviewModel[]>([]);
   readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Initializing);
   readonly skeletonItems = computed(() =>
-    Array.from({ length: this.lastCountService.getLastSubscriptionOverviewCount })
+    Array.from({ length: this.lastCountStore.getLastSubscriptionOverviewCount })
   );
 
   ngOnInit(): void {
@@ -55,10 +55,10 @@ export class DashboardPage implements OnInit {
     this.auth
       .waitForAuth()
       .then(() => {
-        this.subscriptionOverviewService.getSubscriptionsOverview().subscribe({
+        this.subscriptionOverviewStore.getSubscriptionsOverview().subscribe({
           next: (subscriptionsOverview) => {
             this.reply.set(subscriptionsOverview);
-            this.lastCountService.setLastSubscriptionOverviewCount = subscriptionsOverview.length;
+            this.lastCountStore.setLastSubscriptionOverviewCount = subscriptionsOverview.length;
             this.serviceStatus.set(ServiceStatus.Success);
           },
           error: (error) => {

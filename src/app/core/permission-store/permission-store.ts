@@ -18,7 +18,7 @@ interface CacheEntry {
 export class PermissionStore {
   private readonly http = inject(HttpClient);
   private readonly auth = inject(Auth);
-  private readonly logService = inject(Log);
+  private readonly log = inject(Log);
 
   private readonly apiUrl = inject(API_URL);
   private readonly urlPermission = `${this.apiUrl}/dashboard/subscription/permission`;
@@ -59,7 +59,7 @@ export class PermissionStore {
       this.cache.set(subscriptionID, { data: reply, timestamp: now });
       return reply?.mySeat?.roles?.includes(role);
     } catch (error) {
-      this.logService.error("hasPermission failed: " + error.message);
+      this.log.error("hasPermission failed: " + error.message);
       return false;
     } finally {
       this.loadingPermissions.set(false);

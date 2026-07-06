@@ -212,7 +212,7 @@ describe('PaymentOverviewComponent', () => {
     expect(logMock.error).toHaveBeenCalledWith(expect.stringContaining('waitForAuth failed'));
   });
 
-  it('should call returnUrlService when openUrlChangePaymentMethod is called', async () => {
+  it('should call returnUrl when openUrlChangePaymentMethod is called', async () => {
     const { component } = await createComponent();
     component.openUrlChangePaymentMethod();
     expect(returnUrlMock.openUrlAddReturnUrl).toHaveBeenCalledWith('/dashboard/change-payment');
