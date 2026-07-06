@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { LastCountService } from './subscription-overview/last-count/last-count.service';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -9,7 +9,7 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { SubscriptionOverviewComponent } from './subscription-overview/subscription-overview.component';
-import { LoadingFailedComponent } from '../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../shared/loading-failed/loading-failed';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 
@@ -29,7 +29,7 @@ import { Log } from 'src/app/core/logging/log';
     MatList,
     MatListItem,
     SubscriptionOverviewComponent,
-    LoadingFailedComponent,
+    LoadingFailed,
   ],
 })
 export class DashboardPage implements OnInit {

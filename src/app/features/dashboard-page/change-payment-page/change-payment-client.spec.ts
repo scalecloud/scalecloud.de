@@ -6,14 +6,14 @@ import {
 import { provideHttpClient } from '@angular/common/http';
 import { vi, describe, beforeEach, afterEach, expect, it } from 'vitest';
 
-import { ChangePaymentService } from './change-payment.service';
-import { ChangePaymentReply } from './change-payment';
+import { ChangePaymentClient } from './change-payment-client';
+import { ChangePaymentReply } from './change-payment-model';
 import { environment } from 'src/environments/environment';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
-describe(ChangePaymentService.name, () => {
-  let service: ChangePaymentService;
+describe(ChangePaymentClient.name, () => {
+  let service: ChangePaymentClient;
   let httpMock: HttpTestingController;
 
   const httpOptions = {
@@ -25,7 +25,7 @@ describe(ChangePaymentService.name, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ChangePaymentService,
+        ChangePaymentClient,
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -41,7 +41,7 @@ describe(ChangePaymentService.name, () => {
       ],
     });
 
-    service = TestBed.inject(ChangePaymentService);
+    service = TestBed.inject(ChangePaymentClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 

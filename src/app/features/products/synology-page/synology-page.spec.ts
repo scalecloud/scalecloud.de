@@ -4,7 +4,7 @@ import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SynologyPage } from './synology-page';
 import { ProductClient } from '../product-client/product-client';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { SynologyProduct } from './synology-product';
 
 describe('SynologyPage', () => {

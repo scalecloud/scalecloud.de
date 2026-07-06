@@ -1,10 +1,9 @@
 import { Component, ChangeDetectionStrategy, inject, OnInit, viewChild, signal, WritableSignal } from '@angular/core';
-import { ChangePaymentReply } from './change-payment';
-import { ChangePaymentService } from './change-payment.service';
-import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent';
-import { StripePaymentElementComponent } from 'src/app/shared/stripe-payment-element/stripe-payment-element.component';
-import { ServiceStatus } from 'src/app/shared/service-status';
-import { StripePaymentElementComponent as StripePaymentElementComponent_1 } from '../../../shared/stripe-payment-element/stripe-payment-element.component';
+import { ChangePaymentReply } from './change-payment-model';
+import { ChangePaymentClient } from './change-payment-client';
+import { InitStripePayment, StripeIntent, SubmitStripePayment } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent-model';
+import { ServiceStatus } from 'src/app/shared/client-status';
+import { StripePaymentElement, StripePaymentElement as StripePaymentElementComponent_1 } from '../../../shared/stripe-payment-element/stripe-payment-element';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { afterNextRender } from '@angular/core';
@@ -22,13 +21,13 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
 export class ChangePaymentPage implements OnInit {
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
-  private readonly changePaymentService = inject(ChangePaymentService);
+  private readonly changePaymentService = inject(ChangePaymentClient);
   private readonly returnUrl = inject(ReturnUrl);
 
-  private readonly _stripePaymentElementComponentRef = viewChild(StripePaymentElementComponent);
+  private readonly _stripePaymentElementComponentRef = viewChild(StripePaymentElement);
 
   // Writable signal so tests can set it to undefined to exercise guard branches.
-  stripePaymentElementComponent: WritableSignal<StripePaymentElementComponent | undefined> =
+  stripePaymentElementComponent: WritableSignal<StripePaymentElement | undefined> =
     signal(undefined);
 
   subscriptionSetupIntentReply: ChangePaymentReply | undefined;

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ListSeatReply, ListSeatRequest, Seat } from './seats-model';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { ActivatedRoute } from '@angular/router';
 import {
   MatCard,
@@ -24,7 +24,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
-import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
@@ -52,7 +52,7 @@ import { SeatsClient } from './seats-client';
     MatListItem,
     MatTooltip,
     MatPaginator,
-    LoadingFailedComponent,
+    LoadingFailed,
   ],
 })
 export class Seats implements OnInit {

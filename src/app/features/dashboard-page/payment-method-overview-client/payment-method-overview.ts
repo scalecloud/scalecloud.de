@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
-import { PaymentMethodOverviewReply } from './payment-method-overview';
-import { PaymentMethodOverviewService } from './payment-method-overview.service';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { PaymentMethodOverviewReply } from './payment-method-overview-model';
+import { PaymentMethodOverviewClient } from './payment-method-overview-client';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDivider } from '@angular/material/divider';
@@ -9,15 +9,15 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
 @Component({
   selector: 'app-payment-method-overview',
-  templateUrl: './payment-method-overview.component.html',
-  styleUrl: './payment-method-overview.component.scss',
+  templateUrl: './payment-method-overview.html',
+  styleUrl: './payment-method-overview.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
@@ -31,11 +31,11 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
     MatIcon,
     MatCardActions,
     MatButton,
-    LoadingFailedComponent,
+    LoadingFailed,
   ],
 })
-export class PaymentMethodOverviewComponent implements OnInit {
-  private readonly paymentMethodService = inject(PaymentMethodOverviewService);
+export class PaymentMethodOverview implements OnInit {
+  private readonly paymentMethodService = inject(PaymentMethodOverviewClient);
   private readonly auth = inject(Auth);
   private readonly log = inject(Log);
   private readonly returnUrl = inject(ReturnUrl);

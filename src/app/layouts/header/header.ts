@@ -9,12 +9,12 @@ import { Auth } from 'src/app/core/auth/auth';
 
 @Component({
     selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss'],
+    templateUrl: './header.html',
+    styleUrls: ['./header.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatToolbar, MatToolbarRow, MatIconButton, MatIcon, MatButton, RouterLink, MatProgressSpinner, MatMenuTrigger, MatMenu, MatMenuItem]
 })
-export class HeaderComponent {
+export class Header {
   auth = inject(Auth);
 
   readonly toggleSideBarForMe = output<void>();

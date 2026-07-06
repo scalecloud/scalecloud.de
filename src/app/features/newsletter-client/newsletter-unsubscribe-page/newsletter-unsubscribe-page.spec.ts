@@ -3,7 +3,7 @@ import { provideRouter, ActivatedRoute, convertToParamMap } from '@angular/route
 import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { NewsletterUnsubscribePage } from './newsletter-unsubscribe-page';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { NewsletterUnsubscribeReply, NewsletterUnsubscribeReplyStatus } from '../newsletter-model';
 import { Log } from 'src/app/core/logging/log';
 import { NewsletterClient } from '../newsletter-client';

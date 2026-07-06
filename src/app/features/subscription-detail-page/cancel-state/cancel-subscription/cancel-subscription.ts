@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { CancelSubscriptionClient } from './cancel-subscription-client';
 import { ActivatedRoute } from '@angular/router';
-import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
+import { SubscriptionCancelReply, SubscriptionCancelRequest } from './subscription-cancel-request-model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmCancelSubscription } from './confirm-cancel-subscription/confirm-cancel-subscription';
 import { MatButton } from '@angular/material/button';
@@ -44,10 +44,10 @@ export class CancelSubscription {
       return;
     }
 
-    const request: ISubscriptionCancelRequest = { subscriptionID };
+    const request: SubscriptionCancelRequest = { subscriptionID };
 
     this.cancelSubscriptionService.cancelSubscription(request).subscribe({
-      next: (reply: ISubscriptionCancelReply) => {
+      next: (reply: SubscriptionCancelReply) => {
         if (!reply) {
           this.log.error('CancelSubscriptionComponent.cancelSubscription: reply is null');
           return;

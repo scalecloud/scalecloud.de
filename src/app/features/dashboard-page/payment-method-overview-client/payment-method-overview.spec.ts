@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, afterEach, it, expect, vi } from 'vitest';
-import { PaymentMethodOverviewComponent } from './payment-method-overview.component';
-import { PaymentMethodOverviewReply } from './payment-method-overview';
-import { PaymentMethodOverviewService } from './payment-method-overview.service';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { PaymentMethodOverview } from './payment-method-overview';
+import { PaymentMethodOverviewReply } from './payment-method-overview-model';
+import { PaymentMethodOverviewClient } from './payment-method-overview-client';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { of, throwError } from 'rxjs';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
@@ -53,7 +53,7 @@ async function createComponent(
     authError?: boolean;
     authPending?: boolean;
   } = {}
-): Promise<{ fixture: ComponentFixture<PaymentMethodOverviewComponent>; component: PaymentMethodOverviewComponent }> {
+): Promise<{ fixture: ComponentFixture<PaymentMethodOverview>; component: PaymentMethodOverview }> {
   const { reply = mockReply, serviceError = false, authError = false, authPending = false } = options;
 
   vi.resetAllMocks();
@@ -72,16 +72,16 @@ async function createComponent(
 
   TestBed.resetTestingModule();
   await TestBed.configureTestingModule({
-    imports: [PaymentMethodOverviewComponent],
+    imports: [PaymentMethodOverview],
     providers: [
-      { provide: PaymentMethodOverviewService, useValue: paymentMethodServiceMock },
+      { provide: PaymentMethodOverviewClient, useValue: paymentMethodServiceMock },
       { provide: Auth, useValue: authMock },
       { provide: Log, useValue: logMock },
       { provide: ReturnUrl, useValue: returnUrlMock },
     ],
   }).compileComponents();
 
-  const fixture = TestBed.createComponent(PaymentMethodOverviewComponent);
+  const fixture = TestBed.createComponent(PaymentMethodOverview);
   const component = fixture.componentInstance;
   fixture.detectChanges();
 

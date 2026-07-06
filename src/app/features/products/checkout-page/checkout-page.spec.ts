@@ -9,7 +9,7 @@ import { CheckoutSubscriptionClient } from './checkout-payment/checkout-subscrip
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
-import { PaymentMethodOverviewComponent } from '../../dashboard-page/payment-method-overview/payment-method-overview.component';
+import { PaymentMethodOverview } from '../../dashboard-page/payment-method-overview-client/payment-method-overview';
 
 // ─── Stubs for the child components CheckoutComponent renders ─────────────────
 // CheckoutDetailsComponent and PaymentOverviewComponent each pull in their own
@@ -45,7 +45,7 @@ describe('CheckoutPage', () => {
       ],
     })
       .overrideComponent(CheckoutPage, {
-        remove: { imports: [PaymentMethodOverviewComponent, CheckoutDetails] },
+        remove: { imports: [PaymentMethodOverview, CheckoutDetails] },
         add: { imports: [MockPaymentMethodOverviewComponent, MockCheckoutDetailsComponent] },
       })
       .compileComponents();

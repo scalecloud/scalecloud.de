@@ -4,7 +4,7 @@ import { of, throwError, Subject } from 'rxjs';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { Invoices } from './invoices';
 import { InvoiceStatus, ListInvoicesReply } from './invoices-model';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';

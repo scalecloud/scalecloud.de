@@ -1,13 +1,13 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent-model';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { MatCard, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatList, MatListItem } from '@angular/material/list';
 
 import { FormsModule } from '@angular/forms';
-import { LoadingFailedComponent } from '../loading-failed/loading-failed.component';
+import { LoadingFailed } from '../loading-failed/loading-failed';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { StripeKey } from 'src/app/core/stripe/stripe-key';
@@ -16,12 +16,12 @@ declare const Stripe: any;
 
 @Component({
     selector: 'app-stripe-payment-element',
-    templateUrl: './stripe-payment-element.component.html',
-    styleUrls: ['./stripe-payment-element.component.scss'],
+    templateUrl: './stripe-payment-element.html',
+    styleUrls: ['./stripe-payment-element.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardSubtitle, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, FormsModule, LoadingFailedComponent]
+    imports: [MatCard, MatProgressBar, MatCardSubtitle, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, FormsModule, LoadingFailed]
 })
-export class StripePaymentElementComponent {
+export class StripePaymentElement {
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
   private readonly stripeKey = inject(StripeKey);

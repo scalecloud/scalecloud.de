@@ -6,7 +6,7 @@ import { BillingAddressClient } from '../billing-address-client';
 import { CountryLookup } from '../country-lookup/country-lookup';
 import { LanguageStore } from '../country-lookup/language-store';
 import { ActivatedRoute } from '@angular/router';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { of, throwError } from 'rxjs';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';

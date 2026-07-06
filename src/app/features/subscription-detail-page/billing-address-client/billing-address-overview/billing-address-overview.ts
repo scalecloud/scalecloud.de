@@ -1,6 +1,6 @@
 import { Component, signal, computed, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { BillingAddressReply, BillingAddressRequest } from '../billing-address-model';
 import { BillingAddressClient } from '../billing-address-client';
 import { CountryLookup } from '../country-lookup/country-lookup';
@@ -13,7 +13,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../../../shared/loading-failed/loading-failed';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
@@ -38,7 +38,7 @@ import { PermissionStore } from 'src/app/core/permission-store/permission-store'
     MatTooltip,
     MatCardActions,
     MatButton,
-    LoadingFailedComponent,
+    LoadingFailed,
   ],
 })
 export class BillingAddressOverview implements OnInit {

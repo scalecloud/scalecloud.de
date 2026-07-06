@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { HomePage } from './home-page';
-import { GlobeComponent } from './globe/globe.component';
+import { Globe } from './globe/globe';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { NewsletterSubscribe } from '../newsletter-client/newsletter-subscribe/newsletter-subscribe';
 
@@ -37,7 +37,7 @@ describe('HomePage', () => {
       ],
     })
       .overrideComponent(HomePage, {
-        remove: { imports: [GlobeComponent, NewsletterSubscribe] },
+        remove: { imports: [Globe, NewsletterSubscribe] },
         add: { imports: [GlobeStubComponent, NewsletterSubscribeStubComponent] },
       })
       .compileComponents();

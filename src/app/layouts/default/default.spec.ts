@@ -3,18 +3,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, signal, WritableSignal } from '@angular/core';
 
 import { Default } from './default';
-import { SidebarComponent } from 'src/app/layouts/sidebar/sidebar.component';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatListModule, MatNavList } from '@angular/material/list';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-import { FooterComponent } from '../footer/footer.component';
-import { HeaderComponent } from '../header/header.component';
+import { Footer } from '../footer/footer';
+import { Header } from '../header/header';
 import { Auth } from 'src/app/core/auth/auth';
 import { APP_BASE_URL, API_URL } from 'src/app/core/config/api-token';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
+import { Sidebar } from '../sidebar/sidebar';
 
 // DefaultComponent imports HeaderComponent, which injects Auth.
 // Without a mock here, Angular's root injector constructs the real
@@ -42,12 +42,12 @@ describe('Default', () => {
         MatListModule,
         MatMenuModule,
         Default,
-        SidebarComponent,
+        Sidebar,
         MatDivider,
         MatIcon,
         MatNavList,
-        FooterComponent,
-        HeaderComponent,
+        Footer,
+        Header,
         MatMenu,
         MatToolbar,
         MatToolbarRow,

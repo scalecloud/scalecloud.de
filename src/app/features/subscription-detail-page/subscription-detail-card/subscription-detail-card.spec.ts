@@ -5,7 +5,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { SubscriptionDetailCard } from './subscription-detail-card';
 import { CancelState } from '../cancel-state/cancel-state';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { SubscriptionDetailReply } from './subscription-detail-card-model';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';

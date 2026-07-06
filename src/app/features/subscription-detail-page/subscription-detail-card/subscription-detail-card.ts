@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { SubscriptionDetailReply } from './subscription-detail-card-model';
 import { ActivatedRoute } from '@angular/router';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
@@ -10,7 +10,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { CancelState } from '../cancel-state/cancel-state';
-import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
@@ -23,7 +23,7 @@ import { SubscriptionDetailCardClient } from './subscription-detail-card-client'
     templateUrl: './subscription-detail-card.html',
     styleUrls: ['./subscription-detail-card.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatTooltip, MatIcon, CancelState, LoadingFailedComponent, CurrencyPipe, DatePipe]
+    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatTooltip, MatIcon, CancelState, LoadingFailed, CurrencyPipe, DatePipe]
 })
 export class SubscriptionDetailCard implements OnInit {
   private readonly auth = inject(Auth);

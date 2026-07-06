@@ -1,10 +1,10 @@
 import { Component, Signal, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDrawerContainer, MatDrawer, MatDrawerContent } from '@angular/material/sidenav';
-import { SidebarComponent } from '../sidebar/sidebar.component';
+import { Sidebar } from '../sidebar/sidebar';
 import { RouterOutlet } from '@angular/router';
-import { FooterComponent } from '../footer/footer.component';
-import { HeaderComponent } from '../header/header.component';
+import { Footer } from '../footer/footer';
+import { Header } from '../header/header';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
 
 @Component({
@@ -12,7 +12,7 @@ import { PermissionStore } from 'src/app/core/permission-store/permission-store'
     templateUrl: './default.html',
     styleUrls: ['./default.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [HeaderComponent, MatProgressBar, MatDrawerContainer, MatDrawer, SidebarComponent, MatDrawerContent, RouterOutlet, FooterComponent]
+    imports: [Header, MatProgressBar, MatDrawerContainer, MatDrawer, Sidebar, MatDrawerContent, RouterOutlet, Footer]
 })
 export class Default {
   private readonly permissionStore = inject(PermissionStore);

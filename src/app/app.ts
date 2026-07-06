@@ -3,11 +3,11 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    templateUrl: './app.html',
+    styleUrls: ['./app.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [RouterOutlet]
 })
-export class AppComponent {
+export class App {
   title = 'scalecloud';
 }

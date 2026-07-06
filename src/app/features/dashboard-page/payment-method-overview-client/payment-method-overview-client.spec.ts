@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 import { HttpHeaders, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { PaymentMethodOverviewService } from './payment-method-overview.service';
-import { PaymentMethodOverviewReply } from './payment-method-overview';
+import { PaymentMethodOverviewClient } from './payment-method-overview-client';
+import { PaymentMethodOverviewReply } from './payment-method-overview-model';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
@@ -21,8 +21,8 @@ const mockReply: PaymentMethodOverviewReply = {
   paypal: { email: 'test@example.com' },
 };
 
-describe('PaymentMethodOverviewService', () => {
-  let service: PaymentMethodOverviewService;
+describe('PaymentMethodOverviewClient', () => {
+  let service: PaymentMethodOverviewClient;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -37,7 +37,7 @@ describe('PaymentMethodOverviewService', () => {
       ],
     });
 
-    service = TestBed.inject(PaymentMethodOverviewService);
+    service = TestBed.inject(PaymentMethodOverviewClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 

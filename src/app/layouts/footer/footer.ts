@@ -4,10 +4,10 @@ import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-footer',
-    templateUrl: './footer.component.html',
-    styleUrls: ['./footer.component.scss'],
+    templateUrl: './footer.html',
+    styleUrls: ['./footer.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatDivider, RouterLink]
 })
-export class FooterComponent {
+export class Footer {
 }

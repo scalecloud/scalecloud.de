@@ -6,12 +6,12 @@ import { MatDivider } from '@angular/material/divider';
 
 @Component({
     selector: 'app-sidebar',
-    templateUrl: './sidebar.component.html',
-    styleUrls: ['./sidebar.component.scss'],
+    templateUrl: './sidebar.html',
+    styleUrls: ['./sidebar.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatNavList, MatListItem, RouterLinkActive, RouterLink, MatIcon, MatDivider, MatListSubheaderCssMatStyler]
 })
-export class SidebarComponent {
+export class Sidebar {
 
   readonly isExpanded = input<boolean | undefined>(undefined);
   readonly isShowing = input<boolean | undefined>(undefined);

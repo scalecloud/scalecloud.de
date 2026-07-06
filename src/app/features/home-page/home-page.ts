@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/cor
 import { MatDivider } from '@angular/material/divider';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { GlobeComponent } from './globe/globe.component';
+import { Globe } from './globe/globe';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { NewsletterSubscribe } from '../newsletter-client/newsletter-subscribe/newsletter-subscribe';
 
@@ -11,7 +11,7 @@ import { NewsletterSubscribe } from '../newsletter-client/newsletter-subscribe/n
     templateUrl: './home-page.html',
     styleUrls: ['./home-page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [GlobeComponent, MatDivider, MatButton, RouterLink, NewsletterSubscribe]
+    imports: [Globe, MatDivider, MatButton, RouterLink, NewsletterSubscribe]
 })
 export class HomePage implements OnInit {
   snackBar = inject(SnackBar);

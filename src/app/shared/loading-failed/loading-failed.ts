@@ -4,11 +4,11 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-loading-failed',
-    templateUrl: './loading-failed.component.html',
+    templateUrl: './loading-failed.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrl: './loading-failed.component.scss',
+    styleUrl: './loading-failed.scss',
     imports: [MatCard, MatCardHeader, MatCardTitle, MatIcon, MatCardContent]
 })
-export class LoadingFailedComponent {
+export class LoadingFailed {
 
 }

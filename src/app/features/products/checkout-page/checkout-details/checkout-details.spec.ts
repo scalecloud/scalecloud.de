@@ -4,8 +4,8 @@ import { provideRouter, ActivatedRoute, convertToParamMap, ParamMap } from '@ang
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { Observable, of, throwError, Subject } from 'rxjs';
 import { Quantity } from '../../subscription-card/quantity/quantity';
-import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { LoadingFailed } from '../../../../shared/loading-failed/loading-failed';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { CheckoutDetails } from './checkout-details';
@@ -99,7 +99,7 @@ describe('CheckoutDetails', () => {
       ],
     })
       .overrideComponent(CheckoutDetails, {
-        remove: { imports: [Quantity, LoadingFailedComponent] },
+        remove: { imports: [Quantity, LoadingFailed] },
         add: { imports: [MockQuantityComponent, MockLoadingFailedComponent] },
       })
       .compileComponents();

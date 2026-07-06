@@ -5,7 +5,7 @@ import { Quantity } from '../../subscription-card/quantity/quantity';
 import { CurrencyPipe } from '@angular/common';
 import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
 import { ActivatedRoute } from '@angular/router';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { MatCard, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
@@ -14,7 +14,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../../../shared/loading-failed/loading-failed';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { CheckoutProductRequest } from './checkout-product-model';
@@ -25,7 +25,7 @@ import { CheckoutProductClient } from './checkout-product-client';
     templateUrl: './checkout-details.html',
     styleUrls: ['./checkout-details.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, Quantity, MatCardSubtitle, MatCardActions, MatButton, LoadingFailedComponent, CurrencyPipe]
+    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, Quantity, MatCardSubtitle, MatCardActions, MatButton, LoadingFailed, CurrencyPipe]
 })
 export class CheckoutDetails {
   private readonly log = inject(Log);

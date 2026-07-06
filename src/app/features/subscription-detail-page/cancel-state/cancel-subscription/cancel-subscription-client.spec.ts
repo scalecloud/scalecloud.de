@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
-import { ISubscriptionCancelReply, ISubscriptionCancelRequest } from './subscription-cancel-request';
+import { SubscriptionCancelReply, SubscriptionCancelRequest } from './subscription-cancel-request-model';
 import { environment } from 'src/environments/environment';
 import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
@@ -16,11 +16,11 @@ const mockAuth = {
   getHttpOptions: vi.fn().mockReturnValue(MOCK_HTTP_OPTIONS),
 };
 
-const MOCK_REQUEST: ISubscriptionCancelRequest = {
+const MOCK_REQUEST: SubscriptionCancelRequest = {
   subscriptionID: 'sub-abc-123',
 };
 
-const MOCK_REPLY: ISubscriptionCancelReply = {
+const MOCK_REPLY: SubscriptionCancelReply = {
   subscriptionID:       'sub-abc-123',
   cancel_at_period_end: true,
   cancel_at:            1893456000,
@@ -80,7 +80,7 @@ describe('CancelSubscriptionClient', () => {
     });
 
     it('returns the reply from the server', () => {
-      let result: ISubscriptionCancelReply | undefined;
+      let result: SubscriptionCancelReply | undefined;
       service.cancelSubscription(MOCK_REQUEST).subscribe(r => (result = r));
       httpTesting.expectOne(EXPECTED_URL).flush(MOCK_REPLY);
       expect(result).toEqual(MOCK_REPLY);

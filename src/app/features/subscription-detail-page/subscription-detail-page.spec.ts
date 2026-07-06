@@ -6,7 +6,7 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionDetailPage } from './subscription-detail-page';
 import { SubscriptionDetailCard } from './subscription-detail-card/subscription-detail-card';
 import { Seats } from './seats/seats';
-import { PaymentMethodOverviewComponent } from '../dashboard-page/payment-method-overview/payment-method-overview.component';
+import { PaymentMethodOverview } from '../dashboard-page/payment-method-overview-client/payment-method-overview';
 import { Invoices } from './invoices/invoices';
 import { BillingAddressOverview } from './billing-address-client/billing-address-overview/billing-address-overview';
 import { BillingPortal } from './customer-portal/billing-portal';
@@ -52,7 +52,7 @@ describe('SubscriptionDetailPage', () => {
     // keeping these tests fast and focused on what this component owns.
     .overrideComponent(SubscriptionDetailCard, { set: { template: '', imports: [], providers: [] } })
     .overrideComponent(Seats,                  { set: { template: '', imports: [], providers: [] } })
-    .overrideComponent(PaymentMethodOverviewComponent,        { set: { template: '', imports: [], providers: [] } })
+    .overrideComponent(PaymentMethodOverview,        { set: { template: '', imports: [], providers: [] } })
     .overrideComponent(Invoices,               { set: { template: '', imports: [], providers: [] } })
     .overrideComponent(BillingAddressOverview, { set: { template: '', imports: [], providers: [] } })
     .overrideComponent(BillingPortal,          { set: { template: '', imports: [], providers: [] } })

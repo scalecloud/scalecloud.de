@@ -7,14 +7,14 @@ import { CheckoutSubscriptionClient } from './checkout-payment/checkout-subscrip
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
-import { PaymentMethodOverviewComponent } from '../../dashboard-page/payment-method-overview/payment-method-overview.component';
+import { PaymentMethodOverview } from '../../dashboard-page/payment-method-overview-client/payment-method-overview';
 
 @Component({
     selector: 'app-checkout-page',
     templateUrl: './checkout-page.html',
     styleUrls: ['./checkout-page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PaymentMethodOverviewComponent, CheckoutDetails]
+    imports: [PaymentMethodOverview, CheckoutDetails]
 })
 export class CheckoutPage {
   private readonly log = inject(Log);

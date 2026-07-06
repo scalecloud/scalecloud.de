@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { Address, BillingAddressReply, BillingAddressRequest, UpdateBillingAddressRequest } from '../billing-address-model';
 import { BillingAddressClient } from '../billing-address-client';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +14,7 @@ import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { CountryInput } from '../country-input/country-input';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../../../shared/loading-failed/loading-failed';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
@@ -62,7 +62,7 @@ interface BillingAddressFormControls {
     CountryInput,
     MatCardActions,
     MatButton,
-    LoadingFailedComponent,
+    LoadingFailed,
   ],
 })
 export class BillingAddressDetailPage implements OnInit {

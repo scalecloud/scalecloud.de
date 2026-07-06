@@ -1,13 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { CancelStateReply } from './cancel-state-model';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { ResumeSubscription } from './resume-subscription/resume-subscription';
 import { CancelSubscription } from './cancel-subscription/cancel-subscription';
-import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -19,7 +19,7 @@ import { PermissionStore } from 'src/app/core/permission-store/permission-store'
     templateUrl: './cancel-state.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './cancel-state.scss',
-    imports: [MatProgressBar, NgxSkeletonLoaderComponent, ResumeSubscription, CancelSubscription, LoadingFailedComponent]
+    imports: [MatProgressBar, NgxSkeletonLoaderComponent, ResumeSubscription, CancelSubscription, LoadingFailed]
 })
 export class CancelState implements OnInit {
   private readonly auth = inject(Auth);

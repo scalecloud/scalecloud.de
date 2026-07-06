@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import {  signal } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-import { HeaderComponent } from './header.component';
+import { Header } from './header';
 import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -14,9 +14,9 @@ function makeUser(overrides: Partial<{ email: string }> = {}) {
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
 
-describe('HeaderComponent', () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
+describe('Header', () => {
+  let component: Header;
+  let fixture: ComponentFixture<Header>;
 
   // `user` mirrors Auth's real signal: undefined until the first
   // auth-state event, then User | null.
@@ -31,14 +31,14 @@ describe('HeaderComponent', () => {
     userSignal.set(undefined);
 
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent],
+      imports: [Header],
       providers: [
         provideRouter([]),
         { provide: Auth, useValue: auth },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,13 +4,13 @@ import { of } from 'rxjs';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { ChangePaymentPage } from './change-payment-page';
-import { ChangePaymentService } from './change-payment.service';
-import { ServiceStatus } from 'src/app/shared/service-status';
-import { StripePaymentElementComponent } from 'src/app/shared/stripe-payment-element/stripe-payment-element.component';
-import { StripeIntent } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent';
+import { ChangePaymentClient } from './change-payment-client';
+import { ServiceStatus } from 'src/app/shared/client-status';
+import { StripeIntent } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent-model';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
+import { StripePaymentElement } from 'src/app/shared/stripe-payment-element/stripe-payment-element';
 
 // ── Stub ──────────────────────────────────────────────────────────────────────
 
@@ -64,19 +64,19 @@ describe('ChangePaymentPage', () => {
       imports: [ChangePaymentPage],
       providers: [
         { provide: Auth,          useValue: makeAuth() },
-        { provide: ChangePaymentService, useValue: makeChangePaymentService() },
+        { provide: ChangePaymentClient, useValue: makeChangePaymentService() },
         { provide: Log,           useValue: makeLogService() },
         { provide: ReturnUrl,     useValue: makeReturnUrl() },
       ],
     })
       .overrideComponent(ChangePaymentPage, {
-        remove: { imports: [StripePaymentElementComponent] },
+        remove: { imports: [StripePaymentElement] },
         add:    { imports: [StripePaymentElementStub] },
       })
       .compileComponents();
 
     authMock          = TestBed.inject(Auth)          as unknown as ReturnType<typeof makeAuth>;
-    changePaymentService = TestBed.inject(ChangePaymentService) as unknown as ReturnType<typeof makeChangePaymentService>;
+    changePaymentService = TestBed.inject(ChangePaymentClient) as unknown as ReturnType<typeof makeChangePaymentService>;
     logService           = TestBed.inject(Log)           as unknown as ReturnType<typeof makeLogService>;
     returnUrlService     = TestBed.inject(ReturnUrl)     as unknown as ReturnType<typeof makeReturnUrl>;
 
@@ -90,7 +90,7 @@ describe('ChangePaymentPage', () => {
     // Step 2: now that afterNextRender has already fired, our set() is the last
     // write and won't be overwritten again.
     stripeStub = new StripePaymentElementStub();
-    component.stripePaymentElementComponent.set(stripeStub as unknown as StripePaymentElementComponent);
+    component.stripePaymentElementComponent.set(stripeStub as unknown as StripePaymentElement);
 
     // Step 3: re-run the init flow so it executes with the stub in place.
     // ngOnInit already ran in step 1 (with undefined), so we call it directly

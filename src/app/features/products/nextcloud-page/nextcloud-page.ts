@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@ang
 import { NextcloudProduct } from './nextcloud-product';
 import { ProductType } from '../product-model';
 import { ProductClient } from '../product-client/product-client';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { TitleCard } from '../title-card/title-card';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -10,14 +10,14 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { SubscriptionCard } from '../subscription-card/subscription-card';
-import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
 
 @Component({
     selector: 'app-nextcloud-page',
     templateUrl: './nextcloud-page.html',
     styleUrls: ['./nextcloud-page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TitleCard, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCard, LoadingFailedComponent]
+    imports: [TitleCard, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCard, LoadingFailed]
 })
 export class NextcloudPage implements OnInit {
   private readonly productService = inject(ProductClient);

@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Component } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-import { ISubscriptionCancelReply } from './subscription-cancel-request';
+import { SubscriptionCancelReply } from './subscription-cancel-request-model';
 import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -31,7 +31,7 @@ const mockCancelSubscriptionClient = {
   cancelSubscription: vi.fn(),
 };
 
-const MOCK_REPLY: ISubscriptionCancelReply = {
+const MOCK_REPLY: SubscriptionCancelReply = {
   subscriptionID:       SUBSCRIPTION_ID,
   cancel_at_period_end: true,
   cancel_at:            1893456000, // 2030-01-01
@@ -137,7 +137,7 @@ describe('CancelSubscription', () => {
     });
 
     it('does not emit or show snackbar when cancel_at_period_end is false', () => {
-      const replyNotEnding: ISubscriptionCancelReply = {
+      const replyNotEnding: SubscriptionCancelReply = {
         ...MOCK_REPLY,
         cancel_at_period_end: false,
       };

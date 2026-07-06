@@ -8,7 +8,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { AppComponent } from './app/app.component';
+import { App } from './app/app';
 import { routes } from './app/app.routes';
 import { serviceErrorInterceptor } from './app/core/interceptor/service-error-interceptor';
 import { API_URL, APP_BASE_URL } from './app/core/config/api-token';
@@ -32,7 +32,7 @@ if (environment.production) {
   enableProdMode();
 }
 
-bootstrapApplication(AppComponent, {
+bootstrapApplication(App, {
   providers: [
     {
       provide: APP_BASE_URL,

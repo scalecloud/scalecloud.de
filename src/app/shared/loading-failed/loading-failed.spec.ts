@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadingFailedComponent } from './loading-failed.component';
+import { LoadingFailed } from './loading-failed';
 import { describe, beforeEach, it, expect } from 'vitest';
 
-describe('LoadingFailedComponent', () => {
-  let component: LoadingFailedComponent;
-  let fixture: ComponentFixture<LoadingFailedComponent>;
+describe('LoadingFailed', () => {
+  let component: LoadingFailed;
+  let fixture: ComponentFixture<LoadingFailed>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoadingFailedComponent]
+      imports: [LoadingFailed]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LoadingFailedComponent);
+    fixture = TestBed.createComponent(LoadingFailed);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

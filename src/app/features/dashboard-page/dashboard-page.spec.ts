@@ -3,7 +3,7 @@ import { DashboardPage } from './dashboard-page';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionOverviewService } from './subscription-overview/subscription-overview.service';
 import { LastCountService } from './subscription-overview/last-count/last-count.service';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { of, throwError } from 'rxjs';
 import { ISubscriptionOverview } from './subscription-overview/subscription-overview';
 import { provideRouter } from '@angular/router';

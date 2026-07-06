@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { NewsletterConfirmReply, NewsletterConfirmRequest } from '../newsletter-model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
@@ -9,7 +9,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { LoadingFailedComponent } from '../../../shared/loading-failed/loading-failed.component';
+import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
 import { Log } from 'src/app/core/logging/log';
 import { NewsletterClient } from '../newsletter-client';
 
@@ -29,7 +29,7 @@ import { NewsletterClient } from '../newsletter-client';
         MatCardActions,
         MatButton,
         RouterLink,
-        LoadingFailedComponent,
+        LoadingFailed,
     ],
 })
 export class NewsletterConfirmPage implements OnInit {

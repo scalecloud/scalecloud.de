@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { Seats } from './seats';
-import { ServiceStatus } from 'src/app/shared/service-status';
+import { ServiceStatus } from 'src/app/shared/client-status';
 import { ListSeatReply } from './seats-model';
 import { of, throwError } from 'rxjs';
 import { Auth } from 'src/app/core/auth/auth';

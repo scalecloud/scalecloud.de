@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from "vite
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { GlobeComponent } from './globe.component';
+import { Globe } from './globe';
 import createGlobe from 'cobe';
 
 // `cobe`'s ESM namespace object is frozen, so vi.spyOn(cobeModule, 'default')
@@ -26,9 +26,9 @@ function stubCanvasContext(canvas: HTMLCanvasElement): void {
 
 // ── Suite ────────────────────────────────────────────────────────────────────
 
-describe('GlobeComponent', () => {
-    let component: GlobeComponent;
-    let fixture: ComponentFixture<GlobeComponent>;
+describe('Globe', () => {
+    let component: Globe;
+    let fixture: ComponentFixture<Globe>;
 
     let mockGlobe: {
         update: Mock;
@@ -63,10 +63,10 @@ describe('GlobeComponent', () => {
         setWindowSize(1024, 768);
 
         await TestBed.configureTestingModule({
-    imports: [GlobeComponent],
+    imports: [Globe],
 }).compileComponents();
 
-        fixture = TestBed.createComponent(GlobeComponent);
+        fixture = TestBed.createComponent(Globe);
         component = fixture.componentInstance;
 
         // Stub canvas WebGL context before AfterViewInit fires

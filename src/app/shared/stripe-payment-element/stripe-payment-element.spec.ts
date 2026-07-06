@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
-import { StripePaymentElementComponent } from './stripe-payment-element.component';
-import { ServiceStatus } from 'src/app/shared/service-status';
-import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent';
+import { StripePaymentElement } from './stripe-payment-element';
+import { ServiceStatus } from 'src/app/shared/client-status';
+import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent-model';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { StripeKey } from 'src/app/core/stripe/stripe-key';
 
-describe('StripePaymentElementComponent', () => {
-  let component: StripePaymentElementComponent;
-  let fixture: ComponentFixture<StripePaymentElementComponent>;
+describe('StripePaymentElement', () => {
+  let component: StripePaymentElement;
+  let fixture: ComponentFixture<StripePaymentElement>;
 
   const logMock = {
     error: vi.fn()
@@ -72,7 +72,7 @@ describe('StripePaymentElementComponent', () => {
     stripeKeyMock.getPublicKey.mockReturnValue('pk_test_123');
 
     await TestBed.configureTestingModule({
-      imports: [StripePaymentElementComponent],
+      imports: [StripePaymentElement],
       providers: [
         { provide: Log, useValue: logMock },
         { provide: SnackBar, useValue: snackBarMock },
@@ -80,7 +80,7 @@ describe('StripePaymentElementComponent', () => {
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(StripePaymentElementComponent);
+    fixture = TestBed.createComponent(StripePaymentElement);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
