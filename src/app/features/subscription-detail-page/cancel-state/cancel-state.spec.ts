@@ -11,6 +11,10 @@ import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { CancelStateClient } from './cancel-state-client';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
+import { ResumeSubscription } from './resume-subscription/resume-subscription';
+import { CancelSubscription } from './cancel-subscription/cancel-subscription';
+import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
@@ -24,7 +28,7 @@ class CancelSubscriptionStub { readonly reply = input<any>(undefined); readonly 
 class LoadingFailedStub { }
 
 @Component({ selector: 'ngx-skeleton-loader', template: '', standalone: true })
-class SkeletonLoaderStub { readonly count = input<any>(undefined); readonly appearance = input<any>(undefined); }
+class SkeletonLoaderStub { readonly count = input<any>(undefined); readonly appearance = input<any>(undefined); readonly theme = input<any>(undefined); }
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
 
@@ -69,7 +73,9 @@ describe('CancelState', () => {
       ],
     })
     .overrideComponent(CancelState, {
-      remove: { imports: [] },
+      remove: {
+        imports: [ResumeSubscription, CancelSubscription, LoadingFailed, NgxSkeletonLoaderComponent],
+      },
       add: {
         imports: [
           ResumeSubscriptionStub,
@@ -135,7 +141,7 @@ describe('CancelState', () => {
       expect(mockLog.error).toHaveBeenCalledWith(
         expect.stringContaining('subscriptionID is null')
       );
-      expect(component.serviceStatus).toBe(ServiceStatus.Error);
+      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     });
   });
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
@@ -20,7 +20,7 @@ import { StripePaymentElement } from 'src/app/shared/stripe-payment-element/stri
   standalone: true,
 })
 class StripePaymentElementStub {
-  serviceStatus: ServiceStatus = ServiceStatus.Success;
+  readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Success);
   initPaymentElement = vi.fn();
   submitIntent = vi.fn();
 }
@@ -220,13 +220,13 @@ describe('ChangePaymentPage', () => {
   // ── isSuccess ──────────────────────────────────────────────────────────────
 
   it('returns true when the Stripe element status is Success', () => {
-    stripeStub.serviceStatus = ServiceStatus.Success;
+    stripeStub.serviceStatus.set(ServiceStatus.Success);
 
     expect(component.isSuccess()).toBe(true);
   });
 
   it('returns false when the Stripe element status is not Success', () => {
-    stripeStub.serviceStatus = ServiceStatus.Error;
+    stripeStub.serviceStatus.set(ServiceStatus.Error);
 
     expect(component.isSuccess()).toBe(false);
   });

@@ -84,6 +84,6 @@ export class ChangePaymentPage implements OnInit {
   }
 
   isSuccess(): boolean {
-    return this.stripePaymentElementComponent()?.serviceStatus === ServiceStatus.Success;
+    return this.stripePaymentElementComponent()?.serviceStatus() === ServiceStatus.Success;
   }
 }

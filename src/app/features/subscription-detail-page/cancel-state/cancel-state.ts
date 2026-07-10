@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject, output } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, output, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ServiceStatus } from 'src/app/shared/client-status';
@@ -31,27 +31,24 @@ export class CancelState implements OnInit {
 
 
   readonly reloadSubscriptionDetailEvent = output();
-  ServiceStatus = ServiceStatus;
-  reply: CancelStateReply | null;
-  serviceStatus = ServiceStatus.Initializing;
+  readonly ServiceStatus = ServiceStatus;
+  readonly reply = signal<CancelStateReply | null>(null);
+  readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Initializing);
 
   ngOnInit(): void {
     this.checkPermissions();
   }
 
   isEnding(): boolean {
-    let isEnding = false;
-    if (this.reply) {
-      isEnding = this.reply?.cancel_at_period_end;
-    }
-    return isEnding;
+    const reply = this.reply();
+    return reply?.cancel_at_period_end ?? false;
   }
 
   async checkPermissions() {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
       this.log.error('SeatsComponent.checkPermissions: subscriptionID is null');
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
 
@@ -60,23 +57,23 @@ export class CancelState implements OnInit {
       if (hasPermission) {
         this.getCancelState();
       } else {
-        this.serviceStatus = ServiceStatus.NoPermission;
+        this.serviceStatus.set(ServiceStatus.NoPermission);
       }
     } catch (error) {
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       this.snackBar.error('An error occurred while checking permissions.');
       this.log.error('SeatsComponent.checkPermissions: error checking permissions', error);
     }
   }
 
   async getCancelState(): Promise<void> {
-    this.serviceStatus = ServiceStatus.Loading;
+    this.serviceStatus.set(ServiceStatus.Loading);
 
     try {
       await this.auth.waitForAuth();
     } catch (error) {
       this.log.error("waitForAuth failed: " + error);
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
 
@@ -87,10 +84,10 @@ export class CancelState implements OnInit {
     }
 
     try {
-      this.reply = await firstValueFrom(this.cancelStateClient.getCancelState(subscriptionID));
-      this.serviceStatus = ServiceStatus.Success;
+      this.reply.set(await firstValueFrom(this.cancelStateClient.getCancelState(subscriptionID)));
+      this.serviceStatus.set(ServiceStatus.Success);
     } catch (error) {
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       this.log.error('SeatsComponent.getSeatsList: error fetching cancel state', error);
     }
   }

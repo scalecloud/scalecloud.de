@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent-model';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { MatCard, MatCardSubtitle, MatCardContent } from '@angular/material/card';
@@ -26,8 +26,8 @@ export class StripePaymentElement {
   private readonly snackBar = inject(SnackBar);
   private readonly stripeKey = inject(StripeKey);
 
-  ServiceStatus = ServiceStatus;
-  serviceStatus = ServiceStatus.Loading;
+  readonly ServiceStatus = ServiceStatus;
+  readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Loading);
   stripeElement: any;
   elements: any;
   initStripePayment: InitStripePayment | undefined;
@@ -37,7 +37,7 @@ export class StripePaymentElement {
     const publicKey = this.stripeKey.getPublicKey();
     if (publicKey == undefined) {
       this.log.error("Cannot display Payment because publicKey is undefined.")
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
     this.stripeElement = Stripe(publicKey);
@@ -68,11 +68,11 @@ export class StripePaymentElement {
       paymentElement.mount('#address-element');
 
       paymentElement.on('ready', () => {
-        this.serviceStatus = ServiceStatus.Success;
+        this.serviceStatus.set(ServiceStatus.Success);
       });
 
       paymentElement.on('error', (event: any) => {
-        this.serviceStatus = ServiceStatus.Error;
+        this.serviceStatus.set(ServiceStatus.Error);
         this.snackBar.error("Error loading Stripe: " + event.error.message);
       });
 

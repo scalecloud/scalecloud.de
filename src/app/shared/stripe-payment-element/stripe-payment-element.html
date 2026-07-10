@@ -1,4 +1,4 @@
-@if (serviceStatus === ServiceStatus.Loading) {
+@if (serviceStatus() === ServiceStatus.Loading) {
 <mat-card>
   <mat-progress-bar mode="query"></mat-progress-bar>
   <mat-card-subtitle>
@@ -36,7 +36,7 @@
 </mat-card>
 }
 
-<div [class.hidden]="serviceStatus !== ServiceStatus.Success">
+<div [class.hidden]="serviceStatus() !== ServiceStatus.Success">
   <form id="payment-form">
     <div id="payment-element">
       <!-- Elements will create form elements here -->
@@ -49,6 +49,6 @@
     </div>
   </form>
 </div>
-@if ( serviceStatus === ServiceStatus.Error ) {
+@if ( serviceStatus() === ServiceStatus.Error ) {
 <app-loading-failed></app-loading-failed>
 }

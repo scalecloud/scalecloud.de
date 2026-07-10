@@ -1,16 +1,16 @@
-@if (serviceStatus === ServiceStatus.Loading) {
+@if (serviceStatus() === ServiceStatus.Loading) {
 <div class="loading-container">
     <mat-progress-bar class="custom-progress-bar" mode="query"></mat-progress-bar>
     <ngx-skeleton-loader [theme]="{height: '2rem', width: '12rem'}"></ngx-skeleton-loader>
 </div>
 }
-@if (serviceStatus === ServiceStatus.Success) {
+@if (serviceStatus() === ServiceStatus.Success) {
 @if( isEnding() ) {
 <app-resume-subscription (reloadSubscriptionDetail)="reloadSubscriptionDetail()"></app-resume-subscription>
 } @else if( !isEnding() ) {
 <app-cancel-subscription (reloadSubscriptionDetail)="reloadSubscriptionDetail()"></app-cancel-subscription>
 }
 }
-@if ( serviceStatus === ServiceStatus.Error ) {
+@if ( serviceStatus() === ServiceStatus.Error ) {
 <app-loading-failed></app-loading-failed>
 }
