@@ -1,5 +1,5 @@
 <mat-card>
-  @if (serviceStatus === ServiceStatus.Loading) {
+  @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
     <mat-card-title>
       <ngx-skeleton-loader [theme]="{height: '2rem', width: '40%'}" />
@@ -26,7 +26,7 @@
     </mat-card-content>
   }
 
-  @if (serviceStatus === ServiceStatus.Success) {
+  @if (serviceStatus() === ServiceStatus.Success) {
     <mat-card-title>
       {{getProductName()}}
     </mat-card-title>
@@ -102,6 +102,6 @@
   }
   <app-cancel-state class="actions" (reloadSubscriptionDetailEvent)="reloadSubscriptionDetail()"></app-cancel-state>
 </mat-card>
-@if ( serviceStatus === ServiceStatus.Error ) {
+@if ( serviceStatus() === ServiceStatus.Error ) {
   <app-loading-failed></app-loading-failed>
 }

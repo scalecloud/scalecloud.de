@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { SubscriptionDetailReply } from './subscription-detail-card-model';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/client-status';
@@ -33,10 +33,9 @@ export class SubscriptionDetailCard implements OnInit {
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
 
-
-  reply: SubscriptionDetailReply | undefined;
-  ServiceStatus = ServiceStatus;
-  serviceStatus = ServiceStatus.Initializing;
+  readonly reply = signal<SubscriptionDetailReply | undefined>(undefined);
+  readonly ServiceStatus = ServiceStatus;
+  readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Initializing);
 
   ngOnInit(): void {
     this.checkPermissions();
@@ -50,7 +49,7 @@ export class SubscriptionDetailCard implements OnInit {
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
       this.log.error('SeatsComponent.checkPermissions: subscriptionID is null');
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       return;
     }
 
@@ -59,17 +58,17 @@ export class SubscriptionDetailCard implements OnInit {
       if (hasPermission) {
         this.reloadSubscriptionDetail();
       } else {
-        this.serviceStatus = ServiceStatus.NoPermission;
+        this.serviceStatus.set(ServiceStatus.NoPermission);
       }
     } catch (error) {
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
       this.snackBar.error('An error occurred while checking permissions.');
       this.log.error('SeatsComponent.checkPermissions: error checking permissions', error);
     }
   }
 
   reloadSubscriptionDetail(): void {
-    this.serviceStatus = ServiceStatus.Loading;
+    this.serviceStatus.set(ServiceStatus.Loading);
     this.auth.waitForAuth().then(() => {
       const subscriptionID = this.getSubscriptionID();
       if (subscriptionID == null) {
@@ -78,39 +77,39 @@ export class SubscriptionDetailCard implements OnInit {
         this.subscriptionDetailCardClient.getSubscriptionDetail(subscriptionID)
           .subscribe({
             next: subscriptionDetail => {
-              this.reply = subscriptionDetail;
-              this.serviceStatus = ServiceStatus.Success;
+              this.reply.set(subscriptionDetail);
+              this.serviceStatus.set(ServiceStatus.Success);
             },
             error: error => {
-              this.serviceStatus = ServiceStatus.Error;
+              this.serviceStatus.set(ServiceStatus.Error);
               this.log.error('SubscriptionDetailComponent.getSubscriptionDetail: error fetching subscription detail', error);
             }
           });
       }
     }).catch((error) => {
       this.log.error("waitForAuth failed: " + error);
-      this.serviceStatus = ServiceStatus.Error;
+      this.serviceStatus.set(ServiceStatus.Error);
     });
   }
 
   getID(): string {
-    return this.reply?.id || '';
+    return this.reply()?.id || '';
   }
 
   isActive(): boolean {
-    return this.reply?.active || false;
+    return this.reply()?.active || false;
   }
 
   getProductName(): string {
-    return this.reply?.product_name || '';
+    return this.reply()?.product_name || '';
   }
 
   getProductType(): string {
-    return this.reply?.product_type || '';
+    return this.reply()?.product_type || '';
   }
 
   getStorageAmount(): number {
-    return this.reply?.storage_amount || 0;
+    return this.reply()?.storage_amount || 0;
   }
 
   getTotalStorageAmount(): number {
@@ -118,11 +117,11 @@ export class SubscriptionDetailCard implements OnInit {
   }
 
   getUserCount(): number {
-    return this.reply?.user_count || 0;
+    return this.reply()?.user_count || 0;
   }
 
   getPricePerMonth(): number {
-    return this.reply?.price_per_month || 0;
+    return this.reply()?.price_per_month || 0;
   }
 
   getTotalPricePerMonth(): number {
@@ -130,31 +129,26 @@ export class SubscriptionDetailCard implements OnInit {
   }
 
   getCurrency(): string {
-    return this.reply?.currency.toUpperCase() || '';
+    return this.reply()?.currency.toUpperCase() || '';
   }
 
   isTrailing(): boolean {
-    let trailing = false;
-    if (this.reply?.status) {
-      trailing = this.reply?.status === 'trialing';
-    }
-    return trailing;
+    return this.reply()?.status === 'trialing';
   }
 
   getTrailingEnd(): number {
-    return this.reply?.trial_end || 0;
+    return this.reply()?.trial_end || 0;
   }
 
   isCancelAtPeriodEnd(): boolean {
-    return this.reply?.cancel_at_period_end || false;
+    return this.reply()?.cancel_at_period_end || false;
   }
 
   getCancelAt(): number {
-    return this.reply?.cancel_at || 0;
+    return this.reply()?.cancel_at || 0;
   }
 
   getCurrentPeriodEnd(): number {
-    return this.reply?.current_period_end || 0;
+    return this.reply()?.current_period_end || 0;
   }
-
 }
