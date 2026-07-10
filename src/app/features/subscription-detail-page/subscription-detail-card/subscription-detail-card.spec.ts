@@ -147,14 +147,14 @@ describe('SubscriptionDetailCard', () => {
 
     expect(permissionStore.isUser).toHaveBeenCalledWith('sub_123');
     expect(subscriptionDetailCardClient.getSubscriptionDetail).toHaveBeenCalledWith('sub_123');
-    expect(component.serviceStatus).toBe(ServiceStatus.Success);
+    expect(component.serviceStatus()).toBe(ServiceStatus.Success);
   });
 
   it('sets serviceStatus to NoPermission when the user lacks access', async () => {
     await setup({ hasPermission: false });
     await stabilize(fixture);
 
-    expect(component.serviceStatus).toBe(ServiceStatus.NoPermission);
+    expect(component.serviceStatus()).toBe(ServiceStatus.NoPermission);
     expect(subscriptionDetailCardClient.getSubscriptionDetail).not.toHaveBeenCalled();
   });
 
@@ -164,7 +164,7 @@ describe('SubscriptionDetailCard', () => {
 
     await stabilize(fixture);
 
-    expect(component.serviceStatus).toBe(ServiceStatus.Error);
+    expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     expect(snackBar.error).toHaveBeenCalledWith(
       'An error occurred while checking permissions.',
     );
@@ -174,7 +174,7 @@ describe('SubscriptionDetailCard', () => {
     await setup({ subscriptionID: '' });
     await stabilize(fixture);
 
-    expect(component.serviceStatus).toBe(ServiceStatus.Error);
+    expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     expect(log.error).toHaveBeenCalled();
   });
 
@@ -188,7 +188,7 @@ describe('SubscriptionDetailCard', () => {
 
     await stabilize(fixture);
 
-    expect(component.serviceStatus).toBe(ServiceStatus.Error);
+    expect(component.serviceStatus()).toBe(ServiceStatus.Error);
   });
 
   it('sets serviceStatus to Error when waitForAuth rejects', async () => {
@@ -207,7 +207,7 @@ describe('SubscriptionDetailCard', () => {
     await stabilize(fixture);
     await stabilize(fixture);
 
-    expect(component.serviceStatus).toBe(ServiceStatus.Error);
+    expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     expect(log.error).toHaveBeenCalled();
   });
 
@@ -326,6 +326,6 @@ describe('SubscriptionDetailCard', () => {
     await stabilize(fixture);
 
     expect(component.getProductName()).toBe('Pro');
-    expect(component.serviceStatus).toBe(ServiceStatus.Success);
+    expect(component.serviceStatus()).toBe(ServiceStatus.Success);
   });
 });

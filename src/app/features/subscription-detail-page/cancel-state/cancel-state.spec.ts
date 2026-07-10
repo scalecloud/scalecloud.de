@@ -117,13 +117,13 @@ describe('CancelState', () => {
     it('sets serviceStatus to NoPermission when the user lacks billing permission', async () => {
       mockPermissionStore.isBilling.mockResolvedValueOnce(false);
       await component.checkPermissions();
-      expect(component.serviceStatus).toBe(ServiceStatus.NoPermission);
+      expect(component.serviceStatus()).toBe(ServiceStatus.NoPermission);
     });
 
     it('sets serviceStatus to Error and shows a snackbar when permission check throws', async () => {
       mockPermissionStore.isBilling.mockRejectedValueOnce(new Error('network'));
       await component.checkPermissions();
-      expect(component.serviceStatus).toBe(ServiceStatus.Error);
+      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
       expect(mockSnackBar.error).toHaveBeenCalledWith(
         'An error occurred while checking permissions.'
       );
@@ -145,14 +145,14 @@ describe('CancelState', () => {
     it('sets serviceStatus to Success on a successful response', async () => {
       mockCancelStateClient.getCancelState.mockReturnValueOnce(of(MOCK_REPLY));
       await component.getCancelState();
-      expect(component.serviceStatus).toBe(ServiceStatus.Success);
+      expect(component.serviceStatus()).toBe(ServiceStatus.Success);
     });
 
     it('stores the reply on success', async () => {
       const reply: CancelStateReply = { subscriptionID: SUBSCRIPTION_ID, cancel_at_period_end: true };
       mockCancelStateClient.getCancelState.mockReturnValueOnce(of(reply));
       await component.getCancelState();
-      expect(component.reply).toEqual(reply);
+      expect(component.reply()).toEqual(reply);
     });
 
     it('sets serviceStatus to Error when the service call fails', async () => {
@@ -160,7 +160,7 @@ describe('CancelState', () => {
         throwError(() => new Error('server error'))
       );
       await component.getCancelState();
-      expect(component.serviceStatus).toBe(ServiceStatus.Error);
+      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     });
 
     it('logs and sets Error status when waitForAuth rejects', async () => {
@@ -169,7 +169,7 @@ describe('CancelState', () => {
       expect(mockLog.error).toHaveBeenCalledWith(
         expect.stringContaining('waitForAuth failed')
       );
-      expect(component.serviceStatus).toBe(ServiceStatus.Error);
+      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     });
 
     it('logs and does not call the service when subscriptionID is missing', async () => {
@@ -185,17 +185,17 @@ describe('CancelState', () => {
 
   describe('isEnding', () => {
     it('returns false when reply is null', () => {
-      component.reply = null;
+      component.reply.set(null);
       expect(component.isEnding()).toBe(false);
     });
 
     it('returns false when cancel_at_period_end is false', () => {
-      component.reply = { subscriptionID: SUBSCRIPTION_ID, cancel_at_period_end: false };
+      component.reply.set({ subscriptionID: SUBSCRIPTION_ID, cancel_at_period_end: false });
       expect(component.isEnding()).toBe(false);
     });
 
     it('returns true when cancel_at_period_end is true', () => {
-      component.reply = { subscriptionID: SUBSCRIPTION_ID, cancel_at_period_end: true };
+      component.reply.set({ subscriptionID: SUBSCRIPTION_ID, cancel_at_period_end: true });
       expect(component.isEnding()).toBe(true);
     });
   });

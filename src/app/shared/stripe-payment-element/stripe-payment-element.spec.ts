@@ -116,7 +116,7 @@ describe('StripePaymentElement', () => {
 
       readyHandler();
 
-      expect(component.serviceStatus).toBe(ServiceStatus.Success);
+      expect(component.serviceStatus()).toBe(ServiceStatus.Success);
     });
 
     it('should set serviceStatus to Error and notify the snackbar when the element fires "error"', () => {
@@ -127,7 +127,7 @@ describe('StripePaymentElement', () => {
 
       errorHandler({ error: { message: 'Something went wrong' } });
 
-      expect(component.serviceStatus).toBe(ServiceStatus.Error);
+      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
       expect(snackBarMock.error).toHaveBeenCalledWith('Error loading Stripe: Something went wrong');
     });
 
@@ -178,7 +178,7 @@ describe('StripePaymentElement', () => {
       expect(logMock.error).toHaveBeenCalledWith(
         'Cannot display Payment because publicKey is undefined.'
       );
-      expect(component.serviceStatus).toBe(ServiceStatus.Error);
+      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
       expect(stripeGlobalMock).not.toHaveBeenCalled();
       expect(component.initStripePayment).toBeUndefined();
     });
