@@ -1,6 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
+import { describe, beforeEach, it, expect, vi } from 'vitest';
 
+// loadStripe is called as a named import inside the component, so we mock the
+// whole module (hoisted above all imports by Vitest) rather than spying on it.
+vi.mock('@stripe/stripe-js', () => ({
+  loadStripe: vi.fn()
+}));
+
+import { loadStripe } from '@stripe/stripe-js';
 import { StripePaymentElement } from './stripe-payment-element';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent-model';
@@ -27,11 +34,10 @@ describe('StripePaymentElement', () => {
   // Mock for the Stripe.js elements returned by `elements.create(...)`.
   // The component calls elements.create('payment') first (mounted at
   // #payment-element) and elements.create('address', ...) second (mounted at
-  // #address-element, with the 'ready'/'error'/'change' listeners attached).
+  // #address-element, with the 'ready'/'loaderror' listeners attached).
   const createMountableElement = () => ({
     mount: vi.fn(),
-    on: vi.fn(),
-    addEventListener: vi.fn()
+    on: vi.fn()
   });
 
   let paymentDomElement: ReturnType<typeof createMountableElement>;
@@ -42,7 +48,7 @@ describe('StripePaymentElement', () => {
     confirmSetup: ReturnType<typeof vi.fn>;
     confirmPayment: ReturnType<typeof vi.fn>;
   };
-  let stripeGlobalMock: ReturnType<typeof vi.fn>;
+  const loadStripeMock = vi.mocked(loadStripe);
 
   const initStripePayment: InitStripePayment = {
     intent: StripeIntent.PaymentIntent,
@@ -66,8 +72,7 @@ describe('StripePaymentElement', () => {
       confirmPayment: vi.fn().mockResolvedValue({})
     };
 
-    stripeGlobalMock = vi.fn().mockReturnValue(stripeInstanceMock);
-    (globalThis as any).Stripe = stripeGlobalMock;
+    loadStripeMock.mockResolvedValue(stripeInstanceMock as any);
 
     stripeKeyMock.getPublicKey.mockReturnValue('pk_test_123');
 
@@ -85,20 +90,20 @@ describe('StripePaymentElement', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    delete (globalThis as any).Stripe;
-  });
+  // ─── Creation ───────────────────────────────────────────────────────────────
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  // ─── initPaymentElement ─────────────────────────────────────────────────────
+
   describe('initPaymentElement', () => {
-    it('should initialize Stripe with the public key and mount both elements', () => {
-      component.initPaymentElement(initStripePayment);
+    it('should initialize Stripe with the public key and mount both elements', async () => {
+      await component.initPaymentElement(initStripePayment);
 
       expect(stripeKeyMock.getPublicKey).toHaveBeenCalled();
-      expect(stripeGlobalMock).toHaveBeenCalledWith('pk_test_123');
+      expect(loadStripeMock).toHaveBeenCalledWith('pk_test_123');
       expect(stripeInstanceMock.elements).toHaveBeenCalledWith(
         expect.objectContaining({ clientSecret: initStripePayment.client_secret })
       );
@@ -108,8 +113,8 @@ describe('StripePaymentElement', () => {
       expect(logMock.error).not.toHaveBeenCalled();
     });
 
-    it('should set serviceStatus to Success when the element fires "ready"', () => {
-      component.initPaymentElement(initStripePayment);
+    it('should set serviceStatus to Success when the element fires "ready"', async () => {
+      await component.initPaymentElement(initStripePayment);
 
       const readyHandler = addressDomElement.on.mock.calls.find(([event]) => event === 'ready')?.[1];
       expect(readyHandler).toBeDefined();
@@ -119,70 +124,44 @@ describe('StripePaymentElement', () => {
       expect(component.serviceStatus()).toBe(ServiceStatus.Success);
     });
 
-    it('should set serviceStatus to Error and notify the snackbar when the element fires "error"', () => {
-      component.initPaymentElement(initStripePayment);
+    it('should set serviceStatus to Error and notify the snackbar when the element fires "loaderror"', async () => {
+      await component.initPaymentElement(initStripePayment);
 
-      const errorHandler = addressDomElement.on.mock.calls.find(([event]) => event === 'error')?.[1];
-      expect(errorHandler).toBeDefined();
+      const loadErrorHandler = addressDomElement.on.mock.calls.find(([event]) => event === 'loaderror')?.[1];
+      expect(loadErrorHandler).toBeDefined();
 
-      errorHandler({ error: { message: 'Something went wrong' } });
+      loadErrorHandler({ error: { message: 'Something went wrong' } });
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
       expect(snackBarMock.error).toHaveBeenCalledWith('Error loading Stripe: Something went wrong');
     });
 
-    it('should display and report a validation error on "change" when the field is invalid', () => {
-      const cardErrorsEl = document.createElement('div');
-      cardErrorsEl.id = 'card-errors';
-      document.body.appendChild(cardErrorsEl);
-
-      component.initPaymentElement(initStripePayment);
-
-      const changeHandler = addressDomElement.addEventListener.mock.calls.find(
-        ([event]) => event === 'change'
-      )?.[1];
-      expect(changeHandler).toBeDefined();
-
-      changeHandler({ error: { message: 'Invalid postal code' } });
-
-      expect(cardErrorsEl.textContent).toBe('Invalid postal code');
-      expect(snackBarMock.error).toHaveBeenCalledWith('Invalid postal code');
-
-      document.body.removeChild(cardErrorsEl);
-    });
-
-    it('should clear the displayed error on "change" when the field becomes valid', () => {
-      const cardErrorsEl = document.createElement('div');
-      cardErrorsEl.id = 'card-errors';
-      cardErrorsEl.textContent = 'previous error';
-      document.body.appendChild(cardErrorsEl);
-
-      component.initPaymentElement(initStripePayment);
-
-      const changeHandler = addressDomElement.addEventListener.mock.calls.find(
-        ([event]) => event === 'change'
-      )?.[1];
-
-      changeHandler({ error: null });
-
-      expect(cardErrorsEl.textContent).toBe('');
-
-      document.body.removeChild(cardErrorsEl);
-    });
-
-    it('should log an error and set an error state when the public key is undefined, without touching Stripe', () => {
+    it('should log an error and set an error state when the public key is undefined, without touching Stripe', async () => {
       stripeKeyMock.getPublicKey.mockReturnValue(undefined);
 
-      expect(() => component.initPaymentElement(initStripePayment)).not.toThrow();
+      await expect(component.initPaymentElement(initStripePayment)).resolves.not.toThrow();
 
       expect(logMock.error).toHaveBeenCalledWith(
         'Cannot display Payment because publicKey is undefined.'
       );
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-      expect(stripeGlobalMock).not.toHaveBeenCalled();
+      expect(loadStripeMock).not.toHaveBeenCalled();
       expect(component.initStripePayment).toBeUndefined();
     });
+
+    it('should log an error and set an error state when Stripe.js fails to load', async () => {
+      loadStripeMock.mockResolvedValue(null);
+
+      await component.initPaymentElement(initStripePayment);
+
+      expect(logMock.error).toHaveBeenCalledWith(
+        'Cannot display Payment because Stripe.js failed to load.'
+      );
+      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
+    });
   });
+
+  // ─── submitIntent ───────────────────────────────────────────────────────────
 
   describe('submitIntent', () => {
     const submitStripePayment: SubmitStripePayment = { return_url: 'https://example.com/return' };
@@ -198,16 +177,13 @@ describe('StripePaymentElement', () => {
     });
 
     it('should call confirmSetup for a SetupIntent and show an error on failure', async () => {
+      await component.initPaymentElement(initStripePayment);
       component.initStripePayment = { ...initStripePayment, intent: StripeIntent.SetupIntent };
-      component.elements = stripeElementsMock;
-      component.stripeElement = {
-        confirmSetup: vi.fn().mockResolvedValue({ error: { message: 'Card declined' } }),
-        confirmPayment: vi.fn()
-      };
+      stripeInstanceMock.confirmSetup.mockResolvedValue({ error: { message: 'Card declined' } });
 
       await component.submitIntent(submitStripePayment);
 
-      expect(component.stripeElement.confirmSetup).toHaveBeenCalledWith({
+      expect(stripeInstanceMock.confirmSetup).toHaveBeenCalledWith({
         elements: stripeElementsMock,
         confirmParams: { return_url: submitStripePayment.return_url }
       });
@@ -215,16 +191,12 @@ describe('StripePaymentElement', () => {
     });
 
     it('should call confirmPayment for a PaymentIntent and not show an error on success', async () => {
+      await component.initPaymentElement(initStripePayment);
       component.initStripePayment = { ...initStripePayment, intent: StripeIntent.PaymentIntent };
-      component.elements = stripeElementsMock;
-      component.stripeElement = {
-        confirmSetup: vi.fn(),
-        confirmPayment: vi.fn().mockResolvedValue({})
-      };
 
       await component.submitIntent(submitStripePayment);
 
-      expect(component.stripeElement.confirmPayment).toHaveBeenCalledWith({
+      expect(stripeInstanceMock.confirmPayment).toHaveBeenCalledWith({
         elements: stripeElementsMock,
         confirmParams: { return_url: submitStripePayment.return_url }
       });
