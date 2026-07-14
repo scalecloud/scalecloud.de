@@ -15,15 +15,13 @@ Sentry.init({
   dsn: "https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784",
   integrations: [
     Sentry.browserTracingIntegration(),
-    Sentry.browserProfilingIntegration(),
     Sentry.replayIntegration(),
   ],
   environment: environment.production ? 'production' : 'development',
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 0.2,
   tracePropagationTargets: ["localhost", /^https:\/\/api\.scalecloud\.de/],
-  replaysSessionSampleRate: 1.0,
+  replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
-  profilesSampleRate: 1.0,
 });
 
 bootstrapApplication(App, {
