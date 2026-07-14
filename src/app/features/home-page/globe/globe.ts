@@ -15,6 +15,11 @@ export class Globe implements OnInit, AfterViewInit, OnDestroy {
   public globeSize = 0;
   private globe?: CobeGlobe;
   private animationFrameId?: number;
+  private idleCallbackId?: number;
+  private idleTimeoutId?: ReturnType<typeof setTimeout>;
+  private intersectionObserver?: IntersectionObserver;
+  private isInView = true;
+  private phi = 4;
 
   ngOnInit(): void {
     const innerHeight = window.innerHeight;
@@ -31,14 +36,25 @@ export class Globe implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.showGlobe();
+    if (typeof requestIdleCallback === 'function') {
+      this.idleCallbackId = requestIdleCallback(() => this.showGlobe(), { timeout: 2000 });
+    } else {
+      this.idleTimeoutId = setTimeout(() => this.showGlobe(), 1);
+    }
   }
 
   ngOnDestroy(): void {
+    if (this.idleCallbackId !== undefined && typeof cancelIdleCallback === 'function') {
+      cancelIdleCallback(this.idleCallbackId);
+    }
+    if (this.idleTimeoutId !== undefined) {
+      clearTimeout(this.idleTimeoutId);
+    }
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
     }
 
+    this.intersectionObserver?.disconnect();
     this.globe?.destroy();
   }
 
@@ -50,7 +66,6 @@ export class Globe implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showGlobe() {
-    let phi = 4;
     const canvas = this.canvasRef().nativeElement;
 
     this.globe = createGlobe(canvas, {
@@ -72,13 +87,41 @@ export class Globe implements OnInit, AfterViewInit, OnDestroy {
       ],
     });
 
+    this.observeVisibility(canvas);
+
+    if (!this.prefersReducedMotion()) {
+      this.startAnimation();
+    }
+  }
+
+  private prefersReducedMotion(): boolean {
+    return typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  private observeVisibility(canvas: HTMLCanvasElement): void {
+    if (typeof IntersectionObserver === 'undefined') {
+      return;
+    }
+
+    this.intersectionObserver = new IntersectionObserver(([entry]) => {
+      this.isInView = entry.isIntersecting;
+      if (this.isInView && !this.animationFrameId) {
+        this.startAnimation();
+      }
+    });
+    this.intersectionObserver.observe(canvas);
+  }
+
+  private startAnimation(): void {
     const animate = () => {
-      if (!this.globe) {
+      if (!this.globe || !this.isInView) {
+        this.animationFrameId = undefined;
         return;
       }
 
-      this.globe.update({ phi });
-      phi += 0.001;
+      this.globe.update({ phi: this.phi });
+      this.phi += 0.001;
       this.animationFrameId = requestAnimationFrame(animate);
     };
 

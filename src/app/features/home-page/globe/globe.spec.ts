@@ -13,6 +13,24 @@ vi.mock('cobe', () => ({
     default: vi.fn(),
 }));
 
+// Minimal fake so tests can drive IntersectionObserver callbacks manually.
+// jsdom doesn't implement IntersectionObserver, so Globe's own guard
+// (`typeof IntersectionObserver === 'undefined'`) would otherwise skip this
+// code path entirely and leave it uncovered.
+class FakeIntersectionObserver {
+    static instances: FakeIntersectionObserver[] = [];
+
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
+    callback: IntersectionObserverCallback;
+
+    constructor(callback: IntersectionObserverCallback) {
+        this.callback = callback;
+        FakeIntersectionObserver.instances.push(this);
+    }
+}
+
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function setWindowSize(width: number, height: number): void {
@@ -35,6 +53,8 @@ describe('Globe', () => {
         destroy: Mock;
     };
     let createGlobeSpy: Mock;
+    let requestIdleCallbackSpy: Mock;
+    let cancelIdleCallbackSpy: Mock;
 
     beforeEach(async () => {
         // vi.spyOn on the same global (window) across multiple tests reuses the
@@ -42,6 +62,21 @@ describe('Globe', () => {
         // otherwise accumulate across the whole suite. Restore real
         // implementations first so each test starts from a clean slate.
         vi.restoreAllMocks();
+
+        FakeIntersectionObserver.instances = [];
+
+        // showGlobe() is now deferred via requestIdleCallback. Stub it to fire
+        // synchronously so the rest of the suite can keep asserting against
+        // fixture.detectChanges() the same way it did when showGlobe() ran
+        // directly in ngAfterViewInit.
+        requestIdleCallbackSpy = vi.fn((cb: IdleRequestCallback) => {
+            cb({ didTimeout: false, timeRemaining: () => 0 } as IdleDeadline);
+            return 1;
+        });
+        cancelIdleCallbackSpy = vi.fn();
+        vi.stubGlobal('requestIdleCallback', requestIdleCallbackSpy);
+        vi.stubGlobal('cancelIdleCallback', cancelIdleCallbackSpy);
+        vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver);
 
         // Mock the cobe globe instance
         mockGlobe = {
@@ -79,6 +114,7 @@ describe('Globe', () => {
 
     afterEach(() => {
         setWindowSize(1024, 768);
+        vi.unstubAllGlobals();
     });
 
     // ── Creation ───────────────────────────────────────────────────────────────
@@ -162,6 +198,15 @@ describe('Globe', () => {
         expect(style).toEqual({ width: '0px', height: '0px' });
     });
 
+    // ── Idle deferral ──────────────────────────────────────────────────────────
+
+    describe('idle-callback deferral', () => {
+        it('defers globe setup to requestIdleCallback rather than calling it directly', () => {
+            expect(requestIdleCallbackSpy).toHaveBeenCalledTimes(1);
+            expect(createGlobeSpy).toHaveBeenCalledTimes(1);
+        });
+    });
+
     // ── COBE integration ───────────────────────────────────────────────────────
 
     describe('showGlobe()', () => {
@@ -175,7 +220,7 @@ describe('Globe', () => {
             const options = vi.mocked(createGlobeSpy).mock.lastCall[1];
             expect(options.dark).toBe(1);
             expect(options.diffuse).toBe(1.2);
-            expect(options.mapSamples).toBe(16000);
+            expect(options.mapSamples).toBe(10000);
             expect(options.mapBrightness).toBe(6);
             expect(options.markerElevation).toBe(0.01);
         });
@@ -237,12 +282,57 @@ describe('Globe', () => {
         });
     });
 
+    // ── Visibility-based pause (IntersectionObserver) ───────────────────────────
+
+    describe('visibility-based pause', () => {
+        it('observes the canvas element for intersection changes', () => {
+            expect(FakeIntersectionObserver.instances).toHaveLength(1);
+            expect(FakeIntersectionObserver.instances[0].observe).toHaveBeenCalledTimes(1);
+        });
+
+        it('stops scheduling further animation frames once the canvas scrolls out of view', () => {
+            const observer = FakeIntersectionObserver.instances[0];
+            const rafCallback = vi.mocked((window.requestAnimationFrame as Mock)).mock.lastCall[0] as FrameRequestCallback;
+
+            observer.callback([{ isIntersecting: false } as IntersectionObserverEntry], observer as unknown as IntersectionObserver);
+            const callCountBefore = (window.requestAnimationFrame as unknown as Mock).mock.calls.length;
+            rafCallback(0);
+
+            expect(mockGlobe.update).not.toHaveBeenCalled();
+            expect((window.requestAnimationFrame as unknown as Mock).mock.calls.length).toBe(callCountBefore);
+        });
+
+        it('resumes the animation loop once the canvas scrolls back into view', () => {
+            const observer = FakeIntersectionObserver.instances[0];
+            const rafCallback = vi.mocked((window.requestAnimationFrame as Mock)).mock.lastCall[0] as FrameRequestCallback;
+
+            observer.callback([{ isIntersecting: false } as IntersectionObserverEntry], observer as unknown as IntersectionObserver);
+            rafCallback(0); // loop halts here
+
+            const callCountBefore = (window.requestAnimationFrame as unknown as Mock).mock.calls.length;
+            observer.callback([{ isIntersecting: true } as IntersectionObserverEntry], observer as unknown as IntersectionObserver);
+
+            expect((window.requestAnimationFrame as unknown as Mock).mock.calls.length).toBeGreaterThan(callCountBefore);
+        });
+
+        it('disconnects the observer on destroy', () => {
+            const observer = FakeIntersectionObserver.instances[0];
+            component.ngOnDestroy();
+            expect(observer.disconnect).toHaveBeenCalledTimes(1);
+        });
+    });
+
     // ── Cleanup ────────────────────────────────────────────────────────────────
 
     describe('ngOnDestroy()', () => {
         it('cancels the animation frame on destroy', () => {
             component.ngOnDestroy();
             expect(window.cancelAnimationFrame).toHaveBeenCalledWith(42);
+        });
+
+        it('cancels the pending idle callback on destroy', () => {
+            component.ngOnDestroy();
+            expect(cancelIdleCallbackSpy).toHaveBeenCalledWith(1);
         });
 
         it('calls globe.destroy() on destroy', () => {
