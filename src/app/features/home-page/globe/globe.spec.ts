@@ -220,7 +220,7 @@ describe('Globe', () => {
             const options = vi.mocked(createGlobeSpy).mock.lastCall[1];
             expect(options.dark).toBe(1);
             expect(options.diffuse).toBe(1.2);
-            expect(options.mapSamples).toBe(10000);
+            expect(options.mapSamples).toBe(16000);
             expect(options.mapBrightness).toBe(6);
             expect(options.markerElevation).toBe(0.01);
         });
