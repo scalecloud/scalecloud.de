@@ -35,7 +35,7 @@
   "devDependencies": {
     "@angular-devkit/core": "^22.0.6",
     "@angular-devkit/schematics": "^22.0.6",
-    "@angular-eslint/builder": "22.0.0",
+    "@angular-eslint/builder": "^22.1.0",
     "@angular/build": "^22.0.6",
     "@angular/cli": "^22.0.6",
     "@angular/compiler-cli": "^22.0.6",
@@ -45,11 +45,11 @@
     "@types/node": "^26.1.1",
     "@vitest/coverage-v8": "^4.1.10",
     "@vitest/ui": "^4.1.10",
-    "angular-eslint": "22.0.0",
+    "angular-eslint": "22.1.0",
     "eslint": "^10.7.0",
     "happy-dom": "^20.10.6",
     "typescript": "^6.0.3",
-    "typescript-eslint": "8.63.0",
+    "typescript-eslint": "8.64.0",
     "vitest": "^4.1.10"
   },
   "allowScripts": {
