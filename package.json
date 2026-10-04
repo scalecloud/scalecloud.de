@@ -20,7 +20,7 @@
     "@angular/forms": "^22.1.0",
     "@angular/material": "^22.1.1",
     "@angular/platform-browser": "^22.1.0",
-    "@angular/router": "^22.1.0",
+    "@angular/router": "^22.2.0",
     "@sentry/angular": "^10.69.0",
     "@stripe/stripe-js": "^9.13.0",
     "cobe": "^2.0.1",
