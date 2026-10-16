@@ -15,7 +15,6 @@ import { MatInput } from '@angular/material/input';
 import { CountryInput } from '../country-input/country-input';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailed } from '../../../../shared/loading-failed/loading-failed';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -67,7 +66,6 @@ interface BillingAddressFormControls {
 })
 export class BillingAddressDetailPage implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly auth = inject(Auth);
   private readonly permissionStore = inject(PermissionStore);
   private readonly billingAddress = inject(BillingAddressClient);
   private readonly route = inject(ActivatedRoute);
@@ -145,7 +143,7 @@ export class BillingAddressDetailPage implements OnInit {
     try {
       const hasPermission = await this.permissionStore.isBilling(subscriptionID);
       if (hasPermission) {
-        await this.reloadBillingAddressDetail();
+        this.reloadBillingAddressDetail();
       } else {
         this.serviceStatus.set(ServiceStatus.NoPermission);
       }
@@ -160,16 +158,8 @@ export class BillingAddressDetailPage implements OnInit {
    * tracks Angular-scheduled work and is not guaranteed to wait for
    * an arbitrary, untracked promise chain under zoneless CD.
    */
-  async reloadBillingAddressDetail(): Promise<void> {
+  reloadBillingAddressDetail(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
-
-    try {
-      await this.auth.waitForAuth();
-    } catch (error) {
-      this.log.error('waitForAuth failed: ' + error);
-      this.serviceStatus.set(ServiceStatus.Error);
-      return;
-    }
 
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {
@@ -180,7 +170,10 @@ export class BillingAddressDetailPage implements OnInit {
     const request: BillingAddressRequest = { subscriptionID };
     this.billingAddress.getBillingAddress(request).subscribe({
       next: (reply) => this.applyReply(reply),
-      error: () => this.serviceStatus.set(ServiceStatus.Error),
+      error: (error) => {
+        this.log.error('getBillingAddress failed: ' + error);
+        this.serviceStatus.set(ServiceStatus.Error);
+      },
     });
   }
 
@@ -205,21 +198,9 @@ export class BillingAddressDetailPage implements OnInit {
     this.serviceStatus.set(ServiceStatus.Success);
   }
 
-  /**
-   * Returns a Promise for the same reason as reloadBillingAddressDetail():
-   * lets tests await the full submit flow deterministically instead of
-   * racing fixture.whenStable() against an untracked promise chain.
-   */
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     this.submitted.set(true);
     if (this.form.invalid) {
-      return;
-    }
-
-    try {
-      await this.auth.waitForAuth();
-    } catch (error) {
-      this.log.error('waitForAuth failed: ' + error);
       return;
     }
 
@@ -244,13 +225,19 @@ export class BillingAddressDetailPage implements OnInit {
       phone: this.f.phone.value,
     };
 
-    this.billingAddress.updateBillingAddress(updateBillingAddressRequest).subscribe((reply) => {
-      if (reply.subscriptionID) {
-        this.snackBar.info('Billing address updated.');
-        this.returnUrl.openReturnURL('/dashboard');
-      } else {
+    this.billingAddress.updateBillingAddress(updateBillingAddressRequest).subscribe({
+      next: (reply) => {
+        if (reply.subscriptionID) {
+          this.snackBar.info('Billing address updated.');
+          this.returnUrl.openReturnURL('/dashboard');
+        } else {
+          this.snackBar.error('Could not update billing address. Please retry.');
+        }
+      },
+      error: (error) => {
+        this.log.error('updateBillingAddress failed: ' + error);
         this.snackBar.error('Could not update billing address. Please retry.');
-      }
+      },
     });
   }
 

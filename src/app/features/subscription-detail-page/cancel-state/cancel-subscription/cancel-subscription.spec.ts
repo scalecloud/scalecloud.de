@@ -24,7 +24,7 @@ const mockActivatedRoute = {
   snapshot: { paramMap: { get: vi.fn().mockReturnValue(SUBSCRIPTION_ID) } },
 };
 
-const mockAuth            = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
+const mockAuth            = {};
 const mockLog             = { error: vi.fn(), info: vi.fn() };
 const mockSnackBar        = { info: vi.fn(), error: vi.fn() };
 const mockCancelSubscriptionClient = {

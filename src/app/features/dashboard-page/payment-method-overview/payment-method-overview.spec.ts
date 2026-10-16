@@ -4,8 +4,7 @@ import { PaymentMethodOverview } from './payment-method-overview';
 import { PaymentMethodOverviewReply } from './payment-method-overview-model';
 import { PaymentMethodOverviewClient } from './payment-method-overview-client';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { of, throwError } from 'rxjs';
-import { Auth } from 'src/app/core/auth/auth';
+import { NEVER, of, throwError } from 'rxjs';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
@@ -19,10 +18,6 @@ const mockReply: PaymentMethodOverviewReply = {
 
 const paymentMethodServiceMock = {
   getPaymentMethodOverview: vi.fn(),
-};
-
-const authMock = {
-  waitForAuth: vi.fn(),
 };
 
 const logMock = {
@@ -42,32 +37,22 @@ const returnUrlMock = {
  * `vi.resetAllMocks()` alone isn't enough if a stale `fixture`/`component`
  * from a previous test is still what a later test reads from.
  *
- * `authPending: true` gives `waitForAuth()` a promise that deliberately
- * never resolves, so tests asserting on the pre-load state don't depend on
- * winning a microtask race against the real auth/service chain.
+ * `servicePending: true` keeps the API request open so pre-load assertions
+ * don't depend on a microtask race against the response.
  */
 async function createComponent(
   options: {
     reply?: PaymentMethodOverviewReply;
     serviceError?: boolean;
-    authError?: boolean;
-    authPending?: boolean;
+    servicePending?: boolean;
   } = {}
 ): Promise<{ fixture: ComponentFixture<PaymentMethodOverview>; component: PaymentMethodOverview }> {
-  const { reply = mockReply, serviceError = false, authError = false, authPending = false } = options;
+  const { reply = mockReply, serviceError = false, servicePending = false } = options;
 
   vi.resetAllMocks();
 
-  if (authPending) {
-    authMock.waitForAuth.mockReturnValue(new Promise<void>(() => {})); // never resolves
-  } else if (authError) {
-    authMock.waitForAuth.mockRejectedValue(new Error('Auth failed'));
-  } else {
-    authMock.waitForAuth.mockResolvedValue(undefined);
-  }
-
   paymentMethodServiceMock.getPaymentMethodOverview.mockReturnValue(
-    serviceError ? throwError(() => new Error('API error')) : of(reply)
+    servicePending ? NEVER : serviceError ? throwError(() => new Error('API error')) : of(reply)
   );
 
   TestBed.resetTestingModule();
@@ -75,7 +60,6 @@ async function createComponent(
     imports: [PaymentMethodOverview],
     providers: [
       { provide: PaymentMethodOverviewClient, useValue: paymentMethodServiceMock },
-      { provide: Auth, useValue: authMock },
       { provide: Log, useValue: logMock },
       { provide: ReturnUrl, useValue: returnUrlMock },
     ],
@@ -190,9 +174,8 @@ describe('PaymentOverviewComponent', () => {
     });
 
     it('should return false when reply is null', async () => {
-      const { component } = await createComponent({ authPending: true });
-      // waitForAuth() never resolves here, so reply() is guaranteed to
-      // still be null — no race against the async load chain.
+      const { component } = await createComponent({ servicePending: true });
+      // The API request has not replied, so reply() remains null.
       expect(component.reply()).toBeNull();
       expect(component.hasPaymentMethod()).toBe(false);
     });
@@ -202,14 +185,6 @@ describe('PaymentOverviewComponent', () => {
     const { fixture, component } = await createComponent({ serviceError: true });
     await fixture.whenStable();
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-  });
-
-  it('should set Error status and log when waitForAuth fails', async () => {
-    const { fixture, component } = await createComponent({ authError: true });
-    await fixture.whenStable();
-
-    expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    expect(logMock.error).toHaveBeenCalledWith(expect.stringContaining('waitForAuth failed'));
   });
 
   it('should call returnUrl when openUrlChangePaymentMethod is called', async () => {

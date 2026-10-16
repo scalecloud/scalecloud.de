@@ -25,7 +25,6 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -56,7 +55,6 @@ import { SeatsClient } from './seats-client';
   ],
 })
 export class Seats implements OnInit {
-  private readonly auth = inject(Auth);
   private readonly seatsClient = inject(SeatsClient);
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
@@ -113,32 +111,28 @@ export class Seats implements OnInit {
   loadSeats(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
 
-    this.auth.waitForAuth().then(() => {
-      const subscriptionID = this.getSubscriptionID();
-      if (!subscriptionID) {
-        this.log.error('SeatsComponent.loadSeats: subscriptionID is null');
-        this.serviceStatus.set(ServiceStatus.Error);
-        return;
-      }
-
-      const request: ListSeatRequest = {
-        subscriptionID,
-        pageIndex: this.pageIndex(),
-        pageSize: this.pageSize,
-      };
-
-      this.seatsClient.getListSeats(request).subscribe({
-        next: (reply) => {
-          this.seatListReply.set(reply);
-          this.serviceStatus.set(ServiceStatus.Success);
-        },
-        error: () => {
-          this.serviceStatus.set(ServiceStatus.Error);
-        },
-      });
-    }).catch((error) => {
-      this.log.error('waitForAuth failed: ' + error);
+    const subscriptionID = this.getSubscriptionID();
+    if (!subscriptionID) {
+      this.log.error('SeatsComponent.loadSeats: subscriptionID is null');
       this.serviceStatus.set(ServiceStatus.Error);
+      return;
+    }
+
+    const request: ListSeatRequest = {
+      subscriptionID,
+      pageIndex: this.pageIndex(),
+      pageSize: this.pageSize,
+    };
+
+    this.seatsClient.getListSeats(request).subscribe({
+      next: (reply) => {
+        this.seatListReply.set(reply);
+        this.serviceStatus.set(ServiceStatus.Success);
+      },
+      error: (error) => {
+        this.log.error('getListSeats failed: ' + error);
+        this.serviceStatus.set(ServiceStatus.Error);
+      },
     });
   }
 

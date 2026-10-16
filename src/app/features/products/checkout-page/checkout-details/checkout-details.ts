@@ -15,7 +15,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailed } from '../../../../shared/loading-failed/loading-failed';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { CheckoutProductRequest } from './checkout-product-model';
 import { CheckoutProductClient } from './checkout-product-client';
@@ -30,7 +29,6 @@ import { CheckoutProductClient } from './checkout-product-client';
 export class CheckoutDetails {
   private readonly log = inject(Log);
   private readonly checkoutProductService = inject(CheckoutProductClient);
-  private readonly auth = inject(Auth);
   private readonly route = inject(ActivatedRoute);
 
   readonly quantityComponent = viewChild(Quantity);
@@ -46,8 +44,7 @@ export class CheckoutDetails {
 
   readonly productID = computed<string | undefined>(() => this.queryParamMap().get('productID') ?? undefined);
 
-  // resource() replaces the old ngOnInit + waitForAuth().then(...).subscribe(...) chain.
-  // It re-runs the loader automatically whenever productID changes, and exposes
+  // The resource re-runs the loader whenever productID changes and exposes
   // loading/error/value as signals instead of fields we had to mutate by hand.
   // When productID is undefined the loader is skipped entirely and the resource
   // status becomes 'idle' (handled below in `serviceStatus`).
@@ -57,7 +54,6 @@ export class CheckoutDetails {
       return productID ? { productID } : undefined;
     },
     loader: async ({ params }) => {
-      await this.auth.waitForAuth();
       return firstValueFrom(this.checkoutProductService.getCheckoutProduct(params));
     },
   });

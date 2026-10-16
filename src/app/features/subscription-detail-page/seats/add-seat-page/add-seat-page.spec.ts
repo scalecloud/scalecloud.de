@@ -4,7 +4,6 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { of, Subject, throwError } from 'rxjs';
 import { AddSeatPage } from './add-seat-page';
 import { AddSeatReply } from '../seats-model';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -31,7 +30,6 @@ describe('AddSeatPage', () => {
 
   // Mocks
   const addSeatClient = { addSeat: vi.fn() };
-  const auth = { waitForAuth: vi.fn(() => Promise.resolve()) };
   const log = { warn: vi.fn(), error: vi.fn() };
   const snackBar = { info: vi.fn(), error: vi.fn() };
   const returnUrl = { openReturnURL: vi.fn() };
@@ -48,7 +46,6 @@ describe('AddSeatPage', () => {
       providers: [
         provideRouter([]),
         { provide: AddSeatClient, useValue: addSeatClient },
-        { provide: Auth, useValue: auth },
         { provide: Log, useValue: log },
         { provide: SnackBar, useValue: snackBar },
         { provide: ReturnUrl, useValue: returnUrl },
@@ -278,7 +275,7 @@ describe('AddSeatPage', () => {
 
     const addSeatPromise = component.addSeat();
 
-    // waitForAuth is synchronously resolved; the component is now awaiting firstValueFrom.
+    // The component is awaiting firstValueFrom while the request is pending.
     await fixture.whenStable();
     expect(component.isSubmitting()).toBe(true);
 
@@ -351,17 +348,4 @@ describe('AddSeatPage', () => {
     activatedRouteStub.snapshot.paramMap.get.mockReturnValue(SUBSCRIPTION_ID);
   });
 
-  it('should log error and reset isSubmitting when waitForAuth rejects', async () => {
-    auth.waitForAuth.mockRejectedValueOnce(new Error('Auth failed'));
-    component.email.setValue('user@example.com');
-
-    await component.addSeat();
-
-    expect(log.error).toHaveBeenCalledWith(
-      expect.stringContaining('waitForAuth failed'),
-    );
-    expect(component.isSubmitting()).toBe(false);
-    // HTTP call must not be made after auth failure
-    expect(addSeatClient.addSeat).not.toHaveBeenCalled();
-  });
 });

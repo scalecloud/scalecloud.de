@@ -6,7 +6,6 @@ import { LastCountStore } from './subscription-overview/last-count/last-count-st
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { of, throwError } from 'rxjs';
 import { provideRouter } from '@angular/router';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { SubscriptionOverviewModel } from './subscription-overview/subscription-overview-model';
@@ -29,10 +28,6 @@ const mockSubscriptions: SubscriptionOverviewModel[] = [
     userCount: 10,
   },
 ];
-
-const authMock = {
-  waitForAuth: vi.fn().mockResolvedValue(undefined),
-};
 
 const subscriptionOverviewClientMock = {
   getSubscriptionsOverview: vi.fn().mockReturnValue(of(mockSubscriptions)),
@@ -62,7 +57,6 @@ describe('DashboardPage', () => {
       imports: [DashboardPage],
       providers: [
         provideRouter([]),
-        { provide: Auth, useValue: authMock },
         { provide: SubscriptionOverviewClient, useValue: subscriptionOverviewClientMock },
         { provide: Log, useValue: logMock },
         { provide: LastCountStore, useValue: lastCountStoreMock },
@@ -103,18 +97,8 @@ describe('DashboardPage', () => {
     await fixture.whenStable();
 
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-  });
-
-  it('should set Error status and log when waitForAuth fails', async () => {
-    authMock.waitForAuth.mockRejectedValue(new Error('Auth failed'));
-
-    fixture = TestBed.createComponent(DashboardPage);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-
-    expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     expect(logMock.error).toHaveBeenCalledWith(
-      expect.stringContaining('waitForAuth failed')
+      expect.stringContaining('getSubscriptionsOverview failed')
     );
   });
 });

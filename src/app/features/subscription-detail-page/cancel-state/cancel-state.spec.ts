@@ -6,7 +6,6 @@ import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { CancelState } from './cancel-state';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { CancelStateReply } from './cancel-state-model';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { CancelStateClient } from './cancel-state-client';
@@ -38,7 +37,6 @@ const mockActivatedRoute = {
   snapshot: { paramMap: { get: vi.fn().mockReturnValue(SUBSCRIPTION_ID) } },
 };
 
-const mockAuth       = { waitForAuth: vi.fn().mockResolvedValue(void 0) };
 const mockLog        = { error: vi.fn(), info: vi.fn() };
 const mockSnackBar   = { error: vi.fn() };
 const mockPermissionStore = { isBilling: vi.fn().mockResolvedValue(true) };
@@ -65,7 +63,6 @@ describe('CancelState', () => {
       imports: [CancelState],
       providers: [
         { provide: ActivatedRoute,     useValue: mockActivatedRoute },
-        { provide: Auth,        useValue: mockAuth },
         { provide: CancelStateClient, useValue: mockCancelStateClient },
         { provide: Log,         useValue: mockLog },
         { provide: SnackBar,    useValue: mockSnackBar },
@@ -167,21 +164,15 @@ describe('CancelState', () => {
       );
       await component.getCancelState();
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    });
-
-    it('logs and sets Error status when waitForAuth rejects', async () => {
-      mockAuth.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
-      await component.getCancelState();
       expect(mockLog.error).toHaveBeenCalledWith(
-        expect.stringContaining('waitForAuth failed')
+        'SeatsComponent.getSeatsList: error fetching cancel state',
+        expect.any(Error),
       );
-      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     });
 
     it('logs and does not call the service when subscriptionID is missing', async () => {
       mockActivatedRoute.snapshot.paramMap.get.mockReturnValueOnce(null);
       vi.clearAllMocks();
-      mockAuth.waitForAuth.mockResolvedValueOnce(void 0);
       await component.getCancelState();
       expect(mockCancelStateClient.getCancelState).not.toHaveBeenCalled();
     });

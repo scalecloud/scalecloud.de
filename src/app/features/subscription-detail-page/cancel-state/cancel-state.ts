@@ -8,7 +8,6 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { ResumeSubscription } from './resume-subscription/resume-subscription';
 import { CancelSubscription } from './cancel-subscription/cancel-subscription';
 import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { CancelStateClient } from './cancel-state-client';
@@ -22,7 +21,6 @@ import { PermissionStore } from 'src/app/core/permission-store/permission-store'
     imports: [MatProgressBar, NgxSkeletonLoaderComponent, ResumeSubscription, CancelSubscription, LoadingFailed]
 })
 export class CancelState implements OnInit {
-  private readonly auth = inject(Auth);
   private readonly cancelStateClient = inject(CancelStateClient);
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
@@ -69,13 +67,6 @@ export class CancelState implements OnInit {
   async getCancelState(): Promise<void> {
     this.serviceStatus.set(ServiceStatus.Loading);
 
-    try {
-      await this.auth.waitForAuth();
-    } catch (error) {
-      this.log.error("waitForAuth failed: " + error);
-      this.serviceStatus.set(ServiceStatus.Error);
-      return;
-    }
 
     const subscriptionID = this.getSubscriptionID();
     if (!subscriptionID) {

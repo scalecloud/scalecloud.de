@@ -10,7 +10,6 @@ import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
 import { SubscriptionOverview } from './subscription-overview/subscription-overview';
 import { LoadingFailed } from '../../shared/loading-failed/loading-failed';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 
 @Component({
@@ -33,7 +32,6 @@ import { Log } from 'src/app/core/logging/log';
   ],
 })
 export class DashboardPage implements OnInit {
-  private readonly auth = inject(Auth);
   private readonly subscriptionOverviewStore = inject(SubscriptionOverviewClient);
   private readonly log = inject(Log);
   private readonly lastCountStore = inject(LastCountStore);
@@ -52,24 +50,16 @@ export class DashboardPage implements OnInit {
   private loadSubscriptionsOverview(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
 
-    this.auth
-      .waitForAuth()
-      .then(() => {
-        this.subscriptionOverviewStore.getSubscriptionsOverview().subscribe({
-          next: (subscriptionsOverview) => {
-            this.reply.set(subscriptionsOverview);
-            this.lastCountStore.setLastSubscriptionOverviewCount = subscriptionsOverview.length;
-            this.serviceStatus.set(ServiceStatus.Success);
-          },
-          error: (error) => {
-            this.serviceStatus.set(ServiceStatus.Error);
-            this.log.error(`getSubscriptionsOverview failed: ${error}`);
-          },
-        });
-      })
-      .catch((error) => {
-        this.log.error(`waitForAuth failed: ${error}`);
+    this.subscriptionOverviewStore.getSubscriptionsOverview().subscribe({
+      next: (subscriptionsOverview) => {
+        this.reply.set(subscriptionsOverview);
+        this.lastCountStore.setLastSubscriptionOverviewCount = subscriptionsOverview.length;
+        this.serviceStatus.set(ServiceStatus.Success);
+      },
+      error: (error) => {
         this.serviceStatus.set(ServiceStatus.Error);
-      });
+        this.log.error(`getSubscriptionsOverview failed: ${error}`);
+      },
+    });
   }
 }

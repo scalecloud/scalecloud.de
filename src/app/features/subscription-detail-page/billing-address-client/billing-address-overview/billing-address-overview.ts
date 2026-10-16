@@ -13,7 +13,6 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailed } from '../../../../shared/loading-failed/loading-failed';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -42,7 +41,6 @@ import { ServiceStatus } from 'src/app/shared/client-status';
   ],
 })
 export class BillingAddressOverview implements OnInit {
-  private readonly auth = inject(Auth);
   private readonly permissionStore = inject(PermissionStore);
   private readonly billingAddressService = inject(BillingAddressClient);
   private readonly route = inject(ActivatedRoute);
@@ -94,7 +92,7 @@ export class BillingAddressOverview implements OnInit {
     try {
       const hasPermission = await this.permissionStore.isBilling(id);
       if (hasPermission) {
-        await this.loadBillingAddress();
+        this.loadBillingAddress();
       } else {
         this.serviceStatus.set(ServiceStatus.NoPermission);
       }
@@ -110,16 +108,8 @@ export class BillingAddressOverview implements OnInit {
    * tracks Angular-scheduled work and is not guaranteed to wait for
    * an arbitrary, untracked promise chain under zoneless CD.
    */
-  private async loadBillingAddress(): Promise<void> {
+  private loadBillingAddress(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
-
-    try {
-      await this.auth.waitForAuth();
-    } catch (error) {
-      this.log.error(`waitForAuth failed: ${error}`);
-      this.serviceStatus.set(ServiceStatus.Error);
-      return;
-    }
 
     const id = this.subscriptionId();
     if (!id) {

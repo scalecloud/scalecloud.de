@@ -1,13 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { ChangePaymentPage } from './change-payment-page';
 import { ChangePaymentClient } from './change-payment-client';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { StripeIntent } from 'src/app/shared/stripe-payment-element/stripe-payment-setup-intent-model';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { StripePaymentElement } from 'src/app/shared/stripe-payment-element/stripe-payment-element';
@@ -26,10 +25,6 @@ class StripePaymentElementStub {
 }
 
 // ── Mock factories ────────────────────────────────────────────────────────────
-
-const makeAuth = () => ({
-  waitForAuth: vi.fn().mockResolvedValue(void 0),
-});
 
 const makeChangePaymentService = () => ({
   getChangePaymentSetupIntent: vi.fn().mockReturnValue(
@@ -54,7 +49,6 @@ describe('ChangePaymentPage', () => {
   let component: ChangePaymentPage;
   let stripeStub: StripePaymentElementStub;
 
-  let authMock: ReturnType<typeof makeAuth>;
   let changePaymentService: ReturnType<typeof makeChangePaymentService>;
   let log: ReturnType<typeof makeLog>;
   let returnUrl: ReturnType<typeof makeReturnUrl>;
@@ -63,7 +57,6 @@ describe('ChangePaymentPage', () => {
     await TestBed.configureTestingModule({
       imports: [ChangePaymentPage],
       providers: [
-        { provide: Auth,          useValue: makeAuth() },
         { provide: ChangePaymentClient, useValue: makeChangePaymentService() },
         { provide: Log,           useValue: makeLog() },
         { provide: ReturnUrl,     useValue: makeReturnUrl() },
@@ -75,7 +68,6 @@ describe('ChangePaymentPage', () => {
       })
       .compileComponents();
 
-    authMock          = TestBed.inject(Auth)          as unknown as ReturnType<typeof makeAuth>;
     changePaymentService = TestBed.inject(ChangePaymentClient) as unknown as ReturnType<typeof makeChangePaymentService>;
     log           = TestBed.inject(Log)           as unknown as ReturnType<typeof makeLog>;
     returnUrl     = TestBed.inject(ReturnUrl)     as unknown as ReturnType<typeof makeReturnUrl>;
@@ -94,9 +86,7 @@ describe('ChangePaymentPage', () => {
 
     // Step 3: re-run the init flow so it executes with the stub in place.
     // ngOnInit already ran in step 1 (with undefined), so we call it directly
-    // and await the returned promise so the full chain — including the
-    // .catch() branch in error tests — has actually resolved before assertions run.
-    await component.getChangePaymentSetupIntent();
+    component.getChangePaymentSetupIntent();
   });
 
   afterEach(() => vi.clearAllMocks());
@@ -109,9 +99,7 @@ describe('ChangePaymentPage', () => {
 
   // ── ngOnInit / getChangePaymentSetupIntent ─────────────────────────────────
 
-  it('waits for auth before fetching the setup intent', () => {
-    // Called once in ngOnInit (step 1) and once in beforeEach step 3.
-    expect(authMock.waitForAuth).toHaveBeenCalled();
+  it('fetches the setup intent during initialization', () => {
     expect(changePaymentService.getChangePaymentSetupIntent).toHaveBeenCalled();
   });
 
@@ -126,8 +114,8 @@ describe('ChangePaymentPage', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('returns a promise that resolves once the setup intent flow completes', async () => {
-    await expect(component.getChangePaymentSetupIntent()).resolves.toBeUndefined();
+  it('returns void when fetching the setup intent', () => {
+    expect(component.getChangePaymentSetupIntent()).toBeUndefined();
   });
 
   it('stores the setup-intent reply on the component', () => {
@@ -145,32 +133,25 @@ describe('ChangePaymentPage', () => {
     });
   });
 
-  it('does not throw when the Stripe element is undefined while the reply arrives', async () => {
+  it('does not throw when the Stripe element is undefined while the reply arrives', () => {
     component.stripePaymentElementComponent.set(undefined);
 
-    await expect(component.getChangePaymentSetupIntent()).resolves.toBeUndefined();
+    expect(() => component.getChangePaymentSetupIntent()).not.toThrow();
     // No init call possible without a Stripe element, and no error logged either
     // — this path is a normal race (view not yet rendered), not a failure.
     expect(log.error).not.toHaveBeenCalled();
   });
 
-  it('logs an error when waitForAuth rejects', async () => {
-    authMock.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
+  it('logs an error when the setup-intent request fails', () => {
+    changePaymentService.getChangePaymentSetupIntent.mockReturnValueOnce(
+      throwError(() => new Error('API error')),
+    );
 
-    await component.getChangePaymentSetupIntent();
+    component.getChangePaymentSetupIntent();
 
     expect(log.error).toHaveBeenCalledWith(
-      expect.stringContaining('waitForAuth failed'),
+      expect.stringContaining('getChangePaymentSetupIntent failed'),
     );
-  });
-
-  it('does not fetch the setup intent when waitForAuth rejects', async () => {
-    authMock.waitForAuth.mockRejectedValueOnce(new Error('auth failed'));
-    changePaymentService.getChangePaymentSetupIntent.mockClear();
-
-    await component.getChangePaymentSetupIntent();
-
-    expect(changePaymentService.getChangePaymentSetupIntent).not.toHaveBeenCalled();
   });
 
   // ── changePaymentMethod ────────────────────────────────────────────────────

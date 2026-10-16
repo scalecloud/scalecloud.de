@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi, type Mock } from 'vitest';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -50,7 +49,6 @@ describe('BillingAddressDetailPage', () => {
   let component: BillingAddressDetailPage;
   let fixture: ComponentFixture<BillingAddressDetailPage>;
 
-  let authMock: { waitForAuth: Mock };
   let permissionMock: { isBilling: Mock };
   let billingAddressClientMock: { getBillingAddress: Mock; updateBillingAddress: Mock };
   let logMock: { error: Mock };
@@ -65,7 +63,6 @@ describe('BillingAddressDetailPage', () => {
    * since getSubscriptionID() is read in ngOnInit via checkPermissions().
    */
   async function setup(routeOverride?: Partial<ActivatedRoute>) {
-    authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
     permissionMock = { isBilling: vi.fn().mockResolvedValue(true) };
     billingAddressClientMock = {
       getBillingAddress: vi.fn().mockReturnValue(of(createReply())),
@@ -86,7 +83,6 @@ describe('BillingAddressDetailPage', () => {
     await TestBed.configureTestingModule({
       imports: [BillingAddressDetailPage],
       providers: [
-        { provide: Auth, useValue: authMock },
         { provide: PermissionStore, useValue: permissionMock },
         { provide: BillingAddressClient, useValue: billingAddressClientMock },
         { provide: Log, useValue: logMock },
@@ -163,7 +159,6 @@ describe('BillingAddressDetailPage', () => {
       fixture.detectChanges();
       await vi.waitFor(() => expect(billingAddressClientMock.getBillingAddress).toHaveBeenCalled());
 
-      expect(authMock.waitForAuth).toHaveBeenCalled();
       expect(billingAddressClientMock.getBillingAddress).toHaveBeenCalledWith({
         subscriptionID: SUBSCRIPTION_ID,
       });
@@ -175,17 +170,19 @@ describe('BillingAddressDetailPage', () => {
       await setup();
     });
 
-    it('should set Loading status immediately, before auth resolves', () => {
-      // Don't await — an async function body runs synchronously up
-      // to its first `await`, so the Loading status is already set
-      // by the time this call returns, while waitForAuth() is still
-      // pending. Deliberately not awaiting the returned promise here.
-      void component.reloadBillingAddressDetail();
+    it('should stay Loading while the billing address request is pending', () => {
+      const request = new Subject<BillingAddressReply>();
+      billingAddressClientMock.getBillingAddress.mockReturnValue(request);
+
+      component.reloadBillingAddressDetail();
       expect(component.serviceStatus()).toBe(ServiceStatus.Loading);
+
+      request.next(createReply());
+      request.complete();
     });
 
     it('should patch the form and set Success status on a successful reply', async () => {
-      await component.reloadBillingAddressDetail();
+      component.reloadBillingAddressDetail();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Success);
       expect(component.form.controls.name.value).toBe('Jane Doe');
@@ -198,7 +195,7 @@ describe('BillingAddressDetailPage', () => {
     });
 
     it('should expose the loaded country code via getCountyCode()', async () => {
-      await component.reloadBillingAddressDetail();
+      component.reloadBillingAddressDetail();
 
       expect(component.getCountyCode()).toBe('DE');
     });
@@ -212,26 +209,18 @@ describe('BillingAddressDetailPage', () => {
         throwError(() => new Error('network error')),
       );
 
-      await component.reloadBillingAddressDetail();
+      component.reloadBillingAddressDetail();
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-    });
-
-    it('should log and set Error status when waitForAuth rejects', async () => {
-      authMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
-
-      await component.reloadBillingAddressDetail();
-
       expect(logMock.error).toHaveBeenCalledWith(
-        expect.stringContaining('waitForAuth failed'),
+        expect.stringContaining('getBillingAddress failed'),
       );
-      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     });
 
-    it('should log and not call getBillingAddress when subscriptionID is missing after auth resolves', async () => {
+    it('should log and not call getBillingAddress when subscriptionID is missing', async () => {
       await setup(createActivatedRouteStub(null));
 
-      await component.reloadBillingAddressDetail();
+      component.reloadBillingAddressDetail();
 
       expect(logMock.error).toHaveBeenCalledWith(
         expect.stringContaining('subscriptionID is null'),
@@ -313,7 +302,7 @@ describe('BillingAddressDetailPage', () => {
         phone: '+49 000 000000',
       });
 
-      await component.onSubmit();
+      component.onSubmit();
 
       expect(billingAddressClientMock.updateBillingAddress).toHaveBeenCalledWith({
         subscriptionID: SUBSCRIPTION_ID,
@@ -340,7 +329,7 @@ describe('BillingAddressDetailPage', () => {
       component.form.controls.country.setValue('DE');
       component.form.controls.phone.setValue('+49 123456');
 
-      await component.onSubmit();
+      component.onSubmit();
 
       expect(snackBarMock.error).toHaveBeenCalledWith('Could not update billing address. Please retry.');
       expect(returnUrlMock.openReturnURL).not.toHaveBeenCalled();
@@ -366,8 +355,10 @@ describe('BillingAddressDetailPage', () => {
       expect(billingAddressClientMock.updateBillingAddress).not.toHaveBeenCalled();
     });
 
-    it('should log when waitForAuth rejects during submit', async () => {
-      authMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
+    it('should log and show an error when the update request fails', async () => {
+      billingAddressClientMock.updateBillingAddress.mockReturnValue(
+        throwError(() => new Error('network error')),
+      );
       component.form.controls.name.setValue('Valid Name');
       component.form.controls.line1.setValue('Valid Line 1');
       component.form.controls.postalCode.setValue('12345');
@@ -375,10 +366,13 @@ describe('BillingAddressDetailPage', () => {
       component.form.controls.country.setValue('DE');
       component.form.controls.phone.setValue('+49 123456');
 
-      await component.onSubmit();
+      component.onSubmit();
 
       expect(logMock.error).toHaveBeenCalledWith(
-        expect.stringContaining('waitForAuth failed'),
+        expect.stringContaining('updateBillingAddress failed'),
+      );
+      expect(snackBarMock.error).toHaveBeenCalledWith(
+        'Could not update billing address. Please retry.',
       );
     });
   });

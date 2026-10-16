@@ -17,7 +17,6 @@ import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -40,7 +39,6 @@ import { Role, RoleDescriptions } from 'src/app/core/permission-store/roles';
   ],
 })
 export class AddSeatPage {
-  private readonly auth = inject(Auth);
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
   private readonly addSeatClient = inject(AddSeatClient);
@@ -93,13 +91,6 @@ export class AddSeatPage {
       roles: this.selectedRoles(),
     };
 
-    try {
-      await this.auth.waitForAuth();
-    } catch (error) {
-      this.isSubmitting.set(false);
-      this.log.error('waitForAuth failed: ' + error);
-      return;
-    }
 
     try {
       const reply = await firstValueFrom(

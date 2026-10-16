@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { NEVER, of, throwError } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { SubscriptionDetailCard } from './subscription-detail-card';
 import { CancelState } from '../cancel-state/cancel-state';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { SubscriptionDetailReply } from './subscription-detail-card-model';
-import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -43,13 +42,6 @@ function makeActivatedRoute(subscriptionID = 'sub_123') {
   };
 }
 
-function makeAuth() {
-  return {
-    waitForAuth: vi.fn().mockResolvedValue(undefined),
-    getHttpOptions: vi.fn().mockReturnValue({}),
-  };
-}
-
 function makePermissionStore(hasPermission = true) {
   return { isUser: vi.fn().mockResolvedValue(hasPermission) };
 }
@@ -81,7 +73,6 @@ describe('SubscriptionDetailCard', () => {
   let component: SubscriptionDetailCard;
   let fixture: ComponentFixture<SubscriptionDetailCard>;
 
-  let auth: ReturnType<typeof makeAuth>;
   let permissionStore: ReturnType<typeof makePermissionStore>;
   let subscriptionDetailCardClient: ReturnType<typeof makeSubscriptionService>;
   let log: ReturnType<typeof makeLog>;
@@ -91,17 +82,13 @@ describe('SubscriptionDetailCard', () => {
     subscriptionID?: string;
     hasPermission?: boolean;
     reply?: SubscriptionDetailReply;
-    waitForAuthResult?: Promise<void>;
   } = {}) {
     const {
       subscriptionID = 'sub_123',
       hasPermission = true,
       reply = makeReply(),
-      waitForAuthResult = Promise.resolve(),
     } = options;
 
-    auth = makeAuth();
-    auth.waitForAuth.mockReturnValue(waitForAuthResult);
     permissionStore = makePermissionStore(hasPermission);
     subscriptionDetailCardClient = makeSubscriptionService(reply);
     log = makeLog();
@@ -114,7 +101,6 @@ describe('SubscriptionDetailCard', () => {
         // does not blow up the injector.
         { provide: API_URL, useValue: 'https://api.test' },
         { provide: ActivatedRoute, useValue: makeActivatedRoute(subscriptionID) },
-        { provide: Auth, useValue: auth },
         { provide: PermissionStore, useValue: permissionStore },
         { provide: SubscriptionDetailCardClient, useValue: subscriptionDetailCardClient },
         { provide: Log, useValue: log },
@@ -186,25 +172,6 @@ describe('SubscriptionDetailCard', () => {
       throwError(() => new Error('500')),
     );
 
-    await stabilize(fixture);
-
-    expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-  });
-
-  it('sets serviceStatus to Error when waitForAuth rejects', async () => {
-    // A bare Promise.reject() created inline triggers an unhandled-rejection
-    // warning before the component's .catch() can register. Attaching a no-op
-    // .catch() here silences that while still letting the component handle it.
-    const rejected = Promise.reject(new Error('auth failed'));
-    rejected.catch(() => {});
-
-    await setup({ waitForAuthResult: rejected });
-
-    // Two stabilize passes are needed because the async chain has two hops:
-    //   1. permissionStore.isUser() resolves  → reloadSubscriptionDetail() is called
-    //   2. waitForAuth() rejects                → .catch() sets ServiceStatus.Error
-    // A single whenStable() only drains the first hop.
-    await stabilize(fixture);
     await stabilize(fixture);
 
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
@@ -297,8 +264,8 @@ describe('SubscriptionDetailCard', () => {
     beforeEach(async () => {
       // Prevent load from resolving so reply stays undefined
       await setup();
-      auth.waitForAuth.mockReturnValue(new Promise(() => {}));
-      fixture.detectChanges();
+      subscriptionDetailCardClient.getSubscriptionDetail.mockReturnValue(NEVER);
+      await stabilize(fixture);
     });
 
     it('getID returns empty string', () => expect(component.getID()).toBe(''));

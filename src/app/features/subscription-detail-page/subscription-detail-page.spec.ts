@@ -40,10 +40,7 @@ describe('SubscriptionDetailPage', () => {
         { provide: ReturnUrl, useValue: { getReturnUrlDecoded: vi.fn(), openReturnURL: vi.fn(), openUrlKeepReturnUrl: vi.fn() } },
         {
           provide: Auth,
-          useValue: {
-            waitForAuth: vi.fn().mockResolvedValue(undefined),
-            getHttpOptions: vi.fn().mockReturnValue({}),
-          },
+          useValue: {},
         },
       ],
     })

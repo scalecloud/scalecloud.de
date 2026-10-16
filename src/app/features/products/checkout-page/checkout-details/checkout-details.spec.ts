@@ -6,7 +6,6 @@ import { Observable, of, throwError, Subject } from 'rxjs';
 import { Quantity } from '../../subscription-card/quantity/quantity';
 import { LoadingFailed } from '../../../../shared/loading-failed/loading-failed';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { CheckoutDetails } from './checkout-details';
 import { CheckoutProductReply } from './checkout-product-model';
@@ -80,7 +79,6 @@ describe('CheckoutDetails', () => {
   let fixture: ComponentFixture<CheckoutDetails>;
 
   const checkoutProductService = { getCheckoutProduct: vi.fn() };
-  const authMock = { waitForAuth: vi.fn(() => Promise.resolve()) };
   const log = { error: vi.fn() };
 
   // `settle: false` is for tests that intentionally leave the product request
@@ -93,7 +91,6 @@ describe('CheckoutDetails', () => {
       providers: [
         provideRouter([]),
         { provide: CheckoutProductClient, useValue: checkoutProductService },
-        { provide: Auth, useValue: authMock },
         { provide: Log, useValue: log },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
       ],
@@ -114,7 +111,7 @@ describe('CheckoutDetails', () => {
     fixture.detectChanges();
 
     if (settle) {
-      // Lets the resource's async loader (waitForAuth + the HTTP call) finish
+      // Lets the resource's async loader (the HTTP call) finish
       // and lets the scheduler re-render the Loading/Success/Error block.
       await fixture.whenStable();
     }
@@ -126,7 +123,6 @@ describe('CheckoutDetails', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    authMock.waitForAuth.mockResolvedValue(undefined);
   });
 
   // ─── Creation & query param handling ─────────────────────────────────────────
@@ -145,11 +141,10 @@ describe('CheckoutDetails', () => {
     expect(checkoutProductService.getCheckoutProduct).not.toHaveBeenCalled();
   });
 
-  it('should wait for auth and request the product for the productID in the query params', async () => {
+  it('should request the product for the productID in the query params', async () => {
     checkoutProductService.getCheckoutProduct.mockReturnValue(of(makeReply()));
     await setup(makeActivatedRouteStub('prod_456'));
 
-    expect(authMock.waitForAuth).toHaveBeenCalled();
     expect(checkoutProductService.getCheckoutProduct).toHaveBeenCalledWith({ productID: 'prod_456' });
   });
 

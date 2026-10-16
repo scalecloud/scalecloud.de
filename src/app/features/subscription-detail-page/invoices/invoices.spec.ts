@@ -5,7 +5,6 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { Invoices } from './invoices';
 import { InvoiceStatus, ListInvoicesReply } from './invoices-model';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { InvoicesClient } from './invoices-client';
@@ -16,7 +15,6 @@ describe('Invoices', () => {
   let fixture: ComponentFixture<Invoices>;
 
   let invoicesClientMock: { getInvoices: ReturnType<typeof vi.fn> };
-  let authMock: { waitForAuth: ReturnType<typeof vi.fn> };
   let logMock: { error: ReturnType<typeof vi.fn> };
   let permissionStoreMock: { isBilling: ReturnType<typeof vi.fn> };
   let snackBarMock: { error: ReturnType<typeof vi.fn>; infoDuration: ReturnType<typeof vi.fn> };
@@ -46,7 +44,6 @@ describe('Invoices', () => {
     vi.clearAllMocks();
 
     invoicesClientMock = { getInvoices: vi.fn().mockReturnValue(of(buildReply())) };
-    authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
     logMock = { error: vi.fn() };
     permissionStoreMock = { isBilling: vi.fn().mockResolvedValue(true) };
     snackBarMock = { error: vi.fn(), infoDuration: vi.fn() };
@@ -55,7 +52,6 @@ describe('Invoices', () => {
       imports: [Invoices],
       providers: [
         { provide: InvoicesClient, useValue: invoicesClientMock },
-        { provide: Auth, useValue: authMock },
         { provide: Log, useValue: logMock },
         { provide: PermissionStore, useValue: permissionStoreMock },
         { provide: SnackBar, useValue: snackBarMock },
@@ -162,14 +158,6 @@ describe('Invoices', () => {
 
       expect(component.serviceStatus()).toBe(ServiceStatus.Error);
       expect(logMock.error).toHaveBeenCalled();
-    });
-
-    it('should set status to Error when waitForAuth rejects', async () => {
-      authMock.waitForAuth.mockRejectedValue(new Error('auth failed'));
-      await fixture.whenStable();
-
-      expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-      expect(invoicesClientMock.getInvoices).not.toHaveBeenCalled();
     });
 
     it('should pass pageSize and subscriptionID in the request', async () => {

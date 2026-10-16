@@ -10,7 +10,6 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
@@ -36,7 +35,6 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
 })
 export class PaymentMethodOverview implements OnInit {
   private readonly paymentMethodClient = inject(PaymentMethodOverviewClient);
-  private readonly auth = inject(Auth);
   private readonly log = inject(Log);
   private readonly returnUrl = inject(ReturnUrl);
 
@@ -86,24 +84,16 @@ export class PaymentMethodOverview implements OnInit {
   private loadPaymentMethodOverview(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
 
-    this.auth
-      .waitForAuth()
-      .then(() => {
-        this.paymentMethodClient.getPaymentMethodOverview().subscribe({
-          next: (data) => {
-            this.reply.set(data);
-            this.serviceStatus.set(ServiceStatus.Success);
-          },
-          error: (error) => {
-            this.serviceStatus.set(ServiceStatus.Error);
-            this.log.error(`getPaymentMethodOverview failed: ${error}`);
-          },
-        });
-      })
-      .catch((error) => {
-        this.log.error(`waitForAuth failed: ${error}`);
+    this.paymentMethodClient.getPaymentMethodOverview().subscribe({
+      next: (data) => {
+        this.reply.set(data);
+        this.serviceStatus.set(ServiceStatus.Success);
+      },
+      error: (error) => {
         this.serviceStatus.set(ServiceStatus.Error);
-      });
+        this.log.error(`getPaymentMethodOverview failed: ${error}`);
+      },
+    });
   }
 
   private formatCard(data: PaymentMethodOverviewReply): string {

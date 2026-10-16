@@ -12,7 +12,6 @@ import { MatIcon } from '@angular/material/icon';
 import { CancelState } from '../cancel-state/cancel-state';
 import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
@@ -26,7 +25,6 @@ import { SubscriptionDetailCardClient } from './subscription-detail-card-client'
     imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatTooltip, MatIcon, CancelState, LoadingFailed, CurrencyPipe, DatePipe]
 })
 export class SubscriptionDetailCard implements OnInit {
-  private readonly auth = inject(Auth);
   private readonly permissionStore = inject(PermissionStore);
   private readonly subscriptionDetailCardClient = inject(SubscriptionDetailCardClient);
   private readonly route = inject(ActivatedRoute);
@@ -69,27 +67,24 @@ export class SubscriptionDetailCard implements OnInit {
 
   reloadSubscriptionDetail(): void {
     this.serviceStatus.set(ServiceStatus.Loading);
-    this.auth.waitForAuth().then(() => {
-      const subscriptionID = this.getSubscriptionID();
-      if (subscriptionID == null) {
-        this.log.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
-      } else {
-        this.subscriptionDetailCardClient.getSubscriptionDetail(subscriptionID)
-          .subscribe({
-            next: subscriptionDetail => {
-              this.reply.set(subscriptionDetail);
-              this.serviceStatus.set(ServiceStatus.Success);
-            },
-            error: error => {
-              this.serviceStatus.set(ServiceStatus.Error);
-              this.log.error('SubscriptionDetailComponent.getSubscriptionDetail: error fetching subscription detail', error);
-            }
-          });
-      }
-    }).catch((error) => {
-      this.log.error("waitForAuth failed: " + error);
+    const subscriptionID = this.getSubscriptionID();
+    if (subscriptionID == null) {
+      this.log.error('SubscriptionDetailComponent.getSubscriptionDetail: id is null');
       this.serviceStatus.set(ServiceStatus.Error);
-    });
+      return;
+    }
+
+    this.subscriptionDetailCardClient.getSubscriptionDetail(subscriptionID)
+      .subscribe({
+        next: subscriptionDetail => {
+          this.reply.set(subscriptionDetail);
+          this.serviceStatus.set(ServiceStatus.Success);
+        },
+        error: error => {
+          this.serviceStatus.set(ServiceStatus.Error);
+          this.log.error('SubscriptionDetailComponent.getSubscriptionDetail: error fetching subscription detail', error);
+        }
+      });
   }
 
   getID(): string {

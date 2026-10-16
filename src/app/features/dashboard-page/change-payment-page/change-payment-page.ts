@@ -7,7 +7,6 @@ import { StripePaymentElement, StripePaymentElement as StripePaymentElementCompo
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { afterNextRender } from '@angular/core';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 
@@ -19,7 +18,6 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
     imports: [StripePaymentElementComponent_1, MatButton, MatIcon]
 })
 export class ChangePaymentPage implements OnInit {
-  private readonly auth = inject(Auth);
   private readonly log = inject(Log);
   private readonly changePaymentClient = inject(ChangePaymentClient);
   private readonly returnUrl = inject(ReturnUrl);
@@ -44,24 +42,22 @@ export class ChangePaymentPage implements OnInit {
     void this.getChangePaymentSetupIntent();
   }
 
-  // Returns the underlying promise so callers (and tests) can await
-  // completion of the whole async flow, including the error branch.
-  getChangePaymentSetupIntent(): Promise<void> {
-    return this.auth.waitForAuth().then(() => {
-      this.changePaymentClient.getChangePaymentSetupIntent().subscribe(
-        (subscriptionSetupIntentReply: ChangePaymentReply) => {
-          this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
+  getChangePaymentSetupIntent(): void {
+    this.changePaymentClient.getChangePaymentSetupIntent().subscribe({
+      next: (subscriptionSetupIntentReply: ChangePaymentReply) => {
+        this.subscriptionSetupIntentReply = subscriptionSetupIntentReply;
 
-          const initStripePayment: InitStripePayment = {
-            intent: StripeIntent.SetupIntent,
-            client_secret: subscriptionSetupIntentReply.clientsecret,
-            email: subscriptionSetupIntentReply.email,
-          };
+        const initStripePayment: InitStripePayment = {
+          intent: StripeIntent.SetupIntent,
+          client_secret: subscriptionSetupIntentReply.clientsecret,
+          email: subscriptionSetupIntentReply.email,
+        };
 
-          this.stripePaymentElementComponent()?.initPaymentElement(initStripePayment);
-        });
-    }).catch((error) => {
-      this.log.error('waitForAuth failed: ' + error);
+        this.stripePaymentElementComponent()?.initPaymentElement(initStripePayment);
+      },
+      error: (error) => {
+        this.log.error(`getChangePaymentSetupIntent failed: ${error}`);
+      },
     });
   }
 

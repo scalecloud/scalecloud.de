@@ -8,7 +8,6 @@ import { LanguageStore } from '../country-lookup/language-store';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { of, throwError } from 'rxjs';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -27,7 +26,6 @@ const mockReply: BillingAddressReply = {
   phone: '+4912345678',
 };
 
-const authMock = { waitForAuth: vi.fn().mockResolvedValue(undefined) };
 const permissionStoreMock = { isBilling: vi.fn().mockResolvedValue(true) };
 const billingAddressClientMock = { getBillingAddress: vi.fn().mockReturnValue(of(mockReply)) };
 const routeMock = { snapshot: { paramMap: { get: vi.fn().mockReturnValue('subscription-123') } } };
@@ -38,7 +36,6 @@ const snackBarMock = { error: vi.fn() };
 const returnUrlMock = { openUrlAddReturnUrl: vi.fn() };
 
 const providers = [
-  { provide: Auth, useValue: authMock },
   { provide: PermissionStore, useValue: permissionStoreMock },
   { provide: BillingAddressClient, useValue: billingAddressClientMock },
   { provide: ActivatedRoute, useValue: routeMock },
@@ -70,7 +67,6 @@ async function createComponent(): Promise<{
  * leaks into every test that runs after it.
  */
 function resetMockDefaults(): void {
-  authMock.waitForAuth.mockResolvedValue(undefined);
   permissionStoreMock.isBilling.mockResolvedValue(true);
   billingAddressClientMock.getBillingAddress.mockReturnValue(of(mockReply));
   routeMock.snapshot.paramMap.get.mockReturnValue('subscription-123');
@@ -151,14 +147,8 @@ describe('BillingAddressOverview', () => {
     );
     ({ component } = await createComponent());
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
-  });
-
-  it('should set Error status and log when waitForAuth fails', async () => {
-    authMock.waitForAuth.mockRejectedValue(new Error('Auth error'));
-    ({ component } = await createComponent());
-    expect(component.serviceStatus()).toBe(ServiceStatus.Error);
     expect(logMock.error).toHaveBeenCalledWith(
-      expect.stringContaining('waitForAuth failed')
+      expect.stringContaining('getBillingAddress failed')
     );
   });
 

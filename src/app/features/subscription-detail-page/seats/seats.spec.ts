@@ -6,7 +6,6 @@ import { Seats } from './seats';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { ListSeatReply } from './seats-model';
 import { of, throwError } from 'rxjs';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -34,7 +33,6 @@ function makeReply(overrides: Partial<ListSeatReply> = {}): ListSeatReply {
 function buildMocks() {
   return {
     seatsClient: { getListSeats: vi.fn() },
-    auth: { waitForAuth: vi.fn().mockResolvedValue(undefined) },
     log: { error: vi.fn() },
     snackBar: { error: vi.fn(), info: vi.fn() },
     returnUrl: { openUrlAddReturnUrl: vi.fn() },
@@ -58,7 +56,6 @@ describe('Seats', () => {
       imports: [Seats],
       providers: [
         { provide: SeatsClient, useValue: mocks.seatsClient },
-        { provide: Auth, useValue: mocks.auth },
         { provide: Log, useValue: mocks.log },
         { provide: SnackBar, useValue: mocks.snackBar },
         { provide: ReturnUrl, useValue: mocks.returnUrl },
@@ -117,6 +114,9 @@ describe('Seats', () => {
     component.loadSeats();
     await fixture.whenStable();
     expect(component.serviceStatus()).toBe(ServiceStatus.Error);
+    expect(mocks.log.error).toHaveBeenCalledWith(
+      expect.stringContaining('getListSeats failed'),
+    );
   });
 
   it('sets Error when subscriptionID missing during loadSeats', async () => {

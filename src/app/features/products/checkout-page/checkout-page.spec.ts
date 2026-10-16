@@ -6,7 +6,6 @@ import { CheckoutPage } from './checkout-page';
 import { CheckoutDetails } from './checkout-details/checkout-details';
 import { CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { CheckoutSubscriptionClient } from './checkout-payment/checkout-subscription-client';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { PaymentMethodOverview } from '../../dashboard-page/payment-method-overview/payment-method-overview';
@@ -40,7 +39,6 @@ describe('CheckoutPage', () => {
         provideRouter([]),
         { provide: Log, useValue: { error: vi.fn() } },
         { provide: SnackBar, useValue: { info: vi.fn(), error: vi.fn() } },
-        { provide: Auth, useValue: { waitForAuth: vi.fn(() => Promise.resolve()) } },
         { provide: CheckoutSubscriptionClient, useValue: { createCheckoutSubscription: vi.fn() } },
       ],
     })

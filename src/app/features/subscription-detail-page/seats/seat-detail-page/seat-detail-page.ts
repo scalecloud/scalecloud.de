@@ -31,7 +31,6 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -61,7 +60,6 @@ import { Role, RoleDescriptions } from 'src/app/core/permission-store/roles';
   ],
 })
 export class SeatDetailPage implements OnInit {
-  private readonly auth = inject(Auth);
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
   private readonly seatDetail = inject(SeatDetailClient);
@@ -144,38 +142,34 @@ export class SeatDetailPage implements OnInit {
 
   // ── Data loading ──────────────────────────────────────────────────────────
   loadSeatDetail(): void {
-    this.auth.waitForAuth().then(() => {
-      const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
-      const uid = this.route.snapshot.paramMap.get('uid');
+    const subscriptionID = this.route.snapshot.paramMap.get('subscriptionID');
+    const uid = this.route.snapshot.paramMap.get('uid');
 
-      if (!subscriptionID) {
-        this.log.error('SeatDetailComponent: subscriptionID is null');
-        this.error.set(true);
-        return;
-      }
-      if (!uid) {
-        this.log.error('SeatDetailComponent: uid is null');
-        this.error.set(true);
-        return;
-      }
-
-      const request: SeatDetailRequest = { subscriptionID, uid };
-      this.loading.set(true);
-
-      this.seatDetail.getSeat(request).subscribe({
-        next: (reply) => {
-          this.seatDetailReply.set(reply);
-          this.loading.set(false);
-          this.error.set(false);
-        },
-        error: () => {
-          this.loading.set(false);
-          this.error.set(true);
-        },
-      });
-    }).catch((err) => {
-      this.log.error('waitForAuth failed: ' + err);
+    if (!subscriptionID) {
+      this.log.error('SeatDetailComponent: subscriptionID is null');
       this.error.set(true);
+      return;
+    }
+    if (!uid) {
+      this.log.error('SeatDetailComponent: uid is null');
+      this.error.set(true);
+      return;
+    }
+
+    const request: SeatDetailRequest = { subscriptionID, uid };
+    this.loading.set(true);
+
+    this.seatDetail.getSeat(request).subscribe({
+      next: (reply) => {
+        this.seatDetailReply.set(reply);
+        this.loading.set(false);
+        this.error.set(false);
+      },
+      error: (err) => {
+        this.log.error('getSeat failed: ' + err);
+        this.loading.set(false);
+        this.error.set(true);
+      },
     });
   }
 
@@ -193,19 +187,18 @@ export class SeatDetailPage implements OnInit {
       seatUpdated: { ...selectedSeat, roles: [...this.pendingRoles()] },
     };
 
-    this.auth.waitForAuth().then(() => {
-      this.seatDetail.updateSeat(request).subscribe({
-        next: (reply) => {
-          if (reply.seat) {
-            this.snackBar.info('User updated.');
-            this.returnUrl.openReturnURL('/dashboard');
-          } else {
-            this.snackBar.error('Could not update user. Please try again later.');
-          }
-        },
-      });
-    }).catch((err) => {
-      this.log.error('waitForAuth failed: ' + err);
+    this.seatDetail.updateSeat(request).subscribe({
+      next: (reply) => {
+        if (reply.seat) {
+          this.snackBar.info('User updated.');
+          this.returnUrl.openReturnURL('/dashboard');
+        } else {
+          this.snackBar.error('Could not update user. Please try again later.');
+        }
+      },
+      error: (err) => {
+        this.log.error('updateSeat failed: ' + err);
+      },
     });
   }
 
@@ -225,21 +218,20 @@ export class SeatDetailPage implements OnInit {
 
     const request: DeleteSeatRequest = { seatToDelete };
 
-    this.auth.waitForAuth().then(() => {
-      this.seatDetail.deleteSeat(request).subscribe({
-        next: (reply) => {
-          if (reply?.success) {
-            this.snackBar.info(`Removed ${reply.deletedSeat.email}.`);
-            this.returnUrl.openReturnURL('/dashboard');
-          } else {
-            this.snackBar.error(
-              `Could not remove ${seatToDelete?.email}. Please retry.`
-            );
-          }
-        },
-      });
-    }).catch((err) => {
-      this.log.error('waitForAuth failed: ' + err);
+    this.seatDetail.deleteSeat(request).subscribe({
+      next: (reply) => {
+        if (reply?.success) {
+          this.snackBar.info(`Removed ${reply.deletedSeat.email}.`);
+          this.returnUrl.openReturnURL('/dashboard');
+        } else {
+          this.snackBar.error(
+            `Could not remove ${seatToDelete?.email}. Please retry.`
+          );
+        }
+      },
+      error: (err) => {
+        this.log.error('deleteSeat failed: ' + err);
+      },
     });
   }
 

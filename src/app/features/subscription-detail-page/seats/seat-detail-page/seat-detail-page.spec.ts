@@ -2,11 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
-import { of, Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 
 import { SeatDetailPage } from './seat-detail-page';
 import { SeatDetailReply } from '../seats-model';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
@@ -43,7 +42,6 @@ function buildMocks() {
       updateSeat: vi.fn(),
       deleteSeat: vi.fn(),
     },
-    auth: { waitForAuth: vi.fn().mockResolvedValue(undefined) },
     log: { error: vi.fn() },
     snackBar: { error: vi.fn(), info: vi.fn() },
     returnUrl: { openReturnURL: vi.fn() },
@@ -71,7 +69,6 @@ describe('SeatDetailPage', () => {
       imports: [SeatDetailPage],
       providers: [
         { provide: SeatDetailClient, useValue: mocks.seatDetailClient },
-        { provide: Auth, useValue: mocks.auth },
         { provide: Log, useValue: mocks.log },
         { provide: SnackBar, useValue: mocks.snackBar },
         { provide: ReturnUrl, useValue: mocks.returnUrl },
@@ -113,6 +110,19 @@ describe('SeatDetailPage', () => {
     component.loadSeatDetail();
     await fixture.whenStable();
     expect(component.error()).toBe(true);
+  });
+
+  it('logs an HTTP error when loading seat detail fails', () => {
+    mocks.seatDetailClient.getSeat.mockReturnValue(
+      throwError(() => new Error('API error')),
+    );
+
+    component.loadSeatDetail();
+
+    expect(component.error()).toBe(true);
+    expect(mocks.log.error).toHaveBeenCalledWith(
+      expect.stringContaining('getSeat failed'),
+    );
   });
 
   // ── pendingRoles (linkedSignal) ─────────────────────────────────────────────
@@ -292,6 +302,21 @@ describe('SeatDetailPage', () => {
     expect(mocks.returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
   });
 
+  it('logs an HTTP error when updating a seat fails', async () => {
+    component.loadSeatDetail();
+    await fixture.whenStable();
+    component.pendingRoles.set([]);
+    mocks.seatDetailClient.updateSeat.mockReturnValue(
+      throwError(() => new Error('API error')),
+    );
+
+    component.updateSeat();
+
+    expect(mocks.log.error).toHaveBeenCalledWith(
+      expect.stringContaining('updateSeat failed'),
+    );
+  });
+
   // ── deleteSeat ──────────────────────────────────────────────────────────────
   it('calls deleteSeat and redirects on success', async () => {
     const seat = makeSeat();
@@ -323,6 +348,18 @@ describe('SeatDetailPage', () => {
     component.deleteSeat(makeSeat());
     expect(mocks.snackBar.error).toHaveBeenCalledOnce();
     expect(mocks.returnUrl.openReturnURL).toHaveBeenCalledWith('/dashboard');
+  });
+
+  it('logs an HTTP error when deleting a seat fails', () => {
+    mocks.seatDetailClient.deleteSeat.mockReturnValue(
+      throwError(() => new Error('API error')),
+    );
+
+    component.deleteSeat(makeSeat());
+
+    expect(mocks.log.error).toHaveBeenCalledWith(
+      expect.stringContaining('deleteSeat failed'),
+    );
   });
 
   // ── cancel ───────────────────────────────────────────────────────────────────

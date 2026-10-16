@@ -4,7 +4,6 @@ import { firstValueFrom } from 'rxjs';
 import { CheckoutDetails } from './checkout-details/checkout-details';
 import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from './checkout-create-subscription';
 import { CheckoutSubscriptionClient } from './checkout-payment/checkout-subscription-client';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { PaymentMethodOverview } from '../../dashboard-page/payment-method-overview/payment-method-overview';
@@ -20,7 +19,6 @@ export class CheckoutPage {
   private readonly log = inject(Log);
   private readonly router = inject(Router);
   private readonly snackBar = inject(SnackBar);
-  private readonly auth = inject(Auth);
   private readonly checkoutSubscriptionService = inject(CheckoutSubscriptionClient);
 
   async createCheckoutSubscription(checkoutIntegrationRequest: CheckoutCreateSubscriptionRequest): Promise<void> {
@@ -32,8 +30,6 @@ export class CheckoutPage {
     }
 
     try {
-      await this.auth.waitForAuth();
-
       const checkoutIntegrationReply: CheckoutCreateSubscriptionReply = await firstValueFrom(
         this.checkoutSubscriptionService.createCheckoutSubscription(checkoutIntegrationRequest),
       );

@@ -13,7 +13,6 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatChip } from '@angular/material/chips';
 import { TitleCasePipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
-import { Auth } from 'src/app/core/auth/auth';
 import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
@@ -27,7 +26,6 @@ import { InvoicesClient } from './invoices-client';
     imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatChip, MatPaginator, LoadingFailed, TitleCasePipe, CurrencyPipe, DatePipe]
 })
 export class Invoices implements OnInit {
-  private readonly auth = inject(Auth);
   private readonly invoiceClient = inject(InvoicesClient);
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
@@ -82,7 +80,6 @@ export class Invoices implements OnInit {
     }
 
     try {
-      await this.auth.waitForAuth();
 
       const request: ListInvoicesRequest = {
         subscriptionID,
