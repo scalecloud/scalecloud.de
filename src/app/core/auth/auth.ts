@@ -1,188 +1,222 @@
-import { DestroyRef, Injectable, Signal, computed, inject, signal } from '@angular/core';
+import { Injectable, Signal, computed, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpHeaders } from '@angular/common/http';
-import type { User } from 'firebase/auth';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { catchError, firstValueFrom } from 'rxjs';
 
+import { environment } from '../../../environments/environment';
 import { Log } from '../logging/log';
-import { SnackBar } from '../snackbar/snack-bar';
-import { ReturnUrl } from '../redirect/return-url';
-import { Firebase } from '../firebase/firebase';
+
+export interface AuthUser {
+  uid: string;
+  email: string | null;
+  emailVerified: boolean;
+  displayName: string | null;
+  claims: Record<string, unknown>;
+}
+
+const PENDING_RETURN_KEY = 'scalecloud.auth.pendingReturn';
+const SESSION_HINT_KEY = 'scalecloud.auth.hint';
+const DEFAULT_RETURN_TARGET = '/dashboard';
+
+const PENDING_RETURN_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 @Injectable({ providedIn: 'root' })
 export class Auth {
+  private readonly oidc = inject(OidcSecurityService);
   private readonly router = inject(Router);
-  private readonly snackBar = inject(SnackBar);
   private readonly log = inject(Log);
-  private readonly returnUrl = inject(ReturnUrl);
-  private readonly firebase = inject(Firebase);
-  private readonly destroyRef = inject(DestroyRef);
 
-  private readonly userSignal = signal<User | null | undefined>(undefined);
-  private readonly tokenSignal = signal<string | null | undefined>(undefined);
+  private readonly resolvedSignal = signal(false);
+  private readonly hintSignal = signal(readSessionHint());
+  private initPromise: Promise<void> | null = null;
 
-  /** Current Firebase user: `undefined` until the first auth-state event, `null` when signed out. */
-  readonly user: Signal<User | null | undefined> = this.userSignal.asReadonly();
-  /** Mirrors `user`'s lifecycle; refreshed on every auth-state change. */
-  readonly token: Signal<string | null | undefined> = this.tokenSignal.asReadonly();
-  /** True once a verified user is present. For code that must wait for the initial auth state, use isLoggedIn() instead. */
-  readonly isAuthenticated: Signal<boolean> = computed(() => !!this.userSignal()?.emailVerified);
+  readonly resolved: Signal<boolean> = this.resolvedSignal.asReadonly();
+
+  readonly isAuthenticated: Signal<boolean> = computed(
+    () => this.resolvedSignal() && this.oidc.authenticated().isAuthenticated,
+  );
+
+  readonly user: Signal<AuthUser | null> = computed(() =>
+    this.isAuthenticated() ? toUser(this.oidc.userData().userData) : null,
+  );
+
+  readonly showAsLoggedIn: Signal<boolean> = computed(() =>
+    this.resolvedSignal() ? this.isAuthenticated() : this.hintSignal(),
+  );
 
   constructor() {
-    const unsubscribe = this.firebase.onAuthStateChanged(
-      (user) => this.handleAuthStateChanged(user),
-      (error) => this.log.error('Auth state listener failed: ' + error.message),
-    );
-    this.destroyRef.onDestroy(unsubscribe);
+    effect(() => {
+      if (this.resolvedSignal()) {
+        writeSessionHint(this.isAuthenticated());
+      }
+    });
   }
 
-  private async handleAuthStateChanged(user: User | null): Promise<void> {
-    this.userSignal.set(user);
+  init(): Promise<void> {
+    this.initPromise ??= this.runInitialCheck();
+    return this.initPromise;
+  }
 
-    if (!user) {
-      this.tokenSignal.set(null);
-      return;
-    }
+  private async runInitialCheck(): Promise<void> {
+    const isLoginCallback = new URLSearchParams(window.location.search).has('code');
+    let redirectTo: string | null = null;
 
     try {
-      this.tokenSignal.set(await user.getIdToken());
+      const { isAuthenticated } = await firstValueFrom(this.oidc.checkAuth());
+
+      if (!isAuthenticated && !isLoginCallback) {
+        await this.tryRefresh();
+      }
+      if (isLoginCallback) {
+        redirectTo = this.takeReturnTarget(isAuthenticated);
+      }
     } catch (error) {
-      this.log.error('Could not refresh ID token: ' + (error as Error).message);
-      this.tokenSignal.set(null);
+      this.log.error('Initial auth check failed: ' + (error as Error).message);
+    }
+
+    this.resolvedSignal.set(true);
+
+    if (redirectTo) {
+      void this.router.navigateByUrl(redirectTo, { replaceUrl: true });
     }
   }
 
-  getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        Authorization: this.token() ?? '',
-      }),
-    };
+  async ensureAuthenticated(): Promise<boolean> {
+    await this.init();
+    return this.isAuthenticated() || (await this.tryRefresh());
   }
 
-  async login(email: string, password: string): Promise<void> {
+  private async tryRefresh(): Promise<boolean> {
     try {
-      const result = await this.firebase.signInWithEmailAndPassword(email, password);
-      this.userSignal.set(result.user);
-      this.returnUrl.openReturnURL('/dashboard');
+      const refreshToken = await firstValueFrom(this.oidc.getRefreshToken());
+      if (!refreshToken) {
+        return false;
+      }
+      const { isAuthenticated } = await firstValueFrom(this.oidc.forceRefreshSession());
+      return isAuthenticated;
     } catch (error) {
-      this.snackBar.error((error as Error).message);
-    }
-  }
-
-  async register(email: string, password: string): Promise<void> {
-    try {
-      const result = await this.firebase.createUserWithEmailAndPassword(email, password);
-      this.userSignal.set(result.user);
-      await this.sendVerificationMail();
-    } catch (error) {
-      this.snackBar.error((error as Error).message);
-    }
-  }
-
-  async sendVerificationMail(): Promise<void> {
-    const user = this.firebase.auth.currentUser;
-    if (!user) {
-      this.snackBar.error('No user logged in.');
-      return;
-    }
-
-    const actionCodeSettings = { url: this.returnUrl.getReturnUrlDecoded() };
-
-    try {
-      await this.firebase.sendEmailVerification(user, actionCodeSettings);
-      this.snackBar.infoDuration('Please check your E-Mail for verification.', 30);
-      this.returnUrl.openUrlKeepReturnUrl('/verify-email-address');
-    } catch (error) {
-      this.snackBar.error((error as Error).message);
-    }
-  }
-
-  async forgotPassword(passwordResetEmail: string): Promise<boolean> {
-    try {
-      await this.firebase.sendPasswordResetEmail(passwordResetEmail);
-      this.snackBar.infoDuration('Please check your E-Mail for further instructions.', 30);
-      return true;
-    } catch (error) {
-      this.snackBar.error((error as Error).message);
+      this.log.warn('Token refresh failed: ' + (error as Error).message);
       return false;
     }
   }
 
-  async reloadUser(): Promise<void> {
-    const user = this.user();
-    if (!user) {
-      this.log.error('Could not reload user, because user is null.');
-      return;
-    }
-    try {
-      await user.reload();
-    } catch (error) {
-      this.log.error((error as Error).message);
-    }
+  login(returnTo?: string): void {
+    writePendingReturn(this.resolveReturnTarget(returnTo ?? this.router.url));
+    this.oidc.authorize();
   }
 
-  async authStateReady(): Promise<void> {
-    const timeoutDuration = 4000;
-
-    if (this.user() === undefined) {
-      await this.waitForNextAuthStateChange(timeoutDuration).catch((error) =>
-        this.log.warn((error as Error).message),
-      );
-    }
-
-    if (this.token() === undefined) {
-      const user = this.firebase.auth.currentUser;
-      if (user) {
-        this.tokenSignal.set(await user.getIdToken());
-      } else {
-        this.tokenSignal.set(null);
-      }
-    }
+  register(returnTo?: string): void {
+    writePendingReturn(this.resolveReturnTarget(returnTo));
+    window.location.assign(environment.oidc.signupUrl);
   }
 
-  private waitForNextAuthStateChange(timeoutDuration: number): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error('Auth state timeout')), timeoutDuration);
-      const unsubscribe = this.firebase.onAuthStateChanged((user) => {
-        clearTimeout(timer);
-        unsubscribe();
-        this.userSignal.set(user);
-        resolve();
+  logout(): void {
+    writeSessionHint(false);
+    clearPendingReturn();
+    this.oidc
+      .logoffAndRevokeTokens()
+      .pipe(catchError(() => this.oidc.logoff()))
+      .subscribe({
+        error: (error: unknown) => {
+          this.log.error('Logout failed: ' + (error as Error).message);
+          this.oidc.logoffLocal();
+          void this.router.navigate(['/']);
+        },
       });
-    });
   }
 
-  async waitForAuth(): Promise<void> {
-    await this.authStateReady();
-    if (this.user()) {
-      return;
+  resolveReturnTarget(url?: string | null): string {
+    if (url && isReturnable(url)) {
+      return url;
     }
-
-    await new Promise<void>((resolve) => {
-      const unsubscribe = this.firebase.onAuthStateChanged((user) => {
-        if (user) {
-          unsubscribe();
-          this.userSignal.set(user);
-          resolve();
-        }
-      });
-    });
+    return readPendingReturn() ?? DEFAULT_RETURN_TARGET;
   }
 
-  async isLoggedIn(waitAuthStateReady: boolean): Promise<boolean> {
-    if (waitAuthStateReady) await this.authStateReady();
-    const user = this.user();
-    return !!(user && user.emailVerified);
+  private takeReturnTarget(isAuthenticated: boolean): string {
+    const stored = readPendingReturn();
+    clearPendingReturn();
+    return isAuthenticated ? this.resolveReturnTarget(stored) : '/';
   }
+}
 
-  async isLoggedInNotVerified(waitAuthStateReady: boolean): Promise<boolean> {
-    if (waitAuthStateReady) await this.authStateReady();
-    const user = this.user();
-    return !!(user && !user.emailVerified);
+function toUser(raw: unknown): AuthUser | null {
+  if (!raw || typeof raw !== 'object') {
+    return null;
   }
+  const claims = raw as Record<string, unknown>;
+  const sub = claims['sub'];
+  if (typeof sub !== 'string') {
+    return null;
+  }
+  return {
+    uid: sub,
+    email: asString(claims['email']),
+    emailVerified: claims['email_verified'] === true,
+    displayName: asString(claims['name']) ?? asString(claims['preferred_username']),
+    claims,
+  };
+}
 
-  async signOut(): Promise<void> {
-    await this.firebase.signOut();
-    this.router.navigate(['/']);
+function asString(value: unknown): string | null {
+  return typeof value === 'string' && value.length > 0 ? value : null;
+}
+
+function isSafeInternalUrl(url: string): boolean {
+  return url.startsWith('/') && !url.startsWith('//') && !url.startsWith('/\\');
+}
+
+/** Safe internal path that is not one of the routes that start an auth flow themselves. */
+function isReturnable(url: string): boolean {
+  return isSafeInternalUrl(url) && !/^\/(login|register)([/?#]|$)/.test(url);
+}
+
+// Browser storage can throw (private mode, blocked site data), so every access is wrapped.
+function readSessionHint(): boolean {
+  try {
+    return localStorage.getItem(SESSION_HINT_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function writeSessionHint(loggedIn: boolean): void {
+  try {
+    if (loggedIn) {
+      localStorage.setItem(SESSION_HINT_KEY, '1');
+    } else {
+      localStorage.removeItem(SESSION_HINT_KEY);
+    }
+  } catch {
+    // ignore: the hint is only a UI nicety
+  }
+}
+
+function readPendingReturn(): string | null {
+  try {
+    const raw = localStorage.getItem(PENDING_RETURN_KEY);
+    if (!raw) {
+      return null;
+    }
+    const parsed = JSON.parse(raw) as { url?: unknown; at?: unknown };
+    const fresh = typeof parsed.at === 'number' && Date.now() - parsed.at < PENDING_RETURN_MAX_AGE_MS;
+    return fresh && typeof parsed.url === 'string' && isReturnable(parsed.url) ? parsed.url : null;
+  } catch {
+    return null;
+  }
+}
+
+function writePendingReturn(url: string): void {
+  try {
+    localStorage.setItem(PENDING_RETURN_KEY, JSON.stringify({ url, at: Date.now() }));
+  } catch {
+    // ignore: without it the user lands on the dashboard after login
+  }
+}
+
+function clearPendingReturn(): void {
+  try {
+    localStorage.removeItem(PENDING_RETURN_KEY);
+  } catch {
+    // ignore
   }
 }

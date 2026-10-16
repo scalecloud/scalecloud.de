@@ -8,31 +8,32 @@
       ScaleCloud.de
     </button>
     <span class="fill-remaining-space"></span>
-    @if(isLoading()) {
-      <mat-spinner class="auth-loading" diameter="30"></mat-spinner>
+    @if (auth.showAsLoggedIn()) {
+      <div>
+        <button mat-button routerLink="/dashboard">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        <button mat-button [matMenuTriggerFor]="menu" aria-label="Account menu">
+          <mat-icon>person</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Logout
+          </button>
+        </mat-menu>
+      </div>
     } @else {
-      @if (auth.user()) {
-        <div>
-          <button mat-button routerLink="/dashboard">
-            <mat-icon>dashboard</mat-icon>
-            Dashboard
-          </button>
-          <button mat-button [matMenuTriggerFor]="menu">
-            <mat-icon>person</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="auth.signOut()">
-              <mat-icon>logout</mat-icon>
-              Logout
-            </button>
-          </mat-menu>
-        </div>
-      } @else {
-        <button mat-button routerLink="/login">
+      <div>
+        <button mat-button (click)="login()">
           <mat-icon>login</mat-icon>
           Login
         </button>
-      }
+        <button mat-stroked-button class="signup-button" (click)="register()">
+          Sign up
+        </button>
+      </div>
     }
   </mat-toolbar-row>
 </mat-toolbar>

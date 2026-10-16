@@ -5,15 +5,12 @@ import { Auth } from '../auth';
 export const registerGuard: CanActivateFn = async (route, state) => {
   const auth = inject(Auth);
   const router = inject(Router);
+  const target = auth.resolveReturnTarget(route.queryParamMap.get('returnUrl'));
 
-  if (await auth.isLoggedIn(true)) {
-    router.navigate(['/dashboard']);
-    return false;
-  }
-  else if (await auth.isLoggedInNotVerified(true)) {
-    router.navigate(['/verify-email-address']);
-    return false;
+  if (await auth.ensureAuthenticated()) {
+    return router.parseUrl(target);
   }
 
-  return true;
+  auth.register(target);
+  return false;
 }

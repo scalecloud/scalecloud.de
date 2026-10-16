@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-import {  signal } from '@angular/core';
+import { Router, provideRouter } from '@angular/router';
+import { signal } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { Header } from './header';
@@ -8,8 +8,8 @@ import { Auth } from 'src/app/core/auth/auth';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function makeUser(overrides: Partial<{ email: string }> = {}) {
-  return { email: 'user@example.com', ...overrides } as any;
+function findButton(root: HTMLElement, text: string): HTMLButtonElement | undefined {
+  return Array.from(root.querySelectorAll('button')).find((b) => b.textContent?.includes(text));
 }
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
@@ -17,18 +17,20 @@ function makeUser(overrides: Partial<{ email: string }> = {}) {
 describe('Header', () => {
   let component: Header;
   let fixture: ComponentFixture<Header>;
+  let router: Router;
 
-  // `user` mirrors Auth's real signal: undefined until the first
-  // auth-state event, then User | null.
-  const userSignal = signal<any>(undefined);
+  // Mirrors Auth.showAsLoggedIn: the last known state on the first frame, the real state later.
+  const showAsLoggedIn = signal(false);
   const auth = {
-    user: userSignal,
-    signOut: vi.fn(),
+    showAsLoggedIn,
+    login: vi.fn(),
+    register: vi.fn(),
+    logout: vi.fn(),
   };
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    userSignal.set(undefined);
+    showAsLoggedIn.set(false);
 
     await TestBed.configureTestingModule({
       imports: [Header],
@@ -38,6 +40,7 @@ describe('Header', () => {
       ],
     }).compileComponents();
 
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -49,93 +52,65 @@ describe('Header', () => {
     expect(component).toBeTruthy();
   });
 
-  // ─── Initial / loading state ─────────────────────────────────────────────────
-
-  it('should start in a loading state', () => {
-    expect(component.isLoading()).toBe(true);
-  });
-
-  it('should render a spinner while loading', () => {
-    const compiled: HTMLElement = fixture.nativeElement;
-    expect(compiled.querySelector('mat-spinner')).not.toBeNull();
-  });
-
-  it('should not render the login or dashboard buttons while loading', () => {
-    const compiled: HTMLElement = fixture.nativeElement;
-    const buttonTexts = Array.from(compiled.querySelectorAll('button')).map((b) => b.textContent);
-    expect(buttonTexts.some((t) => t?.includes('Login'))).toBe(false);
-    expect(buttonTexts.some((t) => t?.includes('Dashboard'))).toBe(false);
-  });
-
-  // ─── Auth state resolves – logged out ────────────────────────────────────────
-
-  it('should stop loading once the auth signal emits', async () => {
-    userSignal.set(null);
-    await fixture.whenStable();
-    expect(component.isLoading()).toBe(false);
-  });
-
-  it('should show the Login button when no user is present', async () => {
-    userSignal.set(null);
-    await fixture.whenStable();
-
-    const compiled: HTMLElement = fixture.nativeElement;
-    const loginButton = Array.from(compiled.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Login'),
-    );
-    expect(loginButton).toBeTruthy();
-  });
-
-  it('should not show the Dashboard button when no user is present', async () => {
-    userSignal.set(null);
-    await fixture.whenStable();
-
-    const compiled: HTMLElement = fixture.nativeElement;
-    const dashboardButton = Array.from(compiled.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Dashboard'),
-    );
-    expect(dashboardButton).toBeFalsy();
-  });
-
-  it('should hide the spinner once loading completes', async () => {
-    userSignal.set(null);
-    await fixture.whenStable();
-
+  it('should not render a spinner', () => {
     const compiled: HTMLElement = fixture.nativeElement;
     expect(compiled.querySelector('mat-spinner')).toBeNull();
   });
 
-  // ─── Auth state resolves – logged in ─────────────────────────────────────────
+  // ─── Logged out ─────────────────────────────────────────────────────────────
 
-  it('should show the Dashboard button when a user is present', async () => {
-    userSignal.set(makeUser());
+  it('should show the Login and Sign up buttons when signed out', () => {
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(findButton(compiled, 'Login')).toBeTruthy();
+    expect(findButton(compiled, 'Sign up')).toBeTruthy();
+  });
+
+  it('should not show the Dashboard button when signed out', () => {
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(findButton(compiled, 'Dashboard')).toBeFalsy();
+  });
+
+  it('should call auth.login with the current URL when Login is clicked', () => {
+    const compiled: HTMLElement = fixture.nativeElement;
+
+    findButton(compiled, 'Login')?.click();
+
+    expect(auth.login).toHaveBeenCalledWith(router.url);
+  });
+
+  it('should call auth.register with the current URL when Sign up is clicked', () => {
+    const compiled: HTMLElement = fixture.nativeElement;
+
+    findButton(compiled, 'Sign up')?.click();
+
+    expect(auth.register).toHaveBeenCalledWith(router.url);
+  });
+
+  // ─── Logged in ──────────────────────────────────────────────────────────────
+
+  it('should show the Dashboard button when signed in', async () => {
+    showAsLoggedIn.set(true);
+    fixture.detectChanges();
     await fixture.whenStable();
 
     const compiled: HTMLElement = fixture.nativeElement;
-    const dashboardButton = Array.from(compiled.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Dashboard'),
-    );
-    expect(dashboardButton).toBeTruthy();
+    expect(findButton(compiled, 'Dashboard')).toBeTruthy();
   });
 
-  it('should not show the Login button when a user is present', async () => {
-    userSignal.set(makeUser());
+  it('should not show the Login and Sign up buttons when signed in', async () => {
+    showAsLoggedIn.set(true);
+    fixture.detectChanges();
     await fixture.whenStable();
 
     const compiled: HTMLElement = fixture.nativeElement;
-    const loginButton = Array.from(compiled.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Login'),
-    );
-    expect(loginButton).toBeFalsy();
+    expect(findButton(compiled, 'Login')).toBeFalsy();
+    expect(findButton(compiled, 'Sign up')).toBeFalsy();
   });
 
-  it('should call auth.signOut when Logout is triggered', async () => {
-    userSignal.set(makeUser());
-    await fixture.whenStable();
+  it('should call auth.logout when logout is triggered', () => {
+    component.logout();
 
-    component.auth.signOut();
-
-    expect(auth.signOut).toHaveBeenCalled();
+    expect(auth.logout).toHaveBeenCalled();
   });
 
   // ─── toggleSideBar ────────────────────────────────────────────────────────────

@@ -1,7 +1,6 @@
 import { inject, Injectable, WritableSignal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
-import { Auth } from '../auth/auth';
 import { Log } from '../logging/log';
 import { Role } from './roles';
 import { API_URL } from '../config/api-token';
@@ -17,9 +16,7 @@ interface CacheEntry {
 })
 export class PermissionStore {
   private readonly http = inject(HttpClient);
-  private readonly auth = inject(Auth);
   private readonly log = inject(Log);
-
   private readonly apiUrl = inject(API_URL);
   private readonly urlPermission = `${this.apiUrl}/dashboard/subscription/permission`;
   private readonly cache = new Map<string, CacheEntry>();
@@ -67,7 +64,7 @@ export class PermissionStore {
   }
 
   getPermissions(request: PermissionRequest): Observable<PermissionReply> {
-    return this.http.post<PermissionReply>(this.urlPermission, request, this.auth.getHttpOptions());
+    return this.http.post<PermissionReply>(this.urlPermission, request);
   }
 
 }

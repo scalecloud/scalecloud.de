@@ -1,22 +1,14 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { Auth } from 'src/app/core/auth/auth';
-import { Log } from 'src/app/core/logging/log';
+import { CanActivateFn } from '@angular/router';
+import { Auth } from '../../../../core/auth/auth';
 
-export const checkoutGuard: CanActivateFn = async (route, state) => {
+export const checkoutGuard: CanActivateFn = async (_route, state) => {
   const auth = inject(Auth);
-  const router = inject(Router);
-  const log = inject(Log);
 
-  if (await auth.isLoggedInNotVerified(true)) {
-    router.navigate(['/verify-email-address']);
-    return false;
-  }
-  else if (!(await auth.isLoggedIn(true))) {
-    log.log('CheckoutGuard: canActivate: User is not logged in. Redirecting to login page.');
-    router.navigate(['/register'], { queryParams: { returnUrl: state.url } });
-    return false;
+  if (await auth.ensureAuthenticated()) {
+    return true;
   }
 
-  return true;
-}
+  auth.login(state.url);
+  return false;
+};

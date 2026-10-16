@@ -1,25 +1,31 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, UrlTree, convertToParamMap } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { registerGuard } from './register-guard';
 import { Auth } from '../auth';
 
-const mockRouter = { navigate: vi.fn() };
+const urlTree = {} as UrlTree;
+const mockRouter = { parseUrl: vi.fn() };
 const mockAuth = {
-  isLoggedIn: vi.fn(),
-  isLoggedInNotVerified: vi.fn(),
+  ensureAuthenticated: vi.fn(),
+  register: vi.fn(),
+  resolveReturnTarget: vi.fn(),
 };
 
-function runGuard(): Promise<boolean> {
+function runGuard(returnUrl?: string): Promise<boolean | UrlTree> {
+  const route = { queryParamMap: convertToParamMap(returnUrl ? { returnUrl } : {}) };
   return TestBed.runInInjectionContext(() =>
-    registerGuard({} as any, {} as any) as Promise<boolean>
+    registerGuard(route as any, {} as any) as Promise<boolean | UrlTree>
   );
 }
 
 describe('registerGuard', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockRouter.parseUrl.mockReturnValue(urlTree);
+    // Same contract as Auth.resolveReturnTarget: fall back to the dashboard.
+    mockAuth.resolveReturnTarget.mockImplementation((url?: string | null) => url ?? '/dashboard');
 
     TestBed.configureTestingModule({
       providers: [
@@ -29,56 +35,46 @@ describe('registerGuard', () => {
     });
   });
 
-  describe('when the user is fully logged in and verified', () => {
+  describe('when the user already has a valid session', () => {
     beforeEach(() => {
-      mockAuth.isLoggedIn.mockResolvedValue(true);
-      mockAuth.isLoggedInNotVerified.mockResolvedValue(false);
+      mockAuth.ensureAuthenticated.mockResolvedValue(true);
     });
 
-    it('redirects to /dashboard', async () => {
+    it('redirects to the returnUrl', async () => {
+      const result = await runGuard('/checkout?plan=nextcloud-yearly');
+      expect(mockRouter.parseUrl).toHaveBeenCalledWith('/checkout?plan=nextcloud-yearly');
+      expect(result).toBe(urlTree);
+    });
+
+    it('redirects to /dashboard when there is no returnUrl', async () => {
       await runGuard();
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard']);
+      expect(mockRouter.parseUrl).toHaveBeenCalledWith('/dashboard');
     });
 
-    it('blocks activation', async () => {
-      expect(await runGuard()).toBe(false);
-    });
-
-    it('does not check verification status when already logged in', async () => {
+    it('does not start the registration', async () => {
       await runGuard();
-      expect(mockAuth.isLoggedInNotVerified).not.toHaveBeenCalled();
+      expect(mockAuth.register).not.toHaveBeenCalled();
     });
   });
 
-  describe('when the user is logged in but unverified', () => {
+  describe('when the user has no valid session', () => {
     beforeEach(() => {
-      mockAuth.isLoggedIn.mockResolvedValue(false);
-      mockAuth.isLoggedInNotVerified.mockResolvedValue(true);
+      mockAuth.ensureAuthenticated.mockResolvedValue(false);
     });
 
-    it('redirects to /verify-email-address', async () => {
+    it('sends the user to the Authentik enrollment flow with the returnUrl as target', async () => {
+      await runGuard('/checkout?plan=nextcloud-yearly');
+      expect(mockAuth.register).toHaveBeenCalledWith('/checkout?plan=nextcloud-yearly');
+    });
+
+    it('uses /dashboard as target when there is no returnUrl', async () => {
       await runGuard();
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/verify-email-address']);
+      expect(mockAuth.register).toHaveBeenCalledWith('/dashboard');
     });
 
-    it('blocks activation', async () => {
+    it('blocks activation and does not redirect inside the app', async () => {
       expect(await runGuard()).toBe(false);
-    });
-  });
-
-  describe('when the user is not logged in and not pending verification (the register page is intended for them)', () => {
-    beforeEach(() => {
-      mockAuth.isLoggedIn.mockResolvedValue(false);
-      mockAuth.isLoggedInNotVerified.mockResolvedValue(false);
-    });
-
-    it('allows activation', async () => {
-      expect(await runGuard()).toBe(true);
-    });
-
-    it('does not redirect anywhere', async () => {
-      await runGuard();
-      expect(mockRouter.navigate).not.toHaveBeenCalled();
+      expect(mockRouter.parseUrl).not.toHaveBeenCalled();
     });
   });
 });

@@ -23,7 +23,7 @@
     "@angular/router": "^22.2.3",
     "@sentry/angular": "^11.8.0",
     "@stripe/stripe-js": "^10.1.0",
-    "angular-oauth2-oidc": "^22.0.2",
+    "angular-auth-oidc-client": "^22.0.1",
     "cobe": "^2.0.1",
     "firebase": "^13.0.0",
     "ngx-skeleton-loader": "^13.0.0",

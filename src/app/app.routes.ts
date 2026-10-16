@@ -1,12 +1,7 @@
 import { Routes } from '@angular/router';
-
-
-
 import { dashboardGuard } from './core/auth/guards/dashboard-guard';
 import { loginGuard } from './core/auth/guards/login-guard';
 import { registerGuard } from './core/auth/guards/register-guard';
-import { forgotPasswordGuard } from './core/auth/guards/forgot-password-guard';
-import { verifyEmailGuard } from './core/auth/guards/verify-email-guard';
 import { checkoutGuard } from './features/products/checkout-page/guard/checkout-guard';
 
 export const routes: Routes = [
@@ -35,7 +30,6 @@ export const routes: Routes = [
         path: 'checkout/status',
         loadComponent: () => import('./features/change-payment-status-page/change-payment-status-page').then(m => m.ChangePaymentStatusPage)
       },
-      // Account/Dashboard - Lazy Loaded
       {
         path: 'dashboard',
         canActivate: [dashboardGuard],
@@ -71,28 +65,16 @@ export const routes: Routes = [
         canActivate: [dashboardGuard],
         loadComponent: () => import('./features/change-payment-status-page/change-payment-status-page').then(m => m.ChangePaymentStatusPage)
       },
-      // Auth - Lazy Loaded
       {
-        path: 'login',
+         path: 'login',
         canActivate: [loginGuard],
-        loadComponent: () => import('./features/auth/login-page/login-page').then(m => m.LoginPage)
+        children: []
       },
       {
         path: 'register',
         canActivate: [registerGuard],
-        loadComponent: () => import('./features/auth/register-page/register-page').then(m => m.RegisterPage)
+        children: []
       },
-      {
-        path: 'verify-email-address',
-        canActivate: [verifyEmailGuard],
-        loadComponent: () => import('./features/auth/verify-email-page/verify-email-page').then(m => m.VerifyEmailPage)
-      },
-      {
-        path: 'forgot-password',
-        canActivate: [forgotPasswordGuard],
-        loadComponent: () => import('./features/auth/forgot-password-page/forgot-password-page').then(m => m.ForgotPasswordPage)
-      },
-      // Footer - Lazy Loaded
       {
         path: 'privacy-policy',
         loadComponent: () => import('./features/privacy-page/privacy-page').then(m => m.PrivacyPage)
@@ -113,7 +95,6 @@ export const routes: Routes = [
         path: 'legal',
         loadComponent: () => import('./features/legal-page/legal-page').then(m => m.LegalPage)
       },
-      // Newsletter - Lazy Loaded
       {
         path: 'newsletter/confirm/:verificationToken',
         loadComponent: () => import('./features/newsletter-client/newsletter-confirm-page/newsletter-confirm-page').then(m => m.NewsletterConfirmPage)
@@ -122,7 +103,6 @@ export const routes: Routes = [
         path: 'newsletter/unsubscribe/:unsubscribeToken',
         loadComponent: () => import('./features/newsletter-client/newsletter-unsubscribe-page/newsletter-unsubscribe-page').then(m => m.NewsletterUnsubscribePage)
       },
-      // Wildcard
       { path: '**', loadComponent: () => import('./features/page-not-found-page/page-not-found-page').then(m => m.PageNotFoundPage) }
     ]
   }

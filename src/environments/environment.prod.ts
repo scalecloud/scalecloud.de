@@ -1,4 +1,5 @@
 export const environment = {
+  // Only needed while the old Firebase service still exists; remove together with it.
   firebaseConfig: {
     apiKey: "AIzaSyAjSwXMWnY0nM40nz3pDCAKAvnoG2LG2bw",
     authDomain: "scalecloud-de.firebaseapp.com",
@@ -8,6 +9,12 @@ export const environment = {
     messagingSenderId: "128016775020",
     appId: "1:128016775020:web:bb2b49ad68fb097980e549",
     measurementId: "G-ZRHPQGG8LB"
+  },
+  oidc: {
+    authentikUrl: 'https://auth.scalecloud.de',
+    applicationSlug: 'scalecloud',
+    clientId: 'scalecloud-website',
+    signupUrl: 'https://auth.scalecloud.de/if/flow/signup/',
   },
   production: true,
   appBaseUrl: 'https://www.scalecloud.de',

@@ -1,9 +1,8 @@
-import { Component, ChangeDetectionStrategy, inject, output, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Router, RouterLink } from '@angular/router';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { Auth } from 'src/app/core/auth/auth';
 
@@ -12,17 +11,25 @@ import { Auth } from 'src/app/core/auth/auth';
     templateUrl: './header.html',
     styleUrls: ['./header.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatToolbar, MatToolbarRow, MatIconButton, MatIcon, MatButton, RouterLink, MatProgressSpinner, MatMenuTrigger, MatMenu, MatMenuItem]
+    imports: [MatToolbar, MatToolbarRow, MatIconButton, MatIcon, MatButton, RouterLink, MatMenuTrigger, MatMenu, MatMenuItem]
 })
 export class Header {
-  auth = inject(Auth);
+  readonly auth = inject(Auth);
+  private readonly router = inject(Router);
 
   readonly toggleSideBarForMe = output<void>();
 
-  // auth.user() is `undefined` until the first auth-state event has
-  // fired, then becomes `User | null`. So "still loading" is just "we
-  // haven't heard from Firebase yet" - no subscription needed.
-  readonly isLoading = computed(() => this.auth.user() === undefined);
+  login() {
+    this.auth.login(this.router.url);
+  }
+
+  register() {
+    this.auth.register(this.router.url);
+  }
+
+  logout() {
+    this.auth.logout();
+  }
 
   toggleSideBar() {
     this.toggleSideBarForMe.emit(undefined);
