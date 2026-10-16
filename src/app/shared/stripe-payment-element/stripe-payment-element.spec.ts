@@ -1,14 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
-// loadStripe is called as a named import inside the component, so we mock the
-// whole module (hoisted above all imports by Vitest) rather than spying on it.
-vi.mock('@stripe/stripe-js', () => ({
-  loadStripe: vi.fn()
-}));
-
-import { loadStripe } from '@stripe/stripe-js';
-import { StripePaymentElement } from './stripe-payment-element';
+import { LOAD_STRIPE, StripePaymentElement } from './stripe-payment-element';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent-model';
 import { Log } from 'src/app/core/logging/log';
@@ -48,7 +41,7 @@ describe('StripePaymentElement', () => {
     confirmSetup: ReturnType<typeof vi.fn>;
     confirmPayment: ReturnType<typeof vi.fn>;
   };
-  const loadStripeMock = vi.mocked(loadStripe);
+  const loadStripeMock = vi.fn();
 
   const initStripePayment: InitStripePayment = {
     intent: StripeIntent.PaymentIntent,
@@ -79,6 +72,7 @@ describe('StripePaymentElement', () => {
     await TestBed.configureTestingModule({
       imports: [StripePaymentElement],
       providers: [
+        { provide: LOAD_STRIPE, useValue: loadStripeMock },
         { provide: Log, useValue: logMock },
         { provide: SnackBar, useValue: snackBarMock },
         { provide: StripeKey, useValue: stripeKeyMock }

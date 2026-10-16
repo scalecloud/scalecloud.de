@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, InjectionToken, signal } from '@angular/core';
 import {
   loadStripe,
   type Stripe,
@@ -19,6 +19,11 @@ import { Log } from 'src/app/core/logging/log';
 import { SnackBar } from 'src/app/core/snackbar/snack-bar';
 import { StripeKey } from 'src/app/core/stripe/stripe-key';
 
+export const LOAD_STRIPE = new InjectionToken<typeof loadStripe>('LOAD_STRIPE', {
+  providedIn: 'root',
+  factory: () => loadStripe,
+});
+
 @Component({
     selector: 'app-stripe-payment-element',
     templateUrl: './stripe-payment-element.html',
@@ -30,6 +35,7 @@ export class StripePaymentElement {
   private readonly log = inject(Log);
   private readonly snackBar = inject(SnackBar);
   private readonly stripeKey = inject(StripeKey);
+  private readonly loadStripeFn = inject(LOAD_STRIPE);
 
   readonly ServiceStatus = ServiceStatus;
   readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Loading);
@@ -46,7 +52,7 @@ export class StripePaymentElement {
       return;
     }
 
-    const stripe = await loadStripe(publicKey);
+    const stripe = await this.loadStripeFn(publicKey);
     if (stripe == null) {
       this.log.error("Cannot display Payment because Stripe.js failed to load.")
       this.serviceStatus.set(ServiceStatus.Error);
