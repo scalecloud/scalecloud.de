@@ -28,50 +28,40 @@ describe('CookieBanner', () => {
     TestBed.resetTestingModule();
   });
 
-  it('shows the first-layer consent actions without preselecting optional categories', () => {
+  it('shows only the necessary and optional improvement choices', () => {
     const text = fixture.nativeElement.textContent as string;
 
-    expect(text).toContain('Reject all');
-    expect(text).toContain('Accept all');
-    expect(component.analytics()).toBe(false);
-    expect(component.errorMonitoring()).toBe(false);
+    expect(text).toContain('Only necessary');
+    expect(text).toContain('Save selection');
+    expect(text).toContain('Technically necessary');
+    expect(text).toContain('Help us improve (optional)');
+    expect(component.improvements()).toBe(false);
+    expect(fixture.nativeElement.querySelectorAll('.option')).toHaveLength(2);
+    expect(fixture.nativeElement.querySelector('mat-expansion-panel')).toBeNull();
   });
 
   it('persists rejection and closes the banner', () => {
     const rejectButton = Array.from(fixture.nativeElement.querySelectorAll('button'))
-      .find((button: HTMLButtonElement) => button.textContent?.includes('Reject all')) as HTMLButtonElement;
+      .find((button: HTMLButtonElement) => button.textContent?.includes('Only necessary')) as HTMLButtonElement;
 
     rejectButton.click();
     fixture.detectChanges();
 
     expect(consent.decided()).toBe(true);
-    expect(consent.analytics()).toBe(false);
-    expect(consent.errorMonitoring()).toBe(false);
-    expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
+    expect(consent.improvements()).toBe(false);
+    expect(fixture.nativeElement.querySelector('dialog.consent')).toBeNull();
   });
 
-  it('saves a customized selection', () => {
-    component.detailsOpen.set(true);
-    component.analytics.set(true);
-    component.errorMonitoring.set(false);
-    fixture.detectChanges();
-
+  it('saves and restores the optional improvement choice', () => {
+    component.improvements.set(true);
     component.saveSelection();
     fixture.detectChanges();
 
-    expect(consent.analytics()).toBe(true);
-    expect(consent.errorMonitoring()).toBe(false);
+    expect(consent.improvements()).toBe(true);
     expect(consent.bannerVisible()).toBe(false);
-  });
 
-  it('reopens settings with the saved selection', () => {
-    consent.save(true, false);
-    fixture.detectChanges();
     consent.reopen();
     fixture.detectChanges();
-
-    expect(component.detailsOpen()).toBe(true);
-    expect(component.analytics()).toBe(true);
-    expect(component.errorMonitoring()).toBe(false);
+    expect(component.improvements()).toBe(true);
   });
 });

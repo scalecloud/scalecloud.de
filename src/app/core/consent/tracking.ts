@@ -1,4 +1,5 @@
 import { EnvironmentInjector, Injectable, effect, inject, untracked } from '@angular/core';
+import * as Sentry from '@sentry/angular';
 
 import { environment } from '../../../environments/environment';
 import { Consent } from './consent';
@@ -10,33 +11,111 @@ export class Tracking {
   private readonly injector = inject(EnvironmentInjector);
   private readonly log = inject(Log);
 
-  private analyticsStarted = false;
-  private errorMonitoringStarted = false;
+  private improvementsStarted = false;
+  private stopSessionReplay: (() => Promise<void>) | null = null;
 
   constructor() {
+    Sentry.init({
+      dsn: 'https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784',
+      environment: environment.production ? 'production' : 'development',
+      defaultIntegrations: false,
+      integrations: [Sentry.globalHandlersIntegration()],
+      dataCollection: {
+        userInfo: false,
+        cookies: false,
+        httpHeaders: false,
+        httpBodies: [],
+        urlQueryParams: false,
+        graphQL: { document: false, variables: false },
+        genAI: { inputs: false, outputs: false },
+        databaseQueryData: false,
+        queues: false,
+        stackFrameVariables: false,
+        frameContextLines: 0,
+      },
+      tracesSampleRate: 0.2,
+      tracePropagationTargets: ['localhost', /^https:\/\/api\.scalecloud\.de/],
+      replaysSessionSampleRate: 0.1,
+      replaysOnErrorSampleRate: 0.1,
+      beforeSendMetric: () => null,
+      beforeSendLog: (log) => {
+        if (log.attributes) {
+          for (const [key, value] of Object.entries(log.attributes)) {
+            if (/(email|user|token|secret|password|url|return|code|auth|cookie|(?:^|[_-])id(?:$|[_-]))/i.test(key)) {
+              delete log.attributes[key];
+            }
+          }
+        }
+        return log;
+      },
+      beforeSendSpan: (span) => {
+        const attributes = { ...span.attributes };
+        for (const key of Object.keys(attributes)) {
+          if (/(url|query|cookie|header|user|email|session|token|secret|target|route|address)/i.test(key)) {
+            delete attributes[key];
+          }
+        }
+        span.attributes = attributes;
+        span.name = span.is_segment ? 'page navigation' : 'browser operation';
+        delete span.links;
+        return span;
+      },
+      beforeSend: (event) => {
+        delete event.user;
+        delete event.request;
+        delete event.breadcrumbs;
+        delete event.contexts;
+        delete event.extra;
+        delete event.tags;
+        delete event.transaction;
+        delete event.message;
+        delete event.logentry;
+        delete event.fingerprint;
+
+        for (const exception of event.exception?.values ?? []) {
+          delete exception.mechanism;
+          if (exception.stacktrace?.frames) {
+            exception.stacktrace.frames = exception.stacktrace.frames.map((frame) => {
+              const safeFrame = { ...frame };
+              delete safeFrame.vars;
+              delete safeFrame.abs_path;
+              delete safeFrame.context_line;
+              delete safeFrame.pre_context;
+              delete safeFrame.post_context;
+              if (safeFrame.filename) {
+                safeFrame.filename = safeFrame.filename.split(/[?#]/)[0].split('/').pop();
+              }
+              return safeFrame;
+            });
+          }
+        }
+
+        return event;
+      },
+    });
+
     effect(() => {
-      const analytics = this.consent.analytics();
-      const errorMonitoring = this.consent.errorMonitoring();
+      const improvements = this.consent.improvements();
 
       untracked(() => {
-        const analyticsWithdrawn = this.analyticsStarted && !analytics;
-        const errorMonitoringWithdrawn = this.errorMonitoringStarted && !errorMonitoring;
+        const improvementsWithdrawn = this.improvementsStarted && !improvements;
 
-        if (analyticsWithdrawn || errorMonitoringWithdrawn) {
-          if (analyticsWithdrawn) {
-            this.clearGoogleCookies();
+        if (improvementsWithdrawn) {
+          this.clearGoogleCookies();
+          if (this.stopSessionReplay) {
+            void this.stopSessionReplay().catch(() => undefined).finally(() => location.reload());
+          } else {
+            location.reload();
           }
-          location.reload();
           return;
         }
 
-        if (analytics && !this.analyticsStarted) {
-          this.analyticsStarted = true;
+        if (improvements && !this.improvementsStarted) {
+          this.improvementsStarted = true;
+          Sentry.addIntegration(Sentry.browserTracingIntegration());
+          this.injector.get(Sentry.TraceService);
           void this.startAnalytics();
-        }
-        if (errorMonitoring && !this.errorMonitoringStarted) {
-          this.errorMonitoringStarted = true;
-          void this.startErrorMonitoring();
+          void this.startSessionReplay();
         }
       });
     });
@@ -47,30 +126,30 @@ export class Tracking {
       const { Firebase } = await import('../firebase/firebase');
       this.injector.get(Firebase);
     } catch (error) {
-      this.analyticsStarted = false;
       this.log.error('Analytics initialization failed', error);
     }
   }
 
-  private async startErrorMonitoring(): Promise<void> {
+  private async startSessionReplay(): Promise<void> {
     try {
-      const Sentry = await import('@sentry/angular');
-      Sentry.init({
-        dsn: 'https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784',
-        integrations: [
-          Sentry.browserTracingIntegration(),
-          Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true }),
-        ],
-        environment: environment.production ? 'production' : 'development',
-        tracesSampleRate: 0.2,
-        tracePropagationTargets: ['localhost', /^https:\/\/api\.scalecloud\.de/],
-        replaysSessionSampleRate: 0.1,
-        replaysOnErrorSampleRate: 1.0,
+      const createReplayIntegration = await Sentry.lazyLoadIntegration('replayIntegration');
+      const integration = createReplayIntegration({
+        maskAllText: true,
+        maskAllInputs: true,
+        blockAllMedia: true,
+        networkDetailAllowUrls: [],
+        networkCaptureBodies: false,
+        networkRequestHeaders: [],
+        networkResponseHeaders: [],
       });
-      this.injector.get(Sentry.TraceService);
+      Sentry.addIntegration(integration);
+      this.stopSessionReplay = () => (
+        integration as typeof integration & {
+          stop(options?: { flush?: boolean }): Promise<void>;
+        }
+      ).stop({ flush: false });
     } catch (error) {
-      this.errorMonitoringStarted = false;
-      this.log.error('Error monitoring initialization failed', error);
+      this.log.error('Session Replay initialization failed', error);
     }
   }
 

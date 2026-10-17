@@ -23,9 +23,7 @@ import { Consent } from './consent';
 })
 export class CookieBanner {
   readonly consent = inject(Consent);
-  readonly detailsOpen = signal(false);
-  readonly analytics = signal(false);
-  readonly errorMonitoring = signal(false);
+  readonly improvements = signal(false);
   readonly contentCenterX = signal<number | null>(null);
   readonly contentWidth = signal<number | null>(null);
 
@@ -37,9 +35,7 @@ export class CookieBanner {
     effect(() => {
       if (this.consent.bannerVisible()) {
         untracked(() => {
-          this.analytics.set(this.consent.analytics());
-          this.errorMonitoring.set(this.consent.errorMonitoring());
-          this.detailsOpen.set(this.consent.decided());
+          this.improvements.set(this.consent.improvements());
         });
       }
     });
@@ -53,7 +49,7 @@ export class CookieBanner {
   }
 
   saveSelection(): void {
-    this.consent.save(this.analytics(), this.errorMonitoring());
+    this.consent.save(this.improvements());
   }
 
   private readonly updateContentRegion = (): void => {

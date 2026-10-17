@@ -1,14 +1,13 @@
 import { Injectable, computed, signal } from '@angular/core';
 
 const STORAGE_KEY = 'scalecloud.consent';
-const CONSENT_VERSION = 1;
+const CONSENT_VERSION = 4;
 const MAX_AGE_MS = 365 * 24 * 60 * 60 * 1000;
 
 interface StoredConsent {
   version: number;
   timestamp: number;
-  analytics: boolean;
-  errorMonitoring: boolean;
+  improvements: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -17,24 +16,22 @@ export class Consent {
   private readonly reopened = signal(false);
 
   readonly decided = computed(() => this.stored() !== null);
-  readonly analytics = computed(() => this.stored()?.analytics ?? false);
-  readonly errorMonitoring = computed(() => this.stored()?.errorMonitoring ?? false);
+  readonly improvements = computed(() => this.stored()?.improvements ?? false);
   readonly bannerVisible = computed(() => !this.decided() || this.reopened());
 
   acceptAll(): void {
-    this.save(true, true);
+    this.save(true);
   }
 
   rejectAll(): void {
-    this.save(false, false);
+    this.save(false);
   }
 
-  save(analytics: boolean, errorMonitoring: boolean): void {
+  save(improvements: boolean): void {
     const value: StoredConsent = {
       version: CONSENT_VERSION,
       timestamp: Date.now(),
-      analytics,
-      errorMonitoring,
+      improvements,
     };
 
     try {
@@ -63,8 +60,7 @@ export class Consent {
         && typeof value.timestamp === 'number'
         && value.timestamp <= Date.now()
         && Date.now() - value.timestamp < MAX_AGE_MS
-        && typeof value.analytics === 'boolean'
-        && typeof value.errorMonitoring === 'boolean';
+        && typeof value.improvements === 'boolean';
 
       return valid ? value as StoredConsent : null;
     } catch {

@@ -20,57 +20,67 @@ describe('Consent', () => {
     TestBed.resetTestingModule();
   });
 
-  it('starts undecided with optional categories disabled', () => {
+  it('starts undecided with optional improvements disabled', () => {
     expect(consent.decided()).toBe(false);
     expect(consent.bannerVisible()).toBe(true);
-    expect(consent.analytics()).toBe(false);
-    expect(consent.errorMonitoring()).toBe(false);
+    expect(consent.improvements()).toBe(false);
   });
 
-  it('stores acceptance of all optional categories', () => {
+  it('stores acceptance of optional improvements', () => {
     consent.acceptAll();
 
     expect(consent.decided()).toBe(true);
     expect(consent.bannerVisible()).toBe(false);
-    expect(consent.analytics()).toBe(true);
-    expect(consent.errorMonitoring()).toBe(true);
+    expect(consent.improvements()).toBe(true);
     expect(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}')).toMatchObject({
-      version: 1,
-      analytics: true,
-      errorMonitoring: true,
+      version: 4,
+      improvements: true,
     });
   });
 
-  it('stores rejection of all optional categories', () => {
+  it('stores rejection of optional improvements', () => {
     consent.rejectAll();
 
     expect(consent.decided()).toBe(true);
     expect(consent.bannerVisible()).toBe(false);
-    expect(consent.analytics()).toBe(false);
-    expect(consent.errorMonitoring()).toBe(false);
+    expect(consent.improvements()).toBe(false);
   });
 
   it('stores a customized selection and can reopen settings', () => {
-    consent.save(true, false);
+    consent.save(true);
     consent.reopen();
 
     expect(consent.bannerVisible()).toBe(true);
-    expect(consent.analytics()).toBe(true);
-    expect(consent.errorMonitoring()).toBe(false);
+    expect(consent.improvements()).toBe(true);
   });
 
-  it('ignores a stored choice older than one year', () => {
+  it('requires a new choice after the consent categories change', () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      version: 1,
-      timestamp: Date.now() - MAX_AGE_MS - 1,
+      version: 3,
+      timestamp: Date.now(),
       analytics: true,
-      errorMonitoring: true,
+      sessionReplay: true,
     }));
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({});
     consent = TestBed.inject(Consent);
 
     expect(consent.decided()).toBe(false);
-    expect(consent.analytics()).toBe(false);
+    expect(consent.bannerVisible()).toBe(true);
+    expect(consent.improvements()).toBe(false);
+  });
+
+  it('ignores a stored choice older than one year', () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      version: 4,
+      timestamp: Date.now() - MAX_AGE_MS - 1,
+      improvements: true,
+    }));
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({});
+    consent = TestBed.inject(Consent);
+
+    expect(consent.decided()).toBe(false);
+    expect(consent.improvements()).toBe(false);
   });
 });

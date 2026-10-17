@@ -17,7 +17,7 @@ export class HomePage implements OnInit {
   snackBar = inject(SnackBar);
 
   ngOnInit(): void {
-    this.snackBar.errorDuration("This Website is currently under construction. Please come back later.", 30);
+    this.snackBar.errorDuration("This Website is currently under construction. Please come back later.", 5);
   }
 
 }
