@@ -3,13 +3,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  effect,
   inject,
   signal,
-  untracked,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { RouterLink } from '@angular/router';
 
 import { Consent } from './consent';
@@ -19,11 +16,10 @@ import { Consent } from './consent';
   templateUrl: './cookie-banner.html',
   styleUrl: './cookie-banner.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButton, MatSlideToggle, RouterLink],
+  imports: [MatButton, RouterLink],
 })
 export class CookieBanner {
   readonly consent = inject(Consent);
-  readonly improvements = signal(false);
   readonly contentCenterX = signal<number | null>(null);
   readonly contentWidth = signal<number | null>(null);
 
@@ -32,25 +28,12 @@ export class CookieBanner {
   private mutationObserver: MutationObserver | undefined;
 
   constructor() {
-    effect(() => {
-      if (this.consent.bannerVisible()) {
-        untracked(() => {
-          this.improvements.set(this.consent.improvements());
-        });
-      }
-    });
-
     afterNextRender(() => this.observeContentRegion());
     this.destroyRef.onDestroy(() => {
       this.resizeObserver?.disconnect();
       this.mutationObserver?.disconnect();
       window.removeEventListener('resize', this.updateContentRegion);
     });
-  }
-
-  saveSelection(improvements: boolean): void {
-    this.improvements.set(improvements);
-    this.consent.save(improvements);
   }
 
   private readonly updateContentRegion = (): void => {

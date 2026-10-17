@@ -6,39 +6,26 @@
     [style.left.px]="contentCenterX()"
     [style.width.px]="contentWidth()"
   >
-    <h2 id="consent-title" class="title">Your privacy</h2>
-    <p class="intro">
-      We use tools to make ScaleCloud.de faster and better. Optional tools only run if you allow them.
-      <a routerLink="/privacy-policy">Privacy policy</a>.
+    <h2 id="consent-title" class="title">Privacy settings</h2>
+    <p class="text">
+      Optional tools help improve ScaleCloud.de. With your consent, Firebase Performance and Sentry Tracing measure
+      speed, Sentry Replay records sampled sessions with text and inputs masked, and Google Analytics measures usage.
+      Data is sent to Sentry and Google.
     </p>
-    <div class="options">
-      <div class="option">
-        <div class="option-text">
-          <strong>Always active</strong>
-          <span>Sign-in, service operation, and error reports without personal data.</span>
-        </div>
-      </div>
-      <div class="option">
-        <div class="option-text">
-          <strong>Help us improve (optional)</strong>
-          <ul class="improvement-details" aria-label="Optional tools">
-            <li><strong>Performance</strong><span>Firebase Performance and Sentry Tracing</span></li>
-            <li><strong>Replay</strong><span>Sampled Sentry page interactions</span></li>
-            <li><strong>Analytics</strong><span>Google Analytics</span></li>
-          </ul>
-        </div>
-        <mat-slide-toggle
-          [checked]="improvements()"
-          (change)="saveSelection($event.checked)"
-          aria-label="Help us improve"
-        />
-      </div>
+
+    <div class="always-active">
+      <strong>Always active</strong>
+      <span>Essential service functions and technical logs and error reports remain active regardless of your choice.</span>
     </div>
 
     <div class="actions">
-      <button mat-flat-button type="button" (click)="consent.rejectAll()">Only necessary</button>
-      <button mat-flat-button type="button" (click)="consent.acceptAll()">Accept all</button>
+      <button mat-stroked-button type="button" (click)="consent.rejectAll()">Reject all</button>
+      <button mat-stroked-button type="button" (click)="consent.acceptAll()">Accept all</button>
     </div>
 
+    <p class="note">
+      Change your choice at any time in Cookie settings in the footer.
+      <a routerLink="/privacy-policy">Privacy policy</a>
+    </p>
   </dialog>
 }

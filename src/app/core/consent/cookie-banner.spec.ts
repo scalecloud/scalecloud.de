@@ -6,9 +6,13 @@ import { Consent } from './consent';
 import { CookieBanner } from './cookie-banner';
 
 describe('CookieBanner', () => {
-  let component: CookieBanner;
   let fixture: ComponentFixture<CookieBanner>;
   let consent: Consent;
+
+  function button(label: string): HTMLButtonElement {
+    return Array.from(fixture.nativeElement.querySelectorAll('button'))
+      .find((b) => (b as HTMLButtonElement).textContent?.includes(label)) as HTMLButtonElement;
+  }
 
   beforeEach(async () => {
     localStorage.clear();
@@ -19,7 +23,6 @@ describe('CookieBanner', () => {
 
     consent = TestBed.inject(Consent);
     fixture = TestBed.createComponent(CookieBanner);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
@@ -28,33 +31,39 @@ describe('CookieBanner', () => {
     TestBed.resetTestingModule();
   });
 
-  it('shows only the necessary and optional improvement choices', () => {
+  it('names the purposes, the tools, the recipients and the way to withdraw', () => {
     const text = fixture.nativeElement.textContent as string;
 
-    expect(text).toContain('Only necessary');
-    expect(text).toContain('Accept all');
-    expect(text).toContain('We use tools to make ScaleCloud.de faster and better.');
-    expect(text).toContain('Optional tools only run if you allow them.');
+    expect(text).toContain('Optional tools help improve ScaleCloud.de.');
+    expect(text).toContain('Google Analytics measures usage');
+    expect(text).toContain('Firebase Performance and Sentry Tracing measure speed');
+    expect(text).toContain('Sentry Replay records sampled sessions with text and inputs masked,');
+    expect(text.indexOf('Firebase Performance')).toBeLessThan(text.indexOf('Sentry Replay'));
+    expect(text.indexOf('Sentry Replay')).toBeLessThan(text.indexOf('Google Analytics'));
+    expect(text).toContain('Google and Sentry');
     expect(text).toContain('Always active');
-    expect(text).toContain('Help us improve (optional)');
-    expect(text).toContain('Analytics');
-    expect(text).toContain('Performance');
-    expect(text).toContain('Replay');
-    expect(text).toContain('Google Analytics');
-    expect(text).toContain('Firebase Performance and Sentry Tracing');
-    expect(text).toContain('Sampled Sentry page interactions');
-    expect(text.indexOf('Performance')).toBeLessThan(text.indexOf('Replay'));
-    expect(text.indexOf('Replay')).toBeLessThan(text.indexOf('Analytics'));
-    expect(component.improvements()).toBe(false);
-    expect(fixture.nativeElement.querySelectorAll('.option')).toHaveLength(2);
-    expect(fixture.nativeElement.querySelector('mat-expansion-panel')).toBeNull();
+    expect(text).toContain('Essential service functions and technical logs and error reports remain active regardless of your choice.');
+    expect(text).not.toContain('Authentication tokens are stored in your browser');
+    expect(text).toContain('Cookie settings');
+    expect(text).toContain('Privacy policy');
+    expect(text.indexOf('Always active')).toBeLessThan(text.indexOf('Reject all'));
+    expect(fixture.nativeElement.querySelector('dialog.consent')).not.toBeNull();
+  });
+
+  it('presents reject and accept with identical styling', () => {
+    const [reject, accept] = Array.from(
+      fixture.nativeElement.querySelectorAll('.actions button'),
+    ) as HTMLButtonElement[];
+
+    expect(reject.textContent).toContain('Reject all');
+    expect(accept.textContent).toContain('Accept all');
+    expect(reject.hasAttribute('mat-stroked-button')).toBe(true);
+    expect(accept.hasAttribute('mat-stroked-button')).toBe(true);
+    expect(reject.className).toBe(accept.className);
   });
 
   it('persists rejection and closes the banner', () => {
-    const rejectButton = Array.from(fixture.nativeElement.querySelectorAll('button'))
-      .find((button: HTMLButtonElement) => button.textContent?.includes('Only necessary')) as HTMLButtonElement;
-
-    rejectButton.click();
+    button('Reject all').click();
     fixture.detectChanges();
 
     expect(consent.decided()).toBe(true);
@@ -62,27 +71,21 @@ describe('CookieBanner', () => {
     expect(fixture.nativeElement.querySelector('dialog.consent')).toBeNull();
   });
 
-  it('saves the toggle immediately and closes the banner', () => {
-    component.saveSelection(true);
+  it('accepts the optional tools with one click', () => {
+    button('Accept all').click();
     fixture.detectChanges();
 
     expect(consent.improvements()).toBe(true);
-    expect(consent.bannerVisible()).toBe(false);
     expect(fixture.nativeElement.querySelector('dialog.consent')).toBeNull();
+  });
+
+  it('shows the banner again when cookie settings are reopened', () => {
+    button('Accept all').click();
+    fixture.detectChanges();
 
     consent.reopen();
     fixture.detectChanges();
-    expect(component.improvements()).toBe(true);
-  });
 
-  it('accepts all optional tools with one click', () => {
-    const acceptButton = Array.from(fixture.nativeElement.querySelectorAll('button'))
-      .find((button: HTMLButtonElement) => button.textContent?.includes('Accept all')) as HTMLButtonElement;
-
-    acceptButton.click();
-    fixture.detectChanges();
-
-    expect(consent.improvements()).toBe(true);
-    expect(fixture.nativeElement.querySelector('dialog.consent')).toBeNull();
+    expect(fixture.nativeElement.querySelector('dialog.consent')).not.toBeNull();
   });
 });
