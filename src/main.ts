@@ -19,19 +19,6 @@ import { API_URL, APP_BASE_URL } from './app/core/config/api-token';
 import { STRIPE_PUBLIC_KEY } from './app/core/stripe/stripe-key';
 import { Auth } from './app/core/auth/auth';
 
-Sentry.init({
-  dsn: "https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784",
-  integrations: [
-    Sentry.browserTracingIntegration(),
-    Sentry.replayIntegration(),
-  ],
-  environment: environment.production ? 'production' : 'development',
-  tracesSampleRate: 0.2,
-  tracePropagationTargets: ["localhost", /^https:\/\/api\.scalecloud\.de/],
-  replaysSessionSampleRate: 0.1,
-  replaysOnErrorSampleRate: 1.0,
-});
-
 const authentikUrl = environment.oidc.authentikUrl;
 const issuer = `${authentikUrl}/application/o/${environment.oidc.applicationSlug}/`;
 
@@ -90,9 +77,6 @@ bootstrapApplication(App, {
     // Guards await the result themselves via Auth.ensureAuthenticated().
     provideAppInitializer(() => {
       void inject(Auth).init();
-    }),
-    provideAppInitializer(() => {
-      inject(Sentry.TraceService);
     }),
   ],
 })

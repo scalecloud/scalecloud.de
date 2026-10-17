@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatDivider } from '@angular/material/divider';
 import { RouterLink } from '@angular/router';
+import { Consent } from 'src/app/core/consent/consent';
 
 @Component({
     selector: 'app-footer',
@@ -10,4 +11,9 @@ import { RouterLink } from '@angular/router';
     imports: [MatDivider, RouterLink]
 })
 export class Footer {
+    private readonly consent = inject(Consent);
+
+    openCookieSettings(): void {
+        this.consent.reopen();
+    }
 }

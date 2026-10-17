@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { describe, beforeEach, it, expect } from 'vitest';
+import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { Footer } from './footer';
+import { Consent } from 'src/app/core/consent/consent';
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
 
 describe('Footer', () => {
   let component: Footer;
   let fixture: ComponentFixture<Footer>;
+  let consent: Consent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,6 +22,7 @@ describe('Footer', () => {
 
     fixture = TestBed.createComponent(Footer);
     component = fixture.componentInstance;
+    consent = TestBed.inject(Consent);
     fixture.detectChanges();
   });
 
@@ -81,6 +84,15 @@ describe('Footer', () => {
       a.textContent?.includes('2026 ScaleCloud.de'),
     );
     expect(link).toBeTruthy();
+  });
+
+  it('reopens cookie settings', () => {
+    const reopen = vi.spyOn(consent, 'reopen');
+    const button = fixture.nativeElement.querySelector('.cookie-settings') as HTMLButtonElement;
+
+    button.click();
+
+    expect(reopen).toHaveBeenCalledOnce();
   });
 
   it('should render exactly five links', () => {

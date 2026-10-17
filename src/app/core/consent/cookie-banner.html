@@ -1,0 +1,49 @@
+@if (consent.bannerVisible()) {
+  <section class="consent" role="dialog" aria-modal="false" aria-labelledby="consent-title">
+    <h2 id="consent-title" class="title">Your privacy</h2>
+    <p class="intro">
+      Optional analytics and error monitoring help us improve ScaleCloud.de. They start only after you choose.
+      You can change your choice at any time. Read our <a routerLink="/privacy-policy">privacy policy</a>.
+    </p>
+
+    @if (detailsOpen()) {
+      <div class="options">
+        <div class="option">
+          <div class="option-text">
+            <strong>Analytics</strong>
+            <span>Google Analytics and Firebase Performance: usage and page-load measurements.</span>
+          </div>
+          <mat-slide-toggle
+            [checked]="analytics()"
+            (change)="analytics.set($event.checked)"
+            aria-label="Analytics"
+          />
+        </div>
+        <div class="option">
+          <div class="option-text">
+            <strong>Error monitoring</strong>
+            <span>Sentry: technical error and browser information to help fix problems.</span>
+          </div>
+          <mat-slide-toggle
+            [checked]="errorMonitoring()"
+            (change)="errorMonitoring.set($event.checked)"
+            aria-label="Error monitoring"
+          />
+        </div>
+        <p class="note">Login and other features required to provide the service remain available.</p>
+      </div>
+    }
+
+    <div class="actions">
+      <button mat-flat-button type="button" (click)="consent.rejectAll()">Reject all</button>
+      @if (detailsOpen()) {
+        <button mat-flat-button type="button" (click)="saveSelection()">Save selection</button>
+      }
+      <button mat-flat-button type="button" (click)="consent.acceptAll()">Accept all</button>
+    </div>
+
+    @if (!detailsOpen()) {
+      <button class="customize" type="button" (click)="detailsOpen.set(true)">Customize</button>
+    }
+  </section>
+}

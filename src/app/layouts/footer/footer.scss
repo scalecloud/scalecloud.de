@@ -23,3 +23,17 @@ a:active {
     display: flex;
     flex-flow: row wrap;
 }
+
+.cookie-settings {
+    margin-right: 1rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.cookie-settings:hover {
+    color: red;
+}
