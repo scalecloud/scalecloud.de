@@ -3,7 +3,8 @@
     "target": "scalecloud",
     "public": "dist/scalecloud/browser",
     "ignore": [
-      "**/.*"
+      "**/.*",
+      "**/*.map"
     ],
     "headers": [
       {

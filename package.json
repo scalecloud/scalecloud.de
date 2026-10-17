@@ -9,7 +9,7 @@
     "test:ui": "ng test --ui",
     "test:coverage": "ng test --coverage --watch=false",
     "lint": "ng lint",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org scalecloudde --project scalecloud ./dist/scalecloud && sentry-cli sourcemaps upload --org scalecloudde --project scalecloud ./dist/scalecloud"
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org scalecloudde --project scalecloud ./dist/scalecloud/browser && sentry-cli sourcemaps upload --org scalecloudde --project scalecloud ./dist/scalecloud/browser"
   },
   "private": true,
   "dependencies": {
