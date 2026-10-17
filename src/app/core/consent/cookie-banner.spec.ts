@@ -33,8 +33,9 @@ describe('CookieBanner', () => {
 
     expect(text).toContain('Only necessary');
     expect(text).toContain('Accept all');
-    expect(text).toContain('Your choice saves immediately.');
-    expect(text).toContain('Technically necessary');
+    expect(text).toContain('We use tools to make ScaleCloud.de faster and better.');
+    expect(text).toContain('Optional tools only run if you allow them.');
+    expect(text).toContain('Always active');
     expect(text).toContain('Help us improve (optional)');
     expect(text).toContain('Analytics');
     expect(text).toContain('Performance');

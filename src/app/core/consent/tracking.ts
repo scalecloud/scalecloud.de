@@ -19,7 +19,12 @@ export class Tracking {
       dsn: 'https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784',
       environment: environment.production ? 'production' : 'development',
       defaultIntegrations: false,
-      integrations: [Sentry.globalHandlersIntegration()],
+      // Dedupe removes duplicate errors; event filters drop known low-value errors.
+      integrations: [
+        Sentry.globalHandlersIntegration(),
+        Sentry.dedupeIntegration(),
+        Sentry.eventFiltersIntegration(),
+      ],
       dataCollection: {
         userInfo: false,
         cookies: false,
@@ -40,7 +45,7 @@ export class Tracking {
       beforeSendMetric: () => null,
       beforeSendLog: (log) => {
         if (log.attributes) {
-          for (const [key, value] of Object.entries(log.attributes)) {
+          for (const key of Object.keys(log.attributes)) {
             if (/(email|user|token|secret|password|url|return|code|auth|cookie|(?:^|[_-])id(?:$|[_-]))/i.test(key)) {
               delete log.attributes[key];
             }

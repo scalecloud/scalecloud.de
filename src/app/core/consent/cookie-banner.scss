@@ -18,22 +18,18 @@
   background: var(--mat-sys-surface-container-high, #fff);
   color: var(--mat-sys-on-surface, #202124);
   box-shadow: 0 12px 40px rgb(0 0 0 / 0.18);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
   animation: consent-in 220ms ease-out;
-  transform: translateX(-50%);
+  // `translate` centers the card. Using `transform` for this would clash with the
+  // entrance animation below (the card would slide in sideways while fading in).
+  translate: -50% 0;
 }
 
 .title {
   margin: 0 0 6px;
   font-size: 1.1rem;
   font-weight: 600;
-}
-
-.details-panel {
-  margin: 0 0 12px;
-  border-top: 1px solid var(--mat-sys-outline-variant, rgb(0 0 0 / 0.18));
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
 }
 
 .intro {
@@ -73,11 +69,17 @@
   }
 }
 
+.hint {
+  margin-top: 6px;
+  font-size: 0.78rem;
+}
+
 .improvement-details {
   display: grid;
   gap: 2px;
-  margin: 2px 0 0;
-  padding: 0;
+  margin: 6px 0 0 8px;
+  padding: 0 0 0 10px;
+  border-left: 2px solid var(--mat-sys-outline-variant, rgb(0 0 0 / 0.18));
   list-style: none;
 
   li {
@@ -122,4 +124,3 @@
     animation: none;
   }
 }
-
