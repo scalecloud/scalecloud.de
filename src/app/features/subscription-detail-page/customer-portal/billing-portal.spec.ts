@@ -11,10 +11,6 @@ describe('BillingPortal', () => {
   let component: BillingPortal;
   let fixture: ComponentFixture<BillingPortal>;
 
-  const authMock = {
-    getHttpOptions: vi.fn().mockReturnValue({})
-  };
-
   const logMock = {
     error: vi.fn()
   };
@@ -29,7 +25,7 @@ describe('BillingPortal', () => {
     await TestBed.configureTestingModule({
       imports: [BillingPortal],
       providers: [
-        { provide: Auth, useValue: authMock },
+        { provide: Auth, useValue: {} },
         { provide: Log, useValue: logMock },
         { provide: BillingPortalClient, useValue: billingPortalClientMock }
       ]

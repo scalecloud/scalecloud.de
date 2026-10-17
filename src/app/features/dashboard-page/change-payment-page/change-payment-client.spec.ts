@@ -4,23 +4,16 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { vi, describe, beforeEach, afterEach, expect, it } from 'vitest';
+import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 
 import { ChangePaymentClient } from './change-payment-client';
 import { ChangePaymentReply } from './change-payment-model';
 import { environment } from 'src/environments/environment';
-import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
 describe(ChangePaymentClient.name, () => {
   let changePaymentClient: ChangePaymentClient;
   let httpMock: HttpTestingController;
-
-  const httpOptions = {
-    headers: {
-      Authorization: 'Bearer token',
-    },
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -31,12 +24,6 @@ describe(ChangePaymentClient.name, () => {
         {
           provide: API_URL,
           useValue: environment.apiUrl,
-        },
-        {
-          provide: Auth,
-          useValue: {
-            getHttpOptions: vi.fn().mockReturnValue(httpOptions),
-          },
         },
       ],
     });

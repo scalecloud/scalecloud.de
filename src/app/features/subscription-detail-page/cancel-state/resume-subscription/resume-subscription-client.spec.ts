@@ -1,16 +1,13 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { ISubscriptionResumeReply, ISubscriptionResumeRequest } from './subscription-resume';
-import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 import { ResumeSubscriptionClient } from './resume-subscription-client';
 
 const API_BASE = 'https://api.example.com';
 const RESUME_URL = `${API_BASE}/dashboard/resume-subscription`;
-const MOCK_HTTP_OPTIONS = { headers: { Authorization: 'Bearer test-token' } };
-
 const MOCK_REQUEST: ISubscriptionResumeRequest = { subscriptionID: 'sub_123' };
 
 const MOCK_REPLY: ISubscriptionResumeReply = {
@@ -28,10 +25,6 @@ describe('ResumeSubscriptionClient', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: API_BASE },
-        {
-          provide: Auth,
-          useValue: { getHttpOptions: vi.fn().mockReturnValue(MOCK_HTTP_OPTIONS) },
-        },
       ],
     });
 
@@ -55,14 +48,6 @@ describe('ResumeSubscriptionClient', () => {
       const req = httpTesting.expectOne(RESUME_URL);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(MOCK_REQUEST);
-      req.flush(MOCK_REPLY);
-    });
-
-    it('forwards the Authorization header from Auth', () => {
-      resumeSubscriptionClient.resumeSubscription(MOCK_REQUEST).subscribe();
-
-      const req = httpTesting.expectOne(RESUME_URL);
-      expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(MOCK_REPLY);
     });
 

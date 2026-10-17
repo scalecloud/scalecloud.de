@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
+import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 import { InvoicesClient } from './invoices-client';
 import { InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from './invoices-model';
-import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
 describe('InvoicesClient', () => {
@@ -13,7 +12,6 @@ describe('InvoicesClient', () => {
   let httpMock: HttpTestingController;
 
   const fakeApiUrl = 'https://api.example.test';
-  const fakeHttpOptions = { headers: { Authorization: 'Bearer test-token' } };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -21,12 +19,6 @@ describe('InvoicesClient', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: fakeApiUrl },
-        {
-          provide: Auth,
-          useValue: {
-            getHttpOptions: vi.fn().mockReturnValue(fakeHttpOptions)
-          }
-        }
       ]
     });
 
@@ -67,16 +59,6 @@ describe('InvoicesClient', () => {
 
     const req = httpMock.expectOne(`${fakeApiUrl}/dashboard/subscription/invoices`);
     expect(req.request.body).toEqual(request);
-    req.flush({ subscriptionID: 'sub_123', invoices: [], totalResults: 0 });
-  });
-
-  it('should attach auth headers from Auth.getHttpOptions', () => {
-    const request: ListInvoicesRequest = { subscriptionID: 'sub_123', pageSize: 5 };
-
-    invoicesClient.getInvoices(request).subscribe();
-
-    const req = httpMock.expectOne(`${fakeApiUrl}/dashboard/subscription/invoices`);
-    expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
     req.flush({ subscriptionID: 'sub_123', invoices: [], totalResults: 0 });
   });
 

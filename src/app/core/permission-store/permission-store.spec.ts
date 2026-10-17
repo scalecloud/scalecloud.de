@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { of, throwError, Subject } from 'rxjs';
 import { PermissionStore } from './permission-store';
-import { Auth } from '../auth/auth';
 import { Log } from '../logging/log';
 import { Role } from './roles';
 import { API_URL } from '../config/api-token';
@@ -17,7 +16,6 @@ describe('PermissionStore', () => {
   const API_BASE = 'https://api.example.com';
 
   const httpClient = { post: vi.fn() };
-  const authMock = { getHttpOptions: vi.fn(() => ({ headers: { Authorization: 'Bearer token' } })) };
   const log = { info: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
   function makeReply(roles: Role[]): PermissionReply {
@@ -30,7 +28,6 @@ describe('PermissionStore', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: HttpClient, useValue: httpClient },
-        { provide: Auth, useValue: authMock },
         { provide: Log, useValue: log },
         { provide: API_URL, useValue: API_BASE },
       ],
@@ -52,7 +49,7 @@ describe('PermissionStore', () => {
   });
 
   describe('getPermissions', () => {
-    it('should POST to the permission endpoint with the subscriptionID and auth headers', () => {
+    it('should POST to the permission endpoint with the subscriptionID', () => {
       httpClient.post.mockReturnValue(of(makeReply([Role.Owner])));
 
       permissionStore.getPermissions({ subscriptionID: SUBSCRIPTION_ID });
@@ -60,7 +57,6 @@ describe('PermissionStore', () => {
       expect(httpClient.post).toHaveBeenCalledWith(
         `${API_BASE}/dashboard/subscription/permission`,
         { subscriptionID: SUBSCRIPTION_ID },
-        { headers: { Authorization: 'Bearer token' } },
       );
     });
   });

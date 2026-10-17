@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
-import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 import { CheckoutProductRequest, CheckoutProductReply } from './checkout-product-model';
 import { CheckoutProductClient } from './checkout-product-client';
@@ -12,10 +11,6 @@ describe('CheckoutProductClient', () => {
   let httpMock: HttpTestingController;
 
   const API_BASE = 'https://api.example.test';
-  const auth = {
-    getHttpOptions: vi.fn(() => ({ headers: { Authorization: 'Bearer test-token' } })),
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -23,7 +18,6 @@ describe('CheckoutProductClient', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: Auth, useValue: auth },
         { provide: API_URL, useValue: API_BASE },
       ],
     });
@@ -63,18 +57,6 @@ describe('CheckoutProductClient', () => {
     req.flush(reply);
 
     expect(actualReply).toEqual(reply);
-  });
-
-  it('should attach the auth headers returned by Auth.getHttpOptions', () => {
-    const request: CheckoutProductRequest = { productID: 'prod_123' };
-
-    checkoutProductClient.getCheckoutProduct(request).subscribe();
-
-    const req = httpMock.expectOne(`${API_BASE}/checkout-integration/get-checkout-product`);
-    expect(auth.getHttpOptions).toHaveBeenCalled();
-    expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
-
-    req.flush({});
   });
 
   it('should propagate HTTP errors to the caller', () => {

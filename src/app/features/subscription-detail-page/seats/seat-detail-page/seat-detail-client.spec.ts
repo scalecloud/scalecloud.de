@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
+import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 import { firstValueFrom } from 'rxjs';
-import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 import { SeatDetailClient } from './seat-detail-client';
 import { Role } from 'src/app/core/permission-store/roles';
@@ -26,16 +25,11 @@ describe('SeatDetailClient', () => {
   let seatDetailClient: SeatDetailClient;
   let httpMock: HttpTestingController;
 
-  const authMock = {
-    getHttpOptions: vi.fn().mockReturnValue({ headers: {} }),
-  };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: Auth, useValue: authMock },
         { provide: API_URL, useValue: MOCK_API_URL },
       ],
     });
@@ -99,15 +93,4 @@ describe('SeatDetailClient', () => {
     expect(await result$).toEqual(reply);
   });
 
-  // ── Auth headers ───────────────────────────────────────────────────────────
-
-  it('attaches auth headers on every call', async () => {
-    const result$ = firstValueFrom(seatDetailClient.getSeat({ subscriptionID: 'sub-1', uid: 'u1' }));
-
-    const req = httpMock.expectOne(`${MOCK_API_URL}/dashboard/subscription/seat-detail`);
-    req.flush({});
-
-    await result$;
-    expect(authMock.getHttpOptions).toHaveBeenCalled();
-  });
 });

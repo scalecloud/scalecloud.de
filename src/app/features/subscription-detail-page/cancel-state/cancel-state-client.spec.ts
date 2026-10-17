@@ -6,18 +6,11 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { CancelStateClient } from './cancel-state-client';
 import { CancelStateReply } from './cancel-state-model';
 import { environment } from 'src/environments/environment';
-import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
 const SUBSCRIPTION_ID = 'sub-abc-123';
 const BASE_URL        = `${environment.apiUrl}/dashboard/subscription`;
 const EXPECTED_URL    = `${BASE_URL}/${SUBSCRIPTION_ID}/cancel-state`;
-
-const MOCK_HTTP_OPTIONS = { headers: { Authorization: 'Bearer test-token' } };
-
-const mockAuth = {
-  getHttpOptions: vi.fn().mockReturnValue(MOCK_HTTP_OPTIONS),
-};
 
 const MOCK_REPLY: CancelStateReply = {
   subscriptionID:       SUBSCRIPTION_ID,
@@ -36,7 +29,6 @@ describe('CancelStateClient', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: environment.apiUrl },
-        { provide: Auth, useValue: mockAuth },
       ],
     });
 
@@ -68,14 +60,6 @@ describe('CancelStateClient', () => {
       const req = httpTesting.expectOne(`${BASE_URL}/${otherId}/cancel-state`);
       req.flush(MOCK_REPLY);
       expect(req.request.url).toContain(otherId);
-    });
-
-    it('passes the auth HTTP options from Auth', () => {
-      cancelStateClient.getCancelState(SUBSCRIPTION_ID).subscribe();
-      const req = httpTesting.expectOne(EXPECTED_URL);
-      expect(mockAuth.getHttpOptions).toHaveBeenCalled();
-      expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
-      req.flush(MOCK_REPLY);
     });
 
     it('returns the reply from the server', () => {

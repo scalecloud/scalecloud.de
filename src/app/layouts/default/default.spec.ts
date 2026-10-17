@@ -26,15 +26,15 @@ describe('Default', () => {
   let fixture: ComponentFixture<Default>;
   let loadingPermissions: WritableSignal<boolean>;
 
-  const userSignal = signal<any>(undefined);
+  const showAsLoggedInSignal = signal(false);
   const auth = {
-    user: userSignal,
-    signOut: vi.fn(),
+    showAsLoggedIn: showAsLoggedInSignal,
+    logout: vi.fn(),
   };
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    userSignal.set(undefined);
+    showAsLoggedInSignal.set(false);
     loadingPermissions = signal(false);
 
     await TestBed.configureTestingModule({

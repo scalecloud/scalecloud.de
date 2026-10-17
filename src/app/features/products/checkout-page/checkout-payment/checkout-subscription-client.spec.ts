@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
+import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 import { CheckoutCreateSubscriptionReply, CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
-import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 import { CheckoutSubscriptionClient } from './checkout-subscription-client';
 
@@ -12,7 +11,6 @@ describe('CheckoutSubscriptionClient', () => {
   let httpMock: HttpTestingController;
 
   const fakeApiUrl = 'https://api.example.test';
-  const fakeHttpOptions = { headers: { Authorization: 'Bearer test-token' } };
   const expectedUrl = `${fakeApiUrl}/checkout-integration/create-checkout-subscription`;
 
   beforeEach(() => {
@@ -21,12 +19,6 @@ describe('CheckoutSubscriptionClient', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: fakeApiUrl },
-        {
-          provide: Auth,
-          useValue: {
-            getHttpOptions: vi.fn().mockReturnValue(fakeHttpOptions)
-          }
-        }
       ]
     });
 
@@ -71,25 +63,6 @@ describe('CheckoutSubscriptionClient', () => {
 
     const req = httpMock.expectOne(expectedUrl);
     expect(req.request.body).toEqual(request);
-    req.flush({
-      status: 'active',
-      subscriptionID: 'sub_123',
-      productName: 'Pro Plan',
-      email: 'user@example.test',
-      trialEnd: 0
-    });
-  });
-
-  it('should attach auth headers from Auth.getHttpOptions', () => {
-    const request: CheckoutCreateSubscriptionRequest = {
-      productID: 'prod_123',
-      quantity: 1
-    };
-
-    checkoutSubscriptionClient.createCheckoutSubscription(request).subscribe();
-
-    const req = httpMock.expectOne(expectedUrl);
-    expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
     req.flush({
       status: 'active',
       subscriptionID: 'sub_123',

@@ -5,16 +5,10 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import { BillingPortalClient } from './billing-portal-client';
 import { IBillingPortal } from './billing-portal-model';
-import { Auth } from 'src/app/core/auth/auth';
 import { API_URL } from 'src/app/core/config/api-token';
 
 describe('BillingPortalClient', () => {
   const testApiUrl = 'https://api.test.example.com';
-  const mockHttpOptions = { headers: { Authorization: 'Bearer test-token' } };
-
-  const authMock = {
-    getHttpOptions: vi.fn().mockReturnValue(mockHttpOptions)
-  };
 
   let billingPortalClient: BillingPortalClient;
   let httpMock: HttpTestingController;
@@ -27,7 +21,6 @@ describe('BillingPortalClient', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: testApiUrl },
-        { provide: Auth, useValue: authMock }
       ]
     });
 
@@ -43,7 +36,7 @@ describe('BillingPortalClient', () => {
     expect(billingPortalClient).toBeTruthy();
   });
 
-  it('should GET the billing portal from the correct url using auth http options', () => {
+  it('should GET the billing portal from the correct url', () => {
     const mockResponse: IBillingPortal = { url: 'https://billing.example.com/session/abc' };
 
     billingPortalClient.getBillingPortal().subscribe((result) => {
@@ -52,7 +45,6 @@ describe('BillingPortalClient', () => {
 
     const req = httpMock.expectOne(`${testApiUrl}/dashboard/billing-portal`);
     expect(req.request.method).toBe('GET');
-    expect(authMock.getHttpOptions).toHaveBeenCalled();
 
     req.flush(mockResponse);
   });
