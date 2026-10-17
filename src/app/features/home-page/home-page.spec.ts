@@ -109,7 +109,7 @@ describe('HomePage', () => {
   it('should show an under-construction warning on init', () => {
     expect(snackBar.errorDuration).toHaveBeenCalledWith(
       'This Website is currently under construction. Please come back later.',
-      30,
+      5,
     );
   });
 
