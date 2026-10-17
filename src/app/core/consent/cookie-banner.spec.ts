@@ -40,7 +40,7 @@ describe('CookieBanner', () => {
     expect(text).toContain('Sentry Replay records sampled sessions with text and inputs masked,');
     expect(text.indexOf('Firebase Performance')).toBeLessThan(text.indexOf('Sentry Replay'));
     expect(text.indexOf('Sentry Replay')).toBeLessThan(text.indexOf('Google Analytics'));
-    expect(text).toContain('Google and Sentry');
+    expect(text).toContain('Data is sent to Sentry and Google.');
     expect(text).toContain('Always active');
     expect(text).toContain('Essential service functions and technical logs and error reports remain active regardless of your choice.');
     expect(text).not.toContain('Authentication tokens are stored in your browser');
