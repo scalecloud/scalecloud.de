@@ -15,10 +15,24 @@
             <mat-icon>dashboard</mat-icon>
             Dashboard
           </button>
-          <button mat-button [matMenuTriggerFor]="menu" aria-label="Account menu">
-            <mat-icon>person</mat-icon>
+          <button mat-button [matMenuTriggerFor]="menu">
+            @if (accountInitials; as initials) {
+              <span class="account-avatar">{{ initials }}</span>
+            } @else {
+              <mat-icon>person</mat-icon>
+            }
           </button>
           <mat-menu #menu="matMenu">
+            @if (auth.user(); as user) {
+              <button mat-menu-item class="account-menu-identity" disabled>
+                <mat-icon>person</mat-icon>
+                <span>{{ user.email ?? user.displayName ?? 'Account' }}</span>
+              </button>
+            }
+            <a mat-menu-item [href]="accountSettingsUrl" target="_blank" rel="noopener noreferrer">
+              <mat-icon>security</mat-icon>
+              <span>Passkeys &amp; MFA</span>
+            </a>
             <button mat-menu-item (click)="logout()">
               <mat-icon>logout</mat-icon>
               Logout

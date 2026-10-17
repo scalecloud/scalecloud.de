@@ -4,7 +4,8 @@ import { signal } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { Header } from './header';
-import { Auth } from 'src/app/core/auth/auth';
+import { Auth, AuthUser } from 'src/app/core/auth/auth';
+import { environment } from 'src/environments/environment';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -21,9 +22,11 @@ describe('Header', () => {
 
   const resolved = signal(false);
   const showAsLoggedIn = signal(false);
+  const user = signal<AuthUser | null>(null);
   const auth = {
     resolved,
     showAsLoggedIn,
+    user,
     login: vi.fn(),
     logout: vi.fn(),
   };
@@ -32,6 +35,7 @@ describe('Header', () => {
     vi.clearAllMocks();
     showAsLoggedIn.set(false);
     resolved.set(false);
+    user.set(null);
 
     await TestBed.configureTestingModule({
       imports: [Header],
@@ -65,7 +69,7 @@ describe('Header', () => {
     expect(findButton(compiled, 'Login')).toBeFalsy();
     expect(findButton(compiled, 'Sign up')).toBeFalsy();
     expect(findButton(compiled, 'Dashboard')).toBeFalsy();
-    expect(compiled.querySelector('[aria-label="Account menu"]')).toBeNull();
+    expect(compiled.querySelector('[aria-haspopup="menu"]')).toBeNull();
   });
 
   it('should show Login but not Sign up when signed out', () => {
@@ -114,6 +118,62 @@ describe('Header', () => {
     const compiled: HTMLElement = fixture.nativeElement;
     expect(findButton(compiled, 'Login')).toBeFalsy();
     expect(findButton(compiled, 'Sign up')).toBeFalsy();
+  });
+
+  it('shows initials based on the display name in the account button', () => {
+    user.set({
+      uid: 'user-1',
+      email: 'user@example.com',
+      emailVerified: true,
+      displayName: 'ScaleCloud User',
+      claims: {},
+    });
+    showAsLoggedIn.set(true);
+    resolved.set(true);
+    fixture.detectChanges();
+
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(compiled.querySelector('.account-avatar')?.textContent?.trim()).toBe('SU');
+  });
+
+  it('uses email initials when the display name is absent', () => {
+    user.set({
+      uid: 'user-1',
+      email: 'mary.jane@example.com',
+      emailVerified: true,
+      displayName: null,
+      claims: {},
+    });
+
+    expect(component.accountInitials).toBe('MJ');
+  });
+
+  it('shows account identity and a Passkeys & MFA link in the account menu', async () => {
+    user.set({
+      uid: 'user-1',
+      email: 'user@example.com',
+      emailVerified: true,
+      displayName: 'ScaleCloud User',
+      claims: {},
+    });
+    showAsLoggedIn.set(true);
+    resolved.set(true);
+    fixture.detectChanges();
+
+    const compiled: HTMLElement = fixture.nativeElement;
+    compiled.querySelector<HTMLButtonElement>('[aria-haspopup="menu"]')?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const accountMenu = document.body;
+    expect(accountMenu.textContent).toContain('user@example.com');
+    const securityLink = Array.from(accountMenu.querySelectorAll('a')).find((link) =>
+      link.textContent?.includes('Passkeys & MFA'),
+    );
+    expect(securityLink?.getAttribute('href')).toBe(
+      `${environment.oidc.authentikUrl}/if/user/#/settings;%7B%22page%22:%22page-credentials%22,%22ak-user-settings-mfa-page%22:0%7D`,
+    );
+    expect(securityLink?.getAttribute('target')).toBe('_blank');
   });
 
   it('should call auth.logout when logout is triggered', () => {

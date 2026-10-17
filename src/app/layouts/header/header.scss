@@ -25,6 +25,15 @@ a:active {
     color: rgb(255, 255, 255);
 }
 
+a.mat-mdc-menu-item {
+    color: var(--mat-menu-item-label-text-color);
+}
+
+button.account-menu-identity[disabled] {
+    color: var(--mat-menu-item-label-text-color);
+    opacity: 1;
+}
+
 button {
     background-color: transparent;
     border: none;
@@ -36,5 +45,20 @@ button {
 
 .logo-icon {
     height: 2rem;
+}
+
+.account-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    border-radius: 50%;
+    background-color: white;
+    color: #3f51b5;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
 }
 
