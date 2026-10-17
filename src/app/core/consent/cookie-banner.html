@@ -1,5 +1,12 @@
 @if (consent.bannerVisible()) {
-  <section class="consent" role="dialog" aria-modal="false" aria-labelledby="consent-title">
+  <section
+    class="consent"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="consent-title"
+    [style.left.px]="contentCenterX()"
+    [style.width.px]="contentWidth()"
+  >
     <h2 id="consent-title" class="title">Your privacy</h2>
     <p class="intro">
       Optional analytics and error monitoring help us improve ScaleCloud.de. They start only after you choose.

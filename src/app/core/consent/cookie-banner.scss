@@ -5,11 +5,13 @@
 .consent {
   position: fixed;
   z-index: 1000;
-  inset-inline: 16px;
+  left: 50%;
+  right: auto;
   bottom: 16px;
   box-sizing: border-box;
   max-width: 620px;
-  margin-inline: auto;
+  width: min(620px, calc(100vw - 32px));
+  margin: 0;
   padding: 20px 22px 18px;
   border: 1px solid var(--mat-sys-outline-variant, rgb(0 0 0 / 0.18));
   border-radius: 12px;
@@ -17,6 +19,7 @@
   color: var(--mat-sys-on-surface, #202124);
   box-shadow: 0 12px 40px rgb(0 0 0 / 0.18);
   animation: consent-in 220ms ease-out;
+  transform: translateX(-50%);
 }
 
 .title {
