@@ -25,7 +25,6 @@ describe('Header', () => {
     resolved,
     showAsLoggedIn,
     login: vi.fn(),
-    register: vi.fn(),
     logout: vi.fn(),
   };
 
@@ -69,12 +68,12 @@ describe('Header', () => {
     expect(compiled.querySelector('[aria-label="Account menu"]')).toBeNull();
   });
 
-  it('should show the Login and Sign up buttons when signed out', () => {
+  it('should show Login but not Sign up when signed out', () => {
     resolved.set(true);
     fixture.detectChanges();
     const compiled: HTMLElement = fixture.nativeElement;
     expect(findButton(compiled, 'Login')).toBeTruthy();
-    expect(findButton(compiled, 'Sign up')).toBeTruthy();
+    expect(findButton(compiled, 'Sign up')).toBeFalsy();
   });
 
   it('should not show the Dashboard button when signed out', () => {
@@ -92,16 +91,6 @@ describe('Header', () => {
     findButton(compiled, 'Login')?.click();
 
     expect(auth.login).toHaveBeenCalledWith(router.url);
-  });
-
-  it('should call auth.register with the current URL when Sign up is clicked', () => {
-    resolved.set(true);
-    fixture.detectChanges();
-    const compiled: HTMLElement = fixture.nativeElement;
-
-    findButton(compiled, 'Sign up')?.click();
-
-    expect(auth.register).toHaveBeenCalledWith(router.url);
   });
 
   // ─── Logged in ──────────────────────────────────────────────────────────────

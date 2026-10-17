@@ -23,10 +23,6 @@ export class Header {
     this.auth.login(this.router.url);
   }
 
-  register() {
-    this.auth.register(this.router.url);
-  }
-
   logout() {
     this.auth.logout();
   }
