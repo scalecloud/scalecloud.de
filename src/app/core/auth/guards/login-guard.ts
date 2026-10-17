@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Auth } from '../auth';
 
-export const loginGuard: CanActivateFn = async (route, state) => {
+export const loginGuard: CanActivateFn = async (route, _state) => {
   const auth = inject(Auth);
   const router = inject(Router);
   const target = auth.resolveReturnTarget(route.queryParamMap.get('returnUrl'));
@@ -13,4 +13,4 @@ export const loginGuard: CanActivateFn = async (route, state) => {
 
   auth.login(target);
   return false;
-}
+};
