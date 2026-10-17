@@ -1,180 +1,77 @@
-<!--
-  Datenschutz-Abschnitte für die Umstellung auf Authentik (Entwurf, auf Deutsch).
-  Zum Einfügen in privacy-page.html.
-
-  VOR DER VERÖFFENTLICHUNG
-  - Alles, was in <mark>[...]</mark> steht, ist ein Platzhalter oder eine offene Prüfung. Suche nach "<mark>"
-    und entferne die Markierung erst, wenn der Inhalt stimmt.
-  - Rechtsgrundlagen, Verträge (AVV), Drittlandübertragung und Fristen vor Veröffentlichung juristisch prüfen lassen.
-  - Bestehende Abschnitte, die hier nicht vorkommen (Verantwortlicher, Betroffenenrechte, Beschwerderecht,
-    Stripe, Datenverarbeitung im Backend), bleiben bestehen. Prüfe sie auf Widersprüche zu diesen Abschnitten.
-  - ENTFERNEN: Abschnitt "Firebase Authentication"; "Google Analytics" und "reCAPTCHA", sofern kein Code sie lädt.
-  - Die Abschnitte "Fehlerüberwachung (Sentry)" und "Firebase Analytics und Performance" erst veröffentlichen,
-    wenn die Cookie-Zustimmung live ist und beide Dienste wirklich erst nach Einwilligung starten.
--->
-
-<h2>Registrierung und Anmeldung (Authentik)</h2>
-
+<h2>Anmeldung (Authentik)</h2>
 <p>
-  Für Registrierung und Anmeldung betreiben wir einen eigenen Identitätsdienst (Authentik, Open-Source-Software)
-  unter auth.scalecloud.de. Der Dienst läuft auf einem von uns betriebenen Server in Deutschland
-  <mark>[Standort/Rechenzentrum nennen; falls der Server bei einem Dienstleister gemietet ist: Anbieter und AV-Vertrag nennen]</mark>.
-  Eine Anmeldung über Drittanbieter (z. B. Google oder Apple) findet nicht statt.
-</p>
-
-<h3>Ablauf und verarbeitete Daten</h3>
-<ul>
-  <li>
-    <strong>Registrierung:</strong> Sie geben einen Benutzernamen und Ihre E-Mail-Adresse an, bestätigen die
-    E-Mail-Adresse über einen Link und richten anschließend einen Passkey sowie eine Zwei-Faktor-Authentifizierung
-    (TOTP) ein.
-  </li>
-  <li>
-    <strong>Anmeldung:</strong> Die Anmeldung erfolgt ausschließlich mit einem Passkey. Ein Passwort wird nicht
-    gespeichert. Biometrische Daten (z. B. Fingerabdruck oder Gesichtserkennung) verlassen Ihr Gerät nicht.
-  </li>
-  <li>
-    <strong>Kontowiederherstellung:</strong> Sie erhalten einen Link per E-Mail, bestätigen sich mit Ihrem
-    TOTP-Code und fügen einen neuen Passkey hinzu. Bereits vorhandene Passkeys bleiben aktiv.
-  </li>
-</ul>
-
-<p>Dabei speichern wir:</p>
-<ul>
-  <li>Benutzername und E-Mail-Adresse,</li>
-  <li>öffentlicher Schlüssel und Kennung Ihrer Passkeys sowie das Geheimnis für die TOTP-Authentifizierung,</li>
-  <li>
-    Protokolle über Anmelde- und Kontoereignisse (Zeitpunkt, IP-Adresse, Browserkennung, ausgeführte Aktion).
-    Diese Protokolle werden 365 Tage aufbewahrt und danach gelöscht,
-  </li>
-  <li>
-    <mark>[erst aufnehmen, wenn umgesetzt: den Zeitpunkt Ihrer Zustimmung zu den Nutzungsbedingungen]</mark>.
-  </li>
-</ul>
-
-<p>
-  Zur Absicherung Ihrer Sitzung wird Ihre IP-Adresse lokal auf unserem Server einem Kontinent zugeordnet (GeoIP);
-  die Sitzung ist an diesen Kontinent gebunden. Hierfür werden keine Daten an Dritte übermittelt.
-</p>
-
-<p>
-  <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Durchführung des Vertrags bzw. vorvertragliche
-  Maßnahmen) für Registrierung und Anmeldung sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der
-  Sicherheit des Dienstes) für die Protokolle und die Sitzungsbindung
-  <mark>[rechtlich prüfen]</mark>.
-</p>
-
-<h3>Weitergabe der Anmeldedaten an unsere Anwendung</h3>
-<p>
-  Nach der Anmeldung erhält unsere Anwendung vom Identitätsdienst eine Benutzerkennung (pseudonyme ID), Ihren
-  Benutzernamen bzw. Namen und Ihre E-Mail-Adresse. Unser Server verwendet die Benutzerkennung, um Ihre
-  Abonnements und Berechtigungen zuzuordnen. Die Anfragen der Anwendung an unseren Server enthalten ein
-  Zugriffstoken, das Ihre Identität belegt.
+  Für Registrierung und Anmeldung betreiben wir einen eigenen Identitätsdienst (Authentik, auth.scalecloud.de) auf
+  eigenen Servern in Deutschland. Wir speichern Benutzername, E-Mail-Adresse, Passkey-Daten (öffentlicher
+  Schlüssel), TOTP-Geheimnis, den Zeitpunkt Ihrer Zustimmung zu den Nutzungsbedingungen und Anmeldeprotokolle
+  (Zeitpunkt, IP-Adresse, Browserkennung). Die Protokolle löschen wir nach 365 Tagen, die übrigen Daten mit der
+  Löschung Ihres Kontos. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b und f DSGVO.
 </p>
 
 <h2>E-Mail-Versand (Brevo)</h2>
 <p>
-  Bestätigungs- und Wiederherstellungs-E-Mails versenden wir über den Dienst Brevo
-  <mark>[Vertragspartner und Sitz laut AV-Vertrag, z. B. Brevo SAS, Paris, Frankreich – bestätigen]</mark>.
-  Dabei werden Ihre E-Mail-Adresse, Ihr Benutzername und der jeweilige Bestätigungs- bzw. Wiederherstellungslink
-  an den Anbieter übermittelt. Der Anbieter verarbeitet diese Daten in unserem Auftrag; mit ihm besteht
-  <mark>[ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO – bestätigen]</mark>.
-  Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.
+  Bestätigungs- und Wiederherstellungs-E-Mails versenden wir im Auftrag (Art. 28 DSGVO) über Brevo (Brevo GmbH,
+  Köpenicker Str. 126, 10179 Berlin). Übermittelt werden E-Mail-Adresse und Benutzername. Rechtsgrundlage ist
+  Art. 6 Abs. 1 lit. b DSGVO.
 </p>
 
-<h2>Speicherungen im Browser (Cookies und lokaler Speicher)</h2>
-<p>Für die Anmeldung werden folgende Informationen auf Ihrem Gerät gespeichert:</p>
-<ul>
-  <li>
-    <strong>Sitzungscookies von Authentik (auth.scalecloud.de):</strong> Die Sitzung ist bis zu 12 Wochen gültig.
-    Die Funktion „Gerät merken“ für die Zwei-Faktor-Abfrage gilt ebenfalls bis zu 12 Wochen.
-  </li>
-  <li>
-    <strong>Anmelde-Token im lokalen Speicher (Local Storage) des Browsers:</strong> Damit Sie angemeldet bleiben,
-    speichert die Anwendung das Zugriffstoken (5 Minuten gültig) und das Aktualisierungstoken (30 Tage gültig
-    <mark>[Verlängerung bei Nutzung prüfen und ggf. beschreiben]</mark>) sowie zugehörige technische Angaben der
-    Anmeldung. Sie werden bei der Abmeldung gelöscht.
-  </li>
-  <li>
-    <strong>Rücksprungziel (Local Storage):</strong> Beim Start der Anmeldung oder Registrierung merkt sich die
-    Anwendung vorübergehend die Seite, zu der Sie danach zurückkehren möchten (z. B. die Bestellung). Der Eintrag
-    ist höchstens 2 Stunden gültig und wird nach der Anmeldung oder Abmeldung gelöscht.
-  </li>
-</ul>
+<h2>Zahlungen (Stripe)</h2>
 <p>
-  Diese Speicherungen sind erforderlich, um die von Ihnen gewünschte Anmeldung bereitzustellen
-  (§ 25 Abs. 2 Nr. 2 TDDDG) <mark>[rechtlich prüfen, insbesondere für das dauerhafte Angemeldetbleiben]</mark>.
-  Die Weiterverarbeitung der Daten richtet sich nach den oben genannten Rechtsgrundlagen der DSGVO.
-</p>
-
-<h2>Support-Widget (Atlassian)</h2>
-<p>
-  Für Supportanfragen binden wir ein Widget von Atlassian
-  <mark>[Vertragspartner und Sitz nennen, z. B. Atlassian Pty Ltd, Australien / Atlassian US, Inc.]</mark> ein.
-  <mark>[Variante A, wenn das Widget erst nach Klick lädt: Das Widget wird erst geladen, wenn Sie auf „Support“ klicken.
-  Variante B, wenn es immer lädt: Das Widget wird beim Aufruf unserer Seiten geladen; dabei wird Ihre IP-Adresse
-  an Atlassian übertragen.]</mark>
-  Wenn Sie eine Anfrage senden, übermitteln Sie Name, E-Mail-Adresse und Ihre Nachricht; hinzu kommen technische
-  Angaben wie Ihre IP-Adresse. Wir verwenden die Daten, um Ihre Anfrage zu bearbeiten.
-  Rechtsgrundlage ist Art. 6 Abs. 1 lit. b bzw. lit. f DSGVO <mark>[prüfen]</mark>.
-  Mit dem Anbieter besteht <mark>[ein Auftragsverarbeitungsvertrag – bestätigen]</mark>.
-  <mark>[Drittlandübertragung und Garantien nach Art. 44 ff. DSGVO nennen, z. B. Standardvertragsklauseln oder
-  Zertifizierung unter dem EU-US Data Privacy Framework]</mark>
-</p>
-
-<h2>Schriftarten (Google Fonts)</h2>
-<p>
-  Zur einheitlichen Darstellung laden wir Schriftarten von Servern der Google Ireland Limited, Irland
-  <mark>[bzw. Google LLC, USA – laut Anbieterangaben prüfen]</mark>. Dabei wird Ihre IP-Adresse an Google
-  übertragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer einheitlichen und
-  ansprechenden Darstellung). Soweit Daten in die USA übermittelt werden, geschieht dies
-  <mark>[auf Grundlage des EU-US Data Privacy Framework bzw. von Standardvertragsklauseln – prüfen]</mark>.
+  Abonnements und Zahlungen wickeln wir über Stripe (Stripe Payments Europe, Ltd., 1 Grand Canal Street Lower,
+  Grand Canal Dock, Dublin, D02 H210, Irland) ab. Dabei werden Name, E-Mail-Adresse, Rechnungsadresse und
+  Zahlungsdaten an Stripe übermittelt; Ihre Zahlungsdaten geben Sie direkt bei Stripe ein. Beim Laden der
+  Zahlungsseiten erfasst Stripe zur Betrugsprävention auch Geräte- und Browserdaten und verarbeitet Daten teilweise
+  als eigener Verantwortlicher. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, für die Betrugsprävention lit. f.
+  Rechnungs- und Zahlungsdaten bewahren wir, auch bei Stripe, im Rahmen der gesetzlichen Aufbewahrungsfristen auf.
+  <a href="https://stripe.com/de/privacy">Datenschutzhinweise von Stripe</a>.
 </p>
 
 <h2>Hosting (Firebase Hosting)</h2>
 <p>
-  <mark>[Bestehenden Abschnitt zu Firebase Hosting beibehalten und auf Aktualität prüfen: Anbieter Google,
-  Verarbeitung von Server-Logdaten wie IP-Adresse, Zeitpunkt und aufgerufener Seite, Rechtsgrundlage, AV-Vertrag,
-  Drittlandübertragung.]</mark>
+  Unsere Website wird über Firebase Hosting (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland)
+  bereitgestellt. Beim Aufruf werden technisch notwendige Verbindungsdaten verarbeitet (IP-Adresse, Datum und
+  Uhrzeit, aufgerufene Seite, Browser- und Betriebssysteminformationen). Rechtsgrundlage ist Art. 6 Abs. 1 lit. f
+  DSGVO. <a href="https://firebase.google.com/support/privacy">Datenschutzhinweise von Firebase</a>.
 </p>
 
-<!-- ERST VERÖFFENTLICHEN, WENN DIE COOKIE-ZUSTIMMUNG LIVE IST -->
+<h2>Support-Widget (Jira Service Management)</h2>
+<p>
+  Für Supportanfragen laden wir das Widget von Jira Service Management (Atlassian Pty Ltd, 350 Bush St, Floor 13,
+  San Francisco, CA 94104, USA). Dabei wird Ihre IP-Adresse übertragen, bei einer Anfrage zusätzlich Name,
+  E-Mail-Adresse und Nachricht. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b bzw. f DSGVO.
+  <a href="https://www.atlassian.com/legal/privacy-policy">Datenschutzhinweise von Atlassian</a>.
+</p>
+
+<h2>Schriftarten (Google Fonts)</h2>
+<p>
+  Schriftarten laden wir von Servern von Google (Google Ireland Limited, Irland); dabei wird Ihre IP-Adresse
+  übertragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.
+  <a href="https://policies.google.com/privacy">Datenschutzhinweise von Google</a>.
+</p>
+
 <h2>Fehlerüberwachung (Sentry)</h2>
 <p>
-  Mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) setzen wir den Dienst Sentry
-  <mark>[Functional Software, Inc., USA; Speicherort EU oder USA laut Projekteinstellungen nennen]</mark> ein, um
-  Fehler in unserer Anwendung zu erkennen und zu beheben. Dabei werden technische Daten übertragen, etwa
-  Fehlermeldungen, aufgerufene Seiten, Browser- und Gerätedaten und Ihre IP-Adresse.
-  <mark>[Nur aufnehmen, wenn nach der Einwilligung aktiv: Zusätzlich werden Leistungsdaten (Tracing) und
-  aufgezeichnete Sitzungen (Session Replay, Texte und Medien werden maskiert bzw. blockiert – prüfen) erfasst.
-  Profiling nur nennen, wenn es aktiv ist.]</mark>
-  Sentry wird erst nach Ihrer Einwilligung gestartet. Sie können sie jederzeit <mark>[in den Cookie-Einstellungen]</mark>
-  mit Wirkung für die Zukunft widerrufen. Mit dem Anbieter besteht
-  <mark>[ein Auftragsverarbeitungsvertrag – bestätigen]</mark>.
-  <mark>[Garantien für die Datenübermittlung in die USA nennen.]</mark>
+  Nur mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) nutzen wir Sentry (Functional Software,
+  Inc., USA; Speicherung in der EU), um Fehler zu beheben. Übertragen werden Fehlermeldungen, aufgerufene Seiten,
+  Browser- und Gerätedaten und Ihre IP-Adresse, stichprobenartig auch aufgezeichnete Sitzungen (Texte und Medien
+  maskiert). Widerruf ist jederzeit über den Link „Cookie-Einstellungen“ im Fußbereich möglich.
+  <a href="https://sentry.io/privacy/">Datenschutzhinweise von Sentry</a>.
 </p>
 
-<!-- ERST VERÖFFENTLICHEN, WENN DIE COOKIE-ZUSTIMMUNG LIVE IST UND DER DIENST AUS firebase.ts VERDRAHTET IST -->
-<h2>Firebase Analytics und Performance Monitoring</h2>
+<h2>Analyse (Firebase Analytics und Performance)</h2>
 <p>
-  Mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) nutzen wir Firebase Analytics und
-  Firebase Performance Monitoring der Google Ireland Limited <mark>[bzw. Google LLC – prüfen]</mark>, um die
-  Nutzung und die Ladezeiten unserer Anwendung zu analysieren. Dabei können Nutzungsdaten, Geräte- und
-  Browserinformationen, eine pseudonyme Kennung und die IP-Adresse verarbeitet werden
-  <mark>[genauen Umfang laut Konfiguration prüfen]</mark>. Beide Dienste werden erst nach Ihrer Einwilligung
-  gestartet. Sie können sie jederzeit <mark>[in den Cookie-Einstellungen]</mark> mit Wirkung für die Zukunft
-  widerrufen. <mark>[Drittlandübertragung und Garantien nennen.]</mark>
+  Nur mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) nutzen wir Firebase Analytics und
+  Firebase Performance Monitoring (Google Ireland Limited), um die Nutzung und die Ladezeiten unserer Anwendung zu
+  analysieren. Verarbeitet werden eine pseudonyme Nutzerkennung, Geräte- und Browserdaten, aufgerufene Seiten,
+  Interaktionen, Ladezeiten und ein aus der IP-Adresse abgeleiteter ungefährer Standort. Widerruf ist jederzeit über
+  den Link „Cookie-Einstellungen“ im Fußbereich möglich.
+  <a href="https://firebase.google.com/support/privacy">Datenschutzhinweise von Firebase</a>.
 </p>
 
-<h2>Löschung und Speicherdauer</h2>
 <p>
-  Sie können die Löschung Ihres Kontos jederzeit unter <mark>[E-Mail-Adresse einsetzen]</mark> verlangen. Wir
-  löschen dann Ihren Benutzer im Identitätsdienst und die zugehörigen Daten in unserem System, soweit keine
-  gesetzlichen Pflichten entgegenstehen. Rechnungs- und Zahlungsdaten bewahren wir im Rahmen der gesetzlichen
-  Aufbewahrungsfristen auf; das gilt ebenso für Daten bei unserem Zahlungsdienstleister Stripe.
-  Die Anmeldeprotokolle des Identitätsdienstes werden nach 365 Tagen gelöscht.
-  <mark>[Eine automatische Löschung inaktiver Konten nach [X] Tagen ohne Anmeldung erst aufnehmen, wenn sie
-  umgesetzt ist. Die Löschung bei Brevo, Atlassian und Sentry beschreiben, sobald der Ablauf feststeht.]</mark>
+  Soweit bei Atlassian, Sentry, Stripe und Google Daten in die USA übermittelt werden, stützen wir uns auf den
+  Angemessenheitsbeschluss der EU-Kommission zum EU-US Data Privacy Framework (Beschluss (EU) 2023/1795).
+  Atlassian, Functional Software, Inc. (Sentry), Stripe, LLC und Google LLC sind unter diesem Framework
+  zertifiziert. Soweit mit den Anbietern vereinbart, gelten hilfsweise EU-Standardvertragsklauseln.
 </p>
 
-<p><mark>[Stand: 17.10.2026]</mark></p>
+<p>Stand: 17.10.2026</p>
