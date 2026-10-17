@@ -19,11 +19,9 @@ export class Tracking {
       dsn: 'https://37ae26106eaa1531ba2941ee13b103c5@o4508966853083136.ingest.de.sentry.io/4508971996872784',
       environment: environment.production ? 'production' : 'development',
       defaultIntegrations: false,
-      // Dedupe removes duplicate errors; event filters drop known low-value errors.
       integrations: [
         Sentry.globalHandlersIntegration(),
         Sentry.dedupeIntegration(),
-        Sentry.eventFiltersIntegration(),
       ],
       dataCollection: {
         userInfo: false,
@@ -31,10 +29,6 @@ export class Tracking {
         httpHeaders: false,
         httpBodies: [],
         urlQueryParams: false,
-        graphQL: { document: false, variables: false },
-        genAI: { inputs: false, outputs: false },
-        databaseQueryData: false,
-        queues: false,
         stackFrameVariables: false,
         frameContextLines: 0,
       },
@@ -43,62 +37,6 @@ export class Tracking {
       replaysSessionSampleRate: 0.1,
       replaysOnErrorSampleRate: 0.1,
       beforeSendMetric: () => null,
-      beforeSendLog: (log) => {
-        if (log.attributes) {
-          for (const key of Object.keys(log.attributes)) {
-            if (/(email|user|token|secret|password|url|return|code|auth|cookie|(?:^|[_-])id(?:$|[_-]))/i.test(key)) {
-              delete log.attributes[key];
-            }
-          }
-        }
-        return log;
-      },
-      beforeSendSpan: (span) => {
-        const attributes = { ...span.attributes };
-        for (const key of Object.keys(attributes)) {
-          if (/(url|query|cookie|header|user|email|session|token|secret|target|route|address)/i.test(key)) {
-            delete attributes[key];
-          }
-        }
-        span.attributes = attributes;
-        span.name = span.is_segment ? 'page navigation' : 'browser operation';
-        delete span.links;
-        return span;
-      },
-      beforeSend: (event) => {
-        delete event.user;
-        delete event.request;
-        delete event.breadcrumbs;
-        delete event.contexts;
-        delete event.extra;
-        delete event.tags;
-        delete event.transaction;
-        delete event.message;
-        delete event.logentry;
-        delete event.fingerprint;
-
-        for (const exception of event.exception?.values ?? []) {
-          delete exception.mechanism;
-          if (exception.stacktrace?.frames) {
-            exception.stacktrace.frames = exception.stacktrace.frames.map((frame) => {
-              const safeFrame = { ...frame };
-              delete safeFrame.vars;
-              delete safeFrame.context_line;
-              delete safeFrame.pre_context;
-              delete safeFrame.post_context;
-              if (safeFrame.abs_path) {
-                safeFrame.abs_path = safeFrame.abs_path.split(/[?#]/)[0];
-              }
-              if (safeFrame.filename) {
-                safeFrame.filename = safeFrame.filename.split(/[?#]/)[0];
-              }
-              return safeFrame;
-            });
-          }
-        }
-
-        return event;
-      },
     });
 
     effect(() => {
@@ -121,19 +59,19 @@ export class Tracking {
           this.improvementsStarted = true;
           Sentry.addIntegration(Sentry.browserTracingIntegration());
           this.injector.get(Sentry.TraceService);
-          void this.startAnalytics();
+          void this.startFirebaseServices();
           void this.startSessionReplay();
         }
       });
     });
   }
 
-  private async startAnalytics(): Promise<void> {
+  private async startFirebaseServices(): Promise<void> {
     try {
       const { Firebase } = await import('../firebase/firebase');
       this.injector.get(Firebase);
     } catch (error) {
-      this.log.error('Analytics initialization failed', error);
+      this.log.error('Firebase services initialization failed', error);
     }
   }
 
