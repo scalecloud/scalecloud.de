@@ -164,14 +164,34 @@ describe('Auth', () => {
     expect(localStorage.getItem(PENDING_RETURN_KEY)).toBeNull();
   });
 
+  describe('showAsLoggedIn', () => {
+    it('returns false until auth resolves, then reflects an authenticated session', async () => {
+      oidc.checkAuth.mockReturnValue(of({ isAuthenticated: true }));
+      authenticatedState.set({ isAuthenticated: true });
+
+      expect(auth.resolved()).toBe(false);
+      expect(auth.showAsLoggedIn()).toBe(false);
+
+      await auth.init();
+
+      expect(auth.resolved()).toBe(true);
+      expect(auth.showAsLoggedIn()).toBe(true);
+    });
+
+    it('returns false after auth resolves for a signed-out user', async () => {
+      await auth.init();
+
+      expect(auth.resolved()).toBe(true);
+      expect(auth.showAsLoggedIn()).toBe(false);
+    });
+  });
+
   it('logout clears local auth state and starts OIDC logout', () => {
-    localStorage.setItem('scalecloud.auth.hint', '1');
     storePendingTarget('/dashboard/after-login');
 
     auth.logout();
 
     expect(oidc.logoffAndRevokeTokens).toHaveBeenCalledOnce();
-    expect(localStorage.getItem('scalecloud.auth.hint')).toBeNull();
     expect(localStorage.getItem(PENDING_RETURN_KEY)).toBeNull();
   });
 });

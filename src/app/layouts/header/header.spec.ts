@@ -19,9 +19,10 @@ describe('Header', () => {
   let fixture: ComponentFixture<Header>;
   let router: Router;
 
-  // Mirrors Auth.showAsLoggedIn: the last known state on the first frame, the real state later.
+  const resolved = signal(false);
   const showAsLoggedIn = signal(false);
   const auth = {
+    resolved,
     showAsLoggedIn,
     login: vi.fn(),
     register: vi.fn(),
@@ -31,6 +32,7 @@ describe('Header', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     showAsLoggedIn.set(false);
+    resolved.set(false);
 
     await TestBed.configureTestingModule({
       imports: [Header],
@@ -59,18 +61,32 @@ describe('Header', () => {
 
   // ─── Logged out ─────────────────────────────────────────────────────────────
 
+  it('renders no auth controls before auth is resolved', () => {
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(findButton(compiled, 'Login')).toBeFalsy();
+    expect(findButton(compiled, 'Sign up')).toBeFalsy();
+    expect(findButton(compiled, 'Dashboard')).toBeFalsy();
+    expect(compiled.querySelector('[aria-label="Account menu"]')).toBeNull();
+  });
+
   it('should show the Login and Sign up buttons when signed out', () => {
+    resolved.set(true);
+    fixture.detectChanges();
     const compiled: HTMLElement = fixture.nativeElement;
     expect(findButton(compiled, 'Login')).toBeTruthy();
     expect(findButton(compiled, 'Sign up')).toBeTruthy();
   });
 
   it('should not show the Dashboard button when signed out', () => {
+    resolved.set(true);
+    fixture.detectChanges();
     const compiled: HTMLElement = fixture.nativeElement;
     expect(findButton(compiled, 'Dashboard')).toBeFalsy();
   });
 
   it('should call auth.login with the current URL when Login is clicked', () => {
+    resolved.set(true);
+    fixture.detectChanges();
     const compiled: HTMLElement = fixture.nativeElement;
 
     findButton(compiled, 'Login')?.click();
@@ -79,6 +95,8 @@ describe('Header', () => {
   });
 
   it('should call auth.register with the current URL when Sign up is clicked', () => {
+    resolved.set(true);
+    fixture.detectChanges();
     const compiled: HTMLElement = fixture.nativeElement;
 
     findButton(compiled, 'Sign up')?.click();
@@ -90,6 +108,7 @@ describe('Header', () => {
 
   it('should show the Dashboard button when signed in', async () => {
     showAsLoggedIn.set(true);
+    resolved.set(true);
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -99,6 +118,7 @@ describe('Header', () => {
 
   it('should not show the Login and Sign up buttons when signed in', async () => {
     showAsLoggedIn.set(true);
+    resolved.set(true);
     fixture.detectChanges();
     await fixture.whenStable();
 

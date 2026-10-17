@@ -16,24 +16,24 @@ import { APP_BASE_URL, API_URL } from 'src/app/core/config/api-token';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
 import { Sidebar } from '../sidebar/sidebar';
 
-// DefaultComponent imports HeaderComponent, which injects Auth.
-// Without a mock here, Angular's root injector constructs the real
-// Auth -> real FirebaseService -> real getAnalytics(), which is what
-// leaked the blocked happy-dom script load into this spec's run. Reusing the
-// same mock shape as header.component.spec.ts rather than inventing a second one.
+// Default imports Header, which depends on Auth. Provide the current facade
+// signals so the header can render its resolved signed-out state.
 describe('Default', () => {
   let component: Default;
   let fixture: ComponentFixture<Default>;
   let loadingPermissions: WritableSignal<boolean>;
 
+  const resolvedSignal = signal(true);
   const showAsLoggedInSignal = signal(false);
   const auth = {
+    resolved: resolvedSignal,
     showAsLoggedIn: showAsLoggedInSignal,
     logout: vi.fn(),
   };
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    resolvedSignal.set(true);
     showAsLoggedInSignal.set(false);
     loadingPermissions = signal(false);
 

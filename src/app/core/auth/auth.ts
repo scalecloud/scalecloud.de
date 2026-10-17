@@ -1,4 +1,4 @@
-import { Injectable, Signal, computed, effect, inject, signal } from '@angular/core';
+import { Injectable, Signal, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { catchError, firstValueFrom } from 'rxjs';
@@ -15,7 +15,6 @@ export interface AuthUser {
 }
 
 const PENDING_RETURN_KEY = 'scalecloud.auth.pendingReturn';
-const SESSION_HINT_KEY = 'scalecloud.auth.hint';
 const DEFAULT_RETURN_TARGET = '/dashboard';
 
 const PENDING_RETURN_MAX_AGE_MS = 2 * 60 * 60 * 1000;
@@ -27,7 +26,6 @@ export class Auth {
   private readonly log = inject(Log);
 
   private readonly resolvedSignal = signal(false);
-  private readonly hintSignal = signal(readSessionHint());
   private initPromise: Promise<void> | null = null;
 
   readonly resolved: Signal<boolean> = this.resolvedSignal.asReadonly();
@@ -41,16 +39,8 @@ export class Auth {
   );
 
   readonly showAsLoggedIn: Signal<boolean> = computed(() =>
-    this.resolvedSignal() ? this.isAuthenticated() : this.hintSignal(),
+    this.resolvedSignal() && this.isAuthenticated(),
   );
-
-  constructor() {
-    effect(() => {
-      if (this.resolvedSignal()) {
-        writeSessionHint(this.isAuthenticated());
-      }
-    });
-  }
 
   init(): Promise<void> {
     this.initPromise ??= this.runInitialCheck();
@@ -111,7 +101,6 @@ export class Auth {
   }
 
   logout(): void {
-    writeSessionHint(false);
     clearPendingReturn();
     this.oidc
       .logoffAndRevokeTokens()
@@ -168,27 +157,6 @@ function isSafeInternalUrl(url: string): boolean {
 /** Safe internal path that is not one of the routes that start an auth flow themselves. */
 function isReturnable(url: string): boolean {
   return isSafeInternalUrl(url) && !/^\/(login|register)([/?#]|$)/.test(url);
-}
-
-// Browser storage can throw (private mode, blocked site data), so every access is wrapped.
-function readSessionHint(): boolean {
-  try {
-    return localStorage.getItem(SESSION_HINT_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
-function writeSessionHint(loggedIn: boolean): void {
-  try {
-    if (loggedIn) {
-      localStorage.setItem(SESSION_HINT_KEY, '1');
-    } else {
-      localStorage.removeItem(SESSION_HINT_KEY);
-    }
-  } catch {
-    // ignore: the hint is only a UI nicety
-  }
 }
 
 function readPendingReturn(): string | null {
