@@ -69,7 +69,7 @@ export class BillingAddressOverview implements OnInit {
   );
 
   ngOnInit(): void {
-    this.checkPermissions();
+    void this.checkPermissions();
   }
 
   edit(): void {

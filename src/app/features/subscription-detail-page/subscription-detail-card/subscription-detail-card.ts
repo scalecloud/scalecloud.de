@@ -36,7 +36,7 @@ export class SubscriptionDetailCard implements OnInit {
   readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Initializing);
 
   ngOnInit(): void {
-    this.checkPermissions();
+    void this.checkPermissions();
   }
 
   getSubscriptionID(): string {

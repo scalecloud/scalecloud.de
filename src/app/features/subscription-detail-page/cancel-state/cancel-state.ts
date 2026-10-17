@@ -34,7 +34,7 @@ export class CancelState implements OnInit {
   readonly serviceStatus = signal<ServiceStatus>(ServiceStatus.Initializing);
 
   ngOnInit(): void {
-    this.checkPermissions();
+    void this.checkPermissions();
   }
 
   isEnding(): boolean {
@@ -53,7 +53,7 @@ export class CancelState implements OnInit {
     try {
       const hasPermission = await this.permissionStore.isBilling(subscriptionID);
       if (hasPermission) {
-        this.getCancelState();
+        await this.getCancelState();
       } else {
         this.serviceStatus.set(ServiceStatus.NoPermission);
       }
@@ -84,7 +84,7 @@ export class CancelState implements OnInit {
   }
 
   reloadSubscriptionDetail() {
-    this.getCancelState();
+    void this.getCancelState();
     this.reloadSubscriptionDetailEvent.emit();
   }
 

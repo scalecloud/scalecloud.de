@@ -83,7 +83,7 @@ export class Seats implements OnInit {
 
   // ── Lifecycle ────────────────────────────────────────────────────────────
   ngOnInit(): void {
-    this.checkPermissions();
+    void this.checkPermissions();
   }
 
   // ── Data loading ─────────────────────────────────────────────────────────

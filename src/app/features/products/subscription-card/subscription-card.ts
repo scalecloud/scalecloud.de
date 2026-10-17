@@ -10,6 +10,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { CurrencyPipe } from '@angular/common';
+import { Log } from 'src/app/core/logging/log';
 
 type SubscriptionProduct = NextcloudProduct | SynologyProduct;
 
@@ -22,6 +23,7 @@ type SubscriptionProduct = NextcloudProduct | SynologyProduct;
 })
 export class SubscriptionCard {
   private readonly router = inject(Router);
+  private readonly log = inject(Log);
 
   readonly nextcloudProduct = input<NextcloudProduct | undefined>(undefined);
   readonly synologyProduct = input<SynologyProduct | undefined>(undefined);
@@ -63,11 +65,11 @@ export class SubscriptionCard {
   });
 
   openCheckoutIntegration(): void {
-    this.router.navigate(['/checkout'], {
+    void this.router.navigate(['/checkout'], {
       queryParams: {
         productID: this.productID(),
         quantity: this.quantity(),
       }
-    });
+    }).catch((error: unknown) => this.log.error('Checkout navigation failed', error));
   }
 }

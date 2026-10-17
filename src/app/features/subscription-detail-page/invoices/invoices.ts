@@ -45,7 +45,7 @@ export class Invoices implements OnInit {
   readonly showFirstLastButtons = false;
 
   ngOnInit(): void {
-    this.checkPermissions();
+    void this.checkPermissions();
   }
 
   async checkPermissions(): Promise<void> {
@@ -106,11 +106,11 @@ export class Invoices implements OnInit {
     if (e.pageIndex > previousPageIndex) {
       // Navigating to the right
       const lastInvoice = invoices?.[invoices.length - 1];
-      this.getInvoices(lastInvoice?.invoiceID, undefined);
+      void this.getInvoices(lastInvoice?.invoiceID, undefined);
     } else if (e.pageIndex < previousPageIndex) {
       // Navigating to the left
       const firstInvoice = invoices?.[0];
-      this.getInvoices(undefined, firstInvoice?.invoiceID);
+      void this.getInvoices(undefined, firstInvoice?.invoiceID);
     }
   }
 

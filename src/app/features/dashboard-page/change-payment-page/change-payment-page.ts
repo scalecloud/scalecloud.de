@@ -53,7 +53,13 @@ export class ChangePaymentPage implements OnInit {
           email: subscriptionSetupIntentReply.email,
         };
 
-        this.stripePaymentElementComponent()?.initPaymentElement(initStripePayment);
+        const paymentElement = this.stripePaymentElementComponent();
+        if (paymentElement) {
+          void Promise.resolve(paymentElement.initPaymentElement(initStripePayment)).catch((error: unknown) => {
+            this.log.error('Stripe payment element initialization failed', error);
+            paymentElement.serviceStatus.set(ServiceStatus.Error);
+          });
+        }
       },
       error: (error) => {
         this.log.error(`getChangePaymentSetupIntent failed: ${error}`);
@@ -69,7 +75,9 @@ export class ChangePaymentPage implements OnInit {
       const submitStripePayment: SubmitStripePayment = {
         return_url: returnUrl,
       };
-      stripePaymentElementComponent.submitIntent(submitStripePayment);
+      void Promise.resolve(stripePaymentElementComponent.submitIntent(submitStripePayment)).catch((error: unknown) => {
+        this.log.error('Stripe payment confirmation failed', error);
+      });
     } else {
       this.log.error('PaymentElementComponent is undefined.');
     }

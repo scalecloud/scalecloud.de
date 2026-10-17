@@ -106,7 +106,7 @@ export class BillingAddressDetailPage implements OnInit {
   });
 
   ngOnInit(): void {
-    this.checkPermissions();
+    void this.checkPermissions();
   }
 
   get f() {
