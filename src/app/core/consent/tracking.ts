@@ -83,12 +83,14 @@ export class Tracking {
             exception.stacktrace.frames = exception.stacktrace.frames.map((frame) => {
               const safeFrame = { ...frame };
               delete safeFrame.vars;
-              delete safeFrame.abs_path;
               delete safeFrame.context_line;
               delete safeFrame.pre_context;
               delete safeFrame.post_context;
+              if (safeFrame.abs_path) {
+                safeFrame.abs_path = safeFrame.abs_path.split(/[?#]/)[0];
+              }
               if (safeFrame.filename) {
-                safeFrame.filename = safeFrame.filename.split(/[?#]/)[0].split('/').pop();
+                safeFrame.filename = safeFrame.filename.split(/[?#]/)[0];
               }
               return safeFrame;
             });
