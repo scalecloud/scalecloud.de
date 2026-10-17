@@ -9,10 +9,12 @@ ScaleCloud.de offers affordable cloud storage.
 
 ### **Frontend**
 - Angular 22 (Material UI)
+- Authentik (OpenID Connect)
 - Docker / Kubernetes
 - Jenkins / GitHub Actions
 - Stripe
 - Firebase
+- Sentry
 - Jira
 
 ### **Backend**  
