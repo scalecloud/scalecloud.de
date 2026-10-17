@@ -8,25 +8,28 @@
   >
     <h2 id="consent-title" class="title">Your privacy</h2>
     <p class="intro">
-      Required technical reporting keeps the service reliable. Choose whether optional tools can help us improve.
+      Required technical reporting keeps the service reliable.
       <a routerLink="/privacy-policy">Privacy policy</a>.
     </p>
-
     <div class="options">
       <div class="option">
         <div class="option-text">
           <strong>Technically necessary</strong>
-          <span>Sign-in, service operation, and diagnostic logs. Always on.</span>
+          <span>Sign-in, service operation, and diagnostic logs.</span>
         </div>
       </div>
       <div class="option">
         <div class="option-text">
           <strong>Help us improve (optional)</strong>
-          <span>Google Analytics tracks usage; Firebase Performance and Sentry Tracing measure speed; Sentry Replay samples page interactions.</span>
+          <ul class="improvement-details" aria-label="Optional tools">
+            <li><strong>Performance</strong><span>Firebase Performance and Sentry Tracing</span></li>
+            <li><strong>Replay</strong><span>Sampled Sentry page interactions</span></li>
+            <li><strong>Analytics</strong><span>Google Analytics</span></li>
+          </ul>
         </div>
         <mat-slide-toggle
           [checked]="improvements()"
-          (change)="improvements.set($event.checked)"
+          (change)="saveSelection($event.checked)"
           aria-label="Help us improve"
         />
       </div>
@@ -34,7 +37,7 @@
 
     <div class="actions">
       <button mat-flat-button type="button" (click)="consent.rejectAll()">Only necessary</button>
-      <button mat-flat-button type="button" (click)="saveSelection()">Save selection</button>
+      <button mat-flat-button type="button" (click)="consent.acceptAll()">Accept all</button>
     </div>
 
   </dialog>

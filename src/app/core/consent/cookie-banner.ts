@@ -48,8 +48,9 @@ export class CookieBanner {
     });
   }
 
-  saveSelection(): void {
-    this.consent.save(this.improvements());
+  saveSelection(improvements: boolean): void {
+    this.improvements.set(improvements);
+    this.consent.save(improvements);
   }
 
   private readonly updateContentRegion = (): void => {
