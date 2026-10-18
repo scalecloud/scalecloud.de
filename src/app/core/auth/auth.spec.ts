@@ -113,6 +113,15 @@ describe('Auth', () => {
     expect(oidc.authorize).toHaveBeenCalledOnce();
   });
 
+  it('switchAccount starts an interactive OIDC login and preserves its return target', () => {
+    auth.switchAccount('/claim-invite');
+
+    expect(JSON.parse(localStorage.getItem(PENDING_RETURN_KEY) ?? '{}')).toMatchObject({
+      url: '/claim-invite',
+    });
+    expect(oidc.authorize).toHaveBeenCalledWith(undefined, { customParams: { prompt: 'login' } });
+  });
+
   it('register stores its return target and redirects to the configured signup URL', () => {
     const assign = vi.spyOn(window.location, 'assign').mockImplementation(() => {});
 

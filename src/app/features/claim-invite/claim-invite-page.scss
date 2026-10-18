@@ -1,0 +1,262 @@
+:host {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+.claim-shell {
+  --invite-ink: #20243b;
+  --invite-muted: #686d80;
+  --invite-line: #e3e5ef;
+  --invite-indigo: #3949ab;
+  --invite-pink: #c2185b;
+
+  width: calc(100% - 2rem);
+  max-width: 48rem;
+  margin: 1.5rem auto 2.5rem;
+}
+
+.page-intro {
+  margin: 0 auto 1rem;
+  max-width: 42rem;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.6rem;
+  color: var(--invite-indigo);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.page-intro h1 {
+  margin: 0;
+  color: var(--invite-ink);
+  font-size: 2.25rem;
+  line-height: 1.15;
+}
+
+.page-intro > p:last-child {
+  margin: 0.65rem 0 0;
+  color: var(--invite-muted);
+}
+
+.claim-panel {
+  overflow: hidden;
+  max-width: 42rem;
+  margin: 0 auto;
+  border: 1px solid var(--invite-line);
+  border-top: 4px solid var(--invite-indigo);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 18px 44px rgb(32 36 59 / 9%);
+}
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1.5rem 1.5rem 0;
+  color: var(--invite-ink);
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+mat-card-content {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.status-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 9rem;
+}
+
+.status-content h2,
+.status-content p {
+  margin: 0;
+}
+
+.status-content h2 {
+  margin-bottom: 0.4rem;
+  color: var(--invite-ink);
+  font-size: 1.2rem;
+}
+
+.status-content p,
+.message-content p {
+  color: var(--invite-muted);
+  line-height: 1.55;
+}
+
+.invitation-content {
+  padding-top: 1.25rem;
+}
+
+.product-heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.state-mark {
+  display: grid;
+  flex: 0 0 3.75rem;
+  width: 3.75rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid #f2c1d4;
+  border-radius: 50%;
+  background: #fff4f8;
+  color: var(--invite-pink);
+}
+
+.state-mark mat-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  font-size: 1.6rem;
+}
+
+.state-mark-success {
+  border-color: #bddbc8;
+  background: #f0f8f2;
+  color: #267545;
+}
+
+.product-heading .eyebrow {
+  margin-bottom: 0.25rem;
+  color: var(--invite-muted);
+}
+
+.product-heading h2 {
+  margin: 0;
+  color: var(--invite-ink);
+  font-size: 1.55rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.invitation-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  border-top: 1px solid var(--invite-line);
+}
+
+.invitation-details div {
+  min-width: 0;
+  padding: 0.8rem 0.75rem 0.8rem 0;
+  border-bottom: 1px solid var(--invite-line);
+}
+
+.invitation-details dt {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.4rem;
+  color: var(--invite-muted);
+  font-size: 0.82rem;
+}
+
+.invitation-details dt mat-icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--invite-indigo);
+  font-size: 1rem;
+}
+
+.invitation-details dd {
+  margin: 0;
+  color: var(--invite-ink);
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+mat-card-actions {
+  padding: 0 1.5rem 1.5rem;
+}
+
+mat-card-actions button {
+  min-height: 2.8rem;
+  min-width: 12rem;
+  font-weight: 600;
+}
+
+.error-icon {
+  flex: 0 0 auto;
+  color: var(--invite-pink);
+}
+
+@media (max-width: 36rem) {
+  .claim-shell {
+    margin: 1.5rem auto;
+  }
+
+  .page-intro h1 {
+    font-size: 1.75rem;
+  }
+
+  .claim-panel {
+    box-shadow: 0 10px 28px rgb(32 36 59 / 8%);
+  }
+
+  mat-card-title {
+    padding: 1.25rem 1rem 0;
+  }
+
+  mat-card-content {
+    padding: 1rem;
+  }
+
+  mat-card-actions {
+    padding: 0 1rem 1rem;
+  }
+
+  mat-card-actions button {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 0.5rem;
+    font-size: 0.875rem;
+    white-space: normal;
+  }
+
+  .invitation-content {
+    padding-top: 1.25rem;
+  }
+
+  .invitation-details div {
+    padding-right: 0.5rem;
+  }
+
+  .product-heading h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 25rem) {
+  .page-intro h1 {
+    font-size: 1.5rem;
+  }
+
+  .product-heading {
+    gap: 0.65rem;
+  }
+
+  .state-mark {
+    flex-basis: 2.75rem;
+    width: 2.75rem;
+  }
+
+  .product-heading h2 {
+    font-size: 1.1rem;
+  }
+
+  .invitation-details {
+    grid-template-columns: 1fr;
+  }
+}

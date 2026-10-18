@@ -95,6 +95,11 @@ export class Auth {
     this.oidc.authorize();
   }
 
+  switchAccount(returnTo?: string): void {
+    writePendingReturn(this.resolveReturnTarget(returnTo ?? this.router.url));
+    this.oidc.authorize(undefined, { customParams: { prompt: 'login' } });
+  }
+
   register(returnTo?: string): void {
     writePendingReturn(this.resolveReturnTarget(returnTo));
     window.location.assign(environment.oidc.signupUrl);

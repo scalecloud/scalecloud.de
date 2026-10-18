@@ -31,6 +31,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/change-payment-status-page/change-payment-status-page').then(m => m.ChangePaymentStatusPage)
       },
       {
+        path: 'claim-invite',
+        loadComponent: () => import('./features/claim-invite/claim-invite-page').then(m => m.ClaimInvitePage)
+      },
+      {
         path: 'dashboard',
         canActivate: [dashboardGuard],
         loadComponent: () => import('./features/dashboard-page/dashboard-page').then(m => m.DashboardPage)

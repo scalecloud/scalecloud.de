@@ -1,8 +1,10 @@
-import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { HttpContextToken, HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { SnackBar } from '../snackbar/snack-bar';
 import { Log } from '../logging/log';
+
+export const SKIP_SERVICE_ERROR_NOTIFICATION = new HttpContextToken(() => false);
 
 export const serviceErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const snackBar = inject(SnackBar);
@@ -10,6 +12,10 @@ export const serviceErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+      if (req.context.get(SKIP_SERVICE_ERROR_NOTIFICATION)) {
+        return throwError(() => error);
+      }
+
       const backendError = error.error?.error ?? '';
 
       const withBackend = (base: string, logLabel: string): string => {

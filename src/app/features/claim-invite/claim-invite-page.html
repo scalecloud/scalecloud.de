@@ -1,0 +1,103 @@
+<main class="claim-shell" aria-live="polite">
+  <header class="page-intro">
+    <p class="eyebrow"><mat-icon aria-hidden="true">cloud</mat-icon> Scalecloud</p>
+    <h1>Join a subscription</h1>
+    <p>Review the invitation details, then accept your seat.</p>
+  </header>
+
+  <mat-card class="claim-panel">
+    @if (state() === 'loading-preview' || state() === 'claiming') {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <mat-card-content class="status-content">
+        <mat-spinner diameter="36"></mat-spinner>
+        <div>
+          <h2>{{ state() === 'claiming' ? 'Claiming your seat' : 'Checking your invitation' }}</h2>
+          <p>{{ state() === 'claiming' ? 'Please wait while your invitation is claimed.' : 'Loading invitation details.' }}</p>
+        </div>
+      </mat-card-content>
+    }
+
+    @if (preview(); as invitation) {
+      @if (state() !== 'loading-preview' && state() !== 'claiming') {
+        <mat-card-content class="invitation-content">
+          <div class="product-heading">
+            <span class="state-mark" [class.state-mark-success]="state() === 'success'" aria-hidden="true">
+              <mat-icon>{{ state() === 'success' ? 'check_circle' : 'mail' }}</mat-icon>
+            </span>
+            <div>
+              <p class="eyebrow">{{ state() === 'success' ? 'Invitation claimed' : 'You are invited to join' }}</p>
+              <h2>{{ state() === 'success' ? claimReply()?.productName : invitation.productName }}</h2>
+            </div>
+          </div>
+          <dl class="invitation-details">
+            <div>
+              <dt><mat-icon aria-hidden="true">storage</mat-icon> Storage</dt>
+              <dd>{{ state() === 'success' ? claimReply()?.storageAmount : invitation.storageAmount }} {{ state() === 'success' ? claimReply()?.storageUnit : invitation.storageUnit }}</dd>
+            </div>
+            @if (state() === 'success') {
+              <div>
+                <dt><mat-icon aria-hidden="true">tag</mat-icon> Subscription</dt>
+                <dd>{{ claimReply()?.subscriptionID }}</dd>
+              </div>
+            }
+            @if (state() !== 'success') {
+              <div>
+                <dt><mat-icon aria-hidden="true">mail</mat-icon> Invited email</dt>
+                <dd>{{ invitation.email }}</dd>
+              </div>
+              <div>
+                <dt><mat-icon aria-hidden="true">schedule</mat-icon> Invitation expires</dt>
+                <dd>{{ invitation.expiresAt * 1000 | date:'medium' }}</dd>
+              </div>
+            }
+            <div>
+              <dt><mat-icon aria-hidden="true">badge</mat-icon> Roles</dt>
+              <dd>{{ (state() === 'success' ? claimReply()?.roles : invitation.roles)?.join(', ') || 'No specific roles' }}</dd>
+            </div>
+          </dl>
+        </mat-card-content>
+      }
+    }
+
+    @if (state() === 'preview-unavailable') {
+      <mat-card-title><mat-icon class="error-icon" aria-hidden="true">link_off</mat-icon> Invitation unavailable</mat-card-title>
+      <mat-card-content><p>This invitation is unavailable, expired, revoked, already claimed, or its subscription is inactive.</p></mat-card-content>
+    }
+    @if (state() === 'preview-temporary-failure') {
+      <mat-card-title><mat-icon class="error-icon" aria-hidden="true">cloud_off</mat-icon> Invitation could not be loaded</mat-card-title>
+      <mat-card-content><p>There was a temporary problem loading this invitation. Please try again.</p></mat-card-content>
+      <mat-card-actions><button mat-raised-button color="primary" (click)="loadPreview()">Retry</button></mat-card-actions>
+    }
+
+    @if (state() === 'preview-ready') {
+      @if (auth.resolved()) {
+        @if (auth.isAuthenticated()) {
+          <mat-card-actions><button mat-raised-button color="primary" (click)="claimInvitation()">Claim invitation</button></mat-card-actions>
+        } @else {
+          <mat-card-actions><button mat-raised-button color="primary" (click)="continueWithAuthentik()">Continue with Authentik</button></mat-card-actions>
+        }
+      } @else {
+        <mat-card-content><p>Checking your sign-in status.</p></mat-card-content>
+      }
+    }
+    @if (state() === 'claim-unauthorized') {
+      <mat-card-content><p>Your sign-in has expired. Sign in again to claim this invitation.</p></mat-card-content>
+      <mat-card-actions><button mat-raised-button color="primary" (click)="signInAgain()">Sign in again</button></mat-card-actions>
+    }
+    @if (state() === 'claim-forbidden') {
+      <mat-card-content class="message-content"><p>This signed-in account cannot claim the invitation. Switch to the Authentik account that matches the invited email.</p></mat-card-content>
+      <mat-card-actions><button mat-raised-button color="primary" (click)="switchAccount()">Switch account</button></mat-card-actions>
+    }
+    @if (state() === 'claim-unavailable') {
+      <mat-card-content><p>This invitation is unavailable, expired, revoked, already claimed, or its subscription is inactive.</p></mat-card-content>
+    }
+    @if (state() === 'claim-temporary-failure') {
+      <mat-card-content><p>The claim could not be confirmed because of a temporary service problem. Retry with this same signed-in account.</p></mat-card-content>
+      <mat-card-actions><button mat-raised-button color="primary" (click)="retryClaim()">Retry claim</button></mat-card-actions>
+    }
+    @if (state() === 'success') {
+      <mat-card-content><p>Your seat has been added to the subscription.</p></mat-card-content>
+      <mat-card-actions><button mat-raised-button color="primary" (click)="openSubscription()">Open subscription</button></mat-card-actions>
+    }
+  </mat-card>
+</main>
