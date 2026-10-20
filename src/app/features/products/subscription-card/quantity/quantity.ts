@@ -102,10 +102,6 @@ export class Quantity implements OnInit {
     this.quantity.set(quantity);
   }
 
-  getQuantity(): number {
-    return Math.max(MIN, this.quantityControl.value);
-  }
-
   formatLabel(value: number): number {
     return value;
   }

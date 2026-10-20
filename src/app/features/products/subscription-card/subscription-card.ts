@@ -45,10 +45,8 @@ export class SubscriptionCard {
   );
 
   /**
-   * Reads the child's `quantity` signal — not its `getQuantity()` method.
-   * `computed()` only re-runs when a *signal* it read changes; `getQuantity()`
-   * just returns `quantityControl.value`, a plain (non-signal) FormControl
-   * value, so depending on it here would silently go stale.
+  * Read the child's signal because the FormControl value itself is not
+  * reactive and would leave this computed value stale.
    */
   readonly quantity = computed(() => this.quantityComponent()?.quantity() ?? 1);
 

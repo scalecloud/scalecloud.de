@@ -63,7 +63,6 @@ describe('Quantity', () => {
     });
 
     it('defaults to quantity 1 when no query param is present', () => {
-      expect(component.getQuantity()).toBe(1);
       expect(component.quantity()).toBe(1);
     });
   });
@@ -73,13 +72,12 @@ describe('Quantity', () => {
   describe('initialisation from query param', () => {
     it('reads quantity from the query param', async () => {
       await setup({ quantity: '5' });
-      expect(component.getQuantity()).toBe(5);
       expect(component.quantity()).toBe(5);
     });
 
     it('defaults to 1 when query param is absent', async () => {
       await setup();
-      expect(component.getQuantity()).toBe(1);
+      expect(component.quantity()).toBe(1);
     });
   });
 
@@ -91,21 +89,21 @@ describe('Quantity', () => {
     it('increases quantity by 1', async () => {
       component.increment();
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(2);
+      expect(component.quantity()).toBe(2);
     });
 
     it('does not exceed 999', async () => {
       component.setQuantity(999);
       component.increment();
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(999);
+      expect(component.quantity()).toBe(999);
     });
 
     it('stops at exactly 999', async () => {
       component.setQuantity(998);
       component.increment();
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(999);
+      expect(component.quantity()).toBe(999);
     });
   });
 
@@ -118,20 +116,20 @@ describe('Quantity', () => {
       component.setQuantity(5);
       component.decrement();
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(4);
+      expect(component.quantity()).toBe(4);
     });
 
     it('does not go below 1', async () => {
       component.decrement();
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(1);
+      expect(component.quantity()).toBe(1);
     });
 
     it('stops at exactly 1', async () => {
       component.setQuantity(2);
       component.decrement();
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(1);
+      expect(component.quantity()).toBe(1);
     });
   });
 
@@ -143,14 +141,14 @@ describe('Quantity', () => {
     it('clamps values below 1 up to 1', async () => {
       component.quantityControl.setValue(0);
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(1);
+      expect(component.quantity()).toBe(1);
       expect(component.quantity()).toBe(1);
     });
 
     it('clamps values above 999 down to 999', async () => {
       component.quantityControl.setValue(1000);
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(999);
+      expect(component.quantity()).toBe(999);
       expect(component.quantity()).toBe(999);
     });
 
@@ -188,22 +186,6 @@ describe('Quantity', () => {
     it('updates the quantity signal', () => {
       component.setQuantity(42);
       expect(component.quantity()).toBe(42);
-    });
-  });
-
-  // ── getQuantity ───────────────────────────────────────────────────────────
-
-  describe('getQuantity()', () => {
-    beforeEach(async () => setup());
-
-    it('returns the current control value', () => {
-      component.setQuantity(7);
-      expect(component.getQuantity()).toBe(7);
-    });
-
-    it('returns at least 1 even if the control holds a lower value', () => {
-      component.quantityControl.setValue(0, { emitEvent: false });
-      expect(component.getQuantity()).toBe(1);
     });
   });
 
@@ -253,7 +235,7 @@ describe('Quantity', () => {
     it('clicking increment updates the displayed value', async () => {
       clickIncrement(fixture);
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(2);
+      expect(component.quantity()).toBe(2);
     });
 
     it('clicking decrement updates the displayed value', async () => {
@@ -261,7 +243,7 @@ describe('Quantity', () => {
       await fixture.whenStable();
       clickDecrement(fixture);
       await fixture.whenStable();
-      expect(component.getQuantity()).toBe(4);
+      expect(component.quantity()).toBe(4);
     });
   });
 });

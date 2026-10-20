@@ -80,7 +80,7 @@ export class CheckoutDetails {
     }
   });
 
-  readonly quantity = computed(() => this.quantityComponent()?.getQuantity() ?? 0);
+  readonly quantity = computed(() => this.quantityComponent()?.quantity() ?? 0);
 
   readonly name = computed(() => this.reply()?.name ?? '');
   readonly currency = computed(() => this.reply()?.currency ?? '');

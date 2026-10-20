@@ -12,20 +12,8 @@ import { CheckoutProductReply } from './checkout-product-model';
 import { CheckoutProductClient } from './checkout-product-client';
 
 // ─── Stubs for child components rendered by the template ──────────────────────
-// We don't have the real QuantityComponent / LoadingFailedComponent source, so
-// these stand-ins expose the minimal public surface CheckoutDetailsComponent
-// actually depends on (selector + getQuantity()).
-//
-// IMPORTANT: matching the selector ('app-quantity') is not enough on its own.
-// `viewChild(QuantityComponent)` in the component under test queries by the
-// *class* QuantityComponent, not by selector - a different class rendered at
-// the same selector will never satisfy that query, no matter how many
-// change-detection cycles run. The `providers: [{ provide: QuantityComponent,
-// useExisting: ... }]` below is what makes the node injector resolve
-// `QuantityComponent` to this mock instance. If the real QuantityComponent's
-// internal `getQuantity()` does NOT read a signal, computed `quantity` in the
-// component under test won't react to in-place changes - share the real file if
-// that's the case and these stubs/tests can be tightened up.
+// The mock exposes the signal CheckoutDetails reads from Quantity. The provider
+// alias makes the view query resolve to this mock component.
 
 @Component({
   selector: 'app-quantity',
@@ -33,12 +21,9 @@ import { CheckoutProductClient } from './checkout-product-client';
   providers: [{ provide: Quantity, useExisting: forwardRef(() => MockQuantityComponent) }],
 })
 class MockQuantityComponent {
-  private readonly quantitySignal = signal(1);
-  getQuantity(): number {
-    return this.quantitySignal();
-  }
+  readonly quantity = signal(1);
   setQuantity(value: number): void {
-    this.quantitySignal.set(value);
+    this.quantity.set(value);
   }
 }
 
