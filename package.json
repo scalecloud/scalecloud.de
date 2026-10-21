@@ -54,10 +54,10 @@
   "allowScripts": {
     "msgpackr-extract@3.0.4": true,
     "@parcel/watcher@2.6.0": true,
-    "@sentry/cli@3.8.0": true,
     "protobufjs@7.6.6": true,
     "@firebase/util@1.15.3": true,
     "lmdb@3.5.6": true,
-    "esbuild@0.28.2": true
+    "esbuild@0.28.2": true,
+    "@sentry/cli@3.8.1": true
   }
 }
