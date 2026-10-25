@@ -15,17 +15,24 @@ a:active {
     color: rgb(0, 0, 0);
 }
 
-.flex-item {
-    margin-right: 1rem;
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding: 0.75rem 1.5rem;
 }
 
 .navigation {
     display: flex;
-    flex-flow: row wrap;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin: 0;
+    padding: 0;
 }
 
 .cookie-settings {
-    margin-right: 1rem;
     padding: 0;
     border: 0;
     background: transparent;
@@ -36,4 +43,12 @@ a:active {
 
 .cookie-settings:hover {
     color: red;
+}
+
+@media (max-width: 480px) {
+    footer {
+        align-items: flex-start;
+        flex-direction: column;
+        padding-inline: 1rem;
+    }
 }

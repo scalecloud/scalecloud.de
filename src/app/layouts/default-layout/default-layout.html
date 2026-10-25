@@ -5,8 +5,12 @@
   }
   <main class="app-content">
     <mat-drawer-container>
-      <mat-drawer mode="side" opened="true" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()">
-        <app-sidebar [isExpanded]="isExpanded()" [isShowing]="isShowing()"></app-sidebar>
+      <mat-drawer
+        [mode]="isHandset() ? 'over' : 'side'"
+        [opened]="isSidebarOpen()"
+        (openedChange)="sidebarOpenedChange($event)"
+      >
+        <app-sidebar (click)="closeSidebarAfterNavigation()"></app-sidebar>
       </mat-drawer>
       <mat-drawer-content>
         <router-outlet></router-outlet>

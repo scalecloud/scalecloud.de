@@ -193,19 +193,6 @@ describe('Header', () => {
     expect(emitSpy).toHaveBeenCalled();
   });
 
-  it('should dispatch a window resize event shortly after toggling the sidebar', () => {
-    vi.useFakeTimers();
-    const dispatchSpy = vi.spyOn(window, 'dispatchEvent');
-
-    component.toggleSideBar();
-    expect(dispatchSpy).not.toHaveBeenCalled();
-
-    vi.advanceTimersByTime(300);
-
-    expect(dispatchSpy).toHaveBeenCalledWith(expect.any(Event));
-    vi.useRealTimers();
-  });
-
   it('should call toggleSideBar when the menu icon button is clicked', () => {
     const toggleSpy = vi.spyOn(component, 'toggleSideBar');
     const compiled: HTMLElement = fixture.nativeElement;

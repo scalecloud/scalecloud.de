@@ -1,13 +1,13 @@
 <mat-divider></mat-divider>
 <footer>
-    <ul class="navigation">
-        <a class="flex-item" routerLink="/privacy-policy">Privacy Policy</a>
-        <a class="flex-item" routerLink="/imprint">Imprint</a>
-        <a class="flex-item" routerLink="/legal">Legal</a>
-        <a class="flex-item" routerLink="/terms">Terms</a>
+    <nav class="navigation" aria-label="Legal">
+        <a routerLink="/privacy-policy">Privacy Policy</a>
+        <a routerLink="/imprint">Imprint</a>
+        <a routerLink="/legal">Legal</a>
+        <a routerLink="/terms">Terms</a>
         <button class="cookie-settings" type="button" (click)="openCookieSettings()">Cookie settings</button>
-    </ul>
-    <ul class="navigation">
+    </nav>
+    <div class="footer-meta">
         <a routerLink="/">&copy;2026 ScaleCloud.de</a>
-    </ul>
+    </div>
 </footer>

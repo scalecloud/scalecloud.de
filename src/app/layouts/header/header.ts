@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 @Component({
     selector: 'app-header',
     templateUrl: './header.html',
-    styleUrls: ['./header.scss'],
+    styleUrl: './header.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatToolbar, MatToolbarRow, MatIconButton, MatIcon, MatButton, RouterLink, MatMenuTrigger, MatMenu, MatMenuItem]
 })
@@ -46,11 +46,6 @@ export class Header {
 
   toggleSideBar() {
     this.toggleSideBarForMe.emit(undefined);
-    setTimeout(() => {
-      window.dispatchEvent(
-        new Event('resize')
-      );
-    }, 300);
   }
 
 }

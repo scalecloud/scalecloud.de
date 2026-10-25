@@ -6,7 +6,7 @@ import { Consent } from 'src/app/core/consent/consent';
 @Component({
     selector: 'app-footer',
     templateUrl: './footer.html',
-    styleUrls: ['./footer.scss'],
+    styleUrl: './footer.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatDivider, RouterLink]
 })

@@ -26,8 +26,14 @@ mat-drawer-container {
   min-height: 0;
 }
 
+mat-drawer {
+  width: 15rem;
+  max-width: calc(100vw - 3rem);
+}
+
 mat-drawer-content {
   display: flex;
   justify-content: center;
+  min-width: 0;
   margin-top: 2rem;
 }

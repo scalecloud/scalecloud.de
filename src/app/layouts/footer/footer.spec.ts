@@ -100,8 +100,9 @@ describe('Footer', () => {
     expect(compiled.querySelectorAll('a').length).toBe(5);
   });
 
-  it('should render two navigation lists', () => {
+  it('should render a legal navigation and separate copyright row', () => {
     const compiled: HTMLElement = fixture.nativeElement;
-    expect(compiled.querySelectorAll('ul.navigation').length).toBe(2);
+    expect(compiled.querySelector('nav.navigation[aria-label="Legal"]')).not.toBeNull();
+    expect(compiled.querySelector('.footer-meta')).not.toBeNull();
   });
 });

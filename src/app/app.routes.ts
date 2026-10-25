@@ -7,7 +7,7 @@ import { checkoutGuard } from './features/products/checkout-page/guard/checkout-
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./layouts/default/default').then(m => m.Default),
+    loadComponent: () => import('./layouts/default-layout/default-layout').then(m => m.DefaultLayout),
     children: [
       {
         path: '',

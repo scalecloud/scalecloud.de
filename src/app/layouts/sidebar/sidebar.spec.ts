@@ -29,21 +29,6 @@ describe('Sidebar', () => {
     expect(component).toBeTruthy();
   });
 
-  // ─── Default inputs ───────────────────────────────────────────────────────────
-
-  it('should default isExpanded to undefined', () => {
-    expect(component.isExpanded()).toBeUndefined();
-  });
-
-  it('should default isShowing to undefined', () => {
-    expect(component.isShowing()).toBeUndefined();
-  });
-
-  it('should not render text labels by default (collapsed, not showing)', () => {
-    const compiled: HTMLElement = fixture.nativeElement;
-    expect(compiled.querySelector('.icon-text span')).toBeNull();
-  });
-
   // ─── Structure (always present regardless of inputs) ────────────────────────────
 
   it('should render four navigation items', () => {
@@ -77,62 +62,12 @@ describe('Sidebar', () => {
     expect(compiled.querySelectorAll('mat-icon').length).toBe(4);
   });
 
-  // ─── isExpanded = true ────────────────────────────────────────────────────────
-
-  it('should show text labels when isExpanded is true', () => {
-    fixture.componentRef.setInput('isExpanded', true);
-    fixture.detectChanges();
-
+  it('should render labels for all navigation items', () => {
     const compiled: HTMLElement = fixture.nativeElement;
-    const labels = Array.from(compiled.querySelectorAll('.icon-text span')).map((s) => s.textContent);
+    const labels = Array.from(compiled.querySelectorAll('.icon-text span')).map((label) => label.textContent);
     expect(labels).toContain('Home');
     expect(labels).toContain('Nextcloud');
     expect(labels).toContain('Synology');
     expect(labels).toContain('Contact');
-  });
-
-  // ─── isShowing = true ─────────────────────────────────────────────────────────
-
-  it('should show text labels when isShowing is true', () => {
-    fixture.componentRef.setInput('isShowing', true);
-    fixture.detectChanges();
-
-    const compiled: HTMLElement = fixture.nativeElement;
-    const labels = Array.from(compiled.querySelectorAll('.icon-text span')).map((s) => s.textContent);
-    expect(labels).toContain('Home');
-  });
-
-  // ─── isExpanded = false, isShowing = false ───────────────────────────────────────
-
-  it('should hide text labels when both isExpanded and isShowing are explicitly false', () => {
-    fixture.componentRef.setInput('isExpanded', false);
-    fixture.componentRef.setInput('isShowing', false);
-    fixture.detectChanges();
-
-    const compiled: HTMLElement = fixture.nativeElement;
-    expect(compiled.querySelector('.icon-text span')).toBeNull();
-  });
-
-  // ─── Reactivity ───────────────────────────────────────────────────────────────
-
-  it('should reveal labels when isExpanded transitions from false to true', () => {
-    fixture.componentRef.setInput('isExpanded', false);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.icon-text span')).toBeNull();
-
-    fixture.componentRef.setInput('isExpanded', true);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.icon-text span')).not.toBeNull();
-  });
-
-  it('should hide labels again when isExpanded transitions back to false (with isShowing false)', () => {
-    fixture.componentRef.setInput('isExpanded', true);
-    fixture.componentRef.setInput('isShowing', false);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.icon-text span')).not.toBeNull();
-
-    fixture.componentRef.setInput('isExpanded', false);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.icon-text span')).toBeNull();
   });
 });

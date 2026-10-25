@@ -2,7 +2,7 @@ import { RouterModule, provideRouter, ActivatedRoute } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, signal, WritableSignal } from '@angular/core';
 
-import { Default } from './default';
+import { DefaultLayout } from './default-layout';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
@@ -16,11 +16,11 @@ import { APP_BASE_URL, API_URL } from 'src/app/core/config/api-token';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
 import { Sidebar } from '../sidebar/sidebar';
 
-// Default imports Header, which depends on Auth. Provide the current facade
+// DefaultLayout imports Header, which depends on Auth. Provide the current facade
 // signals so the header can render its resolved signed-out state.
-describe('Default', () => {
-  let component: Default;
-  let fixture: ComponentFixture<Default>;
+describe('DefaultLayout', () => {
+  let component: DefaultLayout;
+  let fixture: ComponentFixture<DefaultLayout>;
   let loadingPermissions: WritableSignal<boolean>;
 
   const resolvedSignal = signal(true);
@@ -41,7 +41,7 @@ describe('Default', () => {
       imports: [
         MatListModule,
         MatMenuModule,
-        Default,
+        DefaultLayout,
         Sidebar,
         MatDivider,
         MatIcon,
@@ -69,7 +69,7 @@ describe('Default', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Default);
+    fixture = TestBed.createComponent(DefaultLayout);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -78,47 +78,25 @@ describe('Default', () => {
     expect(component).toBeTruthy();
   });
 
-  it('starts expanded with no flyout showing', () => {
-    expect(component.isExpanded()).toBe(true);
-    expect(component.isShowing()).toBe(false);
+  it('starts with the desktop sidebar open and mobile sidebar closed', () => {
+    expect(component.isDesktopSidebarOpen()).toBe(true);
+    expect(component.isMobileSidebarOpen()).toBe(false);
+    expect(component.isSidebarOpen()).toBe(true);
   });
 
-  it('toggles isExpanded each time sideBarToggler is called', () => {
+  it('toggles the desktop sidebar', () => {
     component.sideBarToggler();
-    expect(component.isExpanded()).toBe(false);
+    expect(component.isSidebarOpen()).toBe(false);
 
     component.sideBarToggler();
-    expect(component.isExpanded()).toBe(true);
+    expect(component.isSidebarOpen()).toBe(true);
   });
 
-  it('clears isShowing when re-expanding the sidebar', () => {
-    component.sideBarToggler(); // collapse
-    component.mouseenter(); // flyout opens while collapsed
-    expect(component.isShowing()).toBe(true);
+  it('keeps the desktop drawer state in sync with Material', () => {
+    component.sidebarOpenedChange(false);
 
-    component.sideBarToggler(); // re-expand
-    expect(component.isShowing()).toBe(false);
-  });
-
-  it('ignores mouseenter while the sidebar is expanded', () => {
-    expect(component.isExpanded()).toBe(true);
-    component.mouseenter();
-    expect(component.isShowing()).toBe(false);
-  });
-
-  it('shows the flyout on mouseenter only while collapsed', () => {
-    component.sideBarToggler(); // collapse
-    component.mouseenter();
-    expect(component.isShowing()).toBe(true);
-  });
-
-  it('hides the flyout on mouseleave while collapsed', () => {
-    component.sideBarToggler(); // collapse
-    component.mouseenter();
-    expect(component.isShowing()).toBe(true);
-
-    component.mouseleave();
-    expect(component.isShowing()).toBe(false);
+    expect(component.isDesktopSidebarOpen()).toBe(false);
+    expect(component.isSidebarOpen()).toBe(false);
   });
 
   it('renders the progress bar while permissions are loading', async () => {
