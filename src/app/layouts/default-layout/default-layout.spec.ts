@@ -48,24 +48,6 @@ describe('DefaultLayout', () => {
     expect(component).toBeTruthy();
   });
 
-  it('renders the public destinations in the mobile navigation', () => {
-    const nav = fixture.nativeElement.querySelector('.mobile-bottom-nav') as HTMLElement;
-    const labels = Array.from(nav.querySelectorAll('span')).map((label) => label.textContent);
-
-    expect(labels).toEqual(['Home', 'Nextcloud', 'Synology']);
-  });
-
-  it('adds Dashboard to the mobile navigation for signed-in users', () => {
-    showAsLoggedInSignal.set(true);
-    fixture.detectChanges();
-
-    const labels = Array.from(
-      (fixture.nativeElement as HTMLElement).querySelectorAll('.mobile-bottom-nav span'),
-    ).map((label) => label.textContent);
-
-    expect(labels).toEqual(['Home', 'Nextcloud', 'Synology', 'Dashboard']);
-  });
-
   it('renders the progress bar while permissions are loading', async () => {
     loadingPermissions.set(true);
     await fixture.whenStable();

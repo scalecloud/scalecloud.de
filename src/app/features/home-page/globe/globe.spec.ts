@@ -125,44 +125,40 @@ describe('Globe', () => {
     // ── Globe size calculation ─────────────────────────────────────────────────
 
     describe('globeSize (ngOnInit)', () => {
-        it('uses innerHeight when landscape (width > height)', () => {
+        it('uses innerWidth when landscape (width > height)', () => {
             setWindowSize(1200, 800);
             component.ngOnInit();
-            expect(component.globeSize).toBe(800);
+            expect(component.globeSize).toBe(1200);
         });
 
-        it('uses 55% of width on narrow viewports (< 425px)', () => {
+        it('uses full width on narrow viewports (< 425px)', () => {
             setWindowSize(400, 700);
             component.ngOnInit();
-            expect(component.globeSize).toBe(400 * 55 / 100);
+            expect(component.globeSize).toBe(400);
         });
 
-        it('uses 60% of width for medium portrait viewports', () => {
+        it('uses full width for medium portrait viewports', () => {
             setWindowSize(600, 900);
             component.ngOnInit();
-            expect(component.globeSize).toBe(600 * 60 / 100);
+            expect(component.globeSize).toBe(600);
         });
 
-        it('falls back to 60% of width when width equals height (square viewport)', () => {
-            // width > height is false when they're equal, so this lands in the
-            // "else" 60% branch rather than the landscape branch — documenting
-            // the existing boundary behaviour rather than changing it.
+        it('uses full width when width equals height (square viewport)', () => {
             setWindowSize(500, 500);
             component.ngOnInit();
-            expect(component.globeSize).toBe(500 * 60 / 100);
+            expect(component.globeSize).toBe(500);
         });
 
-        it('uses 55% of width exactly at the 425px narrow-viewport boundary', () => {
-            // innerWidth < 425 is strict, so 425 itself falls into the 60% branch.
+        it('uses full width exactly at the former 425px breakpoint', () => {
             setWindowSize(425, 900);
             component.ngOnInit();
-            expect(component.globeSize).toBe(425 * 60 / 100);
+            expect(component.globeSize).toBe(425);
         });
 
-        it('uses 55% of width just below the narrow-viewport boundary', () => {
+        it('uses full width just below the former 425px breakpoint', () => {
             setWindowSize(424, 900);
             component.ngOnInit();
-            expect(component.globeSize).toBe(424 * 55 / 100);
+            expect(component.globeSize).toBe(424);
         });
     });
 
@@ -173,14 +169,14 @@ describe('Globe', () => {
         expect(canvas).not.toBeNull();
     });
 
-    it('sets canvas width/height to 2× globeSize', () => {
+    it('sets canvas width/height to globeSize', () => {
         setWindowSize(1024, 768);
         component.ngOnInit();
         fixture.detectChanges();
 
         const canvas: HTMLCanvasElement = fixture.debugElement.query(By.css('canvas')).nativeElement;
-        expect(canvas.width).toBe(component.globeSize * 2);
-        expect(canvas.height).toBe(component.globeSize * 2);
+        expect(canvas.width).toBe(component.globeSize);
+        expect(canvas.height).toBe(component.globeSize);
     });
 
     // ── Inline style ───────────────────────────────────────────────────────────
@@ -230,10 +226,10 @@ describe('Globe', () => {
             expect(options.markers[0]).toEqual({ location: [54.7945644, 9.397062], size: 0.02 });
         });
 
-        it('sizes the globe canvas as 2× globeSize in the createGlobe options', () => {
+        it('uses globeSize for the canvas dimensions in createGlobe options', () => {
             const options = vi.mocked(createGlobeSpy).mock.lastCall[1];
-            expect(options.width).toBe(component.globeSize * 2);
-            expect(options.height).toBe(component.globeSize * 2);
+            expect(options.width).toBe(component.globeSize);
+            expect(options.height).toBe(component.globeSize);
         });
 
         it('starts the animation loop via requestAnimationFrame', () => {
