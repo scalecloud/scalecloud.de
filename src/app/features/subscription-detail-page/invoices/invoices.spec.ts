@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of, throwError, Subject } from 'rxjs';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
@@ -180,7 +181,7 @@ describe('Invoices', () => {
       const reply = buildReply();
       component['reply'].set(reply);
 
-      component.handlePageEvent({ pageIndex: 1, pageSize: 5, length: 10 } as any);
+      component.handlePageEvent({ pageIndex: 1, pageSize: 5, length: 10 } as PageEvent);
       await fixture.whenStable();
 
       const lastInvoiceID = reply.invoices[reply.invoices.length - 1].invoiceID;
@@ -195,7 +196,7 @@ describe('Invoices', () => {
       component['reply'].set(reply);
       component.pageIndex.set(2);
 
-      component.handlePageEvent({ pageIndex: 1, pageSize: 5, length: 10 } as any);
+      component.handlePageEvent({ pageIndex: 1, pageSize: 5, length: 10 } as PageEvent);
       await fixture.whenStable();
 
       const firstInvoiceID = reply.invoices[0].invoiceID;
@@ -206,7 +207,7 @@ describe('Invoices', () => {
     });
 
     it('should not request invoices when the page index is unchanged', async () => {
-      component.handlePageEvent({ pageIndex: 0, pageSize: 5, length: 10 } as any);
+      component.handlePageEvent({ pageIndex: 0, pageSize: 5, length: 10 } as PageEvent);
       await fixture.whenStable();
 
       expect(invoicesClientMock.getInvoices).not.toHaveBeenCalled();

@@ -37,9 +37,14 @@ const logMock = {
   error: vi.fn(),
 };
 
+const lastSubscriptionOverviewCount = { value: 2 };
 const lastCountStoreMock = {
-  getLastSubscriptionOverviewCount: 2,
-  set setLastSubscriptionOverviewCount(v: number) {},
+  get getLastSubscriptionOverviewCount() {
+    return lastSubscriptionOverviewCount.value;
+  },
+  set setLastSubscriptionOverviewCount(value: number) {
+    lastSubscriptionOverviewCount.value = value;
+  },
 };
 
 const snackBarMock = {

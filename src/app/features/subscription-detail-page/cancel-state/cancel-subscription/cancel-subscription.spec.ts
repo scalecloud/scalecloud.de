@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { Component } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { SubscriptionCancelReply } from './subscription-cancel-request-model';
@@ -12,9 +11,6 @@ import { CancelSubscription } from './cancel-subscription';
 import { CancelSubscriptionClient } from './cancel-subscription-client';
 
 // ── Stubs ─────────────────────────────────────────────────────────────────────
-
-@Component({ selector: 'app-confirm-cancel-subscription', template: '', standalone: true })
-class ConfirmCancelSubscriptionStub {}
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
 
@@ -38,7 +34,7 @@ const MOCK_REPLY: SubscriptionCancelReply = {
 };
 
 // DialogRef subject lets us control when afterClosed() emits
-let afterClosedSubject: Subject<boolean>;
+let afterClosedSubject: Subject<boolean | undefined>;
 const mockDialogRef = {
   afterClosed: vi.fn(),
 };
@@ -108,7 +104,7 @@ describe('CancelSubscription', () => {
     it('does not call cancelSubscription when the dialog is closed without a value', () => {
       const spy = vi.spyOn(component, 'cancelSubscription');
       component.openConfirmDialog();
-      afterClosedSubject.next(undefined as any);
+      afterClosedSubject.next(undefined);
       expect(spy).not.toHaveBeenCalled();
     });
   });

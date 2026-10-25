@@ -123,7 +123,7 @@ describe('Auth', () => {
   });
 
   it('register stores its return target and redirects to the configured signup URL', () => {
-    const assign = vi.spyOn(window.location, 'assign').mockImplementation(() => {});
+    const assign = vi.spyOn(window.location, 'assign').mockImplementation(() => undefined);
 
     auth.register('/dashboard/reports');
 

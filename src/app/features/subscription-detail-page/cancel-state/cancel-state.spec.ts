@@ -18,16 +18,17 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 // ── Stubs ─────────────────────────────────────────────────────────────────────
 
 @Component({ selector: 'app-resume-subscription', template: '', standalone: true })
-class ResumeSubscriptionStub { readonly reply = input<any>(undefined); readonly reloadSubscriptionDetailEvent = output(); }
+class ResumeSubscriptionStub { readonly reply = input<unknown>(undefined); readonly reloadSubscriptionDetailEvent = output(); }
 
 @Component({ selector: 'app-cancel-subscription', template: '', standalone: true })
-class CancelSubscriptionStub { readonly reply = input<any>(undefined); readonly reloadSubscriptionDetailEvent = output(); }
+class CancelSubscriptionStub { readonly reply = input<unknown>(undefined); readonly reloadSubscriptionDetailEvent = output(); }
 
 @Component({ selector: 'app-loading-failed', template: '', standalone: true })
 class LoadingFailedStub { }
 
+// eslint-disable-next-line @angular-eslint/component-selector
 @Component({ selector: 'ngx-skeleton-loader', template: '', standalone: true })
-class SkeletonLoaderStub { readonly count = input<any>(undefined); readonly appearance = input<any>(undefined); readonly theme = input<any>(undefined); }
+class SkeletonLoaderStub { readonly count = input<unknown>(undefined); readonly appearance = input<unknown>(undefined); readonly theme = input<unknown>(undefined); }
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
 

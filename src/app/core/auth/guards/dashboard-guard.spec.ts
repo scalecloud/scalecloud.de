@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterStateSnapshot } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { dashboardGuard } from './dashboard-guard';
@@ -13,7 +14,7 @@ const MOCK_URL = '/dashboard/overview';
 
 function runGuard(url = MOCK_URL): Promise<boolean> {
   return TestBed.runInInjectionContext(() =>
-    dashboardGuard({} as any, { url } as any) as Promise<boolean>
+    dashboardGuard(null!, { url } as RouterStateSnapshot) as Promise<boolean>
   );
 }
 

@@ -92,8 +92,7 @@ describe('Globe', () => {
 
         // Prevent the rAF loop from actually running
         vi.spyOn(window, 'requestAnimationFrame').mockReturnValue(42 as unknown as ReturnType<typeof requestAnimationFrame>);
-        vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {
-        });
+        vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => undefined);
 
         setWindowSize(1024, 768);
 
@@ -272,7 +271,7 @@ describe('Globe', () => {
 
         it('stops scheduling further frames once the globe is gone', () => {
             const rafCallback = vi.mocked((window.requestAnimationFrame as Mock)).mock.lastCall[0] as FrameRequestCallback;
-            (component as any).globe = undefined;
+            (component as unknown as { globe?: unknown }).globe = undefined;
 
             const callCountBefore = (window.requestAnimationFrame as unknown as Mock).mock.calls.length;
             rafCallback(0);
@@ -341,13 +340,14 @@ describe('Globe', () => {
         });
 
         it('does not throw if destroyed before globe is initialised', () => {
-            (component as any).globe = undefined;
-            (component as any).animationFrameId = undefined;
+            const internals = component as unknown as { globe?: unknown; animationFrameId?: number };
+            internals.globe = undefined;
+            internals.animationFrameId = undefined;
             expect(() => component.ngOnDestroy()).not.toThrow();
         });
 
         it('does not call cancelAnimationFrame if no frame was ever scheduled', () => {
-            (component as any).animationFrameId = undefined;
+            (component as unknown as { animationFrameId?: number }).animationFrameId = undefined;
 
             // Clear here, right before the action under test, rather than
             // relying on call-count history since the start of the test.

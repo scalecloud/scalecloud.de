@@ -165,7 +165,7 @@ describe('SeatDetailPage', () => {
     const afterClosedSubject = new Subject<boolean>();
     mocks.dialog.open.mockReturnValue({
       afterClosed: () => afterClosedSubject.asObservable(),
-    } as MatDialogRef<any>);
+    } as MatDialogRef<unknown>);
 
     mocks.seatDetailClient.getSeat.mockReturnValue(
       of(makeReply({ selectedSeat: makeSeat({ roles: [] }) }))
@@ -186,7 +186,7 @@ describe('SeatDetailPage', () => {
     const afterClosedSubject = new Subject<boolean>();
     mocks.dialog.open.mockReturnValue({
       afterClosed: () => afterClosedSubject.asObservable(),
-    } as MatDialogRef<any>);
+    } as MatDialogRef<unknown>);
 
     mocks.seatDetailClient.getSeat.mockReturnValue(
       of(makeReply({ selectedSeat: makeSeat({ roles: [] }) }))

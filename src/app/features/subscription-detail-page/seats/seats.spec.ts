@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { Seats } from './seats';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { ListSeatReply } from './seats-model';
+import { ListSeatReply, Seat } from './seats-model';
 import { of, throwError } from 'rxjs';
 import { Log } from 'src/app/core/logging/log';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
@@ -170,7 +171,7 @@ describe('Seats', () => {
   // ── Pagination ──────────────────────────────────────────────────────────────
   it('handlePageEvent updates pageIndex and re-fetches', () => {
     const loadSpy = vi.spyOn(component, 'loadSeats');
-    component.handlePageEvent({ pageIndex: 2, pageSize: 5, length: 20 } as any);
+    component.handlePageEvent({ pageIndex: 2, pageSize: 5, length: 20 } as PageEvent);
     expect(component.pageIndex()).toBe(2);
     expect(loadSpy).toHaveBeenCalledOnce();
   });
@@ -191,7 +192,9 @@ describe('Seats', () => {
   });
 
   it('openSeatDetail navigates to seat-detail URL', () => {
-    const seat = { uid: 'u1', email: 'a@b.com' } as any;
+    const seat: Seat = {
+      subscriptionID: 'sub-1', uid: 'u1', email: 'a@b.com', emailVerified: true, roles: [],
+    };
     component.openSeatDetail(seat);
     expect(mocks.returnUrl.openUrlAddReturnUrl).toHaveBeenCalledWith(
       '/dashboard/subscription/sub-1/u1/seat-detail'
@@ -200,7 +203,9 @@ describe('Seats', () => {
 
   it('openSeatDetail shows error when subscriptionID is missing', () => {
     mocks.route.snapshot.paramMap.get.mockReturnValue(null);
-    component.openSeatDetail({ uid: 'u1' } as any);
+    component.openSeatDetail({
+      subscriptionID: 'sub-1', uid: 'u1', email: 'a@b.com', emailVerified: true, roles: [],
+    });
     expect(mocks.snackBar.error).toHaveBeenCalledOnce();
   });
 });

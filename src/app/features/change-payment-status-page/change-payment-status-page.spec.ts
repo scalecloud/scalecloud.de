@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
-import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
+import { describe, afterEach, it, expect, vi } from 'vitest';
 
 import { ChangePaymentStatusPage } from './change-payment-status-page';
 import { Log } from 'src/app/core/logging/log';
@@ -27,9 +27,11 @@ describe('ChangePaymentStatusPage', () => {
     redirect_status: 'succeeded',
   };
 
+  type QueryParamOverrides = Partial<Record<keyof typeof queryParams, string | undefined>>;
+
   function configureTestBed(
-    paramOverrides: Partial<typeof queryParams> = {},
-    status: string = 'succeeded',
+    paramOverrides: QueryParamOverrides = {},
+    status = 'succeeded',
   ): void {
     logMock = {
       info: vi.fn(),
@@ -43,7 +45,7 @@ describe('ChangePaymentStatusPage', () => {
     vi.mocked(loadStripe).mockReset();
     vi.mocked(loadStripe).mockResolvedValue({
       retrieveSetupIntent: retrieveSetupIntentMock,
-    } as any);
+    } as unknown as NonNullable<Awaited<ReturnType<typeof loadStripe>>>);
 
     TestBed.configureTestingModule({
       imports: [ChangePaymentStatusPage],
@@ -94,7 +96,7 @@ describe('ChangePaymentStatusPage', () => {
   });
 
   it('logs an error and does not retrieve the intent when setup_intent is missing', () => {
-    configureTestBed({ setup_intent: undefined as any });
+    configureTestBed({ setup_intent: undefined });
 
     fixture.detectChanges();
 
@@ -103,7 +105,7 @@ describe('ChangePaymentStatusPage', () => {
   });
 
   it('logs an error and does not retrieve the intent when the client secret is missing', () => {
-    configureTestBed({ setup_intent_client_secret: undefined as any });
+    configureTestBed({ setup_intent_client_secret: undefined });
 
     fixture.detectChanges();
 
@@ -112,7 +114,7 @@ describe('ChangePaymentStatusPage', () => {
   });
 
   it('logs an error and does not retrieve the intent when redirect_status is missing', () => {
-    configureTestBed({ redirect_status: undefined as any });
+    configureTestBed({ redirect_status: undefined });
 
     fixture.detectChanges();
 
@@ -157,7 +159,7 @@ describe('ChangePaymentStatusPage', () => {
 
   it('logs when loadStripe resolves null and leaves loading true', async () => {
     configureTestBed();
-    vi.mocked(loadStripe).mockResolvedValue(null as any);
+    vi.mocked(loadStripe).mockResolvedValue(null);
 
     await detectAndWaitForStatus();
 

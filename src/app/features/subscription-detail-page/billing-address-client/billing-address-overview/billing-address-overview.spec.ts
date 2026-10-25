@@ -76,7 +76,6 @@ function resetMockDefaults(): void {
 
 describe('BillingAddressOverview', () => {
   let component: BillingAddressOverview;
-  let fixture: ComponentFixture<BillingAddressOverview>;
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -87,7 +86,7 @@ describe('BillingAddressOverview', () => {
       providers,
     }).compileComponents();
 
-    ({ component, fixture } = await createComponent());
+    ({ component } = await createComponent());
   });
 
   afterEach(() => vi.clearAllMocks());

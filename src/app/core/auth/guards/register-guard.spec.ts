@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Router, UrlTree, convertToParamMap } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, UrlTree, convertToParamMap } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { registerGuard } from './register-guard';
@@ -16,7 +16,7 @@ const mockAuth = {
 function runGuard(returnUrl?: string): Promise<boolean | UrlTree> {
   const route = { queryParamMap: convertToParamMap(returnUrl ? { returnUrl } : {}) };
   return TestBed.runInInjectionContext(() =>
-    registerGuard(route as any, {} as any) as Promise<boolean | UrlTree>
+    registerGuard(route as ActivatedRouteSnapshot, null!) as Promise<boolean | UrlTree>
   );
 }
 

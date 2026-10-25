@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterStateSnapshot } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { Auth } from 'src/app/core/auth/auth';
 import { checkoutGuard } from './checkout-guard';
@@ -12,7 +13,7 @@ const MOCK_URL = '/checkout/summary';
 
 function runGuard(url = MOCK_URL): Promise<boolean> {
   return TestBed.runInInjectionContext(() =>
-    checkoutGuard({} as any, { url } as any) as Promise<boolean>
+    checkoutGuard(null!, { url } as RouterStateSnapshot) as Promise<boolean>
   );
 }
 

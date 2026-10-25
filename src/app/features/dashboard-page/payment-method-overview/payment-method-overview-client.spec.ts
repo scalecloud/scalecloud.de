@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
-import { HttpHeaders, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { PaymentMethodOverviewClient } from './payment-method-overview-client';
 import { PaymentMethodOverviewReply } from './payment-method-overview-model';

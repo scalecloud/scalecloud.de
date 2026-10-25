@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { Stripe } from '@stripe/stripe-js';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { LOAD_STRIPE, StripePaymentElement } from './stripe-payment-element';
@@ -65,7 +66,7 @@ describe('StripePaymentElement', () => {
       confirmPayment: vi.fn().mockResolvedValue({})
     };
 
-    loadStripeMock.mockResolvedValue(stripeInstanceMock as any);
+    loadStripeMock.mockResolvedValue(stripeInstanceMock as unknown as Stripe);
 
     stripeKeyMock.getPublicKey.mockReturnValue('pk_test_123');
 
