@@ -18,14 +18,14 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      - name: Build
-        run: npm run build:prod
-
       - name: Lint
         run: npm run lint
 
       - name: Test with coverage
         run: npm run test:coverage
+
+      - name: Build
+        run: npm run build:prod
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v8

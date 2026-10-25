@@ -21,8 +21,8 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-    #  - name: Lint
-    #   run: npm run lint
+      - name: Lint
+        run: npm run lint
 
       - name: Test with coverage
         run: npm run test:coverage
