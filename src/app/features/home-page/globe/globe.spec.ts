@@ -125,40 +125,10 @@ describe('Globe', () => {
     // ── Globe size calculation ─────────────────────────────────────────────────
 
     describe('globeSize (ngOnInit)', () => {
-        it('uses innerWidth when landscape (width > height)', () => {
-            setWindowSize(1200, 800);
-            component.ngOnInit();
-            expect(component.globeSize).toBe(1200);
-        });
-
-        it('uses full width on narrow viewports (< 425px)', () => {
-            setWindowSize(400, 700);
-            component.ngOnInit();
-            expect(component.globeSize).toBe(400);
-        });
-
-        it('uses full width for medium portrait viewports', () => {
+        it('uses viewport width regardless of viewport height', () => {
             setWindowSize(600, 900);
             component.ngOnInit();
-            expect(component.globeSize).toBe(600);
-        });
-
-        it('uses full width when width equals height (square viewport)', () => {
-            setWindowSize(500, 500);
-            component.ngOnInit();
-            expect(component.globeSize).toBe(500);
-        });
-
-        it('uses full width exactly at the former 425px breakpoint', () => {
-            setWindowSize(425, 900);
-            component.ngOnInit();
-            expect(component.globeSize).toBe(425);
-        });
-
-        it('uses full width just below the former 425px breakpoint', () => {
-            setWindowSize(424, 900);
-            component.ngOnInit();
-            expect(component.globeSize).toBe(424);
+            expect(component.globeSize).toBe(window.innerWidth);
         });
     });
 
