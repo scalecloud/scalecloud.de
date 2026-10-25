@@ -1,28 +1,32 @@
-ul li {
-    list-style: none;
+.toolbar-content {
+    gap: 0.5rem;
+    padding-inline: 1rem;
 }
 
-img {
-    padding-left: 10px;
-    padding-right: 10px;
-    vertical-align: middle;
+.brand-button {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
 }
 
-a:link {
-    color: rgb(255, 255, 255);
+.desktop-nav,
+.account-actions {
+    display: flex;
+    align-items: center;
+}
+
+.desktop-nav {
+    gap: 0.25rem;
+    margin-left: 0.5rem;
+}
+
+.desktop-nav a {
+    color: inherit;
     text-decoration: none;
 }
 
-a:visited {
-    color: rgb(255, 255, 255);
-}
-
-a:hover {
-    color: rgb(255, 255, 255);
-}
-
-a:active {
-    color: rgb(255, 255, 255);
+.desktop-nav a.active {
+    background: rgb(255 255 255 / 0.14);
 }
 
 a.mat-mdc-menu-item {
@@ -34,17 +38,18 @@ button.account-menu-identity[disabled] {
     opacity: 1;
 }
 
-button {
-    background-color: transparent;
-    border: none;
+.account-actions {
+    flex: 0 0 auto;
 }
 
 .fill-remaining-space {
-    flex: auto;
+    flex: 1 1 auto;
 }
 
 .logo-icon {
     height: 2rem;
+    padding-right: 0.5rem;
+    vertical-align: middle;
 }
 
 .account-avatar {
@@ -60,5 +65,19 @@ button {
     font-size: 0.75rem;
     font-weight: 600;
     line-height: 1;
+}
+
+@media (max-width: 767px) {
+    .desktop-nav {
+        display: none;
+    }
+
+    .toolbar-content {
+        padding-inline: 0.5rem;
+    }
+
+    .dashboard-action {
+        display: none;
+    }
 }
 

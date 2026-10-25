@@ -1,21 +1,32 @@
 <div class="app-shell">
-  <app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
+  <app-header></app-header>
   @if (isLoading()) {
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   }
   <main class="app-content">
-    <mat-drawer-container>
-      <mat-drawer
-        [mode]="isHandset() ? 'over' : 'side'"
-        [opened]="isSidebarOpen()"
-        (openedChange)="sidebarOpenedChange($event)"
-      >
-        <app-sidebar (click)="closeSidebarAfterNavigation()"></app-sidebar>
-      </mat-drawer>
-      <mat-drawer-content>
-        <router-outlet></router-outlet>
-      </mat-drawer-content>
-    </mat-drawer-container>
+    <div class="route-content">
+      <router-outlet></router-outlet>
+    </div>
   </main>
   <app-footer></app-footer>
+  <nav class="mobile-bottom-nav" aria-label="Primary navigation">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" [ariaCurrentWhenActive]="'page'">
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
+    </a>
+    <a routerLink="/nextcloud" routerLinkActive="active" [ariaCurrentWhenActive]="'page'">
+      <mat-icon>cloud</mat-icon>
+      <span>Nextcloud</span>
+    </a>
+    <a routerLink="/synology" routerLinkActive="active" [ariaCurrentWhenActive]="'page'">
+      <mat-icon>dns</mat-icon>
+      <span>Synology</span>
+    </a>
+    @if (auth.resolved() && auth.showAsLoggedIn()) {
+      <a routerLink="/dashboard" routerLinkActive="active" [ariaCurrentWhenActive]="'page'">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+    }
+  </nav>
 </div>

@@ -10,3 +10,9 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+@media (max-width: 767px) {
+    iframe#jsd-widget {
+        bottom: calc(4.25rem + env(safe-area-inset-bottom)) !important;
+    }
+}

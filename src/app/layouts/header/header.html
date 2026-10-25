@@ -1,17 +1,18 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <button mat-icon-button aria-label="Toggle navigation" (click)="toggleSideBar()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <button mat-button routerLink="/">
+  <mat-toolbar-row class="toolbar-content">
+    <button mat-button class="brand-button" routerLink="/">
       <img class="logo-icon" src="img/logo/logo-white-48.png" alt="ScaleCloud.de">
       ScaleCloud.de
     </button>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a mat-button routerLink="/nextcloud" routerLinkActive="active">Nextcloud</a>
+      <a mat-button routerLink="/synology" routerLinkActive="active">Synology</a>
+    </nav>
     <span class="fill-remaining-space"></span>
     @if (auth.resolved()) {
       @if (auth.showAsLoggedIn()) {
-        <div>
-          <button mat-button routerLink="/dashboard">
+        <div class="account-actions">
+          <button mat-button class="dashboard-action" routerLink="/dashboard">
             <mat-icon>dashboard</mat-icon>
             Dashboard
           </button>
@@ -40,7 +41,7 @@
           </mat-menu>
         </div>
       } @else {
-        <div>
+        <div class="account-actions">
           <button mat-button (click)="login()">
             <mat-icon>login</mat-icon>
             Login

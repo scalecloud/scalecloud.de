@@ -182,25 +182,12 @@ describe('Header', () => {
     expect(auth.logout).toHaveBeenCalled();
   });
 
-  // ─── toggleSideBar ────────────────────────────────────────────────────────────
-
-  it('should emit toggleSideBarForMe when the menu button is clicked', () => {
-    const emitSpy = vi.fn();
-    component.toggleSideBarForMe.subscribe(emitSpy);
-
-    component.toggleSideBar();
-
-    expect(emitSpy).toHaveBeenCalled();
-  });
-
-  it('should call toggleSideBar when the menu icon button is clicked', () => {
-    const toggleSpy = vi.spyOn(component, 'toggleSideBar');
+  it('renders the product destinations in the desktop header', () => {
     const compiled: HTMLElement = fixture.nativeElement;
-    const menuButton = compiled.querySelector('button[mat-icon-button]') as HTMLButtonElement;
+    const links = Array.from(compiled.querySelectorAll('nav.desktop-nav a'))
+      .map((link) => link.textContent?.trim());
 
-    menuButton?.click();
-
-    expect(toggleSpy).toHaveBeenCalled();
+    expect(links).toEqual(['Nextcloud', 'Synology']);
   });
 
   // ─── Logo / branding ──────────────────────────────────────────────────────────

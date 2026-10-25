@@ -62,14 +62,6 @@ describe('ImprintPage', () => {
 
   // ── RouterLinks ───────────────────────────────────────────────────────────
 
-  it('has a RouterLink pointing to /contact', () => {
-    const links = fixture.debugElement.queryAll(By.directive(RouterLink));
-    const contactLink = links.find(
-      l => l.injector.get(RouterLink).urlTree?.toString() === '/contact',
-    );
-    expect(contactLink).toBeTruthy();
-  });
-
   it('has a RouterLink pointing to /', () => {
     const links = fixture.debugElement.queryAll(By.directive(RouterLink));
     const homeLink = links.find(

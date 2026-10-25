@@ -1,0 +1,10 @@
+:host {
+	display: block;
+}
+
+canvas {
+	display: block;
+	margin-inline: auto;
+	max-width: min(100vw, calc(100vh - 6rem));
+	max-height: min(100vw, calc(100vh - 6rem));
+}

@@ -37,7 +37,7 @@ export class CookieBanner {
   }
 
   private readonly updateContentRegion = (): void => {
-    const contentRegion = document.querySelector<HTMLElement>('mat-drawer-content');
+    const contentRegion = document.querySelector<HTMLElement>('.route-content');
     if (!contentRegion) {
       return;
     }
@@ -47,7 +47,7 @@ export class CookieBanner {
   };
 
   private observeContentRegion(): void {
-    const contentRegion = document.querySelector<HTMLElement>('mat-drawer-content');
+    const contentRegion = document.querySelector<HTMLElement>('.route-content');
     if (contentRegion) {
       this.updateContentRegion();
       if (typeof ResizeObserver !== 'undefined') {
@@ -60,7 +60,7 @@ export class CookieBanner {
 
     if (typeof MutationObserver !== 'undefined' && document.body) {
       this.mutationObserver = new MutationObserver(() => {
-        const region = document.querySelector<HTMLElement>('mat-drawer-content');
+        const region = document.querySelector<HTMLElement>('.route-content');
         if (region) {
           this.mutationObserver?.disconnect();
           this.observeContentRegion();

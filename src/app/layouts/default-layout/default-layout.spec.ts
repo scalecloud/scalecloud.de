@@ -1,23 +1,12 @@
-import { RouterModule, provideRouter, ActivatedRoute } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, signal, WritableSignal } from '@angular/core';
+import { signal, WritableSignal } from '@angular/core';
 
 import { DefaultLayout } from './default-layout';
-import { MatDivider } from '@angular/material/divider';
-import { MatIcon } from '@angular/material/icon';
-import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
-import { MatListModule, MatNavList } from '@angular/material/list';
-import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-import { Footer } from '../footer/footer';
-import { Header } from '../header/header';
 import { Auth } from 'src/app/core/auth/auth';
-import { APP_BASE_URL, API_URL } from 'src/app/core/config/api-token';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
-import { Sidebar } from '../sidebar/sidebar';
 
-// DefaultLayout imports Header, which depends on Auth. Provide the current facade
-// signals so the header can render its resolved signed-out state.
 describe('DefaultLayout', () => {
   let component: DefaultLayout;
   let fixture: ComponentFixture<DefaultLayout>;
@@ -28,6 +17,8 @@ describe('DefaultLayout', () => {
   const auth = {
     resolved: resolvedSignal,
     showAsLoggedIn: showAsLoggedInSignal,
+    user: signal(null),
+    login: vi.fn(),
     logout: vi.fn(),
   };
 
@@ -38,33 +29,12 @@ describe('DefaultLayout', () => {
     loadingPermissions = signal(false);
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatListModule,
-        MatMenuModule,
-        DefaultLayout,
-        Sidebar,
-        MatDivider,
-        MatIcon,
-        MatNavList,
-        Footer,
-        Header,
-        MatMenu,
-        MatToolbar,
-        MatToolbarRow,
-        RouterModule
-      ],
+      imports: [DefaultLayout],
       providers: [
         provideRouter([]),
-        {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { paramMap: { get: () => null } } }
-        },
         { provide: PermissionStore, useValue: { loadingPermissions } },
-        { provide: APP_BASE_URL, useValue: 'http://localhost' },
-        { provide: API_URL, useValue: 'http://localhost/api' },
         { provide: Auth, useValue: auth }
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      ]
     }).compileComponents();
   });
 
@@ -78,25 +48,22 @@ describe('DefaultLayout', () => {
     expect(component).toBeTruthy();
   });
 
-  it('starts with the desktop sidebar open and mobile sidebar closed', () => {
-    expect(component.isDesktopSidebarOpen()).toBe(true);
-    expect(component.isMobileSidebarOpen()).toBe(false);
-    expect(component.isSidebarOpen()).toBe(true);
+  it('renders the public destinations in the mobile navigation', () => {
+    const nav = fixture.nativeElement.querySelector('.mobile-bottom-nav') as HTMLElement;
+    const labels = Array.from(nav.querySelectorAll('span')).map((label) => label.textContent);
+
+    expect(labels).toEqual(['Home', 'Nextcloud', 'Synology']);
   });
 
-  it('toggles the desktop sidebar', () => {
-    component.sideBarToggler();
-    expect(component.isSidebarOpen()).toBe(false);
+  it('adds Dashboard to the mobile navigation for signed-in users', () => {
+    showAsLoggedInSignal.set(true);
+    fixture.detectChanges();
 
-    component.sideBarToggler();
-    expect(component.isSidebarOpen()).toBe(true);
-  });
+    const labels = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll('.mobile-bottom-nav span'),
+    ).map((label) => label.textContent);
 
-  it('keeps the desktop drawer state in sync with Material', () => {
-    component.sidebarOpenedChange(false);
-
-    expect(component.isDesktopSidebarOpen()).toBe(false);
-    expect(component.isSidebarOpen()).toBe(false);
+    expect(labels).toEqual(['Home', 'Nextcloud', 'Synology', 'Dashboard']);
   });
 
   it('renders the progress bar while permissions are loading', async () => {

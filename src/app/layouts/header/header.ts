@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
-import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { Auth } from 'src/app/core/auth/auth';
 import { environment } from 'src/environments/environment';
@@ -12,14 +12,12 @@ import { environment } from 'src/environments/environment';
     templateUrl: './header.html',
     styleUrl: './header.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatToolbar, MatToolbarRow, MatIconButton, MatIcon, MatButton, RouterLink, MatMenuTrigger, MatMenu, MatMenuItem]
+    imports: [MatToolbar, MatToolbarRow, MatIcon, MatButton, RouterLink, RouterLinkActive, MatMenuTrigger, MatMenu, MatMenuItem]
 })
 export class Header {
   readonly auth = inject(Auth);
   readonly accountSettingsUrl = `${environment.oidc.authentikUrl}/if/user/#/settings;%7B%22page%22:%22page-credentials%22,%22ak-user-settings-mfa-page%22:0%7D`;
   private readonly router = inject(Router);
-
-  readonly toggleSideBarForMe = output<void>();
 
   get accountInitials(): string {
     const user = this.auth.user();
@@ -42,10 +40,6 @@ export class Header {
 
   logout() {
     this.auth.logout();
-  }
-
-  toggleSideBar() {
-    this.toggleSideBarForMe.emit(undefined);
   }
 
 }

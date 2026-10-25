@@ -51,4 +51,8 @@ footer {
         flex-direction: column;
         padding-inline: 1rem;
     }
+
+    .navigation {
+        width: calc(100% - 150px);
+    }
 }

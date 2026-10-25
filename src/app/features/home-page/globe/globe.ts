@@ -22,17 +22,7 @@ export class Globe implements OnInit, AfterViewInit, OnDestroy {
   private phi = 4;
 
   ngOnInit(): void {
-    const innerHeight = window.innerHeight;
-    const innerWidth = window.innerWidth;
-    if (innerWidth > innerHeight) {
-      this.globeSize = innerHeight;
-    }
-    else if( innerWidth < 425) {
-      this.globeSize = innerWidth * 55 / 100;
-    }
-    else {
-      this.globeSize = innerWidth * 60 / 100;
-    }
+      this.globeSize =  window.innerWidth;
   }
 
   ngAfterViewInit() {
@@ -70,8 +60,8 @@ export class Globe implements OnInit, AfterViewInit, OnDestroy {
 
     this.globe = createGlobe(canvas, {
       devicePixelRatio: 2,
-      width: this.globeSize * 2,
-      height: this.globeSize * 2,
+      width: this.globeSize,
+      height: this.globeSize,
       phi: 1,
       theta: 0,
       dark: 1,
