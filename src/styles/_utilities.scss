@@ -94,9 +94,3 @@ html .mat-mdc-unelevated-button:not(:disabled) {
   border: 0;
   background: var(--sc-border);
 }
-
-@media (max-width: 767px) {
-  iframe#jsd-widget {
-    bottom: calc(4.25rem + env(safe-area-inset-bottom));
-  }
-}
