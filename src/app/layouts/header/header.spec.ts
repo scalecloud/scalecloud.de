@@ -187,7 +187,7 @@ describe('Header', () => {
     const links = Array.from(compiled.querySelectorAll('nav.desktop-nav a'))
       .map((link) => link.textContent?.trim());
 
-    expect(links).toEqual(['Nextcloud', 'Synology']);
+    expect(links).toEqual(['Nextcloud', 'OpenCloud', 'Synology']);
   });
 
   // ─── Logo / branding ──────────────────────────────────────────────────────────

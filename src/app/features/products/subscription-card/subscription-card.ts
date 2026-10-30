@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, viewChild, input, computed 
 import { Router } from '@angular/router';
 import { NextcloudProduct } from '../nextcloud-page/nextcloud-product';
 import { SynologyProduct } from '../synology-page/synology-product';
+import { Product } from '../product-model';
 import { Quantity } from './quantity/quantity';
 import { MatCard, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
@@ -12,7 +13,7 @@ import { MatButton } from '@angular/material/button';
 import { CurrencyPipe } from '@angular/common';
 import { Log } from 'src/app/core/logging/log';
 
-type SubscriptionProduct = NextcloudProduct | SynologyProduct;
+type SubscriptionProduct = NextcloudProduct | SynologyProduct | Product;
 
 @Component({
     selector: 'app-subscription-card',
@@ -26,12 +27,14 @@ export class SubscriptionCard {
   private readonly log = inject(Log);
 
   readonly nextcloudProduct = input<NextcloudProduct | undefined>(undefined);
+  readonly openCloudProduct = input<Product | undefined>(undefined);
   readonly synologyProduct = input<SynologyProduct | undefined>(undefined);
+  readonly externalQuantity = input<number | undefined>(undefined);
 
   readonly quantityComponent = viewChild(Quantity);
 
   /**
-   * Whichever product was actually bound. Nextcloud takes priority if,
+  * Whichever product was actually bound. Nextcloud takes priority if,
    * for some reason, both were ever passed at once.
    *
    * Deriving this once with `computed()` means every getter below reads
@@ -41,14 +44,17 @@ export class SubscriptionCard {
    * checked the signal *function*, not its value).
    */
   readonly product = computed<SubscriptionProduct | undefined>(
-    () => this.nextcloudProduct() ?? this.synologyProduct()
+    () => this.nextcloudProduct() ?? this.openCloudProduct() ?? this.synologyProduct()
   );
+
+  readonly quantityLabel = computed(() => this.openCloudProduct() ? 'Quantity:' : 'User:');
+  readonly hasExternalQuantity = computed(() => this.externalQuantity() !== undefined);
 
   /**
   * Read the child's signal because the FormControl value itself is not
   * reactive and would leave this computed value stale.
    */
-  readonly quantity = computed(() => this.quantityComponent()?.quantity() ?? 1);
+  readonly quantity = computed(() => this.externalQuantity() ?? this.quantityComponent()?.quantity() ?? 1);
 
   readonly name = computed(() => this.product()?.name ?? '');
   readonly productID = computed(() => this.product()?.productID ?? '');

@@ -1,17 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
-
-html,
-body {
-    height: 100%;
-}
-
-body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-@media (max-width: 767px) {
-    iframe#jsd-widget {
-        bottom: calc(4.25rem + env(safe-area-inset-bottom)) !important;
-    }
-}
+// Global style entry point. Keep module order to preserve the cascade.
+@use './styles/material-theme';
+@use './styles/tokens';
+@use './styles/base';
+@use './styles/surfaces';
+@use './styles/material-overrides';
+@use './styles/utilities';

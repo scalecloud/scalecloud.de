@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+
+html {
+  @include mat.card-overrides(
+    (
+      elevated-container-shape: 20px,
+      elevated-container-color: #0b1220,
+      outlined-container-shape: 20px,
+      outlined-container-color: #0b1220,
+      outlined-outline-color: #19344a,
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 999px,
+      filled-container-height: 50px,
+      filled-horizontal-padding: 44px,
+      filled-label-text-size: 15px,
+      filled-label-text-weight: 800,
+      outlined-container-shape: 999px,
+      outlined-label-text-weight: 700,
+      text-container-shape: 999px,
+      text-label-text-weight: 700,
+    )
+  );
+}

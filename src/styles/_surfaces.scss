@@ -1,0 +1,45 @@
+@mixin sc-card-surface {
+  position: relative;
+  overflow: hidden;
+  padding: var(--sc-card-padding);
+  background: var(--mat-sys-surface-container);
+  border: 1px solid var(--sc-border);
+  border-radius: var(--sc-radius-card);
+  box-shadow: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: var(--sc-accent-line);
+    pointer-events: none;
+  }
+}
+
+.sc-card,
+html .mat-mdc-card {
+  @include sc-card-surface;
+}
+
+.sc-card--compact {
+  padding: 20px 24px;
+}
+
+@media (max-width: 600px) {
+  .sc-card--compact {
+    padding: 18px 20px;
+  }
+}
+
+html .mat-mdc-card .mat-mdc-card-content {
+  padding: 0;
+}
+
+html .mat-mdc-card .mat-mdc-card-header {
+  padding: 0 0 16px;
+}
+
+html .mat-mdc-card .mat-mdc-card-actions {
+  padding: 16px 0 0;
+}

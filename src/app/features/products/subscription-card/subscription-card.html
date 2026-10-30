@@ -1,5 +1,5 @@
 @if (product()) {
-  <mat-card>
+  <mat-card [class.opencloud-card]="openCloudProduct() !== undefined">
     <mat-card-title>
       {{ name() }}
     </mat-card-title>
@@ -32,15 +32,17 @@
             }
           </div>
         </mat-list-item>
-        <mat-list-item>
-          <div class="icon-text">
-            <div class="user-count">
-              <mat-icon>person</mat-icon>
-              <mat-label class="user">User:</mat-label>
+        @if (!hasExternalQuantity()) {
+          <mat-list-item>
+            <div class="icon-text">
+              <div class="user-count">
+                <mat-icon>person</mat-icon>
+                <mat-label class="user">{{ quantityLabel() }}</mat-label>
+              </div>
+              <app-quantity></app-quantity>
             </div>
-            <app-quantity></app-quantity>
-          </div>
-        </mat-list-item>
+          </mat-list-item>
+        }
         <mat-divider></mat-divider>
       </mat-list>
     </mat-card-content>

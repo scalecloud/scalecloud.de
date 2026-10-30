@@ -1,0 +1,142 @@
+<main class="opencloud-page">
+    <header class="intro">
+        <h1 id="opencloud-title">OpenCloud</h1>
+        <p class="intro-copy sc-text-body">Purchased storage can be reallocated.</p>
+    </header>
+
+    @if (serviceStatus() === ServiceStatus.Loading || serviceStatus() === ServiceStatus.Initializing) {
+        <div class="loading-panel" aria-label="Loading OpenCloud product">
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="loading-lines"><span></span><span></span><span></span></div>
+        </div>
+    }
+
+    @if (serviceStatus() === ServiceStatus.Success && product(); as openCloudProduct) {
+        <section class="purchase-layout" aria-label="Choose OpenCloud storage">
+            <section class="allocation-panel sc-card sc-card--compact" aria-labelledby="allocation-heading">
+                <div class="allocation-header">
+                    <div>
+                        <p class="section-label sc-section-title">BUILD YOUR STORAGE</p>
+                        <h2 id="allocation-heading">Who needs space?</h2>
+                        <p class="unit-description sc-text-body">Add storage for yourself, people you invite, or shared spaces.</p>
+                    </div>
+                </div>
+
+                <div class="allocation-list">
+                    @for (allocation of allocations(); track allocation.id) {
+                        <div class="allocation-row" [class.owner-row]="allocation.kind === 'owner'">
+                            <div class="allocation-identity">
+                                <span class="allocation-icon">
+                                    <mat-icon aria-hidden="true">
+                                        {{ allocation.kind === 'space' ? 'workspaces' : allocation.kind === 'owner' ? 'person' : 'person_add' }}
+                                    </mat-icon>
+                                </span>
+                                <div class="allocation-recipient">
+                                    @if (allocation.kind === 'owner') {
+                                        <strong>You</strong>
+                                        <span class="sc-text-muted">Personal storage</span>
+                                    } @else if (allocation.kind === 'user') {
+                                        <strong>{{ allocationTitle(allocation) }}</strong>
+                                        <span class="sc-text-muted">Invite after purchase</span>
+                                    } @else {
+                                        <strong>{{ allocationTitle(allocation) }}</strong>
+                                        <span class="sc-text-muted">Create after purchase</span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="allocation-controls">
+                                <div class="allocation-stepper">
+                                    <button
+                                        type="button"
+                                        [attr.aria-label]="'Remove one TB from ' + allocationTitle(allocation)"
+                                        [disabled]="allocation.units <= 1"
+                                        (click)="adjustAllocationUnits(allocation.id, -1)">−</button>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        [max]="999 - quantity() + allocation.units"
+                                        [attr.aria-label]="'Terabytes for ' + allocationTitle(allocation)"
+                                        [value]="allocation.units"
+                                        (change)="updateAllocationUnits(allocation.id, $any($event.target).value)">
+                                    <button
+                                        type="button"
+                                        [attr.aria-label]="'Add one TB to ' + allocationTitle(allocation)"
+                                        [disabled]="quantity() >= 999"
+                                        (click)="adjustAllocationUnits(allocation.id, 1)">+</button>
+                                </div>
+                                <span class="tb-label">TB</span>
+                                @if (allocation.kind !== 'owner') {
+                                    <button
+                                        class="remove-allocation"
+                                        type="button"
+                                        [attr.aria-label]="'Remove ' + allocationTitle(allocation)"
+                                        (click)="removeAllocation(allocation.id)">
+                                        <mat-icon aria-hidden="true">close</mat-icon>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="add-allocation-actions">
+                    <button mat-stroked-button type="button" [disabled]="quantity() >= 999" (click)="addAllocation('user')">
+                        <mat-icon>person_add</mat-icon>
+                        Add a person
+                    </button>
+                    <button mat-stroked-button type="button" [disabled]="quantity() >= 999" (click)="addAllocation('space')">
+                        <mat-icon>add_box</mat-icon>
+                        Add a space
+                    </button>
+                </div>
+                <p class="allocation-preview-note sc-text-muted">Preview only: all purchased storage starts in your account. Assign it to people or spaces afterward.</p>
+            </section>
+
+            <aside class="order-summary sc-card sc-card--compact" aria-label="Order summary" aria-live="polite">
+                <div class="summary-label sc-section-title">
+                    <span>TOTAL TO BUY</span>
+                    <span class="summary-product sc-text-body">OpenCloud</span>
+                </div>
+                <div class="summary-metrics">
+                    <div class="summary-metric storage-metric">
+                        <span class="metric-label sc-section-title">STORAGE</span>
+                        <div class="storage-total">
+                            <span class="storage-number">{{ totalStorage() }}</span>
+                            <span class="storage-unit">{{ openCloudProduct.storageUnit }}</span>
+                        </div>
+                        <span class="summary-detail sc-text-muted">{{ quantity() }} × {{ openCloudProduct.storageAmount }} {{ openCloudProduct.storageUnit }}</span>
+                    </div>
+                    <div class="summary-metric monthly-metric">
+                        <span class="metric-label sc-section-title">MONTHLY TOTAL</span>
+                        <div class="summary-price">
+                            <strong>{{ totalPrice() | currency:'EUR':'symbol':'1.2-2' }}</strong>
+                            <span class="sc-text-muted">/ month</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="checkout-button" mat-flat-button type="button" (click)="continueToCheckout()">
+                    Continue to checkout
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+                <div class="trial-note sc-text-muted">
+                    <mat-icon aria-hidden="true">event_available</mat-icon>
+                    <span>
+                        @if (isTrialAvailable()) {
+                            {{ openCloudProduct.trialDays }}-day trial included with one unit.
+                        } @else if (openCloudProduct.trialDays > 0) {
+                            Free trial is only available when buying one unit.
+                        } @else {
+                            No free trial is available for this purchase.
+                        }
+                    </span>
+                </div>
+            </aside>
+
+        </section>
+    }
+
+    @if (serviceStatus() === ServiceStatus.Error) {
+        <app-loading-failed></app-loading-failed>
+    }
+</main>

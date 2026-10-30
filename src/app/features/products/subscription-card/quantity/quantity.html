@@ -1,6 +1,6 @@
 @let q = quantity();
 
-<div class="quantity-container">
+<div class="quantity-container" [class.large]="variant() === 'large'">
     <button
         type="button"
         aria-label="Decrease quantity"

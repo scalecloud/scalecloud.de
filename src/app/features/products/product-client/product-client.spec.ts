@@ -4,7 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 import { ProductClient } from './product-client';
-import { ProductTiersReply, ProductType } from '../product-model';
+import { Product, ProductTiersReply, ProductType } from '../product-model';
 import { API_URL } from 'src/app/core/config/api-token';
 
 describe('ProductClient', () => {
@@ -55,6 +55,27 @@ describe('ProductClient', () => {
     productClient.getProductTiers(ProductType.Synology).subscribe();
 
     const req = httpMock.expectOne(`${baseUrl}/product/tiers/synology`);
+    expect(req.request.url).toBe(`${baseUrl}/product/tiers/synology`);
     req.flush({ productType: ProductType.Synology, productTiers: [] });
+  });
+
+  it('GETs the singular OpenCloud product endpoint', () => {
+    const mockProduct: Product = {
+      productType: ProductType.OpenCloud,
+      productID: 'opencloud',
+      name: 'OpenCloud',
+      storageAmount: 1,
+      storageUnit: 'TB',
+      trialDays: 0,
+      pricePerMonth: 900,
+    };
+
+    productClient.getOpenCloudProduct().subscribe(product => {
+      expect(product).toEqual(mockProduct);
+    });
+
+    const req = httpMock.expectOne(`${baseUrl}/product/opencloud`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockProduct);
   });
 });

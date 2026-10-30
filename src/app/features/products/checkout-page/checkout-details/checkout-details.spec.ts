@@ -181,6 +181,8 @@ describe('CheckoutDetails', () => {
     await setup();
 
     expect(component.isTrialIncluded()).toBe(false);
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('No trial available');
+    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('0 days trial');
   });
 
   it('should compute a zero raw price when pricePerMonth is zero', async () => {

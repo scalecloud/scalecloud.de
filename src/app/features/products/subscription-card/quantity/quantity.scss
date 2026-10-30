@@ -53,4 +53,47 @@
     input[type="number"] {
         -moz-appearance: textfield;
     }
+
+    &.large {
+        gap: 0.6rem;
+
+        button {
+            width: 3.75rem;
+            height: 3.75rem;
+            border: 1px solid #c9d6ce;
+            border-radius: 0.6rem;
+            color: #174b37;
+            background: #fff;
+            font-size: 2rem;
+            transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+        }
+
+        button:hover:not(:disabled) {
+            border-color: #3a936b;
+            background: #eff8eb;
+            transform: translateY(-1px);
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #a8e75d;
+            outline-offset: 3px;
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.4;
+        }
+
+        input {
+            width: 5rem;
+            height: 3.75rem;
+            border: 0;
+            color: #173c2b;
+            background: transparent;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+    }
 }

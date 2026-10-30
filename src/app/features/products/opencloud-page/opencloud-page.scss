@@ -1,0 +1,392 @@
+:host {
+  display: block;
+}
+
+.opencloud-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+}
+
+.intro {
+  padding: 0 0 1.75rem;
+  border-bottom: 1px solid var(--sc-border);
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0.55rem;
+}
+
+.intro-copy {
+  max-width: 34rem;
+  margin-bottom: 0;
+}
+
+.purchase-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
+  grid-template-areas:
+    "quantity summary"
+    "allocation allocation";
+  gap: 1.5rem 2rem;
+  align-items: start;
+  padding-top: 2rem;
+}
+
+.unit-description {
+  margin: 0;
+}
+
+.order-summary {
+  grid-area: summary;
+}
+
+.summary-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 1.6rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--sc-border);
+}
+
+.summary-metrics {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.4rem;
+  margin: 1rem 0 1.15rem;
+}
+
+.summary-metric {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.monthly-metric {
+  padding-left: 1.4rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.storage-total {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin: 0.3rem 0 0;
+}
+
+.storage-number {
+  font-size: 3.65rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.storage-unit {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.summary-detail {
+  margin-top: 0.1rem;
+}
+
+.summary-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+}
+
+.summary-price strong {
+  font-size: 2.15rem;
+  line-height: 1.1;
+}
+
+.checkout-button {
+  display: flex;
+  width: 100%;
+  min-height: 3.5rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.trial-note {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.65rem 0 0;
+  line-height: 1.35;
+}
+
+.trial-note mat-icon {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 1rem;
+}
+
+.loading-panel {
+  max-width: 52rem;
+  min-height: 12rem;
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid var(--sc-border);
+}
+
+.loading-lines {
+  display: grid;
+  gap: 1rem;
+  padding-top: 2rem;
+}
+
+.loading-lines span {
+  height: 1rem;
+  background: var(--mat-sys-surface-container-high);
+}
+
+.loading-lines span:first-child {
+  width: 60%;
+}
+
+@media (max-width: 760px) {
+  .opencloud-page {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .intro {
+    padding-bottom: 1.5rem;
+  }
+
+  .purchase-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "quantity"
+      "summary"
+      "allocation";
+    gap: 1rem;
+    padding-top: 1.25rem;
+  }
+
+  .summary-metrics {
+    gap: 0.75rem;
+  }
+
+  .monthly-metric {
+    padding-left: 0.85rem;
+  }
+
+  .storage-number {
+    font-size: 3rem;
+  }
+
+  .summary-price strong {
+    font-size: 1.65rem;
+  }
+
+}
+
+.allocation-panel {
+  grid-area: quantity;
+  min-width: 0;
+}
+
+.allocation-header h2 {
+  margin: 0 0 0.4rem;
+  line-height: 1.2;
+}
+
+.allocation-header .unit-description {
+  max-width: 34rem;
+  line-height: 1.5;
+}
+
+.allocation-list {
+  margin-top: 1.35rem;
+  border-top: 1px solid var(--sc-border);
+}
+
+.allocation-row {
+  display: flex;
+  min-height: 5.25rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--sc-border);
+}
+
+.allocation-identity,
+.allocation-controls {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.allocation-icon {
+  display: grid;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: 0 0 2.6rem;
+  place-items: center;
+  color: var(--sc-accent-light);
+  background: var(--mat-sys-surface-container-high);
+}
+
+.allocation-recipient {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.allocation-recipient input {
+  width: min(100%, 16rem);
+  min-width: 9rem;
+  padding: 0.35rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--sc-border);
+  border-radius: 0;
+  outline: 0;
+  color: var(--sc-text);
+  background: var(--mat-sys-surface-container-low);
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+
+.allocation-recipient span {
+  font-size: 0.78rem;
+}
+
+.allocation-recipient input:focus {
+  border-bottom: 2px solid var(--sc-accent);
+}
+
+.allocation-recipient input::placeholder {
+  color: var(--sc-text-label);
+}
+
+.allocation-controls {
+  flex: 0 0 auto;
+  gap: 0.45rem;
+}
+
+.allocation-stepper {
+  display: flex;
+  height: 2.65rem;
+  align-items: center;
+  border: 1px solid var(--sc-border);
+  background: var(--mat-sys-surface-container-low);
+}
+
+.allocation-stepper button {
+  width: 2.55rem;
+  height: 100%;
+  border: 0;
+  color: var(--sc-accent-light);
+  background: transparent;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.allocation-stepper button:hover:not(:disabled) {
+  background: var(--mat-sys-surface-container-high);
+}
+
+.allocation-stepper button:disabled {
+  color: var(--sc-text-label);
+  cursor: not-allowed;
+}
+
+.allocation-stepper input {
+  width: 2.6rem;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: var(--sc-text);
+  background: var(--mat-sys-surface-container-low);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  appearance: textfield;
+}
+
+.allocation-stepper input::-webkit-inner-spin-button,
+.allocation-stepper input::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.tb-label {
+  color: var(--sc-accent-light);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.remove-allocation {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-left: 0.25rem;
+  place-items: center;
+  border: 0;
+  color: var(--sc-text-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.remove-allocation:hover {
+  color: var(--sc-text);
+  background: rgba(248, 113, 113, 0.12);
+}
+
+.add-allocation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.add-allocation-actions button {
+  min-height: 2.8rem;
+}
+
+.add-allocation-actions button mat-icon {
+  margin-right: 0.25rem;
+}
+
+.allocation-preview-note {
+  margin: 0.85rem 0 0;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .allocation-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .allocation-controls {
+    width: 100%;
+    padding-left: 3.35rem;
+    box-sizing: border-box;
+  }
+
+  .allocation-stepper {
+    flex: 0 0 auto;
+  }
+
+  .remove-allocation {
+    margin-left: auto;
+  }
+}

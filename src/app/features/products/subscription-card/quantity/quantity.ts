@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   DestroyRef,
   inject,
+  input,
   signal,
   OnInit,
 } from '@angular/core';
@@ -33,6 +34,7 @@ export class Quantity implements OnInit {
 
   /** Reactive mirror of the control value for use in the template. */
   readonly quantity = signal<number>(MIN);
+  readonly variant = input<'default' | 'large'>('default');
 
   readonly min = MIN;
   readonly max = MAX;

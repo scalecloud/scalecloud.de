@@ -55,3 +55,31 @@ button {
 .no-trial {
     color: red;
 }
+
+mat-card.opencloud-card {
+    color: #172923;
+    background: #ffffff;
+    border: 1px solid #d6e0d8;
+    box-shadow: 0 8px 24px rgba(23, 41, 35, 0.08);
+
+    mat-card-title,
+    mat-card-subtitle {
+        color: #172923;
+    }
+
+    button {
+        color: #ffffff;
+        background: #174b37;
+        border-color: #174b37;
+    }
+
+    &:hover {
+        box-shadow: 0 12px 30px rgba(23, 41, 35, 0.14);
+        transform: translateY(-2px);
+
+        mat-card-title,
+        button {
+            color: #ffffff;
+        }
+    }
+}

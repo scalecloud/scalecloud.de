@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProductTiersReply, ProductType } from '../product-model';
+import { Product, ProductTiersReply, ProductType } from '../product-model';
 import { API_URL } from 'src/app/core/config/api-token';
 
 @Injectable({
@@ -16,5 +16,9 @@ export class ProductClient {
   getProductTiers(productType: ProductType): Observable<ProductTiersReply> {
     const segment = productType.toString().toLowerCase();
     return this.http.get<ProductTiersReply>(`${this.tiersUrl}/${segment}`);
+  }
+
+  getOpenCloudProduct(): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/product/opencloud`);
   }
 }

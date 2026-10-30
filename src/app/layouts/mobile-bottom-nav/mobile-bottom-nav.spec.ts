@@ -32,7 +32,7 @@ describe('MobileBottomNav', () => {
       (fixture.nativeElement as HTMLElement).querySelectorAll('nav a span'),
     ).map((label) => label.textContent);
 
-    expect(labels).toEqual(['Home', 'Nextcloud', 'Synology']);
+    expect(labels).toEqual(['Home', 'Nextcloud', 'OpenCloud', 'Synology']);
   });
 
   it('adds Dashboard for signed-in users', () => {
@@ -43,6 +43,6 @@ describe('MobileBottomNav', () => {
       (fixture.nativeElement as HTMLElement).querySelectorAll('nav a span'),
     ).map((label) => label.textContent);
 
-    expect(labels).toEqual(['Home', 'Nextcloud', 'Synology', 'Dashboard']);
+    expect(labels).toEqual(['Home', 'Nextcloud', 'OpenCloud', 'Synology', 'Dashboard']);
   });
 });

@@ -1,9 +1,10 @@
 export enum ProductType {
   Nextcloud = "Nextcloud",
+  OpenCloud = "OpenCloud",
   Synology = "Synology"
 }
 
-export interface ProductTier {
+export interface Product {
   productType: ProductType;
   productID: string;
   name: string;
@@ -12,6 +13,8 @@ export interface ProductTier {
   trialDays: number;
   pricePerMonth: number;
 }
+
+export type ProductTier = Product;
 
 export interface ProductTiersReply {
   productType: ProductType;

@@ -53,11 +53,13 @@
               <mat-icon>event_available</mat-icon>
               @if (isTrialIncluded()) {
                 {{trialDays()}}&nbsp;days trial*
+              } @else if (trialDays() > 0) {
+                <div class="no-trial">
+                  <s>{{trialDays()}}&nbsp;days trial*</s>
+                </div>
               } @else {
                 <div class="no-trial">
-                  <s>
-                    {{trialDays()}}&nbsp;days trial*
-                  </s>
+                  No trial available
                 </div>
               }
             </div>

@@ -1,0 +1,102 @@
+html .mat-mdc-unelevated-button:not(:disabled) {
+  background-image: var(--sc-cta-gradient);
+  box-shadow: var(--sc-cta-glow);
+  transition: filter 0.15s ease;
+
+  &:hover {
+    filter: brightness(1.08);
+  }
+}
+
+.sc-container {
+  width: 100%;
+  max-width: var(--sc-content-width);
+  margin: 0 auto;
+  padding: 44px 16px;
+  box-sizing: border-box;
+}
+
+.sc-logo {
+  display: block;
+  width: 244px;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 32px;
+}
+
+.sc-icon-badge {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 22px;
+  background: var(--mat-sys-surface-container);
+  border: 2px solid var(--sc-accent);
+  border-radius: 50%;
+  color: var(--sc-accent-light);
+  box-shadow: var(--sc-ring-glow);
+}
+
+.sc-glow-text {
+  color: var(--sc-logo-cyan);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.45), 0 0 22px rgba(0, 255, 255, 0.25);
+}
+
+.sc-panel {
+  padding: 18px 22px;
+  background: var(--mat-sys-surface-container-high);
+  border: 1px solid var(--sc-border);
+  border-radius: var(--sc-radius-panel);
+}
+
+.sc-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: var(--sc-badge-bg);
+  border: 1px solid var(--sc-badge-border);
+  border-radius: var(--sc-radius-pill);
+  color: var(--sc-accent-light);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sc-label {
+  color: var(--sc-text-label);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.sc-section-title {
+  color: var(--sc-accent-light);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.sc-text-body {
+  color: var(--sc-text-body);
+}
+
+.sc-text-muted {
+  color: var(--sc-text-muted);
+  font-size: 13px;
+  line-height: 21px;
+}
+
+.sc-divider {
+  height: 1px;
+  border: 0;
+  background: var(--sc-border);
+}
+
+@media (max-width: 767px) {
+  iframe#jsd-widget {
+    bottom: calc(4.25rem + env(safe-area-inset-bottom));
+  }
+}

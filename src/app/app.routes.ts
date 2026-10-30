@@ -18,6 +18,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/products/nextcloud-page/nextcloud-page').then(m => m.NextcloudPage)
       },
       {
+        path: 'opencloud',
+        loadComponent: () => import('./features/products/opencloud-page/opencloud-page').then(m => m.OpenCloudPage)
+      },
+      {
         path: 'synology',
         loadComponent: () => import('./features/products/synology-page/synology-page').then(m => m.SynologyPage)
       },
