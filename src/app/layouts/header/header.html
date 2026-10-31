@@ -12,7 +12,7 @@
     @if (auth.resolved()) {
       @if (auth.showAsLoggedIn()) {
         <div class="account-actions">
-          <button mat-button class="dashboard-action" routerLink="/dashboard">
+          <button mat-button class="dashboard-action" routerLink="/dashboard" routerLinkActive="active">
             <mat-icon>dashboard</mat-icon>
             Dashboard
           </button>
