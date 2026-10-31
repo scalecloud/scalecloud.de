@@ -20,6 +20,12 @@ body {
   color-scheme: light;
 }
 
+@media (max-width: 767px) {
+  #jsd-widget {
+    translate: 0 calc(0rem - var(--mobile-bottom-nav-height, 4rem) - env(safe-area-inset-bottom) - 0.75rem);
+  }
+}
+
 a {
   color: var(--sc-accent-light);
   text-decoration: none;
