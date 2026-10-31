@@ -24,13 +24,6 @@
   padding-top: 2rem;
 }
 
-.unit-description {
-  margin: 0;
-}
-
-.order-summary {
-  grid-area: summary;
-}
 
 .summary-label {
   display: flex;
@@ -77,10 +70,6 @@
 .storage-unit {
   font-size: 1.1rem;
   font-weight: 700;
-}
-
-.summary-detail {
-  margin-top: 0.1rem;
 }
 
 .summary-price {
@@ -136,62 +125,6 @@
 .loading-lines span {
   height: 1rem;
   background: var(--mat-sys-surface-container-high);
-}
-
-.loading-lines span:first-child {
-  width: 60%;
-}
-
-@media (max-width: 760px) {
-  .opencloud-page {
-    padding: 2rem 1rem 3rem;
-  }
-
-  .intro {
-    padding-bottom: 1.5rem;
-  }
-
-  .purchase-layout {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "quantity"
-      "summary"
-      "allocation";
-    gap: 1rem;
-    padding-top: 1.25rem;
-  }
-
-  .summary-metrics {
-    gap: 0.75rem;
-  }
-
-  .monthly-metric {
-    padding-left: 0.85rem;
-  }
-
-  .storage-number {
-    font-size: 3rem;
-  }
-
-  .summary-price strong {
-    font-size: 1.65rem;
-  }
-
-}
-
-.allocation-panel {
-  grid-area: quantity;
-  min-width: 0;
-}
-
-.allocation-header h2 {
-  margin: 0 0 0.4rem;
-  line-height: 1.2;
-}
-
-.allocation-header .unit-description {
-  max-width: 34rem;
-  line-height: 1.5;
 }
 
 .allocation-list {
