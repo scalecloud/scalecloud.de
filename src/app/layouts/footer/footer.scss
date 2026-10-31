@@ -1,18 +1,7 @@
-a:link {
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-}
-
-a:visited {
-    color: rgb(0, 0, 0);
-}
-
-a:hover {
-    color: red;
-}
-
-a:active {
-    color: rgb(0, 0, 0);
+.navigation a,
+.footer-meta a,
+.cookie-settings {
+    color: var(--sc-text-muted);
 }
 
 footer {
@@ -36,13 +25,14 @@ footer {
     padding: 0;
     border: 0;
     background: transparent;
-    color: inherit;
     font: inherit;
     cursor: pointer;
 }
 
+.navigation a:hover,
+.footer-meta a:hover,
 .cookie-settings:hover {
-    color: red;
+    color: var(--sc-accent-light);
 }
 
 @media (max-width: 480px) {
