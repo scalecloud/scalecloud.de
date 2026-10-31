@@ -41,8 +41,8 @@ describe('registerGuard', () => {
     });
 
     it('redirects to the returnUrl', async () => {
-      const result = await runGuard('/checkout?plan=nextcloud-yearly');
-      expect(mockRouter.parseUrl).toHaveBeenCalledWith('/checkout?plan=nextcloud-yearly');
+      const result = await runGuard('/checkout?plan=annual');
+      expect(mockRouter.parseUrl).toHaveBeenCalledWith('/checkout?plan=annual');
       expect(result).toBe(urlTree);
     });
 
@@ -63,8 +63,8 @@ describe('registerGuard', () => {
     });
 
     it('sends the user to the Authentik enrollment flow with the returnUrl as target', async () => {
-      await runGuard('/checkout?plan=nextcloud-yearly');
-      expect(mockAuth.register).toHaveBeenCalledWith('/checkout?plan=nextcloud-yearly');
+      await runGuard('/checkout?plan=annual');
+      expect(mockAuth.register).toHaveBeenCalledWith('/checkout?plan=annual');
     });
 
     it('uses /dashboard as target when there is no returnUrl', async () => {

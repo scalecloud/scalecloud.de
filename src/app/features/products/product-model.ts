@@ -1,5 +1,4 @@
 export enum ProductType {
-  Nextcloud = "Nextcloud",
   OpenCloud = "OpenCloud",
   Synology = "Synology"
 }

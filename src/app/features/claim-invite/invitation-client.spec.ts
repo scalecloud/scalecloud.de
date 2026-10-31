@@ -42,7 +42,7 @@ describe('InvitationClient', () => {
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toEqual({ token: 'private-invitation-token' });
     request.flush({
-      productName: 'Nextcloud Pro',
+      productName: 'OpenCloud Storage',
       storageAmount: 4,
       storageUnit: 'TB',
       email: 'invitee@example.test',

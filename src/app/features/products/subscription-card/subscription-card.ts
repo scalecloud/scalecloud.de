@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, viewChild, input, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { NextcloudProduct } from '../nextcloud-page/nextcloud-product';
 import { SynologyProduct } from '../synology-page/synology-product';
 import { Product } from '../product-model';
 import { Quantity } from './quantity/quantity';
@@ -13,7 +12,7 @@ import { MatButton } from '@angular/material/button';
 import { CurrencyPipe } from '@angular/common';
 import { Log } from 'src/app/core/logging/log';
 
-type SubscriptionProduct = NextcloudProduct | SynologyProduct | Product;
+type SubscriptionProduct = SynologyProduct | Product;
 
 @Component({
     selector: 'app-subscription-card',
@@ -26,7 +25,6 @@ export class SubscriptionCard {
   private readonly router = inject(Router);
   private readonly log = inject(Log);
 
-  readonly nextcloudProduct = input<NextcloudProduct | undefined>(undefined);
   readonly openCloudProduct = input<Product | undefined>(undefined);
   readonly synologyProduct = input<SynologyProduct | undefined>(undefined);
   readonly externalQuantity = input<number | undefined>(undefined);
@@ -34,17 +32,10 @@ export class SubscriptionCard {
   readonly quantityComponent = viewChild(Quantity);
 
   /**
-  * Whichever product was actually bound. Nextcloud takes priority if,
-   * for some reason, both were ever passed at once.
-   *
-   * Deriving this once with `computed()` means every getter below reads
-   * from a single source of truth instead of repeating the same
-   * "is nextcloud set, else is synology set" branch — which is exactly
-   * where the old `this.nextcloudProduct != undefined` bug lived (that
-   * checked the signal *function*, not its value).
+    * Whichever remaining product was actually bound.
    */
   readonly product = computed<SubscriptionProduct | undefined>(
-    () => this.nextcloudProduct() ?? this.openCloudProduct() ?? this.synologyProduct()
+    () => this.openCloudProduct() ?? this.synologyProduct()
   );
 
   readonly quantityLabel = computed(() => this.openCloudProduct() ? 'Quantity:' : 'User:');

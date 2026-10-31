@@ -38,15 +38,15 @@ describe('ProductClient', () => {
 
   it('GETs the tiers endpoint for the given product type', () => {
     const mockReply: ProductTiersReply = {
-      productType: ProductType.Nextcloud,
+      productType: ProductType.Synology,
       productTiers: [],
     };
 
-    productClient.getProductTiers(ProductType.Nextcloud).subscribe(reply => {
+    productClient.getProductTiers(ProductType.Synology).subscribe(reply => {
       expect(reply).toEqual(mockReply);
     });
 
-    const req = httpMock.expectOne(`${baseUrl}/product/tiers/nextcloud`);
+    const req = httpMock.expectOne(`${baseUrl}/product/tiers/synology`);
     expect(req.request.method).toBe('GET');
     req.flush(mockReply);
   });

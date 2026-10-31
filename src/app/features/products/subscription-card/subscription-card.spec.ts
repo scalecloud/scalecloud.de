@@ -3,22 +3,12 @@ import { provideRouter, Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { SubscriptionCard } from './subscription-card';
-import { NextcloudProduct } from '../nextcloud-page/nextcloud-product';
 import { SynologyProduct } from '../synology-page/synology-product';
 
 describe('SubscriptionCard', () => {
   let fixture: ComponentFixture<SubscriptionCard>;
   let component: SubscriptionCard;
   let router: Router;
-
-  const nextcloudProduct: NextcloudProduct = {
-    productID: 'nc-1',
-    name: 'Nextcloud Basic',
-    storageAmount: 2,
-    storageUnit: 'TB',
-    trialDays: 14,
-    pricePerMonth: 999, // stored as cents
-  };
 
   const synologyProduct: SynologyProduct = {
     productID: 'syn-1',
@@ -58,9 +48,6 @@ describe('SubscriptionCard', () => {
     });
 
     it('exposes empty/zero defaults instead of throwing', () => {
-      // Regression test for the "signal reference is always truthy" bug:
-      // component.nextcloudProduct != undefined used to be true even when
-      // unset, causing `.name` to be read off `undefined`.
       expect(component.name()).toBe('');
       expect(component.productID()).toBe('');
       expect(component.storageAmount()).toBe(0);
@@ -78,12 +65,10 @@ describe('SubscriptionCard', () => {
     });
 
     it('should create without throwing', () => {
-      // This is the exact scenario that crashed before the fix:
-      // synologyProduct set, nextcloudProduct left unset.
       expect(component).toBeTruthy();
     });
 
-    it('reads all fields from the synology product, not the nextcloud one', () => {
+    it('reads all fields from the synology product', () => {
       expect(component.name()).toBe(synologyProduct.name);
       expect(component.productID()).toBe(synologyProduct.productID);
       expect(component.storageAmount()).toBe(synologyProduct.storageAmount);
@@ -98,22 +83,6 @@ describe('SubscriptionCard', () => {
 
     it('converts pricePerMonth from cents to whole currency units', () => {
       expect(component.pricePerMonth()).toBe(synologyProduct.pricePerMonth / 100);
-    });
-  });
-
-  describe('with only a nextcloudProduct bound', () => {
-    beforeEach(async () => {
-      await setup();
-      fixture.componentRef.setInput('nextcloudProduct', nextcloudProduct);
-      fixture.detectChanges();
-    });
-
-    it('reads all fields from the nextcloud product', () => {
-      expect(component.name()).toBe(nextcloudProduct.name);
-      expect(component.productID()).toBe(nextcloudProduct.productID);
-      expect(component.storageAmount()).toBe(nextcloudProduct.storageAmount);
-      expect(component.storageUnit()).toBe(nextcloudProduct.storageUnit);
-      expect(component.trialDays()).toBe(nextcloudProduct.trialDays);
     });
   });
 

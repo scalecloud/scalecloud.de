@@ -12,7 +12,7 @@ import { ClaimInvitePage } from './claim-invite-page';
 import { InvitationClaimReply, InvitationPreview } from './invitation-model';
 
 const PREVIEW: InvitationPreview = {
-  productName: 'Nextcloud Pro',
+  productName: 'OpenCloud Storage',
   storageAmount: 4,
   storageUnit: 'TB',
   email: 'invitee@example.test',
@@ -22,7 +22,7 @@ const PREVIEW: InvitationPreview = {
 
 const CLAIM_REPLY: InvitationClaimReply = {
   subscriptionID: 'subscription-123',
-  productName: 'Nextcloud Pro',
+  productName: 'OpenCloud Storage',
   storageAmount: 4,
   storageUnit: 'TB',
   roles: ['member'],

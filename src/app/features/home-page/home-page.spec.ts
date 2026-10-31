@@ -82,10 +82,10 @@ describe('HomePage', () => {
 
   // ─── Navigation buttons ───────────────────────────────────────────────────────
 
-  it('should render a button linking to /nextcloud', () => {
+  it('should render a button linking to /opencloud', () => {
     const compiled: HTMLElement = fixture.nativeElement;
     const found = Array.from(compiled.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('EXPLORE NEXTCLOUD'),
+      b.textContent?.includes('EXPLORE OPENCLOUD'),
     );
     expect(found).toBeTruthy();
   });

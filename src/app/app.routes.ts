@@ -14,10 +14,6 @@ export const routes: Routes = [
         loadComponent: () => import('./features/home-page/home-page').then(m => m.HomePage)
       },
       {
-        path: 'nextcloud',
-        loadComponent: () => import('./features/products/nextcloud-page/nextcloud-page').then(m => m.NextcloudPage)
-      },
-      {
         path: 'opencloud',
         loadComponent: () => import('./features/products/opencloud-page/opencloud-page').then(m => m.OpenCloudPage)
       },
