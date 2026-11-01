@@ -115,7 +115,7 @@ html .mat-mdc-unelevated-button:not(:disabled) {
 
 .sc-stepper > button {
   display: grid;
-  width: 2.25rem;
+  width: 2rem;
   place-items: center;
   color: var(--sc-accent-light);
   background: transparent;
@@ -133,7 +133,7 @@ html .mat-mdc-unelevated-button:not(:disabled) {
 }
 
 .sc-stepper input[type='number'] {
-  width: 2.45rem;
+  width: 2rem;
   outline: 0;
   color: var(--sc-text);
   background: transparent;
@@ -155,9 +155,3 @@ html .mat-mdc-unelevated-button:not(:disabled) {
   outline-offset: -2px;
 }
 
-@media (max-width: 900px) {
-  .sc-stepper > button,
-  .sc-stepper > input[type='number'] {
-    width: 2rem;
-  }
-}

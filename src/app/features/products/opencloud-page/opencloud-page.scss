@@ -29,7 +29,7 @@
 
 .purchase-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(19rem, 0.7fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
   gap: 1.25rem;
   align-items: start;
   padding-top: 1.5rem;
@@ -39,7 +39,7 @@
 .allocation-panel,
 .order-summary {
   min-width: 0;
-  padding: 1.5rem;
+  padding: clamp(1.1rem, 2.4vw, 1.5rem);
   border-radius: 0.65rem;
 }
 
@@ -56,8 +56,6 @@
 }
 
 .order-summary {
-  position: sticky;
-  top: 1.25rem;
   border-color: var(--sc-badge-border);
   background:
     linear-gradient(155deg, rgba(22, 57, 70, 0.4), transparent 58%),
@@ -171,7 +169,7 @@
   min-height: 4.65rem;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 0.35rem;
   padding: 0.45rem 0.25rem;
   border-bottom: 1px solid var(--sc-border);
 }
@@ -180,21 +178,21 @@
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.35rem;
 }
 
 .allocation-controls {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
 }
 
 .allocation-icon {
   display: grid;
-  width: 2.35rem;
-  height: 2.35rem;
-  flex: 0 0 2.35rem;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 2rem;
   place-items: center;
   color: var(--sc-accent-light);
   background: var(--mat-sys-surface-container-high);
@@ -218,7 +216,7 @@
 
 .tb-label {
   color: var(--sc-accent-light);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
@@ -291,40 +289,3 @@
   margin: 0;
 }
 
-@media (max-width: 900px) {
-  .purchase-layout {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
-    padding-top: 1rem;
-  }
-
-  .allocation-panel,
-  .order-summary {
-    padding: 1.1rem;
-  }
-
-  .order-summary {
-    position: static;
-  }
-
-  .allocation-row {
-    align-items: flex-start;
-    gap: 0.3rem;
-  }
-
-  .allocation-identity,
-  .allocation-controls {
-    gap: 0.35rem;
-  }
-
-  .allocation-icon {
-    width: 2rem;
-    height: 2rem;
-    flex-basis: 2rem;
-  }
-
-  .tb-label {
-    font-size: 0.72rem;
-  }
-
-}
