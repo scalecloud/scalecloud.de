@@ -35,6 +35,30 @@ html {
   --sc-text-muted: #a9b8cc;
   --sc-text-label: #7e8ea6;
 
+  --sc-status-neutral-bg: #17212d;
+  --sc-status-neutral-border: #425367;
+  --sc-status-neutral-text: #c8d4e6;
+  --sc-status-info-bg: #102b38;
+  --sc-status-info-border: #2e7185;
+  --sc-status-info-text: #a5e8f4;
+  --sc-status-success-bg: #123b2b;
+  --sc-status-success-border: #2d7a55;
+  --sc-status-success-text: #b7f7d0;
+  --sc-status-success-strong: #267545;
+  --sc-status-success-soft-bg: #f0f8f2;
+  --sc-status-success-soft-border: #bddbc8;
+  --sc-status-success-solid: #279e53;
+  --sc-status-danger-bg: #3a1720;
+  --sc-status-danger-border: #8e3546;
+  --sc-status-danger-text: #ffc2ca;
+  --sc-status-danger-strong: #c5221f;
+  --sc-status-danger-soft-bg: #fff4f8;
+  --sc-status-danger-soft-border: #f2c1d4;
+  --sc-status-danger-solid: #f44336;
+  --sc-status-warning-solid: #f4e136;
+  --sc-status-on-solid: #fff;
+  --sc-status-warning-on-solid: #000;
+
   --sc-page-gradient: linear-gradient(180deg, var(--sc-bg-start) 0%, var(--sc-bg-end) 100%);
   --sc-cta-gradient: linear-gradient(135deg, #22ffff, #00c2d1);
   --sc-cta-glow: 0 0 18px rgba(34, 211, 238, 0.55), 0 0 44px rgba(8, 145, 178, 0.35);

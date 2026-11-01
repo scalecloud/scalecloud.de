@@ -23,29 +23,33 @@ mat-chip.status-chip {
 }
 
 mat-chip.status-draft {
-    background-color: lightgray;
-    border-color: darkgray;
+    background-color: var(--sc-status-neutral-bg);
+    border-color: var(--sc-status-neutral-border);
+    color: var(--sc-status-neutral-text);
 }
 
 mat-chip.status-open {
-    background-color: lightblue;
-    border-color: darkblue;
+    background-color: var(--sc-status-info-bg);
+    border-color: var(--sc-status-info-border);
+    color: var(--sc-status-info-text);
 }
 
 mat-chip.status-paid {
-    background-color: #123b2b;
-    border-color: #2d7a55;
-    color: #b7f7d0;
+    background-color: var(--sc-status-success-bg);
+    border-color: var(--sc-status-success-border);
+    color: var(--sc-status-success-text);
 }
 
 mat-chip.status-uncollectible {
-    background-color: red;
-    border-color: darkred;
+    background-color: var(--sc-status-danger-bg);
+    border-color: var(--sc-status-danger-border);
+    color: var(--sc-status-danger-text);
 }
 
 mat-chip.status-void {
-    background-color: lightgray;
-    border-color: darkgray;
+    background-color: var(--sc-status-neutral-bg);
+    border-color: var(--sc-status-neutral-border);
+    color: var(--sc-status-neutral-text);
 }
 
 .invoice-list {

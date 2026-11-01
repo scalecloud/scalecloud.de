@@ -35,11 +35,11 @@ mat-card-subtitle {
 }
 
 .verified-icon {
-  color: green;
+  color: var(--sc-status-success-text);
   margin-right: 0.5rem;
 }
 
 .not-verified-icon {
-  color: red;
+  color: var(--sc-status-danger-text);
   margin-right: 0.5rem;
 }

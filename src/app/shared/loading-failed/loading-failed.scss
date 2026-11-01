@@ -1,8 +1,8 @@
 .error-card {
     max-width: 400px;
     margin: 20px auto;
-    border: 1px solid #f44336;
-    background-color: #ffebee;
+    border: 1px solid var(--sc-status-danger-border);
+    background-color: var(--sc-status-danger-bg);
 }
 
 .title-with-icon {
@@ -19,9 +19,9 @@
 }
 
 mat-card-title {
-    color: #f44336;
+    color: var(--sc-status-danger-text);
 }
 
 mat-card-content p {
-    color: #d32f2f;
+    color: var(--sc-status-danger-text);
 }

@@ -1,28 +1,28 @@
 ::ng-deep .mat-mdc-snack-bar-container {
     &.snackbar-info {
-        --mdc-snackbar-container-color: #279e53;
-        --mdc-snackbar-supporting-text-color: #fff;
+        --mdc-snackbar-container-color: var(--sc-status-success-solid);
+        --mdc-snackbar-supporting-text-color: var(--sc-status-on-solid);
 
         #progress-bar {
-            background-color: #279e53;
+            background-color: var(--sc-status-success-solid);
         }
     }
 
     &.snackbar-warn {
-        --mdc-snackbar-container-color: #f4e136;
-        --mdc-snackbar-supporting-text-color: #000;
+        --mdc-snackbar-container-color: var(--sc-status-warning-solid);
+        --mdc-snackbar-supporting-text-color: var(--sc-status-warning-on-solid);
 
         #progress-bar {
-            background-color: #f4e136;
+            background-color: var(--sc-status-warning-solid);
         }
     }
 
     &.snackbar-error {
-        --mdc-snackbar-container-color: #f44336;
-        --mdc-snackbar-supporting-text-color: #fff;
+        --mdc-snackbar-container-color: var(--sc-status-danger-solid);
+        --mdc-snackbar-supporting-text-color: var(--sc-status-on-solid);
 
         #progress-bar {
-            background-color: #fff;
+            background-color: var(--sc-status-on-solid);
         }
     }
 }

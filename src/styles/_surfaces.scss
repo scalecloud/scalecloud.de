@@ -63,10 +63,10 @@ html .mat-mdc-card {
 
 .sc-card--status .icon-confirmed {
   margin-right: 0.5rem;
-  color: green;
+  color: var(--sc-status-success-text);
 }
 
 .sc-card--status .icon-confirmed-failed {
   margin-right: 0.5rem;
-  color: red;
+  color: var(--sc-status-danger-text);
 }

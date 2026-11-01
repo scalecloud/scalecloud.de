@@ -109,9 +109,9 @@ mat-card-content {
   width: clamp(2.75rem, 10vw, 3.75rem);
   aspect-ratio: 1;
   place-items: center;
-  border: 1px solid #f2c1d4;
+  border: 1px solid var(--sc-status-danger-soft-border);
   border-radius: 50%;
-  background: #fff4f8;
+  background: var(--sc-status-danger-soft-bg);
   color: var(--invite-pink);
 }
 
@@ -122,9 +122,9 @@ mat-card-content {
 }
 
 .state-mark-success {
-  border-color: #bddbc8;
-  background: #f0f8f2;
-  color: #267545;
+  border-color: var(--sc-status-success-soft-border);
+  background: var(--sc-status-success-soft-bg);
+  color: var(--sc-status-success-strong);
 }
 
 .product-heading .eyebrow {

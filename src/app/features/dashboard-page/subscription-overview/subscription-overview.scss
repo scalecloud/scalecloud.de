@@ -39,13 +39,13 @@ mat-card-title {
     pointer-events: none;
 
     &--active {
-        background-color: #e6f4ea;
-        color:            #1e7e34;
+        background-color: var(--sc-status-success-bg);
+        color: var(--sc-status-success-text);
     }
 
     &--inactive {
-        background-color: #fce8e6;
-        color:            #c5221f;
+        background-color: var(--sc-status-danger-bg);
+        color: var(--sc-status-danger-text);
     }
 }
 
