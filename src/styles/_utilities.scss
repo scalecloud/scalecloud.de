@@ -94,3 +94,70 @@ html .mat-mdc-unelevated-button:not(:disabled) {
   border: 0;
   background: var(--sc-border);
 }
+
+.sc-stepper {
+  display: flex;
+  height: 2.45rem;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--sc-border);
+  border-radius: 0.35rem;
+  background: var(--mat-sys-surface-container-low);
+}
+
+.sc-stepper > button,
+.sc-stepper > input[type='number'] {
+  height: 100%;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+}
+
+.sc-stepper > button {
+  display: grid;
+  width: 2.25rem;
+  place-items: center;
+  color: var(--sc-accent-light);
+  background: transparent;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.sc-stepper button:hover:not(:disabled) {
+  background: var(--mat-sys-surface-container-high);
+}
+
+.sc-stepper button:disabled {
+  color: var(--sc-text-label);
+  cursor: not-allowed;
+}
+
+.sc-stepper input[type='number'] {
+  width: 2.45rem;
+  outline: 0;
+  color: var(--sc-text);
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  appearance: textfield;
+}
+
+.sc-stepper input[type='number']::-webkit-inner-spin-button,
+.sc-stepper input[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.sc-stepper button:focus-visible,
+.sc-stepper input:focus-visible {
+  outline: 2px solid var(--sc-accent-light);
+  outline-offset: -2px;
+}
+
+@media (max-width: 900px) {
+  .sc-stepper > button,
+  .sc-stepper > input[type='number'] {
+    width: 2rem;
+  }
+}

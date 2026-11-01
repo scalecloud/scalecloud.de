@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   DestroyRef,
   inject,
-  input,
   signal,
   OnInit,
 } from '@angular/core';
@@ -19,7 +18,6 @@ const MAX = 999;
 @Component({
   selector: 'app-quantity',
   templateUrl: './quantity.html',
-  styleUrl: './quantity.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatInput, ReactiveFormsModule],
 })
@@ -34,7 +32,6 @@ export class Quantity implements OnInit {
 
   /** Reactive mirror of the control value for use in the template. */
   readonly quantity = signal<number>(MIN);
-  readonly variant = input<'default' | 'large'>('default');
 
   readonly min = MIN;
   readonly max = MAX;

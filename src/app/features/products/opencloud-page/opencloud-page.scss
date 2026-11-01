@@ -80,8 +80,6 @@
 }
 
 .monthly-metric {
-  display: grid;
-  gap: 0.65rem;
   padding-top: 0.9rem;
   border-top: 1px solid var(--sc-border);
 }
@@ -95,7 +93,7 @@
 }
 
 .summary-price {
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .storage-number {
@@ -213,60 +211,9 @@
   font-size: 0.78rem;
 }
 
-.allocation-stepper {
-  display: flex;
-  height: 2.45rem;
-  align-items: center;
-  border: 1px solid var(--sc-border);
-  background: var(--mat-sys-surface-container-low);
-  border-radius: 0.35rem;
-  overflow: hidden;
-}
-
-.allocation-stepper button {
-  width: 2.25rem;
-  height: 100%;
-  border: 0;
-  color: var(--sc-accent-light);
-  background: transparent;
-  font-size: 1.4rem;
-  cursor: pointer;
-}
-
-.allocation-stepper button:hover:not(:disabled) {
-  background: var(--mat-sys-surface-container-high);
-}
-
-.allocation-stepper button:disabled {
-  color: var(--sc-text-label);
-  cursor: not-allowed;
-}
-
-.allocation-stepper button:focus-visible,
-.remove-allocation:focus-visible,
-.allocation-stepper input:focus-visible {
+.remove-allocation:focus-visible {
   outline: 2px solid var(--sc-accent-light);
   outline-offset: -2px;
-}
-
-.allocation-stepper input {
-  width: 2.45rem;
-  height: 100%;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  color: var(--sc-text);
-  background: var(--mat-sys-surface-container-low);
-  font-size: 1rem;
-  font-weight: 700;
-  text-align: center;
-  appearance: textfield;
-}
-
-.allocation-stepper input::-webkit-inner-spin-button,
-.allocation-stepper input::-webkit-outer-spin-button {
-  margin: 0;
-  appearance: none;
 }
 
 .tb-label {
@@ -374,14 +321,6 @@
     width: 2rem;
     height: 2rem;
     flex-basis: 2rem;
-  }
-
-  .allocation-stepper button {
-    width: 1.9rem;
-  }
-
-  .allocation-stepper input {
-    width: 2rem;
   }
 
   .tb-label {
