@@ -8,7 +8,7 @@ import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
-import { MatList, MatListItem } from '@angular/material/list';
+import { MatList, MatListItem, MatListItemIcon } from '@angular/material/list';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatButton } from '@angular/material/button';
@@ -33,6 +33,7 @@ import { ServiceStatus } from 'src/app/shared/client-status';
     MatCardContent,
     MatList,
     MatListItem,
+    MatListItemIcon,
     NgxSkeletonLoaderComponent,
     MatTooltip,
     MatCardActions,

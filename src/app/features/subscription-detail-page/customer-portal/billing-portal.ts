@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
-import { MatList, MatListItem } from '@angular/material/list';
+import { MatList, MatListItem, MatListItemIcon } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { Auth } from 'src/app/core/auth/auth';
@@ -13,7 +13,7 @@ import { BillingPortalClient } from './billing-portal-client';
     templateUrl: './billing-portal.html',
     styleUrls: ['./billing-portal.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton]
 })
 export class BillingPortal {
   private readonly auth = inject(Auth);

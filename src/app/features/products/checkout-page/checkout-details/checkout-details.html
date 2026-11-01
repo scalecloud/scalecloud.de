@@ -36,43 +36,33 @@
     <mat-card-content>
       <mat-list>
         <mat-list-item>
-          <div class="icon-text">
-            <mat-icon>cloud</mat-icon>
-            {{storageAmount()}}{{storageUnit()}}
-          </div>
+          <mat-icon matListItemIcon>cloud</mat-icon>
+          {{storageAmount()}}{{storageUnit()}}
         </mat-list-item>
         <mat-list-item>
-          <div class="icon-text">
-            <mat-icon>height</mat-icon>
-            Scalable
-          </div>
+          <mat-icon matListItemIcon>height</mat-icon>
+          Scalable
         </mat-list-item>
         @if(hasPaymentMethod()) {
           <mat-list-item>
-            <div class="icon-text">
-              <mat-icon>event_available</mat-icon>
-              @if (isTrialIncluded()) {
-                {{trialDays()}}&nbsp;days trial*
-              } @else if (trialDays() > 0) {
-                <div class="no-trial">
-                  <s>{{trialDays()}}&nbsp;days trial*</s>
-                </div>
-              } @else {
-                <div class="no-trial">
-                  No trial available
-                </div>
-              }
-            </div>
+            <mat-icon matListItemIcon>event_available</mat-icon>
+            @if (isTrialIncluded()) {
+              {{trialDays()}}&nbsp;days trial*
+            } @else if (trialDays() > 0) {
+              <div class="no-trial">
+                <s>{{trialDays()}}&nbsp;days trial*</s>
+              </div>
+            } @else {
+              <div class="no-trial">
+                No trial available
+              </div>
+            }
           </mat-list-item>
         }
         <mat-list-item>
-          <div class="icon-text">
-            <div class="user-count">
-              <mat-icon>person</mat-icon>
-              <mat-label>User count:</mat-label>
-            </div>
-            <app-quantity></app-quantity>
-          </div>
+          <mat-icon matListItemIcon>person</mat-icon>
+          <span matListItemTitle>User count:</span>
+          <div matListItemMeta><app-quantity></app-quantity></div>
         </mat-list-item>
         <mat-divider></mat-divider>
       </mat-list>

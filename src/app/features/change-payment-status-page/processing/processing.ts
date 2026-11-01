@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
-import { MatList, MatListItem } from '@angular/material/list';
+import { MatList, MatListItem, MatListItemIcon } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { ReturnUrl } from 'src/app/core/redirect/return-url';
@@ -11,7 +11,7 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
     templateUrl: './processing.html',
     styleUrls: ['./processing.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatCardActions, MatButton]
+    imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton]
 })
 export class Processing {
   private readonly returnUrl = inject(ReturnUrl);

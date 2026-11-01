@@ -6,7 +6,7 @@ import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
-import { MatList, MatListItem } from '@angular/material/list';
+import { MatList, MatListItem, MatListItemIcon } from '@angular/material/list';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { CancelState } from '../cancel-state/cancel-state';
@@ -22,7 +22,7 @@ import { SubscriptionDetailCardClient } from './subscription-detail-card-client'
     templateUrl: './subscription-detail-card.html',
     styleUrls: ['./subscription-detail-card.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatTooltip, MatIcon, CancelState, LoadingFailed, CurrencyPipe, DatePipe]
+    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatTooltip, MatIcon, CancelState, LoadingFailed, CurrencyPipe, DatePipe]
 })
 export class SubscriptionDetailCard implements OnInit {
   private readonly permissionStore = inject(PermissionStore);

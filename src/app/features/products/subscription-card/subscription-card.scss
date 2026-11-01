@@ -8,10 +8,6 @@ mat-card-title {
     margin: 0.5rem;
 }
 
-mat-icon {
-    padding-right: 0.5rem;
-}
-
 mat-card-subtitle {
     font-size: xx-large;
     color: rgb(0, 0, 0);
@@ -41,14 +37,8 @@ button {
     width: 100%;
 }
 
-.icon-text {
-    display: flex;
-    justify-content: center;
-}
-
-.user-count {
-    display: flex;
-    margin-right: 0.5rem;
+button mat-icon {
+    margin-left: 0.5rem;
 }
 
 .no-trial {

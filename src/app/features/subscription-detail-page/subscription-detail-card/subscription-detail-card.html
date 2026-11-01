@@ -37,63 +37,43 @@
     <mat-card-content>
       <mat-list>
         <mat-list-item matTooltip="ID of the subscription.">
-          <div class="icon-text">
-            <mat-icon>numbers</mat-icon>
-            {{getID()}}
-          </div>
+          <mat-icon matListItemIcon>numbers</mat-icon>
+          {{getID()}}
         </mat-list-item>
         <mat-list-item matTooltip="Total amount of storage available in the subscription.">
-          <div class="icon-text">
-            <mat-icon>cloud</mat-icon>
-            Storage: {{getTotalStorageAmount()}} TB
-          </div>
+          <mat-icon matListItemIcon>cloud</mat-icon>
+          Storage: {{getTotalStorageAmount()}} TB
         </mat-list-item>
         <mat-list-item matTooltip="Total amount of users available in the subscription.">
-          <div class="icon-text">
-            <mat-icon>person</mat-icon>
-            Users: {{getUserCount()}}
-          </div>
+          <mat-icon matListItemIcon>person</mat-icon>
+          Users: {{getUserCount()}}
         </mat-list-item>
         <mat-list-item matTooltip="Monthly cost for all users in the subscription.">
-          <div class="icon-text">
-            <mat-icon>payments</mat-icon>
-            Cost: {{getTotalPricePerMonth() / 100 | currency:getCurrency() : 'symbol' : '1.0-0'}}
-            <span class="price-month">/month</span>
-          </div>
+          <mat-icon matListItemIcon>payments</mat-icon>
+          Cost: {{getTotalPricePerMonth() / 100 | currency:getCurrency() : 'symbol' : '1.0-0'}}
+          <span class="price-month">/month</span>
         </mat-list-item>
         @if (isTrailing()) {
           <div>
             <mat-list-item matTooltip="The date when the trial ends.">
-              <div class="icon-text">
-                <mat-icon>
-                  credit_card_off
-                </mat-icon>
-                Trial until: {{getTrailingEnd() * 1000 | date }}
-              </div>
+              <mat-icon matListItemIcon>credit_card_off</mat-icon>
+              Trial until: {{getTrailingEnd() * 1000 | date }}
             </mat-list-item>
           </div>
         }
         @if (!isCancelAtPeriodEnd()) {
           <div>
             <mat-list-item matTooltip="The date when the subscription will be automatically renewed.">
-              <div class="icon-text">
-                <mat-icon>
-                  autorenew
-                </mat-icon>
-                Renewal: {{getCurrentPeriodEnd() * 1000 | date }}
-              </div>
+              <mat-icon matListItemIcon>autorenew</mat-icon>
+              Renewal: {{getCurrentPeriodEnd() * 1000 | date }}
             </mat-list-item>
           </div>
         }
         @if (isCancelAtPeriodEnd()) {
           <div>
             <mat-list-item matTooltip="The date when the subscription will end.">
-              <div class="icon-text">
-                <mat-icon class="termination-date">
-                  event_busy
-                </mat-icon>
-                Termination date: {{getCancelAt() * 1000 | date }}
-              </div>
+              <mat-icon matListItemIcon class="termination-date">event_busy</mat-icon>
+              Termination date: {{getCancelAt() * 1000 | date }}
             </mat-list-item>
           </div>
         }

@@ -7,40 +7,30 @@
     <mat-card-content>
       <mat-list>
         <mat-list-item>
-          <div class="icon-text">
-            <mat-icon>cloud</mat-icon>
-            {{ storageAmount() * quantity() }}{{ storageUnit() }}
-          </div>
+          <mat-icon matListItemIcon>cloud</mat-icon>
+          {{ storageAmount() * quantity() }}{{ storageUnit() }}
         </mat-list-item>
         <mat-list-item>
-          <div class="icon-text">
-            <mat-icon>height</mat-icon>
-            Scalable
-          </div>
+          <mat-icon matListItemIcon>height</mat-icon>
+          Scalable
         </mat-list-item>
         <mat-list-item>
-          <div class="icon-text">
-            <mat-icon>event_available</mat-icon>
-            @if (isTrialIncluded()) {
-              {{ trialDays() }}&nbsp;days trial*
-            } @else {
-              <div class="no-trial">
-                <s>
-                  {{ trialDays() }}&nbsp;days trial*
-                </s>
-              </div>
+          <mat-icon matListItemIcon>event_available</mat-icon>
+          @if (isTrialIncluded()) {
+            {{ trialDays() }}&nbsp;days trial*
+          } @else {
+            <div class="no-trial">
+              <s>
+                {{ trialDays() }}&nbsp;days trial*
+              </s>
+            </div>
             }
-          </div>
         </mat-list-item>
         @if (!hasExternalQuantity()) {
           <mat-list-item>
-            <div class="icon-text">
-              <div class="user-count">
-                <mat-icon>person</mat-icon>
-                <mat-label class="user">{{ quantityLabel() }}</mat-label>
-              </div>
-              <app-quantity></app-quantity>
-            </div>
+            <mat-icon matListItemIcon>person</mat-icon>
+            <span matListItemTitle>{{ quantityLabel() }}</span>
+            <div matListItemMeta><app-quantity></app-quantity></div>
           </mat-list-item>
         }
         <mat-divider></mat-divider>

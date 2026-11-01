@@ -1,7 +1,6 @@
 :host {
     --card-title-size:   2rem;
     --card-title-py:     0.5rem;
-    --icon-gap:          0.75rem;
 }
 
 .flex-container {
@@ -24,12 +23,6 @@ mat-card-title {
     align-items: center;
     justify-content: center;
     gap:         0.5rem;
-}
-
-.icon-text {
-    display:     flex;
-    align-items: center;
-    gap:         var(--icon-gap);
 }
 
 .chip {

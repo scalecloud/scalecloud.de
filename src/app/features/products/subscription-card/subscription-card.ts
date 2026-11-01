@@ -5,9 +5,8 @@ import { Product } from '../product-model';
 import { Quantity } from './quantity/quantity';
 import { MatCard, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
-import { MatList, MatListItem } from '@angular/material/list';
+import { MatList, MatListItem, MatListItemIcon, MatListItemTitle, MatListItemMeta } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
-import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { CurrencyPipe } from '@angular/common';
 import { Log } from 'src/app/core/logging/log';
@@ -19,7 +18,7 @@ type SubscriptionProduct = SynologyProduct | Product;
     templateUrl: './subscription-card.html',
     styleUrls: ['./subscription-card.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatIcon, MatLabel, Quantity, MatCardSubtitle, MatCardActions, MatButton, CurrencyPipe]
+    imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatListItemTitle, MatListItemMeta, MatIcon, Quantity, MatCardSubtitle, MatCardActions, MatButton, CurrencyPipe]
 })
 export class SubscriptionCard {
   private readonly router = inject(Router);

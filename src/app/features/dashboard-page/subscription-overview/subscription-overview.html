@@ -16,22 +16,16 @@
             <mat-card-content>
                 <mat-list>
                     <mat-list-item matTooltip="ID of the subscription.">
-                        <div class="icon-text">
-                            <mat-icon aria-hidden="true">numbers</mat-icon>
-                            <span>{{ subscriptionOverviewModel()?.id }}</span>
-                        </div>
+                        <mat-icon matListItemIcon aria-hidden="true">numbers</mat-icon>
+                        {{ subscriptionOverviewModel()?.id }}
                     </mat-list-item>
                     <mat-list-item matTooltip="Total storage available across all users.">
-                        <div class="icon-text">
-                            <mat-icon aria-hidden="true">cloud</mat-icon>
-                            <span>Storage: {{ totalStorageAmount() }} TB</span>
-                        </div>
+                        <mat-icon matListItemIcon aria-hidden="true">cloud</mat-icon>
+                        Storage: {{ totalStorageAmount() }} TB
                     </mat-list-item>
                     <mat-list-item matTooltip="Total number of users in the subscription.">
-                        <div class="icon-text">
-                            <mat-icon aria-hidden="true">person</mat-icon>
-                            <span>Users: {{ subscriptionOverviewModel()?.userCount }}</span>
-                        </div>
+                        <mat-icon matListItemIcon aria-hidden="true">person</mat-icon>
+                        Users: {{ subscriptionOverviewModel()?.userCount }}
                     </mat-list-item>
                 </mat-list>
             </mat-card-content>
