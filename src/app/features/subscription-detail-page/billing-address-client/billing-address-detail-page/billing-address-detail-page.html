@@ -42,7 +42,7 @@
   </mat-card-header>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form id="billing-address-form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field class="full-width">
         <mat-label id="billing-name-label">Name</mat-label>
         <input matInput id="billing-name" aria-labelledby="billing-name-label" formControlName="name">
@@ -87,14 +87,14 @@
         <mat-error>Invalid Phone Number</mat-error>
         }
       </mat-form-field>
-      <mat-card-actions>
-        <button class="update-button" type="submit" mat-flat-button
-          color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
-        <button class="cancel-button" type="button" (click)="cancel()" mat-stroked-button
-          color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
-      </mat-card-actions>
     </form>
   </mat-card-content>
+  <mat-card-actions>
+    <button class="update-button" type="submit" form="billing-address-form" mat-flat-button
+      color="primary"><mat-icon>sync_alt</mat-icon>Update</button>
+    <button class="cancel-button" type="button" (click)="cancel()" mat-stroked-button
+      color="accent"><mat-icon>cancel</mat-icon>Cancel</button>
+  </mat-card-actions>
   }
   @if (serviceStatus() === ServiceStatus.Error) {
   <app-loading-failed></app-loading-failed>

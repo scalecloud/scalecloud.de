@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardHeader, MatCardContent, MatCardActions, MatCardTitle } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardContent, MatCardActions, MatCardTitle, MatCardSubtitle } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -32,7 +32,7 @@ type ClaimPageState =
   templateUrl: './claim-invite-page.html',
   styleUrl: './claim-invite-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, MatButton, MatCard, MatCardHeader, MatCardActions, MatCardContent, MatCardTitle, MatIcon, MatProgressBar, MatProgressSpinner],
+  imports: [DatePipe, MatButton, MatCard, MatCardHeader, MatCardActions, MatCardContent, MatCardTitle, MatCardSubtitle, MatIcon, MatProgressBar, MatProgressSpinner],
 })
 export class ClaimInvitePage implements OnInit {
   readonly auth = inject(Auth);

@@ -22,6 +22,7 @@
     </mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
+    <mat-card-content>
     <div class="invoice-list">
         @for (invoice of reply()?.invoices; track invoice.invoiceID) {
         <div class="invoice-row" role="button" tabindex="0" [attr.aria-label]="'Download invoice from ' + (invoice.created * 1000 | date: 'dd.MM.yyyy')"
@@ -52,6 +53,7 @@
         aria-label="Select page">
     </mat-paginator>
     }
+    </mat-card-content>
     }
 </mat-card>
 @if (serviceStatus() === ServiceStatus.Error) {

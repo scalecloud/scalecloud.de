@@ -19,16 +19,16 @@
 
     @if (preview(); as invitation) {
       @if (state() !== 'loading-preview' && state() !== 'claiming') {
-        <mat-card-content class="invitation-content">
-          <div class="product-heading">
+        <mat-card-header class="product-heading">
             <span aria-hidden="true">
               <mat-icon>{{ state() === 'success' ? 'check_circle' : 'mail' }}</mat-icon>
             </span>
             <div>
-              <p class="eyebrow">{{ state() === 'success' ? 'Invitation claimed' : 'You are invited to join' }}</p>
-              <h2>{{ state() === 'success' ? claimReply()?.productName : invitation.productName }}</h2>
+              <mat-card-subtitle class="eyebrow">{{ state() === 'success' ? 'Invitation claimed' : 'You are invited to join' }}</mat-card-subtitle>
+              <mat-card-title>{{ state() === 'success' ? claimReply()?.productName : invitation.productName }}</mat-card-title>
             </div>
-          </div>
+        </mat-card-header>
+        <mat-card-content class="invitation-content">
           <dl class="invitation-details">
             <div>
               <dt><mat-icon aria-hidden="true">storage</mat-icon> Storage</dt>

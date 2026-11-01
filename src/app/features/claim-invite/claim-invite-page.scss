@@ -78,7 +78,7 @@
   color: var(--invite-muted);
 }
 
-.product-heading h2 {
+.product-heading mat-card-title {
   margin: 0;
   color: var(--invite-ink);
   font-size: clamp(1.1rem, 3.4vw, 1.55rem);
