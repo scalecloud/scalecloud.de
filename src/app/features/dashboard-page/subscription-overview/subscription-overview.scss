@@ -1,17 +1,7 @@
-:host {
-    --card-title-size:   2rem;
-    --card-title-py:     0.5rem;
-}
-
 .flex-container {
     display:         flex;
     flex-wrap:       wrap;
     justify-content: center;
-}
-
-mat-card-title {
-    font-size:      var(--card-title-size);
-    padding-block:  var(--card-title-py);
 }
 
 .subtitle-row {

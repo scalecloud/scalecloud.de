@@ -58,10 +58,7 @@ mat-card-title {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  padding: clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.5rem) 0;
   color: var(--invite-ink);
-  font-size: 1.25rem;
-  line-height: 1.35;
 }
 
 mat-card-content {
