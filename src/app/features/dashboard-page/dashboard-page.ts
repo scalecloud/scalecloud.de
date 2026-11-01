@@ -3,7 +3,7 @@ import { SubscriptionOverviewModel } from './subscription-overview/subscription-
 import { SubscriptionOverviewClient } from './subscription-overview/subscription-overview-client';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { LastCountStore } from './subscription-overview/last-count/last-count-store';
-import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
@@ -19,6 +19,7 @@ import { Log } from 'src/app/core/logging/log';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
+    MatCardHeader,
     MatProgressBar,
     MatCardTitle,
     NgxSkeletonLoaderComponent,

@@ -1,6 +1,7 @@
 <div class="flex-container">
     <div class="flex-item">
         <mat-card class="sc-card">
+            <mat-card-header>
             <mat-card-title>
                 {{ subscriptionOverviewModel()?.productName }}
             </mat-card-title>
@@ -12,6 +13,7 @@
                     <mat-chip class="chip chip--inactive" disableRipple>Inactive</mat-chip>
                 }
             </mat-card-subtitle>
+            </mat-card-header>
             <mat-divider></mat-divider>
             <mat-card-content>
                 <mat-list>

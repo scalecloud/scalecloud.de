@@ -1,7 +1,7 @@
 @if (serviceStatus() === ServiceStatus.Loading) {
 <mat-card class="sc-card">
   <mat-progress-bar mode="query"></mat-progress-bar>
-  <mat-card-subtitle>
+  <mat-card-content>
     <div class="skeleton-payent-methods">
       <ngx-skeleton-loader count="3" appearance="circle" [theme]="{
         width: '10rem',
@@ -10,7 +10,7 @@
       }">
       </ngx-skeleton-loader>
     </div>
-  </mat-card-subtitle>
+  </mat-card-content>
   <mat-card-content>
     <mat-list>
       <mat-list-item>

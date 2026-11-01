@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem, MatListItemIcon } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
@@ -10,7 +10,7 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
     selector: 'app-succeeded',
     templateUrl: './succeeded.html',
     styleUrls: ['./succeeded.scss'],
-    imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton]
 })
 export class Succeeded {
   private readonly returnUrl = inject(ReturnUrl);

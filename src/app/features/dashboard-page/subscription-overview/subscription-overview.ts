@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, input, computed } from '@angular/core';
 import { SubscriptionOverviewModel } from './subscription-overview-model';
-import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem, MatListItemIcon } from '@angular/material/list';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -15,7 +15,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './subscription-overview.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    MatCard, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions,
+    MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions,
     MatDivider, MatList, MatListItem, MatListItemIcon,
     MatTooltip, MatIcon, MatButton, MatChip,
     RouterLink,

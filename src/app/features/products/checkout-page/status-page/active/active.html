@@ -1,8 +1,10 @@
 @if (checkoutCreateSubscriptionReply(); as reply) {
 <mat-card class="sc-card responsive-card">
+  <mat-card-header>
   <mat-card-title>
     Your Subscription {{ reply.productName }} was created!
   </mat-card-title>
+  </mat-card-header>
   <mat-divider></mat-divider>
   <mat-card-content>
     <mat-list>

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { CheckoutCreateSubscriptionReply } from '../../checkout-create-subscription';
-import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem, MatListItemIcon } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
     templateUrl: './trailing.html',
     styleUrl: './trailing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton, RouterLink, DatePipe]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton, RouterLink, DatePipe]
 })
 export class Trailing {
 

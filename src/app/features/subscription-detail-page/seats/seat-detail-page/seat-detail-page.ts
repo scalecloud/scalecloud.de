@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmOwnerTransfer } from './confirm-owner-transfer/confirm-owner-transfer';
 import {
   MatCard,
+  MatCardHeader,
   MatCardTitle,
   MatCardSubtitle,
   MatCardContent,
@@ -44,6 +45,7 @@ import { Role, RoleDescriptions } from 'src/app/core/permission-store/roles';
   styleUrl: './seat-detail-page.scss',
   imports: [
     MatCard,
+    MatCardHeader,
     MatProgressBar,
     MatCardTitle,
     MatIcon,

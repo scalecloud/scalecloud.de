@@ -60,11 +60,15 @@
     }
 
     @if (state() === 'preview-unavailable') {
+      <mat-card-header>
       <mat-card-title><mat-icon class="error-icon" aria-hidden="true">link_off</mat-icon> Invitation unavailable</mat-card-title>
+      </mat-card-header>
       <mat-card-content><p>This invitation is unavailable, expired, revoked, already claimed, or its subscription is inactive.</p></mat-card-content>
     }
     @if (state() === 'preview-temporary-failure') {
+      <mat-card-header>
       <mat-card-title><mat-icon class="error-icon" aria-hidden="true">cloud_off</mat-icon> Invitation could not be loaded</mat-card-title>
+      </mat-card-header>
       <mat-card-content><p>There was a temporary problem loading this invitation. Please try again.</p></mat-card-content>
       <mat-card-actions><button mat-raised-button color="primary" (click)="loadPreview()">Retry</button></mat-card-actions>
     }

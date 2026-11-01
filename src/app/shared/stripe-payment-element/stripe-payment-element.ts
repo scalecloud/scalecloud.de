@@ -8,7 +8,7 @@ import {
 } from '@stripe/stripe-js';
 import { InitStripePayment, StripeIntent, SubmitStripePayment } from './stripe-payment-setup-intent-model';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { MatCard, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatList, MatListItem } from '@angular/material/list';
@@ -29,7 +29,7 @@ export const LOAD_STRIPE = new InjectionToken<typeof loadStripe>('LOAD_STRIPE', 
     templateUrl: './stripe-payment-element.html',
     styleUrls: ['./stripe-payment-element.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardSubtitle, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, FormsModule, LoadingFailed]
+    imports: [MatCard, MatProgressBar, NgxSkeletonLoaderComponent, MatCardContent, MatList, MatListItem, FormsModule, LoadingFailed]
 })
 export class StripePaymentElement {
   private readonly log = inject(Log);

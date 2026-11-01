@@ -1,7 +1,9 @@
 <mat-card class="sc-card">
   @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query" />
+    <mat-card-header>
     <mat-card-title>Payment Method</mat-card-title>
+    </mat-card-header>
     <mat-divider />
     <mat-card-content>
       <mat-list>
@@ -16,7 +18,9 @@
   }
 
   @if (serviceStatus() === ServiceStatus.Success) {
+    <mat-card-header>
     <mat-card-title>Payment Method</mat-card-title>
+    </mat-card-header>
     <mat-divider />
     <mat-card-content>
       @if (hasPaymentMethod()) {

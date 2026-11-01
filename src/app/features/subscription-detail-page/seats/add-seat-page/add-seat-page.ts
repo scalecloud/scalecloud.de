@@ -10,7 +10,7 @@ import { AddSeatRequest } from '../seats-model';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
@@ -30,7 +30,7 @@ import { Role, RoleDescriptions } from 'src/app/core/permission-store/roles';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
-    MatCard, MatCardTitle, MatCardContent,
+    MatCard, MatCardHeader, MatCardTitle, MatCardContent,
     MatFormField, MatLabel, MatInput, MatError,
     MatChipListbox, MatChipOption,
     MatTooltip,

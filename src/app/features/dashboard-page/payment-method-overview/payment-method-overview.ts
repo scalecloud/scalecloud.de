@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, signal, computed } 
 import { PaymentMethodOverviewReply } from './payment-method-overview-model';
 import { PaymentMethodOverviewClient } from './payment-method-overview-client';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDivider } from '@angular/material/divider';
 import { MatList, MatListItem } from '@angular/material/list';
@@ -20,6 +20,7 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
+    MatCardHeader,
     MatProgressBar,
     MatCardTitle,
     MatDivider,

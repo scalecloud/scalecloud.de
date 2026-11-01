@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { NewsletterConfirmReply, NewsletterConfirmRequest } from '../newsletter-model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatCard, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatDivider } from '@angular/material/divider';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -19,6 +19,7 @@ import { NewsletterClient } from '../newsletter-client';
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatCard,
+        MatCardHeader,
         MatProgressBar,
         MatCardTitle,
         MatDivider,

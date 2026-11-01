@@ -1,9 +1,11 @@
 <mat-card class="sc-card">
   @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-header>
     <mat-card-title>
       <ngx-skeleton-loader [theme]="{height: '2rem', width: '50%'}" />
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
       <mat-list>
@@ -29,9 +31,16 @@
     </mat-card-content>
   }
   @if (serviceStatus() === ServiceStatus.Success) {
+    <mat-card-header>
     <mat-card-title>
       {{name()}}
     </mat-card-title>
+    @if (rawPricePerMonth() > 0) {
+      <mat-card-subtitle>
+        {{rawPricePerMonth() | currency: currency() : 'symbol' : '1.0-0'}}<span class="price-month">/month</span>
+      </mat-card-subtitle>
+    }
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
       <mat-list>
@@ -67,11 +76,6 @@
         <mat-divider></mat-divider>
       </mat-list>
     </mat-card-content>
-    <mat-card-subtitle>
-      @if (rawPricePerMonth() > 0) {
-        {{rawPricePerMonth() | currency: currency() : 'symbol' : '1.0-0'}}<span class="price-month">/month</span>
-      }
-    </mat-card-subtitle>
     <mat-card-actions>
       <button (click)="startSubscription()" mat-stroked-button color="primary"
         [disabled]="!hasPaymentMethod()">Subscribe<mat-icon>payment</mat-icon></button>

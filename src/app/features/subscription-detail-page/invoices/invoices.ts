@@ -4,7 +4,7 @@ import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Invoice, InvoiceStatus, ListInvoicesReply, ListInvoicesRequest } from './invoices-model';
-import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
@@ -23,7 +23,7 @@ import { InvoicesClient } from './invoices-client';
     templateUrl: './invoices.html',
     styleUrl: './invoices.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatChip, MatPaginator, LoadingFailed, TitleCasePipe, CurrencyPipe, DatePipe]
+    imports: [MatCard, MatProgressBar, MatCardHeader, MatCardTitle, MatIcon, MatDivider, MatCardContent, MatList, MatListItem, NgxSkeletonLoaderComponent, MatChip, MatPaginator, LoadingFailed, TitleCasePipe, CurrencyPipe, DatePipe]
 })
 export class Invoices implements OnInit {
   private readonly invoiceClient = inject(InvoicesClient);

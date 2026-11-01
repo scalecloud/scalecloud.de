@@ -3,9 +3,9 @@
     <mat-progress-bar mode="query" />
   }
 
-  <mat-card-title><mat-icon>manage_accounts</mat-icon> Manage user</mat-card-title>
-
-  <mat-card-subtitle>
+  <mat-card-header>
+    <mat-card-title><mat-icon>manage_accounts</mat-icon> Manage user</mat-card-title>
+    <mat-card-subtitle>
     @if (loading()) {
       <ngx-skeleton-loader [theme]="{ height: '1.5rem', width: '80%' }" />
     } @else {
@@ -19,7 +19,8 @@
         <span matTooltip="{{ seat?.email }}">{{ seat?.email }}</span>
       </div>
     }
-  </mat-card-subtitle>
+    </mat-card-subtitle>
+  </mat-card-header>
 
   <mat-card-content>
     <mat-label>Select roles:</mat-label>

@@ -4,7 +4,7 @@ import { ProductType } from '../product-model';
 import { ProductClient } from '../product-client/product-client';
 import { ServiceStatus } from 'src/app/shared/client-status';
 import { TitleCard } from '../title-card/title-card';
-import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
@@ -17,7 +17,7 @@ import { LoadingFailed } from '../../../shared/loading-failed/loading-failed';
     templateUrl: './synology-page.html',
     styleUrls: ['./synology-page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TitleCard, MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCard, LoadingFailed]
+    imports: [TitleCard, MatCard, MatCardHeader, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, SubscriptionCard, LoadingFailed]
 })
 export class SynologyPage implements OnInit {
   private readonly productClient = inject(ProductClient);

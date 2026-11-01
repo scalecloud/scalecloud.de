@@ -12,6 +12,7 @@ import { ServiceStatus } from 'src/app/shared/client-status';
 import { ActivatedRoute } from '@angular/router';
 import {
   MatCard,
+  MatCardHeader,
   MatCardTitle,
   MatCardSubtitle,
   MatCardContent,
@@ -38,6 +39,7 @@ import { SeatsClient } from './seats-client';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
+    MatCardHeader,
     MatProgressBar,
     MatCardTitle,
     MatIcon,

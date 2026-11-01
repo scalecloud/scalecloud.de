@@ -1,9 +1,11 @@
 <mat-card class="sc-card sc-card--status">
     @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-header>
     <mat-card-title>
         Unsubscribing E-Mail
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
         <p>Please wait while we unsubscribe your E-Mail from the newsletter.</p>
@@ -12,9 +14,11 @@
     }
     @if (serviceStatus() === ServiceStatus.Success) {
     @if (reply()?.newsletterUnsubscribeReplyStatus === NewsletterUnsubscribeReplyStatus.UNSUBSCRIBED) {
+    <mat-card-header>
     <mat-card-title>
         <mat-icon class="icon-confirmed">notifications_off</mat-icon>E-Mail Unsubscribed
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
         <p>Your E-Mail was unsubscribed from the newsletter.</p>
@@ -25,9 +29,11 @@
         </button>
     </mat-card-actions>
     } @else if( reply()?.newsletterUnsubscribeReplyStatus === NewsletterUnsubscribeReplyStatus.NOTFOUND) {
+    <mat-card-header>
     <mat-card-title>
         <mat-icon class="icon-confirmed">notifications_off</mat-icon>Already Unsubscribed
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
         <p>We could not find your E-Mail in our database. You are not subscribed to our newsletter.</p>
@@ -38,9 +44,11 @@
         </button>
     </mat-card-actions>
     } @else {
+    <mat-card-header>
     <mat-card-title>
         <mat-icon class="icon-confirmed-failed">error</mat-icon>Unsubscribe Failed
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
         <p>We could not unsubscribe your E-Mail. Please try again or contact support for assistance.</p>

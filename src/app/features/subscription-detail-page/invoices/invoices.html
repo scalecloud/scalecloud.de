@@ -1,9 +1,11 @@
 <mat-card class="sc-card">
     @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-header>
     <mat-card-title>
         <mat-icon class="title-icon">receipt</mat-icon>Invoices
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-list>
@@ -14,9 +16,11 @@
     </mat-card-content>
     }
     @if (serviceStatus() === ServiceStatus.Success) {
+    <mat-card-header>
     <mat-card-title>
         <mat-icon class="title-icon">receipt</mat-icon>Invoices
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <div class="invoice-list">
         @for (invoice of reply()?.invoices; track invoice.invoiceID) {

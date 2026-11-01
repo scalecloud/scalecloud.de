@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@ang
 import { SubscriptionDetailReply } from './subscription-detail-card-model';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
@@ -22,7 +22,7 @@ import { SubscriptionDetailCardClient } from './subscription-detail-card-client'
     templateUrl: './subscription-detail-card.html',
     styleUrls: ['./subscription-detail-card.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatTooltip, MatIcon, CancelState, LoadingFailed, CurrencyPipe, DatePipe]
+    imports: [MatCard, MatProgressBar, MatCardHeader, MatCardTitle, NgxSkeletonLoaderComponent, MatCardSubtitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatTooltip, MatIcon, CancelState, LoadingFailed, CurrencyPipe, DatePipe]
 })
 export class SubscriptionDetailCard implements OnInit {
   private readonly permissionStore = inject(PermissionStore);

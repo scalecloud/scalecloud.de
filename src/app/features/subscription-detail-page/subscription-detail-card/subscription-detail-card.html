@@ -1,12 +1,14 @@
 <mat-card class="sc-card">
   @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-header>
     <mat-card-title>
       <ngx-skeleton-loader [theme]="{height: '2rem', width: '40%'}" />
     </mat-card-title>
     <mat-card-subtitle>
       <ngx-skeleton-loader [theme]="{height: '1rem', width: '40%'}" />
     </mat-card-subtitle>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
       <mat-list>
@@ -27,12 +29,14 @@
   }
 
   @if (serviceStatus() === ServiceStatus.Success) {
+    <mat-card-header>
     <mat-card-title>
       {{getProductName()}}
     </mat-card-title>
     <mat-card-subtitle>
       {{getProductType()}}
     </mat-card-subtitle>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
       <mat-list>

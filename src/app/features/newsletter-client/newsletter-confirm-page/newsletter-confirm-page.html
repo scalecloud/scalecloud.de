@@ -1,9 +1,11 @@
 <mat-card class="sc-card sc-card--status">
     @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-progress-bar mode="query"></mat-progress-bar>
+    <mat-card-header>
     <mat-card-title>
         Confirming E-Mail
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
         <p>Please wait while we confirm your E-Mail for the newsletter.</p>
@@ -12,9 +14,11 @@
     }
     @if (serviceStatus() === ServiceStatus.Success) {
     @if (reply()?.confirmed) {
+    <mat-card-header>
     <mat-card-title>
         <mat-icon class="icon-confirmed">notifications</mat-icon>E-Mail Confirmed
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
         <p>Your E-Mail address has been successfully confirmed for our newsletter. Thank you for subscribing!</p>
@@ -25,9 +29,11 @@
         </button>
     </mat-card-actions>
     } @else {
+    <mat-card-header>
     <mat-card-title>
         <mat-icon class="icon-confirmed-failed">error</mat-icon>Confirmation Failed
     </mat-card-title>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
         <p>We could not confirm your subscription. Please try again or contact support for assistance.</p>

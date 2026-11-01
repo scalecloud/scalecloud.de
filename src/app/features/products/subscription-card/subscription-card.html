@@ -1,8 +1,14 @@
 @if (product()) {
   <mat-card class="sc-card" [class.opencloud-card]="openCloudProduct() !== undefined">
+    <mat-card-header>
     <mat-card-title>
       {{ name() }}
     </mat-card-title>
+    <mat-card-subtitle>
+      {{ pricePerMonth() * quantity() | currency:'EUR' : 'symbol' : '1.0-0' }}
+      <span class="price-month">/month</span>
+    </mat-card-subtitle>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
       <mat-list>
@@ -36,10 +42,6 @@
         <mat-divider></mat-divider>
       </mat-list>
     </mat-card-content>
-    <mat-card-subtitle>
-      {{ pricePerMonth() * quantity() | currency:'EUR' : 'symbol' : '1.0-0' }}
-      <span class="price-month">/month</span>
-    </mat-card-subtitle>
     <mat-card-actions>
       <button (click)="openCheckoutIntegration()" mat-stroked-button color="primary">SUBSCRIBE</button>
     </mat-card-actions>

@@ -6,7 +6,7 @@ import { CurrencyPipe } from '@angular/common';
 import { CheckoutCreateSubscriptionRequest } from '../checkout-create-subscription';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceStatus } from 'src/app/shared/client-status';
-import { MatCard, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from '@angular/material/card';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { MatDivider } from '@angular/material/divider';
@@ -23,7 +23,7 @@ import { CheckoutProductClient } from './checkout-product-client';
     templateUrl: './checkout-details.html',
     styleUrls: ['./checkout-details.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatProgressBar, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatListItemTitle, MatListItemMeta, MatIcon, Quantity, MatCardSubtitle, MatCardActions, MatButton, LoadingFailed, CurrencyPipe]
+    imports: [MatCard, MatProgressBar, MatCardHeader, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatListItemTitle, MatListItemMeta, MatIcon, Quantity, MatCardSubtitle, MatCardActions, MatButton, LoadingFailed, CurrencyPipe]
 })
 export class CheckoutDetails {
   private readonly log = inject(Log);
