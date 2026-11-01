@@ -10,7 +10,6 @@ import { RouterLink } from '@angular/router';
 @Component({
     selector: 'app-active',
     templateUrl: './active.html',
-    styleUrl: './active.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton, RouterLink]
 })

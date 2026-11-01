@@ -26,6 +26,14 @@ html .mat-mdc-card {
   padding: clamp(18px, 2.6vw, 20px) clamp(20px, 3.125vw, 24px);
 }
 
+.sc-card .title-icon {
+  margin-inline-end: 0.5rem;
+}
+
+.sc-card .price-month {
+  font-size: 1rem;
+}
+
 .sc-card .mat-mdc-card-content {
   padding: 0;
 }

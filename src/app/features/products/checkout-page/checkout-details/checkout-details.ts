@@ -21,7 +21,6 @@ import { CheckoutProductClient } from './checkout-product-client';
 @Component({
     selector: 'app-checkout-details',
     templateUrl: './checkout-details.html',
-    styleUrls: ['./checkout-details.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatProgressBar, MatCardHeader, MatCardTitle, NgxSkeletonLoaderComponent, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatListItemTitle, MatListItemMeta, MatIcon, Quantity, MatCardSubtitle, MatCardActions, MatButton, LoadingFailed, CurrencyPipe]
 })

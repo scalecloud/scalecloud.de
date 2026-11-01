@@ -11,7 +11,6 @@ import { DatePipe } from '@angular/common';
 @Component({
     selector: 'app-trailing',
     templateUrl: './trailing.html',
-    styleUrl: './trailing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton, RouterLink, DatePipe]
 })

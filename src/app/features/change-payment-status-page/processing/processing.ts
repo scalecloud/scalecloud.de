@@ -9,7 +9,6 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
 @Component({
     selector: 'app-processing',
     templateUrl: './processing.html',
-    styleUrls: ['./processing.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton]
 })

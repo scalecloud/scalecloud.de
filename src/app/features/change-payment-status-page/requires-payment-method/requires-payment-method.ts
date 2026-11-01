@@ -9,7 +9,6 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
 @Component({
     selector: 'app-requires-payment-method',
     templateUrl: './requires-payment-method.html',
-    styleUrls: ['./requires-payment-method.scss'],
     imports: [MatCard, MatCardHeader, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton]
 })
 export class RequiresPaymentMethod {

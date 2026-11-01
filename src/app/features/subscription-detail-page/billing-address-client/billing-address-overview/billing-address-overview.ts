@@ -22,7 +22,6 @@ import { ServiceStatus } from 'src/app/shared/client-status';
 @Component({
   selector: 'app-billing-address-overview',
   templateUrl: './billing-address-overview.html',
-  styleUrl: './billing-address-overview.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,

@@ -9,7 +9,6 @@ import { ReturnUrl } from 'src/app/core/redirect/return-url';
 @Component({
     selector: 'app-succeeded',
     templateUrl: './succeeded.html',
-    styleUrls: ['./succeeded.scss'],
     imports: [MatCard, MatCardHeader, MatCardTitle, MatDivider, MatCardContent, MatList, MatListItem, MatListItemIcon, MatIcon, MatCardActions, MatButton]
 })
 export class Succeeded {
