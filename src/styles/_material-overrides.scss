@@ -1,16 +1,6 @@
 @use '@angular/material' as mat;
 
 html {
-  @include mat.card-overrides(
-    (
-      elevated-container-shape: 20px,
-      elevated-container-color: #0b1220,
-      outlined-container-shape: 20px,
-      outlined-container-color: #0b1220,
-      outlined-outline-color: #19344a,
-    )
-  );
-
   @include mat.button-overrides(
     (
       filled-container-shape: 999px,

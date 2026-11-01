@@ -2,7 +2,7 @@
   @if (serviceStatus() === ServiceStatus.Loading) {
     @for (_ of skeletonItems(); track $index) {
       <div class="flex-item">
-        <mat-card>
+        <mat-card class="sc-card">
           <mat-progress-bar mode="query" />
           <mat-card-title>
             <ngx-skeleton-loader [theme]="{ height: '2rem', width: '40%' }" />

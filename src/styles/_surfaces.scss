@@ -8,8 +8,7 @@
   box-shadow: none;
 }
 
-.sc-card,
-html .mat-mdc-card {
+.sc-card {
   @include sc-card-surface;
 
   &::before {
@@ -32,14 +31,14 @@ html .mat-mdc-card {
   }
 }
 
-html .mat-mdc-card .mat-mdc-card-content {
+.sc-card .mat-mdc-card-content {
   padding: 0;
 }
 
-html .mat-mdc-card .mat-mdc-card-header {
+.sc-card .mat-mdc-card-header {
   padding: 0 0 16px;
 }
 
-html .mat-mdc-card .mat-mdc-card-actions {
+.sc-card .mat-mdc-card-actions {
   padding: 16px 0 0;
 }
