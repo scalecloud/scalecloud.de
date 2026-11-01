@@ -8,7 +8,6 @@
   --invite-muted: #686d80;
   --invite-line: #e3e5ef;
   --invite-indigo: #3949ab;
-  --invite-pink: #c2185b;
 
   width: calc(100% - 2rem);
   max-width: 48rem;
@@ -43,28 +42,6 @@
   color: var(--invite-muted);
 }
 
-.claim-panel {
-  overflow: hidden;
-  max-width: 42rem;
-  margin: 0 auto;
-  border: 1px solid var(--invite-line);
-  border-top: 4px solid var(--invite-indigo);
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 18px 44px rgb(32 36 59 / 9%);
-}
-
-mat-card-title {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  color: var(--invite-ink);
-}
-
-mat-card-content {
-  padding: clamp(1rem, 3vw, 1.25rem) clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.5rem);
-}
-
 .status-content {
   display: flex;
   align-items: center;
@@ -89,39 +66,11 @@ mat-card-content {
   line-height: 1.55;
 }
 
-.invitation-content {
-  padding-top: 1.25rem;
-}
-
 .product-heading {
   display: flex;
   align-items: center;
   gap: clamp(0.65rem, 2vw, 1rem);
   padding-bottom: 1rem;
-}
-
-.state-mark {
-  display: grid;
-  flex: 0 0 clamp(2.75rem, 10vw, 3.75rem);
-  width: clamp(2.75rem, 10vw, 3.75rem);
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid var(--sc-status-danger-soft-border);
-  border-radius: 50%;
-  background: var(--sc-status-danger-soft-bg);
-  color: var(--invite-pink);
-}
-
-.state-mark mat-icon {
-  width: clamp(1.3rem, 4vw, 1.6rem);
-  height: clamp(1.3rem, 4vw, 1.6rem);
-  font-size: clamp(1.3rem, 4vw, 1.6rem);
-}
-
-.state-mark-success {
-  border-color: var(--sc-status-success-soft-border);
-  background: var(--sc-status-success-soft-bg);
-  color: var(--sc-status-success-strong);
 }
 
 .product-heading .eyebrow {
@@ -174,21 +123,4 @@ mat-card-content {
   overflow-wrap: anywhere;
 }
 
-mat-card-actions {
-  padding: 0 clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.5rem);
-}
-
-mat-card-actions button {
-  min-height: 2.8rem;
-  min-width: 0;
-  max-width: 100%;
-  padding-inline: clamp(0.5rem, 2vw, 1rem);
-  font-weight: 600;
-  white-space: normal;
-}
-
-.error-icon {
-  flex: 0 0 auto;
-  color: var(--invite-pink);
-}
 

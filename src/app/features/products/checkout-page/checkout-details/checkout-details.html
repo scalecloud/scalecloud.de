@@ -58,11 +58,11 @@
             @if (isTrialIncluded()) {
               {{trialDays()}}&nbsp;days trial*
             } @else if (trialDays() > 0) {
-              <div class="no-trial">
+              <div>
                 <s>{{trialDays()}}&nbsp;days trial*</s>
               </div>
             } @else {
-              <div class="no-trial">
+              <div>
                 No trial available
               </div>
             }

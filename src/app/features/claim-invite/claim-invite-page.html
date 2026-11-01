@@ -5,7 +5,7 @@
     <p>Review the invitation details, then accept your seat.</p>
   </header>
 
-  <mat-card class="sc-card claim-panel">
+  <mat-card class="sc-card">
     @if (state() === 'loading-preview' || state() === 'claiming') {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       <mat-card-content class="status-content">
@@ -21,7 +21,7 @@
       @if (state() !== 'loading-preview' && state() !== 'claiming') {
         <mat-card-content class="invitation-content">
           <div class="product-heading">
-            <span class="state-mark" [class.state-mark-success]="state() === 'success'" aria-hidden="true">
+            <span aria-hidden="true">
               <mat-icon>{{ state() === 'success' ? 'check_circle' : 'mail' }}</mat-icon>
             </span>
             <div>
@@ -61,13 +61,13 @@
 
     @if (state() === 'preview-unavailable') {
       <mat-card-header>
-      <mat-card-title><mat-icon class="error-icon" aria-hidden="true">link_off</mat-icon> Invitation unavailable</mat-card-title>
+      <mat-card-title><mat-icon aria-hidden="true">link_off</mat-icon> Invitation unavailable</mat-card-title>
       </mat-card-header>
       <mat-card-content><p>This invitation is unavailable, expired, revoked, already claimed, or its subscription is inactive.</p></mat-card-content>
     }
     @if (state() === 'preview-temporary-failure') {
       <mat-card-header>
-      <mat-card-title><mat-icon class="error-icon" aria-hidden="true">cloud_off</mat-icon> Invitation could not be loaded</mat-card-title>
+      <mat-card-title><mat-icon aria-hidden="true">cloud_off</mat-icon> Invitation could not be loaded</mat-card-title>
       </mat-card-header>
       <mat-card-content><p>There was a temporary problem loading this invitation. Please try again.</p></mat-card-content>
       <mat-card-actions><button mat-raised-button color="primary" (click)="loadPreview()">Retry</button></mat-card-actions>
