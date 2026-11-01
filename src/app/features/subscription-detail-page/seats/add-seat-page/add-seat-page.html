@@ -19,8 +19,12 @@
       }
     </mat-form-field>
 
-    <mat-label>Select roles</mat-label>
-    <mat-chip-listbox multiple class="mat-mdc-chip-set-stacked">
+    <p id="invite-roles-label">Select roles</p>
+    <mat-chip-listbox
+      multiple
+      aria-labelledby="invite-roles-label"
+      class="mat-mdc-chip-set-stacked role-list"
+    >
       @for (role of inviteUserRoles; track role) {
         <mat-chip-option
           [selected]="selectedRoles().includes(role)"
@@ -32,23 +36,19 @@
         </mat-chip-option>
       }
     </mat-chip-listbox>
-
-    <div class="flex-container">
-      <div class="flex-item">
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="addSeat()"
-          [disabled]="isSubmitting()"
-          aria-label="Send invitation"
-        >
-          @if (isSubmitting()) {
-            <mat-spinner diameter="18" />
-          } @else {
-            Invite
-          }
-        </button>
-      </div>
-    </div>
   </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-stroked-button 
+      (click)="addSeat()"
+      [disabled]="isSubmitting()"
+      aria-label="Send invitation"
+    >
+      @if (isSubmitting()) {
+        <mat-spinner diameter="18" />
+      } @else {
+        Invite
+      }
+    </button>
+  </mat-card-actions>
 </mat-card>
