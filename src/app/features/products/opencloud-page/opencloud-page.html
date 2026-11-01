@@ -1,15 +1,12 @@
 <main class="opencloud-page">
     <header class="intro">
-        <div class="intro-copy-block">
-            <h1 id="opencloud-title">OpenCloud</h1>
-            <p class="intro-copy sc-text-body">For you, your team, and shared spaces.</p>
-        </div>
+        <h1 id="opencloud-title">OpenCloud</h1>
+        <p class="intro-copy sc-text-body">For you, your team, and shared spaces.</p>
     </header>
 
     @if (serviceStatus() === ServiceStatus.Loading || serviceStatus() === ServiceStatus.Initializing) {
         <div class="loading-panel" aria-label="Loading OpenCloud product">
             <mat-progress-bar mode="query"></mat-progress-bar>
-            <div class="loading-lines"><span></span><span></span><span></span></div>
         </div>
     }
 
@@ -21,10 +18,7 @@
 
                 @for (allocation of allocations(); track allocation.id) {
                     <div
-                        class="allocation-row"
-                        [class.owner-row]="allocation.kind === 'owner'"
-                        [class.user-row]="allocation.kind === 'user'"
-                        [class.space-row]="allocation.kind === 'space'">
+                        class="allocation-row">
                         <div class="allocation-identity">
                             <span class="allocation-icon">
                                 <mat-icon aria-hidden="true">
@@ -112,7 +106,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="summary-divider"></div>
                 <div class="summary-footnote">
                     <mat-icon aria-hidden="true">swap_horiz</mat-icon>
                     <span>Move available storage between your account, invited people, and shared spaces as your needs evolve.</span>
