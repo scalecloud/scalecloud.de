@@ -21,7 +21,7 @@ describe('OpenCloudPage', () => {
     storageAmount: 1,
     storageUnit: 'TB',
     trialDays: 30,
-    pricePerMonth: 900,
+    pricePerMonth: 800,
   };
 
   beforeEach(async () => {
@@ -50,8 +50,12 @@ describe('OpenCloudPage', () => {
     expect(component.serviceStatus()).toBe(ServiceStatus.Success);
     expect(component.product()).toEqual(product);
     expect(fixture.nativeElement.querySelector('.order-summary')).not.toBeNull();
-    expect((fixture.nativeElement as HTMLElement).querySelector('.summary-detail')?.textContent).not.toContain('€');
-    expect((fixture.nativeElement as HTMLElement).querySelector('.summary-price strong')?.textContent).toContain('€9.00');
+    expect((fixture.nativeElement as HTMLElement).querySelector('#allocation-heading')?.textContent).toContain('Storage pool planner');
+    expect((fixture.nativeElement as HTMLElement).querySelector('.summary-label')).toBeNull();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.live-indicator')).toBeNull();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.allocation-columns')).toBeNull();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.summary-price strong')?.textContent).toContain('€8.00');
+    expect((fixture.nativeElement as HTMLElement).querySelector('.unit-price')).toBeNull();
   });
 
   it('updates total storage and price when allocation amounts change', async () => {
@@ -64,7 +68,7 @@ describe('OpenCloudPage', () => {
 
     expect(component.quantity()).toBe(2);
     expect(fixture.nativeElement.querySelector('.storage-number')?.textContent.trim()).toBe('2');
-    expect(component.totalPrice()).toBe(18);
+    expect(component.totalPrice()).toBe(16);
   });
 
   it('only offers a trial for one unit when the backend returns trial days', async () => {

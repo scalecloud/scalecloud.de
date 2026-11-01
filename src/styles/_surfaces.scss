@@ -6,6 +6,11 @@
   border: 1px solid var(--sc-border);
   border-radius: var(--sc-radius-card);
   box-shadow: none;
+}
+
+.sc-card,
+html .mat-mdc-card {
+  @include sc-card-surface;
 
   &::before {
     content: '';
@@ -15,11 +20,6 @@
     background: var(--sc-accent-line);
     pointer-events: none;
   }
-}
-
-.sc-card,
-html .mat-mdc-card {
-  @include sc-card-surface;
 }
 
 .sc-card--compact {
