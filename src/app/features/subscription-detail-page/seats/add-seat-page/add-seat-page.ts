@@ -26,7 +26,6 @@ import { Role, RoleDescriptions } from 'src/app/core/permission-store/roles';
 @Component({
   selector: 'app-add-seat-page',
   templateUrl: './add-seat-page.html',
-  styleUrl: './add-seat-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,

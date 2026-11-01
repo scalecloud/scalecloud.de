@@ -13,7 +13,6 @@ import { Language } from '../country-lookup/language-model';
 @Component({
   selector: 'app-country-input',
   templateUrl: './country-input.html',
-  styleUrl: './country-input.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatFormField,
