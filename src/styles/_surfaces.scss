@@ -38,6 +38,10 @@ html .mat-mdc-card {
   padding: 16px 0 0;
 }
 
+html .mat-mdc-card .mat-mdc-card-actions > :only-child {
+  width: 100%;
+}
+
 .sc-card--status {
   max-width: 40rem;
   margin-inline: 1rem;
