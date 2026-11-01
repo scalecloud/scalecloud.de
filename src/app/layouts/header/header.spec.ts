@@ -194,7 +194,9 @@ describe('Header', () => {
 
   it('should render the ScaleCloud.de brand link', () => {
     const compiled: HTMLElement = fixture.nativeElement;
-    expect(compiled.textContent).toContain('ScaleCloud.de');
+    const brandLink = compiled.querySelector<HTMLAnchorElement>('.brand-button');
+    expect(brandLink?.getAttribute('href')).toBe('/');
+    expect(brandLink?.querySelector('img')?.getAttribute('alt')).toBe('ScaleCloud.de');
   });
 
   it('should render the logo image', () => {

@@ -45,6 +45,12 @@
     flex: 0 0 auto;
 }
 
+.brand-button:focus-visible {
+    border-radius: 4px;
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 3px;
+}
+
 .desktop-nav,
 .account-actions {
     display: flex;
@@ -53,7 +59,6 @@
 
 .desktop-nav {
     gap: 0.25rem;
-    margin-left: 0.5rem;
 }
 
 .desktop-nav a {
@@ -104,8 +109,7 @@ button.account-menu-identity[disabled] {
 }
 
 .logo-icon {
-    height: 2rem;
-    padding-right: 0.5rem;
+    height: 1.5rem;
     vertical-align: middle;
 }
 
