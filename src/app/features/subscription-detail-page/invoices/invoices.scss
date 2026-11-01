@@ -33,8 +33,9 @@ mat-chip.status-open {
 }
 
 mat-chip.status-paid {
-    background-color: lightgreen;
-    border-color: darkgreen;
+    background-color: #123b2b;
+    border-color: #2d7a55;
+    color: #b7f7d0;
 }
 
 mat-chip.status-uncollectible {
@@ -63,7 +64,7 @@ mat-chip.status-void {
 
     &:hover,
     &:focus-visible {
-        background-color: #f5f5f5;
+        background-color: var(--mat-sys-surface-container-high);
     }
 
     &:focus-visible {

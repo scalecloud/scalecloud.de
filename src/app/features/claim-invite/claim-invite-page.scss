@@ -34,7 +34,7 @@
 .page-intro h1 {
   margin: 0;
   color: var(--invite-ink);
-  font-size: 2.25rem;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
   line-height: 1.15;
 }
 
@@ -58,14 +58,14 @@ mat-card-title {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  padding: 1.5rem 1.5rem 0;
+  padding: clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.5rem) 0;
   color: var(--invite-ink);
   font-size: 1.25rem;
   line-height: 1.35;
 }
 
 mat-card-content {
-  padding: 1.25rem 1.5rem 1.5rem;
+  padding: clamp(1rem, 3vw, 1.25rem) clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.5rem);
 }
 
 .status-content {
@@ -99,14 +99,14 @@ mat-card-content {
 .product-heading {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: clamp(0.65rem, 2vw, 1rem);
   padding-bottom: 1rem;
 }
 
 .state-mark {
   display: grid;
-  flex: 0 0 3.75rem;
-  width: 3.75rem;
+  flex: 0 0 clamp(2.75rem, 10vw, 3.75rem);
+  width: clamp(2.75rem, 10vw, 3.75rem);
   aspect-ratio: 1;
   place-items: center;
   border: 1px solid #f2c1d4;
@@ -116,9 +116,9 @@ mat-card-content {
 }
 
 .state-mark mat-icon {
-  width: 1.6rem;
-  height: 1.6rem;
-  font-size: 1.6rem;
+  width: clamp(1.3rem, 4vw, 1.6rem);
+  height: clamp(1.3rem, 4vw, 1.6rem);
+  font-size: clamp(1.3rem, 4vw, 1.6rem);
 }
 
 .state-mark-success {
@@ -135,14 +135,14 @@ mat-card-content {
 .product-heading h2 {
   margin: 0;
   color: var(--invite-ink);
-  font-size: 1.55rem;
+  font-size: clamp(1.1rem, 3.4vw, 1.55rem);
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
 
 .invitation-details {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
   margin: 0;
   border-top: 1px solid var(--invite-line);
 }
@@ -178,13 +178,16 @@ mat-card-content {
 }
 
 mat-card-actions {
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.5rem);
 }
 
 mat-card-actions button {
   min-height: 2.8rem;
-  min-width: 12rem;
+  min-width: 0;
+  max-width: 100%;
+  padding-inline: clamp(0.5rem, 2vw, 1rem);
   font-weight: 600;
+  white-space: normal;
 }
 
 .error-icon {
@@ -192,71 +195,3 @@ mat-card-actions button {
   color: var(--invite-pink);
 }
 
-@media (max-width: 36rem) {
-  .claim-shell {
-    margin: 1.5rem auto;
-  }
-
-  .page-intro h1 {
-    font-size: 1.75rem;
-  }
-
-  .claim-panel {
-    box-shadow: 0 10px 28px rgb(32 36 59 / 8%);
-  }
-
-  mat-card-title {
-    padding: 1.25rem 1rem 0;
-  }
-
-  mat-card-content {
-    padding: 1rem;
-  }
-
-  mat-card-actions {
-    padding: 0 1rem 1rem;
-  }
-
-  mat-card-actions button {
-    width: 100%;
-    min-width: 0;
-    padding-inline: 0.5rem;
-    font-size: 0.875rem;
-    white-space: normal;
-  }
-
-  .invitation-content {
-    padding-top: 1.25rem;
-  }
-
-  .invitation-details div {
-    padding-right: 0.5rem;
-  }
-
-  .product-heading h2 {
-    font-size: 1.3rem;
-  }
-}
-
-@media (max-width: 25rem) {
-  .page-intro h1 {
-    font-size: 1.5rem;
-  }
-
-  .product-heading {
-    gap: 0.65rem;
-  }
-
-  .state-mark {
-    flex-basis: 2.75rem;
-    width: 2.75rem;
-  }
-
-  .product-heading h2 {
-    font-size: 1.1rem;
-  }
-
-  .invitation-details {
-    grid-template-columns: 1fr;
-  }
-}

@@ -58,10 +58,11 @@
 // rejecting must be exactly as easy and as visible as accepting.
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 
   button {
-    flex: 1 1 0;
+    flex: 1 1 10rem;
     min-height: 44px;
   }
 }
@@ -82,16 +83,6 @@
   from {
     opacity: 0;
     transform: translateY(12px);
-  }
-}
-
-@media (max-width: 480px) {
-  .consent {
-    padding: 18px 16px 14px;
-  }
-
-  .actions {
-    flex-direction: column;
   }
 }
 
