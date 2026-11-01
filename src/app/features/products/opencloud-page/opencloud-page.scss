@@ -13,7 +13,6 @@
 .intro {
   padding: 0 0 1.75rem;
   border-bottom: 1px solid var(--sc-border);
-  animation: rise-in 420ms ease-out both;
 }
 
 .intro h1 {
@@ -33,14 +32,11 @@
   gap: 1.25rem;
   align-items: start;
   padding-top: 1.5rem;
-  animation: rise-in 520ms 80ms ease-out both;
 }
 
 .allocation-panel,
 .order-summary {
   min-width: 0;
-  padding: clamp(1.1rem, 2.4vw, 1.5rem);
-  border-radius: 0.65rem;
 }
 
 .allocation-panel h2 {
@@ -53,13 +49,6 @@
   max-width: 33rem;
   margin: 0.4rem 0 0;
   line-height: 1.45;
-}
-
-.order-summary {
-  border-color: var(--sc-badge-border);
-  background:
-    linear-gradient(155deg, rgba(22, 57, 70, 0.4), transparent 58%),
-    var(--mat-sys-surface-container);
 }
 
 .summary-metrics {
@@ -130,14 +119,6 @@
   line-height: 1.45;
 }
 
-.summary-footnote mat-icon {
-  width: 1.1rem;
-  height: 1.1rem;
-  flex: 0 0 1.1rem;
-  color: var(--sc-accent-light);
-  font-size: 1.1rem;
-}
-
 .checkout-button {
   display: flex;
   width: 100%;
@@ -199,6 +180,12 @@
   border-radius: 0.35rem;
 }
 
+.space-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: currentColor;
+}
+
 .allocation-recipient {
   display: grid;
   min-width: 0;
@@ -231,11 +218,6 @@
   cursor: pointer;
 }
 
-.remove-allocation:hover {
-  color: var(--sc-text);
-  background: rgba(248, 113, 113, 0.12);
-}
-
 .add-allocation-actions {
   display: flex;
   flex-wrap: wrap;
@@ -245,10 +227,6 @@
 
 .add-allocation-actions button {
   min-height: 2.65rem;
-}
-
-.add-allocation-actions button mat-icon {
-  margin-right: 0.25rem;
 }
 
 .allocation-preview-note {

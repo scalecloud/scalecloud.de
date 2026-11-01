@@ -21,9 +21,13 @@
                         class="allocation-row">
                         <div class="allocation-identity">
                             <span class="allocation-icon">
-                                <mat-icon aria-hidden="true">
-                                    {{ allocation.kind === 'space' ? 'workspaces' : allocation.kind === 'owner' ? 'person' : 'person_add' }}
-                                </mat-icon>
+                                @if (allocation.kind === 'space') {
+                                    <svg class="space-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M21 3C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H21ZM11 13H4V19H11V13ZM20 13H13V19H20V13ZM11 5H4V11H11V5ZM20 5H13V11H20V5Z" />
+                                    </svg>
+                                } @else {
+                                    <mat-icon aria-hidden="true">{{ allocation.kind === 'owner' ? 'person' : 'person_add' }}</mat-icon>
+                                }
                             </span>
                             <div class="allocation-recipient">
                                 @if (allocation.kind === 'owner') {

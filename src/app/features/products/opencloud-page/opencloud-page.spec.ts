@@ -108,6 +108,7 @@ describe('OpenCloudPage', () => {
     expect(component.quantity()).toBe(3);
     expect(component.totalStorage()).toBe(3);
     expect(page.querySelectorAll('.allocation-row')).toHaveLength(3);
+    expect(page.querySelector('.allocation-icon .space-icon')).not.toBeNull();
   });
 
   it('updates and removes an allocation independently', async () => {
