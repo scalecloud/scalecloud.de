@@ -16,74 +16,68 @@
     @if (serviceStatus() === ServiceStatus.Success && product(); as openCloudProduct) {
         <section class="purchase-layout" aria-label="Choose OpenCloud storage">
             <section class="allocation-panel sc-card sc-card--compact" aria-labelledby="allocation-heading">
-                <div class="allocation-header">
-                    <div>
-                        <h2 id="allocation-heading">Storage pool planner</h2>
-                        <p class="unit-description sc-text-body">Set capacity for yourself, invited people, and shared spaces.</p>
-                    </div>
-                </div>
+                <h2 id="allocation-heading">Storage pool planner</h2>
+                <p class="unit-description sc-text-body">Set capacity for yourself, invited people, and shared spaces.</p>
 
-                <div class="allocation-list">
-                    @for (allocation of allocations(); track allocation.id) {
-                        <div
-                            class="allocation-row"
-                            [class.owner-row]="allocation.kind === 'owner'"
-                            [class.user-row]="allocation.kind === 'user'"
-                            [class.space-row]="allocation.kind === 'space'">
-                            <div class="allocation-identity">
-                                <span class="allocation-icon">
-                                    <mat-icon aria-hidden="true">
-                                        {{ allocation.kind === 'space' ? 'workspaces' : allocation.kind === 'owner' ? 'person' : 'person_add' }}
-                                    </mat-icon>
-                                </span>
-                                <div class="allocation-recipient">
-                                    @if (allocation.kind === 'owner') {
-                                        <strong>You</strong>
-                                        <span class="sc-text-muted">Personal storage</span>
-                                    } @else if (allocation.kind === 'user') {
-                                        <strong>{{ allocationTitle(allocation) }}</strong>
-                                        <span class="sc-text-muted">Invite after purchase</span>
-                                    } @else {
-                                        <strong>{{ allocationTitle(allocation) }}</strong>
-                                        <span class="sc-text-muted">Create after purchase</span>
-                                    }
-                                </div>
-                            </div>
-
-                            <div class="allocation-controls">
-                                <div class="allocation-stepper">
-                                    <button
-                                        type="button"
-                                        [attr.aria-label]="'Remove one TB from ' + allocationTitle(allocation)"
-                                        [disabled]="allocation.units <= 1"
-                                        (click)="adjustAllocationUnits(allocation.id, -1)">−</button>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        [max]="999 - quantity() + allocation.units"
-                                        [attr.aria-label]="'Terabytes for ' + allocationTitle(allocation)"
-                                        [value]="allocation.units"
-                                        (change)="updateAllocationUnits(allocation.id, $any($event.target).value)">
-                                    <button
-                                        type="button"
-                                        [attr.aria-label]="'Add one TB to ' + allocationTitle(allocation)"
-                                        [disabled]="quantity() >= 999"
-                                        (click)="adjustAllocationUnits(allocation.id, 1)">+</button>
-                                </div>
-                                <span class="tb-label">TB</span>
-                                @if (allocation.kind !== 'owner') {
-                                    <button
-                                        class="remove-allocation"
-                                        type="button"
-                                        [attr.aria-label]="'Remove ' + allocationTitle(allocation)"
-                                        (click)="removeAllocation(allocation.id)">
-                                        <mat-icon aria-hidden="true">close</mat-icon>
-                                    </button>
+                @for (allocation of allocations(); track allocation.id) {
+                    <div
+                        class="allocation-row"
+                        [class.owner-row]="allocation.kind === 'owner'"
+                        [class.user-row]="allocation.kind === 'user'"
+                        [class.space-row]="allocation.kind === 'space'">
+                        <div class="allocation-identity">
+                            <span class="allocation-icon">
+                                <mat-icon aria-hidden="true">
+                                    {{ allocation.kind === 'space' ? 'workspaces' : allocation.kind === 'owner' ? 'person' : 'person_add' }}
+                                </mat-icon>
+                            </span>
+                            <div class="allocation-recipient">
+                                @if (allocation.kind === 'owner') {
+                                    <strong>You</strong>
+                                    <span class="sc-text-muted">Personal storage</span>
+                                } @else if (allocation.kind === 'user') {
+                                    <strong>{{ allocationTitle(allocation) }}</strong>
+                                    <span class="sc-text-muted">Invite after purchase</span>
+                                } @else {
+                                    <strong>{{ allocationTitle(allocation) }}</strong>
+                                    <span class="sc-text-muted">Create after purchase</span>
                                 }
                             </div>
                         </div>
-                    }
-                </div>
+
+                        <div class="allocation-controls">
+                            <div class="allocation-stepper">
+                                <button
+                                    type="button"
+                                    [attr.aria-label]="'Remove one TB from ' + allocationTitle(allocation)"
+                                    [disabled]="allocation.units <= 1"
+                                    (click)="adjustAllocationUnits(allocation.id, -1)">−</button>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    [max]="999 - quantity() + allocation.units"
+                                    [attr.aria-label]="'Terabytes for ' + allocationTitle(allocation)"
+                                    [value]="allocation.units"
+                                    (change)="updateAllocationUnits(allocation.id, $any($event.target).value)">
+                                <button
+                                    type="button"
+                                    [attr.aria-label]="'Add one TB to ' + allocationTitle(allocation)"
+                                    [disabled]="quantity() >= 999"
+                                    (click)="adjustAllocationUnits(allocation.id, 1)">+</button>
+                            </div>
+                            <span class="tb-label">TB</span>
+                            @if (allocation.kind !== 'owner') {
+                                <button
+                                    class="remove-allocation"
+                                    type="button"
+                                    [attr.aria-label]="'Remove ' + allocationTitle(allocation)"
+                                    (click)="removeAllocation(allocation.id)">
+                                    <mat-icon aria-hidden="true">close</mat-icon>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
 
                 <div class="add-allocation-actions">
                     <button mat-stroked-button type="button" [disabled]="quantity() >= 999" (click)="addAllocation('user')">
@@ -103,7 +97,7 @@
 
             <aside class="order-summary sc-card sc-card--compact" aria-label="Order summary" aria-live="polite">
                 <div class="summary-metrics">
-                    <div class="summary-metric storage-metric">
+                    <div class="summary-metric">
                         <span class="metric-label sc-section-title">TOTAL STORAGE</span>
                         <div class="storage-total">
                             <span class="storage-number">{{ totalStorage() }}</span>
@@ -111,9 +105,7 @@
                         </div>
                     </div>
                     <div class="summary-metric monthly-metric">
-                        <div class="metric-heading">
-                            <span class="metric-label sc-section-title">MONTHLY TOTAL</span>
-                        </div>
+                        <span class="metric-label sc-section-title">MONTHLY TOTAL</span>
                         <div class="summary-price">
                             <strong>{{ totalPrice() | currency:'EUR':'symbol':'1.2-2' }}</strong>
                             <span class="price-period sc-text-muted">/ month</span>

@@ -11,10 +11,6 @@
 }
 
 .intro {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 2rem;
   padding: 0 0 1.75rem;
   border-bottom: 1px solid var(--sc-border);
   animation: rise-in 420ms ease-out both;
@@ -34,7 +30,6 @@
 .intro-copy {
   max-width: 40rem;
   margin: 0.75rem 0 0;
-  margin-bottom: 0;
   line-height: 1.55;
 }
 
@@ -54,14 +49,7 @@
   border-radius: 0.65rem;
 }
 
-.allocation-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.allocation-header h2 {
+.allocation-panel h2 {
   margin: 0;
   font-size: 1.3rem;
   line-height: 1.3;
@@ -95,13 +83,6 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 0.75rem;
-}
-
-.metric-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.6rem;
 }
 
 .monthly-metric {
@@ -222,10 +203,6 @@
   background: var(--mat-sys-surface-container-high);
 }
 
-.allocation-list {
-  margin-top: 0;
-}
-
 .allocation-row {
   display: flex;
   min-height: 4.65rem;
@@ -245,12 +222,19 @@
   animation-delay: 70ms;
 }
 
-.allocation-identity,
-.allocation-controls {
+.allocation-identity {
   display: flex;
   min-width: 0;
   align-items: center;
   gap: 0.75rem;
+}
+
+.allocation-controls {
+  display: flex;
+  min-width: 0;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.45rem;
 }
 
 .allocation-icon {
@@ -309,11 +293,6 @@
 
 .allocation-recipient input::placeholder {
   color: var(--sc-text-label);
-}
-
-.allocation-controls {
-  flex: 0 0 auto;
-  gap: 0.45rem;
 }
 
 .allocation-stepper {
@@ -467,54 +446,9 @@
 
 @media (max-width: 900px) {
   .purchase-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.72fr);
-  }
-
-  .allocation-panel,
-  .order-summary {
-    padding: 1.2rem;
-  }
-
-  .summary-metric {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.45rem;
-  }
-
-  .metric-heading {
-    width: 100%;
-  }
-}
-
-@media (max-width: 760px) {
-  .opencloud-page {
-    padding-bottom: 2rem;
-  }
-
-  .intro {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .intro h1 {
-    font-size: 2rem;
-  }
-
-  .purchase-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
     padding-top: 1rem;
-  }
-
-  .order-summary {
-    position: static;
-  }
-
-  .summary-metric {
-    align-items: baseline;
-    flex-direction: row;
-    gap: 0.75rem;
   }
 
   .allocation-panel,
@@ -522,42 +456,26 @@
     padding: 1.1rem;
   }
 
+  .order-summary {
+    position: static;
+  }
+
+  .intro h1 {
+    font-size: 2rem;
+  }
+
   .allocation-row {
     align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .allocation-controls {
-    gap: 0.3rem;
-  }
-
-  .allocation-stepper {
-    flex: 0 0 auto;
-  }
-
-  .remove-allocation {
-    margin-left: 0;
-  }
-
-}
-
-@media (max-width: 420px) {
-  .intro h1 {
-    font-size: 1.75rem;
-  }
-
-  .allocation-panel,
-  .order-summary {
-    padding: 1rem;
-  }
-
-  .allocation-row {
     gap: 0.3rem;
   }
 
   .allocation-identity,
   .allocation-controls {
     gap: 0.35rem;
+  }
+
+  .remove-allocation {
+    margin-left: 0;
   }
 
   .allocation-icon {
