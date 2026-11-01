@@ -8,7 +8,8 @@
   box-shadow: none;
 }
 
-.sc-card {
+.sc-card,
+html .mat-mdc-card {
   @include sc-card-surface;
 
   &::before {
@@ -22,13 +23,7 @@
 }
 
 .sc-card--compact {
-  padding: 20px 24px;
-}
-
-@media (max-width: 600px) {
-  .sc-card--compact {
-    padding: 18px 20px;
-  }
+  padding: clamp(18px, 2.6vw, 20px) clamp(20px, 3.125vw, 24px);
 }
 
 .sc-card .mat-mdc-card-content {
@@ -41,4 +36,37 @@
 
 .sc-card .mat-mdc-card-actions {
   padding: 16px 0 0;
+}
+
+.sc-card--status {
+  max-width: 40rem;
+  margin-inline: 1rem;
+  text-align: center;
+}
+
+.sc-card--status .mat-mdc-card-title {
+  padding-block: 0.5rem;
+  font-size: 2rem;
+}
+
+.sc-card--status .mat-mdc-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.5rem;
+}
+
+.sc-card--status .mat-mdc-card-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.sc-card--status .icon-confirmed {
+  margin-right: 0.5rem;
+  color: green;
+}
+
+.sc-card--status .icon-confirmed-failed {
+  margin-right: 0.5rem;
+  color: red;
 }

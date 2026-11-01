@@ -16,7 +16,6 @@ import { NewsletterClient } from '../newsletter-client';
 @Component({
     selector: 'app-newsletter-confirm-page',
     templateUrl: './newsletter-confirm-page.html',
-    styleUrl: './newsletter-confirm-page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatCard,

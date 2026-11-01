@@ -16,7 +16,6 @@ import { NewsletterClient } from '../newsletter-client';
 @Component({
     selector: 'app-newsletter-unsubscribe-page',
     templateUrl: './newsletter-unsubscribe-page.html',
-    styleUrl: './newsletter-unsubscribe-page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatCard,
