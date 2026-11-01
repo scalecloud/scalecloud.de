@@ -2,8 +2,9 @@
   @if (serviceStatus() === ServiceStatus.Loading) {
   <mat-progress-bar mode="query"></mat-progress-bar>
   <mat-card-header>
-  <mat-card-title>
-    <mat-icon class="title-icon">home</mat-icon>Billing Address
+  <mat-card-title class="sc-card-title-with-icon">
+    <mat-icon aria-hidden="true">home</mat-icon>
+    <span>Billing Address</span>
   </mat-card-title>
   </mat-card-header>
   <mat-divider></mat-divider>
@@ -36,8 +37,9 @@
 
   @if (serviceStatus() === ServiceStatus.Success) {
   <mat-card-header>
-  <mat-card-title>
-    <mat-icon class="title-icon">home</mat-icon>Billing Address
+  <mat-card-title class="sc-card-title-with-icon">
+    <mat-icon aria-hidden="true">home</mat-icon>
+    <span>Billing Address</span>
   </mat-card-title>
   </mat-card-header>
   <mat-divider></mat-divider>

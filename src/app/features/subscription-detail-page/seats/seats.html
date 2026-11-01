@@ -5,8 +5,9 @@
 
   @if (serviceStatus() === ServiceStatus.Loading) {
     <mat-card-header>
-    <mat-card-title>
-      <mat-icon class="title-icon">manage_accounts</mat-icon>Users
+    <mat-card-title class="sc-card-title-with-icon">
+      <mat-icon aria-hidden="true">manage_accounts</mat-icon>
+      <span>Users</span>
     </mat-card-title>
     <mat-card-subtitle>
       <ngx-skeleton-loader [theme]="{ height: '1rem', width: '80%' }" />
@@ -28,8 +29,9 @@
   @if (serviceStatus() === ServiceStatus.Success) {
     @let reply = seatListReply();
     <mat-card-header>
-    <mat-card-title>
-      <mat-icon class="title-icon">manage_accounts</mat-icon>Users
+    <mat-card-title class="sc-card-title-with-icon">
+      <mat-icon aria-hidden="true">manage_accounts</mat-icon>
+      <span>Users</span>
     </mat-card-title>
     <mat-card-subtitle>Used {{ usedSeats() }}/{{ maxSeats() }}</mat-card-subtitle>
     </mat-card-header>
