@@ -5,13 +5,14 @@ import { Footer } from '../footer/footer';
 import { Header } from '../header/header';
 import { PermissionStore } from 'src/app/core/permission-store/permission-store';
 import { MobileBottomNav } from '../mobile-bottom-nav/mobile-bottom-nav';
+import { Breadcrumbs } from '../breadcrumbs/breadcrumbs';
 
 @Component({
     selector: 'app-default-layout',
     templateUrl: './default-layout.html',
     styleUrl: './default-layout.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [Header, MatProgressBar, RouterOutlet, Footer, MobileBottomNav]
+    imports: [Header, MatProgressBar, RouterOutlet, Footer, MobileBottomNav, Breadcrumbs]
 })
 export class DefaultLayout {
   private readonly permissionStore = inject(PermissionStore);

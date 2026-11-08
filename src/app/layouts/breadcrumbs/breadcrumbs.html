@@ -1,0 +1,15 @@
+@if (items().length) {
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      @for (item of items(); track item.url) {
+        <li>
+          @if (item.current) {
+            <span aria-current="page">{{ item.label }}</span>
+          } @else {
+            <a [routerLink]="item.url">{{ item.label }}</a>
+          }
+        </li>
+      }
+    </ol>
+  </nav>
+}

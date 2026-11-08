@@ -36,38 +36,57 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard-page/dashboard-page').then(m => m.DashboardPage)
-      },
-      {
-        path: 'dashboard/subscription/:subscriptionID',
-        canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/subscription-detail-page/subscription-detail-page').then(m => m.SubscriptionDetailPage)
-      },
-      {
-        path: 'dashboard/subscription/:subscriptionID/add-seat',
-        canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/subscription-detail-page/seats/add-seat-page/add-seat-page').then(m => m.AddSeatPage)
-      },
-      {
-        path: 'dashboard/subscription/:subscriptionID/:uid/seat-detail',
-        canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/subscription-detail-page/seats/seat-detail-page/seat-detail-page').then(m => m.SeatDetailPage)
-      },
-      {
-        path: 'dashboard/subscription/:subscriptionID/billing-address',
-        canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/subscription-detail-page/billing-address-client/billing-address-detail-page/billing-address-detail-page').then(m => m.BillingAddressDetailPage)
-      },
-      {
-        path: 'dashboard/change-payment',
-        canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/dashboard-page/change-payment-page/change-payment-page').then(m => m.ChangePaymentPage)
-      },
-      {
-        path: 'dashboard/change-payment/status',
-        canActivate: [dashboardGuard],
-        loadComponent: () => import('./features/change-payment-status-page/change-payment-status-page').then(m => m.ChangePaymentStatusPage)
+        canActivateChild: [dashboardGuard],
+        data: { breadcrumb: 'Subscriptions' },
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            loadComponent: () => import('./features/dashboard-page/dashboard-page').then(m => m.DashboardPage)
+          },
+          {
+            path: 'subscription/:subscriptionID',
+            data: { breadcrumb: 'Details' },
+            children: [
+              {
+                path: '',
+                pathMatch: 'full',
+                loadComponent: () => import('./features/subscription-detail-page/subscription-detail-page').then(m => m.SubscriptionDetailPage)
+              },
+              {
+                path: 'add-seat',
+                data: { breadcrumb: 'Add seat' },
+                loadComponent: () => import('./features/subscription-detail-page/seats/add-seat-page/add-seat-page').then(m => m.AddSeatPage)
+              },
+              {
+                path: ':uid/seat-detail',
+                data: { breadcrumb: 'Seat details' },
+                loadComponent: () => import('./features/subscription-detail-page/seats/seat-detail-page/seat-detail-page').then(m => m.SeatDetailPage)
+              },
+              {
+                path: 'billing-address',
+                data: { breadcrumb: 'Billing address' },
+                loadComponent: () => import('./features/subscription-detail-page/billing-address-client/billing-address-detail-page/billing-address-detail-page').then(m => m.BillingAddressDetailPage)
+              }
+            ]
+          },
+          {
+            path: 'change-payment',
+            data: { breadcrumb: 'Change payment' },
+            children: [
+              {
+                path: '',
+                pathMatch: 'full',
+                loadComponent: () => import('./features/dashboard-page/change-payment-page/change-payment-page').then(m => m.ChangePaymentPage)
+              },
+              {
+                path: 'status',
+                data: { breadcrumb: 'Payment status' },
+                loadComponent: () => import('./features/change-payment-status-page/change-payment-status-page').then(m => m.ChangePaymentStatusPage)
+              }
+            ]
+          }
+        ]
       },
       {
          path: 'login',

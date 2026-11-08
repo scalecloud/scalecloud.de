@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  margin: 1.25rem 1rem 0;
+  color: var(--sc-text-muted);
+}
+
+ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li + li::before {
+  content: ">";
+  margin-right: 0.5rem;
+}
+
+a {
+  color: inherit;
+}
+
+[aria-current="page"] {
+  color: var(--sc-text);
+}

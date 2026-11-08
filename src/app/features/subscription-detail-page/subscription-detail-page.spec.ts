@@ -66,88 +66,20 @@ describe('SubscriptionDetailPage', () => {
     expect(component).toBeTruthy();
   });
 
-  // ── Layout ────────────────────────────────────────────────────────────────
+  it('renders Overview, Users & Spaces, and Billing tabs', () => {
+    const tabs: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('[role="tab"]'));
 
-  it('renders a flex container', () => {
-    expect(hasElement(fixture, '.flex-container')).toBe(true);
-  });
-
-  it('wraps each child in a flex-item div', () => {
-    const items = fixture.debugElement.queryAll(By.css('.flex-item'));
-    expect(items.length).toBe(6);
-  });
-
-  // ── Child components ──────────────────────────────────────────────────────
-
-  it('includes the subscription detail card', () => {
-    expect(hasElement(fixture, 'app-subscription-detail-card')).toBe(true);
-  });
-
-  it('includes the seats component', () => {
-    expect(hasElement(fixture, 'app-seats')).toBe(true);
-  });
-
-  it('includes the payment overview', () => {
-    expect(hasElement(fixture, 'app-payment-method-overview')).toBe(true);
-  });
-
-  it('includes the invoices component', () => {
-    expect(hasElement(fixture, 'app-invoices')).toBe(true);
-  });
-
-  it('includes the billing address overview', () => {
-    expect(hasElement(fixture, 'app-billing-address-overview')).toBe(true);
-  });
-
-  it('includes the billing portal', () => {
-    expect(hasElement(fixture, 'app-billing-portal')).toBe(true);
-  });
-
-  it('renders all six child components', () => {
-    const selectors = [
-      'app-subscription-detail-card',
-      'app-seats',
-      'app-payment-method-overview',
-      'app-invoices',
-      'app-billing-address-overview',
-      'app-billing-portal',
-    ];
-    for (const selector of selectors) {
-      expect(hasElement(fixture, selector), `missing: ${selector}`).toBe(true);
-    }
-  });
-
-  // ── Order ─────────────────────────────────────────────────────────────────
-
-  it('renders child components in the correct order', () => {
-    const selectors = fixture.debugElement
-      .queryAll(By.css('.flex-item > *'))
-      .map(el => el.name);
-
-    expect(selectors).toEqual([
-      'app-subscription-detail-card',
-      'app-seats',
-      'app-payment-method-overview',
-      'app-invoices',
-      'app-billing-address-overview',
-      'app-billing-portal',
+    expect(tabs.map(tab => tab.textContent?.trim())).toEqual([
+      'Overview',
+      'Users & Spaces',
+      'Billing',
     ]);
   });
 
-  // ── Each child is wrapped ─────────────────────────────────────────────────
-
-  it('wraps every child component in its own flex-item', () => {
-    const selectors = [
-      'app-subscription-detail-card',
-      'app-seats',
-      'app-payment-method-overview',
-      'app-invoices',
-      'app-billing-address-overview',
-      'app-billing-portal',
-    ];
-    for (const selector of selectors) {
-      const el = fixture.debugElement.query(By.css(selector));
-      expect(el.parent?.classes['flex-item'], `${selector} not wrapped in flex-item`).toBe(true);
-    }
+  it('shows the subscription card in the Overview tab', () => {
+    expect(hasElement(fixture, 'app-subscription-detail-card')).toBe(true);
+    expect(hasElement(fixture, 'app-seats')).toBe(false);
+    expect(hasElement(fixture, 'app-payment-method-overview')).toBe(false);
   });
+
 });
