@@ -58,6 +58,18 @@ describe('SnackBar', () => {
     );
   });
 
+  it('should keep an info snackbar open when the duration is zero', () => {
+    snackBar.infoDuration('Changes are being saved', 0);
+
+    expect(matSnackBar.openFromComponent).toHaveBeenCalledWith(
+      SnackBarProgress,
+      expect.objectContaining({
+        duration: 0,
+        data: expect.objectContaining({ message: 'Changes are being saved', duration: 0 }),
+      }),
+    );
+  });
+
   it('should open a warn snackbar with the default duration', () => {
     snackBar.warn('Careful');
 

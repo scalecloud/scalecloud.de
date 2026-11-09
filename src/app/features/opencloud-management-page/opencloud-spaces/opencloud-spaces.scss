@@ -1,0 +1,579 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.allocation-section {
+  min-width: 0;
+  padding: 1.15rem 1.25rem 1rem;
+  border: 1px solid var(--sc-border);
+  border-radius: 0.5rem;
+  background: var(--mat-sys-surface-container);
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--sc-border);
+}
+
+.section-icon {
+  display: grid;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 0.4rem;
+  color: #f6bd60;
+  background: #302613;
+  font-size: 1.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.2rem;
+  color: #f6bd60;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.count {
+  display: grid;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  margin-left: auto;
+  border: 1px solid var(--sc-border);
+  border-radius: 99px;
+  color: var(--sc-text-body);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.create-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.65rem 0.8rem;
+  margin-bottom: 0.85rem;
+  padding: 1rem;
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  border-radius: 1.15rem;
+  background: rgba(251, 191, 36, 0.05);
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--sc-text-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.create-controls {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) 9rem auto;
+  align-items: start;
+  gap: 0.6rem;
+}
+
+.create-controls mat-form-field {
+  width: 100%;
+  min-width: 0;
+}
+
+.create-controls .quantity-field input {
+  font-variant-numeric: tabular-nums;
+}
+
+.create-button,
+.assign-button {
+  min-height: 2.85rem;
+  padding: 0 0.85rem;
+  border: 1px solid #b17c2c;
+  border-radius: 99px;
+  color: #241603;
+  background: #f6bd60;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.create-button mat-icon,
+.release-button mat-icon,
+.space-emblem mat-icon,
+.empty-state mat-icon {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  vertical-align: middle;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.form-hint {
+  margin: 0.55rem 0 0;
+  color: var(--sc-text-muted);
+  font-size: 0.72rem;
+}
+
+.space-list {
+  min-height: 4rem;
+}
+
+.space-row {
+  display: flex;
+  min-width: 0;
+  min-height: 4.5rem;
+  align-items: center;
+  gap: 0.65rem;
+  border-bottom: 1px solid rgba(25, 52, 74, 0.7);
+}
+
+.space-emblem {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex: 0 0 3.25rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(246, 189, 96, 0.28);
+  border-radius: 1.1rem;
+  color: #f6bd60;
+  background: #292315;
+}
+
+.space-info {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 0.25rem;
+}
+
+.space-info strong {
+  overflow: hidden;
+  font-size: 1.2rem;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.unassigned {
+  margin: 0;
+  color: var(--sc-text-muted);
+  font-size: 0.75rem;
+}
+
+.allocation-control {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.allocation-control button,
+.release-button {
+  display: grid;
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #4d493e;
+  border-radius: 0.3rem;
+  color: var(--sc-text-body);
+  background: #171b20;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.1rem;
+}
+
+.allocation-control strong {
+  min-width: 2.8rem;
+  text-align: center;
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.allocation-control small {
+  color: #f6bd60;
+  font-size: 0.65rem;
+}
+
+.release-button {
+  border-color: transparent;
+  color: #f1a0a8;
+  background: transparent;
+}
+
+.assign-button {
+  min-height: 2rem;
+  padding-inline: 0.65rem;
+  font-size: 0.72rem;
+}
+
+.empty-state {
+  display: grid;
+  min-height: 7rem;
+  place-content: center;
+  justify-items: center;
+  color: var(--sc-text-muted);
+}
+
+.empty-state mat-icon {
+  color: #f6bd60;
+  font-size: 1.3rem;
+}
+
+.space-panel {
+  min-width: 0;
+}
+
+.create-form .field-label {
+  grid-column: 1 / -1;
+}
+
+.create-button {
+  min-height: 2.85rem;
+  border-radius: 99px;
+  box-shadow: 0 0.5rem 1.4rem rgba(251, 191, 36, 0.16);
+}
+
+.space-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  align-items: start;
+  gap: 1.15rem;
+}
+
+.space-panel > mat-paginator {
+  margin-top: 0.75rem;
+  background: transparent;
+}
+
+.space-card {
+  display: flex;
+  width: 100%;
+  max-width: 34rem;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-radius: 1.45rem;
+  background:
+    linear-gradient(180deg, #0d1520, #091019) padding-box,
+    linear-gradient(140deg, rgba(251, 191, 36, 0.38), rgba(148, 163, 184, 0.1) 48%, rgba(251, 191, 36, 0.16)) border-box;
+}
+
+.space-heading {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.space-card .space-emblem {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-basis: 2.75rem;
+  border-radius: 0.7rem;
+}
+
+.space-emblem mat-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  font-size: 1.25rem;
+}
+
+.space-usage {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.space-usage .usage-copy {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: #c3d0dd;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.space-usage .usage-copy span {
+  min-width: 0;
+}
+
+.space-usage .usage-copy strong {
+  font-weight: 600;
+}
+
+.space-usage .usage-bar {
+  display: block;
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 99px;
+  --mat-progress-bar-active-indicator-color: #f59e0b;
+  --mat-progress-bar-active-indicator-height: 0.5rem;
+  --mat-progress-bar-track-color: rgba(148, 163, 184, 0.14);
+  --mat-progress-bar-track-height: 0.5rem;
+}
+
+.space-card .allocation-control {
+  gap: 0.35rem;
+}
+
+.space-card .allocation-control button {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-color: rgba(148, 163, 184, 0.25);
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.space-card .allocation-control strong {
+  min-width: 2.8rem;
+  font-size: 1.05rem;
+}
+
+.space-card .allocation-control small {
+  color: #fcd34d;
+}
+
+.space-card .header-assign {
+  min-height: 2.25rem;
+  margin-left: auto;
+}
+
+.space-history {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.history-heading {
+  color: var(--sc-text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.usage-chart {
+  display: block;
+  width: 100%;
+  height: 3rem;
+  overflow: visible;
+}
+
+.history-empty {
+  color: var(--sc-text-muted);
+  font-size: 0.75rem;
+}
+
+.space-members {
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  padding-top: 0.65rem;
+}
+
+.space-members summary {
+  display: flex;
+  min-height: 2rem;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 650;
+  list-style: none;
+}
+
+.space-members summary::-webkit-details-marker {
+  display: none;
+}
+
+.member-count {
+  color: var(--sc-text-muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.space-members summary mat-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-left: auto;
+  color: var(--sc-text-muted);
+  font-size: 1.1rem;
+  transition: transform 160ms ease;
+}
+
+.space-members[open] summary mat-icon {
+  transform: rotate(180deg);
+}
+
+.space-members-content {
+  padding-top: 0.4rem;
+}
+
+.member-list {
+  display: grid;
+  max-height: 10rem;
+  overflow: auto;
+}
+
+.member-row {
+  display: flex;
+  min-width: 0;
+  min-height: 2.6rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.member-info {
+  display: grid;
+  min-width: 0;
+  gap: 0.1rem;
+}
+
+.member-info strong,
+.member-info span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.member-info strong {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.member-info span,
+.members-empty {
+  color: var(--sc-text-muted);
+  font-size: 0.7rem;
+}
+
+.remove-member {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: #f1a0a8;
+  background: transparent;
+  cursor: pointer;
+}
+
+.remove-member:hover:not(:disabled) {
+  background: rgba(241, 160, 168, 0.1);
+}
+
+.remove-member mat-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  font-size: 1.1rem;
+}
+
+.members-empty {
+  padding: 0.4rem 0;
+}
+
+.add-member-form {
+  display: flex;
+  min-width: 0;
+  align-items: start;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+
+.add-member-form .member-select {
+  min-width: 0;
+  flex: 1;
+}
+
+.add-member-form button {
+  display: inline-flex;
+  min-height: 2.4rem;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0 0.7rem;
+  border: 1px solid #b17c2c;
+  border-radius: 99px;
+  color: #241603;
+  background: #f6bd60;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.add-member-form button mat-icon {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+}
+
+.space-members summary:focus-visible,
+.remove-member:focus-visible,
+.add-member-form select:focus-visible,
+.add-member-form button:focus-visible {
+  outline: 2px solid #f6bd60;
+  outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+  .create-form {
+    grid-template-columns: 1fr;
+  }
+
+  .create-controls {
+    grid-template-columns: minmax(0, 1fr) 7.5rem;
+  }
+
+  .create-button {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .space-card {
+    padding: 0.85rem;
+  }
+
+  .space-heading {
+    gap: 0.45rem;
+  }
+
+  .space-card .space-emblem {
+    width: 2.4rem;
+    height: 2.4rem;
+    flex-basis: 2.4rem;
+  }
+
+  .space-info strong {
+    font-size: 1.05rem;
+  }
+
+  .space-card .allocation-control button {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .space-card,
+  .space-members summary mat-icon {
+    transition: none;
+  }
+}

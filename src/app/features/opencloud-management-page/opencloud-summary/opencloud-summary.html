@@ -1,0 +1,72 @@
+<section class="hero-card" aria-labelledby="pool-title">
+  <div class="allocation-overview">
+    <h2 id="pool-title">Storage allocation</h2>
+    <div class="allocated-total">
+      <strong>{{ allocatedStorage() | number:'1.2-2' }}</strong>
+      <span>{{ overview().storageUnit }} of {{ totalStorage() | number:'1.2-2' }} {{ overview().storageUnit }} allocated</span>
+      <button mat-button class="manage-total" type="button" (click)="manageTotal.emit()">
+        <mat-icon aria-hidden="true">open_in_new</mat-icon> Change total storage
+      </button>
+    </div>
+
+    <div class="capacity-segments" aria-hidden="true">
+      <span class="segment people-segment" [style.width.%]="segmentPercent(peopleQuantity())"></span>
+      <span class="segment spaces-segment" [style.width.%]="segmentPercent(spacesQuantity())"></span>
+      <span class="segment free-segment" [style.width.%]="segmentPercent(availableQuantity())"></span>
+    </div>
+
+    <div class="allocation-tiles">
+      <div class="allocation-tile people-tile">
+        <span>People</span>
+        <strong>{{ peopleStorage() | number:'1.2-2' }} <small>{{ overview().storageUnit }}</small></strong>
+      </div>
+      <div class="allocation-tile spaces-tile">
+        <span>Spaces</span>
+        <strong>{{ spacesStorage() | number:'1.2-2' }} <small>{{ overview().storageUnit }}</small></strong>
+      </div>
+      <div class="allocation-tile free-tile" [class.empty-pool]="availableQuantity() === 0">
+        <span>Free</span>
+        <strong>{{ freeStorage() | number:'1.2-2' }} <small>{{ overview().storageUnit }}</small></strong>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="usage-overview">
+    @if (usageSeries().length > 0) {
+      <div class="usage-total">{{ currentUsage() * overview().storageAmount | number:'1.2-2' }}<small>{{ overview().storageUnit }}</small></div>
+      @if (usageSeries().length > 1) {
+        <span class="usage-change" [class.usage-decrease]="usageDelta() < 0">
+          {{ usageDelta() >= 0 ? '+' : '' }}{{ usageDelta() * overview().storageAmount | number:'1.2-2' }} {{ overview().storageUnit }}
+        </span>
+      }
+      <div class="usage-chart">
+        <svg viewBox="0 0 400 130" preserveAspectRatio="none" role="img"
+          aria-label="Storage used in the last 30 days">
+          <defs>
+            <linearGradient id="usage-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#22D3EE" stop-opacity=".42" />
+              <stop offset="1" stop-color="#8B5CF6" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="usage-line" x1="0" x2="1">
+              <stop offset="0" stop-color="#A78BFA" />
+              <stop offset="1" stop-color="#67E8F9" />
+            </linearGradient>
+          </defs>
+          <path [attr.d]="usageChart().area" fill="url(#usage-fill)" />
+          <path [attr.d]="usageChart().line" fill="none" stroke="url(#usage-line)" stroke-width="3"
+            stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          @if (usageSeries().length > 1) {
+            <circle [attr.cx]="usageChart().lastX" [attr.cy]="usageChart().lastY" r="5"
+              fill="#04070D" stroke="#67E8F9" stroke-width="3" />
+          }
+        </svg>
+      </div>
+    } @else {
+      <div class="usage-empty">
+        <mat-icon aria-hidden="true">monitoring</mat-icon>
+        <span>No daily usage history yet</span>
+      </div>
+    }
+  </div>
+</section>

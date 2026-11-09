@@ -1,0 +1,381 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.people-panel {
+  min-width: 0;
+}
+
+.invite-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.65rem 0.8rem;
+  margin-bottom: 0.85rem;
+  padding: 1rem;
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  border-radius: 1.15rem;
+  background: rgba(34, 211, 238, 0.05);
+}
+
+.field-label {
+  grid-column: 1 / -1;
+  color: #c3d0dd;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.invite-controls {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) 8.5rem auto;
+  align-items: start;
+  gap: 0.6rem;
+}
+
+.invite-controls mat-form-field {
+  width: 100%;
+  min-width: 0;
+}
+
+.invite-controls .quantity-field {
+  width: 8.5rem;
+}
+
+.invite-controls .quantity-field input {
+  font-variant-numeric: tabular-nums;
+}
+
+.invite-button,
+.assign-button {
+  display: inline-flex;
+  min-height: 2.85rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 99px;
+  color: #031219;
+  background: linear-gradient(135deg, #67e8f9, #22d3ee 55%, #0ea5e9);
+  box-shadow: 0 0.5rem 1.4rem rgba(34, 211, 238, 0.18);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.invite-button mat-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  font-size: 1.1rem;
+}
+
+.invite-button:disabled,
+.assign-button:disabled,
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.form-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #9db0c4;
+  font-size: 0.73rem;
+}
+
+.people-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+mat-paginator {
+  background: transparent;
+}
+
+.person-row {
+  display: flex;
+  min-width: 0;
+  min-height: 5.2rem;
+  align-items: center;
+  gap: 0.9rem 1.15rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 1.35rem;
+  background: rgba(148, 163, 184, 0.045);
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.person-row:hover {
+  border-color: rgba(34, 211, 238, 0.28);
+  background: rgba(34, 211, 238, 0.055);
+}
+
+.owner-row {
+  border-color: rgba(167, 139, 250, 0.2);
+}
+
+.person-avatar {
+  display: grid;
+  align-self: flex-start;
+  width: 2.9rem;
+  height: 2.9rem;
+  flex: 0 0 2.9rem;
+  place-items: center;
+  border: 1px solid;
+  border-radius: 1rem;
+  font-family: 'Space Grotesk', Inter, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.person-info {
+  display: grid;
+  min-width: 9rem;
+  flex: 1 1 12rem;
+  gap: 0.12rem;
+}
+
+.person-info > strong {
+  overflow: hidden;
+  color: #e6eef5;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.person-email {
+  overflow: hidden;
+  color: #c3d0dd;
+  font-size: 0.74rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.role-list {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+}
+
+.role-chip-list {
+  display: flex;
+  min-width: 0;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.role-chip-list mat-chip-option {
+  --mdc-chip-container-height: 1.7rem;
+  font-size: 0.68rem;
+}
+
+.role-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.role-actions button {
+  display: inline-flex;
+  min-height: 1.9rem;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 0.55rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 99px;
+  color: #c3d0dd;
+  background: #19232d;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+.role-actions .save-roles {
+  border-color: rgba(34, 211, 238, 0.45);
+  color: #a5f3fc;
+  background: #123039;
+}
+
+.role-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.role-actions mat-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  font-size: 0.95rem;
+}
+
+.person-usage {
+  min-width: 8.5rem;
+  flex: 1 1 10rem;
+}
+
+.usage-copy {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  color: #c3d0dd;
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.usage-copy strong {
+  color: #e6eef5;
+  font-weight: 600;
+}
+
+.usage-bar {
+  display: block;
+  width: 100%;
+  height: 0.48rem;
+  border-radius: 99px;
+  --mat-progress-bar-active-indicator-color: #22d3ee;
+  --mat-progress-bar-active-indicator-height: 0.48rem;
+  --mat-progress-bar-track-color: rgba(148, 163, 184, 0.14);
+  --mat-progress-bar-track-height: 0.48rem;
+}
+
+.person-history {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 0.55rem;
+}
+
+.history-heading {
+  color: #9db0c4;
+  font-size: 0.62rem;
+  font-weight: 600;
+}
+
+.person-history .usage-chart {
+  display: block;
+  width: 100%;
+  height: 2.4rem;
+  overflow: visible;
+}
+
+.history-empty {
+  color: #9db0c4;
+  font-size: 0.68rem;
+}
+
+.allocation-control {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.allocation-control button {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 2.5rem;
+  place-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 50%;
+  color: #e6eef5;
+  background: #19232d;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.1rem;
+}
+
+.allocation-control strong {
+  min-width: 2.5rem;
+  color: #e6eef5;
+  text-align: center;
+  font-family: 'Space Grotesk', Inter, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.allocation-control small {
+  margin-left: 0.15rem;
+  color: #9db0c4;
+  font-family: Inter, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+
+.no-allocation {
+  flex: 1 1 9rem;
+  color: #9db0c4;
+  font-size: 0.74rem;
+}
+
+.assign-button {
+  min-height: 2.4rem;
+  padding: 0 0.85rem;
+  font-size: 0.73rem;
+}
+
+.empty-state {
+  display: grid;
+  min-height: 8rem;
+  place-content: center;
+  justify-items: center;
+  gap: 0.5rem;
+  color: #9db0c4;
+}
+
+.empty-state mat-icon {
+  color: #67e8f9;
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 700px) {
+  .invite-form {
+    grid-template-columns: 1fr;
+  }
+
+  .invite-controls {
+    grid-template-columns: minmax(0, 1fr) 7.5rem;
+  }
+
+  .invite-button {
+    grid-column: 1 / -1;
+  }
+
+  .person-row {
+    gap: 0.7rem;
+  }
+
+  .person-info {
+    flex-basis: calc(100% - 4rem);
+  }
+
+  .person-usage {
+    order: 3;
+    flex-basis: calc(100% - 7rem);
+  }
+
+  .allocation-control {
+    margin-left: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person-row,
+  .person-history .usage-chart path {
+    transition: none;
+  }
+}

@@ -1,0 +1,67 @@
+<main class="management-page">
+  @if (serviceStatus() === ServiceStatus.Loading || serviceStatus() === ServiceStatus.Initializing) {
+    <div class="loading-state" aria-label="Loading OpenCloud storage overview">
+      <mat-progress-bar mode="query" />
+    </div>
+  }
+
+  @if (serviceStatus() === ServiceStatus.Success && overview(); as data) {
+    <div class="management-content" [class.is-busy]="busy()">
+      <app-opencloud-summary [overview]="data" (manageTotal)="openBillingPortal()" />
+
+      <div class="tabs">
+        <nav mat-tab-nav-bar [tabPanel]="tabPanel" aria-label="Storage allocations">
+          <a mat-tab-link href="#people" [active]="activeTab() === 'people'"
+            (click)="$event.preventDefault(); selectTab('people')">
+            People <span class="tab-count">{{ people().length }}</span>
+          </a>
+          <a mat-tab-link href="#spaces" [active]="activeTab() === 'spaces'"
+            (click)="$event.preventDefault(); selectTab('spaces')">
+            Spaces <span class="tab-count">{{ data.spaces.length }}</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="collection-toolbar">
+        <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
+          <mat-label id="opencloud-search-label">Search {{ activeTab() === 'people' ? 'people' : 'spaces' }}</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput id="opencloud-search" aria-labelledby="opencloud-search-label" type="search" [value]="searchQuery()"
+            (input)="searchQuery.set($any($event.target).value)">
+          @if (searchQuery()) {
+            <button mat-icon-button matSuffix type="button" aria-label="Clear search"
+              (click)="searchQuery.set('')"><mat-icon>close</mat-icon></button>
+          }
+        </mat-form-field>
+        @if (!showForm()) {
+          <button mat-button class="add-item" [class.is-space]="activeTab() === 'spaces'" type="button"
+            [disabled]="busy() || (activeTab() === 'spaces' && availableQuantity() < 1)" (click)="openForm()">
+            <mat-icon aria-hidden="true">{{ activeTab() === 'people' ? 'person_add' : 'add_box' }}</mat-icon>
+            {{ activeTab() === 'people' ? 'Invite a person' : 'Create a space' }}
+          </button>
+        }
+      </div>
+
+      <mat-tab-nav-panel #tabPanel class="management-tab-panel">
+        @if (activeTab() === 'people') {
+          <app-opencloud-users [users]="people()" [availableQuantity]="availableQuantity()"
+            [storageAmount]="data.storageAmount" [storageUnit]="data.storageUnit" [busy]="busy()"
+            [searchQuery]="searchQuery()"
+            [showInviteForm]="showForm()" (invite)="inviteUser($event)"
+            (quantityChange)="updatePersonStorage($event)" (rolesChange)="updateUserRoles($event)" />
+        } @else {
+          <app-opencloud-spaces [spaces]="data.spaces" [availableQuantity]="availableQuantity()"
+            [people]="people()" [storageAmount]="data.storageAmount" [storageUnit]="data.storageUnit" [busy]="busy()"
+            [searchQuery]="searchQuery()"
+            [showCreateForm]="showForm()" (create)="createSpace($event)"
+            (quantityChange)="updateSpaceStorage($event)" (addMember)="addSpaceMember($event)"
+            (removeMember)="removeSpaceMember($event)" />
+        }
+      </mat-tab-nav-panel>
+    </div>
+  }
+
+  @if (serviceStatus() === ServiceStatus.Error) {
+    <app-loading-failed />
+  }
+</main>

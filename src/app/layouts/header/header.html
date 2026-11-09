@@ -17,7 +17,9 @@
           </button>
           <button mat-button [matMenuTriggerFor]="menu">
             @if (accountInitials; as initials) {
-              <span class="account-avatar">{{ initials }}</span>
+              <span class="account-avatar" [style.color]="accountAvatarColors.foreground"
+                [style.background-color]="accountAvatarColors.background"
+                [style.border-color]="accountAvatarColors.border">{{ initials }}</span>
             } @else {
               <mat-icon>person</mat-icon>
             }

@@ -4,6 +4,7 @@ import { signal } from '@angular/core';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { Header } from './header';
+import { avatarColorsForUid } from 'src/app/shared/avatar-colors';
 import { Auth, AuthUser } from 'src/app/core/auth/auth';
 import { environment } from 'src/environments/environment';
 
@@ -134,6 +135,7 @@ describe('Header', () => {
 
     const compiled: HTMLElement = fixture.nativeElement;
     expect(compiled.querySelector('.account-avatar')?.textContent?.trim()).toBe('SU');
+    expect(component.accountAvatarColors).toEqual(avatarColorsForUid('user-1'));
   });
 
   it('uses email initials when the display name is absent', () => {

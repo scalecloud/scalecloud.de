@@ -5,6 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { Auth } from 'src/app/core/auth/auth';
+import { AvatarColors, avatarColorsForUid } from 'src/app/shared/avatar-colors';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -16,6 +17,9 @@ import { environment } from 'src/environments/environment';
 })
 export class Header {
   readonly auth = inject(Auth);
+  get accountAvatarColors(): AvatarColors {
+    return avatarColorsForUid(this.auth.user()?.uid ?? '');
+  }
   readonly accountSettingsUrl = `${environment.oidc.authentikUrl}/if/user/#/settings;%7B%22page%22:%22page-credentials%22,%22ak-user-settings-mfa-page%22:0%7D`;
   private readonly router = inject(Router);
 

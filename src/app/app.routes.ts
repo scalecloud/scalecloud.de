@@ -45,6 +45,11 @@ export const routes: Routes = [
             loadComponent: () => import('./features/dashboard-page/dashboard-page').then(m => m.DashboardPage)
           },
           {
+            path: 'opencloud/:subscriptionID',
+            data: { breadcrumb: 'OpenCloud storage' },
+            loadComponent: () => import('./features/opencloud-management-page/opencloud-management-page').then(m => m.OpenCloudManagementPage)
+          },
+          {
             path: 'subscription/:subscriptionID',
             data: { breadcrumb: 'Details' },
             children: [

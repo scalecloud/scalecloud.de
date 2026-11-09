@@ -8,6 +8,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { MatChip } from '@angular/material/chips';
 import { RouterLink } from '@angular/router';
+import { ProductType } from '../../products/product-model';
 
 @Component({
   selector: 'app-subscription-overview',
@@ -22,6 +23,8 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class SubscriptionOverview {
+  readonly ProductType = ProductType;
+
   // Input property expected by the tests and consumers
   readonly subscriptionOverview = input<SubscriptionOverviewModel | undefined>(undefined);
 

@@ -1,0 +1,144 @@
+<section class="space-panel" aria-label="Spaces">
+  @if (showCreateForm()) {
+    <form class="create-form" (submit)="submitCreate($event)">
+      <label class="field-label" for="space-name">Create a space</label>
+      <div class="create-controls">
+        <mat-form-field appearance="outline" class="space-name-field" subscriptSizing="dynamic">
+          <mat-label>Space name</mat-label>
+          <input matInput id="space-name" type="text" maxlength="80" required
+            [value]="name()" [disabled]="busy() || availableQuantity() < 1"
+            (input)="name.set($any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="quantity-field" subscriptSizing="dynamic">
+          <mat-label>Storage</mat-label>
+          <input matInput aria-label="Storage for new space" type="number" min="1"
+            [max]="availableQuantity()" [value]="initialQuantity()"
+            [disabled]="busy() || availableQuantity() < 1"
+            (change)="setInitialQuantity($any($event.target).value)">
+          <span matSuffix>{{ storageAmount() }} {{ storageUnit() }}</span>
+        </mat-form-field>
+        <button mat-button class="create-button" type="submit" [disabled]="busy() || availableQuantity() < 1">
+          <mat-icon aria-hidden="true">add</mat-icon> Create
+        </button>
+      </div>
+      @if (availableQuantity() < 1) {
+        <p class="form-hint">At least one unit must be available to create a space.</p>
+      }
+    </form>
+  }
+
+  <div class="space-grid">
+    @for (space of visibleSpaces(); track space.id) {
+      <article class="space-card">
+        <div class="space-heading">
+          <div class="space-emblem" aria-hidden="true"><mat-icon>grid_view</mat-icon></div>
+          <div class="space-info">
+            <strong>{{ space.name }}</strong>
+          </div>
+          @if (space.storageQuantity > 0) {
+            <div class="allocation-control" [attr.aria-label]="'Storage quota for ' + space.name">
+              <button mat-icon-button type="button" [attr.aria-label]="'Decrease storage quota for ' + space.name"
+                [disabled]="busy() || space.storageQuantity <= 1" (click)="adjustSpace(space, -1)">
+                <mat-icon aria-hidden="true">remove</mat-icon>
+              </button>
+              <strong>{{ space.storageQuantity * storageAmount() | number:'1.2-2' }}<small>{{ storageUnit() }}</small></strong>
+              <button mat-icon-button type="button" [attr.aria-label]="'Increase storage quota for ' + space.name"
+                [disabled]="busy() || availableQuantity() < 1" (click)="adjustSpace(space, 1)">
+                <mat-icon aria-hidden="true">add</mat-icon>
+              </button>
+            </div>
+          } @else {
+            <button mat-button class="assign-button header-assign" type="button"
+              [disabled]="busy() || availableQuantity() < 1"
+              (click)="quantityChange.emit({ spaceID: space.id, storageQuantity: 1 })">Assign 1 unit</button>
+          }
+        </div>
+        @if (space.storageQuantity > 0) {
+          <div class="space-usage">
+            <div class="usage-copy">
+              <span>Used {{ (space.usedQuantity ?? 0) * storageAmount() | number:'1.2-2' }} of {{ space.storageQuantity * storageAmount() | number:'1.2-2' }} {{ storageUnit() }}</span>
+              <strong>{{ usagePercent(space) | number:'1.0-0' }} %</strong>
+            </div>
+            <mat-progress-bar class="usage-bar" mode="determinate" [value]="usagePercent(space)"
+              [attr.aria-label]="'Storage used by ' + space.name" />
+          </div>
+        } @else {
+          <p class="unassigned">No storage assigned</p>
+        }
+
+        <div class="space-history">
+          <div class="history-heading">30-day usage</div>
+          @if ((space.dailyUsage?.length ?? 0) > 0) {
+            <svg class="usage-chart" viewBox="0 0 300 48" preserveAspectRatio="none" role="img"
+              [attr.aria-label]="'30-day storage usage for ' + space.name">
+              <path [attr.d]="usageCharts().get(space.id)?.area ?? ''" fill="rgba(246, 189, 96, 0.12)" />
+              <path [attr.d]="usageCharts().get(space.id)?.line ?? ''" fill="none" stroke="#f6bd60"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+              <circle [attr.cx]="usageCharts().get(space.id)?.lastX ?? 0"
+                [attr.cy]="usageCharts().get(space.id)?.lastY ?? 0" r="2.5" fill="#fcd34d" />
+            </svg>
+          } @else {
+            <span class="history-empty">No usage history yet</span>
+          }
+        </div>
+
+        <details class="space-members">
+          <summary>
+            <span>Members</span>
+            <span class="member-count">{{ space.memberCount }}</span>
+            <mat-icon aria-hidden="true">expand_more</mat-icon>
+          </summary>
+          <div class="space-members-content">
+            <div class="member-list">
+              @for (member of space.members; track member.permissionID) {
+                <div class="member-row">
+                  <div class="member-info">
+                    <strong>{{ member.displayName || member.email || (member.groupID ? 'Group' : 'OpenCloud member') }}</strong>
+                    @if (member.email) {
+                      <span>{{ member.email }}</span>
+                    }
+                  </div>
+                  <button mat-icon-button class="remove-member" type="button"
+                    [attr.aria-label]="'Remove ' + (member.displayName || member.email || 'member') + ' from ' + space.name"
+                    [disabled]="busy() || !member.permissionID"
+                    (click)="removeMember.emit({ spaceID: space.id, permissionID: member.permissionID })">
+                    <mat-icon aria-hidden="true">person_remove</mat-icon>
+                  </button>
+                </div>
+              } @empty {
+                <span class="members-empty">No people in this space yet</span>
+              }
+            </div>
+            @if (availablePeople(space).length > 0) {
+              <form class="add-member-form" (submit)="submitAddMember($event, space)">
+                <mat-form-field appearance="outline" class="member-select" subscriptSizing="dynamic">
+                  <mat-label>Add a person</mat-label>
+                  <mat-select [value]="selectedMember(space.id)" [disabled]="busy()"
+                    (selectionChange)="setSelectedMember(space.id, $event.value)">
+                    <mat-option value="">Select a person</mat-option>
+                    @for (person of availablePeople(space); track person.uid) {
+                      <mat-option [value]="person.uid">{{ person.email }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                <button mat-button type="submit" [disabled]="busy() || !selectedMember(space.id)">
+                  <mat-icon aria-hidden="true">person_add</mat-icon> Add
+                </button>
+              </form>
+            }
+          </div>
+        </details>
+      </article>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon aria-hidden="true">grid_view</mat-icon>
+        <p>{{ searchQuery() ? 'No spaces match your search' : 'No spaces created yet' }}</p>
+      </div>
+    }
+  </div>
+  @if (filteredSpaces().length > pageSize()) {
+    <mat-paginator aria-label="Space pages" [length]="filteredSpaces().length" [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()" [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons
+      (page)="onPageChange($event)" />
+  }
+</section>

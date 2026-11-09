@@ -165,5 +165,17 @@ describe('SubscriptionOverview', () => {
       const routerLink = btn.injector.get(RouterLink);
       expect(routerLink.urlTree?.toString()).toContain('sub-123');
     });
+
+    it('links OpenCloud subscriptions to storage management', async () => {
+      await setInput(fixture, 'subscriptionOverview', {
+        ...MOCK_SUBSCRIPTION,
+        productType: 'OpenCloud',
+      });
+
+      const btn = fixture.debugElement.query(By.directive(RouterLink));
+      const routerLink = btn.injector.get(RouterLink);
+      expect(routerLink.urlTree?.toString()).toContain('/dashboard/opencloud/sub-123');
+      expect(btn.nativeElement.textContent.trim()).toBe('Manage storage');
+    });
   });
 });

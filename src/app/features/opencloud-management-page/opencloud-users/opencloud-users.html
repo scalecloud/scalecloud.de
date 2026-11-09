@@ -1,0 +1,113 @@
+<section class="people-panel" aria-label="People">
+  @if (showInviteForm()) {
+    <form class="invite-form" (submit)="submitInvite($event)">
+      <label class="field-label" for="invite-email">Invite a person</label>
+      <div class="invite-controls">
+        <mat-form-field appearance="outline" class="email-field" subscriptSizing="dynamic">
+          <mat-label>Email address</mat-label>
+          <input matInput id="invite-email" type="email" autocomplete="email" required
+            [value]="email()" [disabled]="busy() || availableQuantity() < 1"
+            (input)="email.set($any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="quantity-field" subscriptSizing="dynamic">
+          <mat-label>Storage</mat-label>
+          <input matInput aria-label="Storage for invited person" type="number" min="1"
+            [max]="availableQuantity()" [value]="inviteQuantity()"
+            [disabled]="busy() || availableQuantity() < 1"
+            (change)="setInviteQuantity($any($event.target).value)">
+          <span matSuffix>{{ storageAmount() }} {{ storageUnit() }}</span>
+        </mat-form-field>
+        <button mat-button class="invite-button" type="submit" [disabled]="busy() || availableQuantity() < 1">
+          <mat-icon aria-hidden="true">send</mat-icon> Invite
+        </button>
+      </div>
+      @if (availableQuantity() < 1) {
+        <p class="form-hint">Free up storage first.</p>
+      } @else {
+        <p class="form-hint">At least {{ storageAmount() }} {{ storageUnit() }} is required.</p>
+      }
+    </form>
+  }
+
+  <div class="people-list">
+    @for (user of visibleUsers(); track user.uid) {
+      <article class="person-row" [class.owner-row]="user.isOwner">
+        <div class="person-avatar" aria-hidden="true" [style.color]="avatarColors(user.uid).foreground"
+          [style.background-color]="avatarColors(user.uid).background"
+          [style.border-color]="avatarColors(user.uid).border">{{ initial(user.email) }}</div>
+        <div class="person-info">
+          <strong>{{ user.email.split('@')[0] }}</strong>
+          <span class="person-email">{{ user.email }}</span>
+          <div class="role-list">
+            <mat-chip-listbox multiple class="role-chip-list" [attr.aria-label]="'Roles for ' + user.email">
+              @for (role of roleOptions(user); track role) {
+                <mat-chip-option [selected]="selectedRoles(user).includes(role)"
+                  [disabled]="roleOptionDisabled(user, role)" [matTooltip]="roleDescription(role)"
+                  (selectionChange)="setRoleSelected(user, role, $event.selected)">
+                  {{ roleLabel(role) }}
+                </mat-chip-option>
+              }
+            </mat-chip-listbox>
+            @if (!user.isOwner && rolesChanged(user)) {
+              <div class="role-actions">
+                <button mat-button class="save-roles" type="button" [disabled]="busy() || selectedRoles(user).length === 0"
+                  (click)="saveRoles(user)">
+                  <mat-icon aria-hidden="true">save</mat-icon> Save roles
+                </button>
+                <button mat-button class="cancel-roles" type="button" [disabled]="busy()" (click)="cancelRoleChanges(user)">
+                  Cancel
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+        @if (user.storageQuantity > 0) {
+          <div class="person-usage">
+            <div class="usage-copy">
+              <span>Used {{ (user.usedQuantity ?? 0) * storageAmount() | number:'1.2-2' }} of {{ user.storageQuantity * storageAmount() | number:'1.2-2' }} {{ storageUnit() }}</span>
+              <strong>{{ usagePercent(user) | number:'1.0-0' }} %</strong>
+            </div>
+            <mat-progress-bar class="usage-bar" mode="determinate" [value]="usagePercent(user)"
+              [attr.aria-label]="'Storage used by ' + user.email" />
+            <div class="person-history">
+              <div class="history-heading">30-day usage</div>
+              @if ((user.dailyUsage?.length ?? 0) > 0) {
+                <svg class="usage-chart" viewBox="0 0 300 48" preserveAspectRatio="none" role="img"
+                  [attr.aria-label]="'30-day storage usage for ' + user.email">
+                  <path [attr.d]="usageCharts().get(user.uid)?.area ?? ''" fill="rgba(34, 211, 238, 0.12)" />
+                  <path [attr.d]="usageCharts().get(user.uid)?.line ?? ''" fill="none" stroke="#22d3ee"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+                  <circle [attr.cx]="usageCharts().get(user.uid)?.lastX ?? 0"
+                    [attr.cy]="usageCharts().get(user.uid)?.lastY ?? 0" r="2.5" fill="#67e8f9" />
+                </svg>
+              } @else {
+                <span class="history-empty">No usage history yet</span>
+              }
+            </div>
+          </div>
+          <div class="allocation-control" [attr.aria-label]="user.storageQuantity * storageAmount() + ' ' + storageUnit() + ' allocated to ' + user.email">
+            <button mat-icon-button type="button" aria-label="Reduce storage" [disabled]="busy() || user.storageQuantity <= 1"
+              (click)="adjustUser(user, -1)"><mat-icon aria-hidden="true">remove</mat-icon></button>
+            <strong>{{ user.storageQuantity * storageAmount() | number:'1.2-2' }}<small>{{ storageUnit() }}</small></strong>
+            <button mat-icon-button type="button" aria-label="Increase storage" [disabled]="busy() || availableQuantity() < 1"
+              (click)="adjustUser(user, 1)"><mat-icon aria-hidden="true">add</mat-icon></button>
+          </div>
+        } @else {
+          <span class="no-allocation">No storage assigned</span>
+          <button mat-button class="assign-button" type="button" [disabled]="busy() || availableQuantity() < 1"
+            (click)="assignFirstUnit(user)">Assign 1 unit</button>
+        }
+      </article>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon aria-hidden="true">mail_outline</mat-icon>
+        <p>{{ searchQuery() ? 'No people match your search' : 'No people invited yet' }}</p>
+      </div>
+    }
+  </div>
+  @if (filteredUsers().length > pageSize()) {
+    <mat-paginator aria-label="People pages" [length]="filteredUsers().length" [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()" [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons
+      (page)="onPageChange($event)" />
+  }
+</section>

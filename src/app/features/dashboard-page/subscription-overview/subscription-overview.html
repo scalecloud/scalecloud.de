@@ -33,11 +33,12 @@
             </mat-card-content>
             <mat-card-actions>
                 <button
-                    [routerLink]="['/dashboard/subscription', subscriptionOverviewModel()?.id]"
+                                        [routerLink]="subscriptionOverviewModel()?.productType === ProductType.OpenCloud
+                                            ? ['/dashboard/opencloud', subscriptionOverviewModel()?.id]
+                                            : ['/dashboard/subscription', subscriptionOverviewModel()?.id]"
                     mat-stroked-button
-                    color="primary"
-                    aria-label="View subscription details">
-                    Details
+                                            color="primary">
+                                        {{ subscriptionOverviewModel()?.productType === ProductType.OpenCloud ? 'Manage storage' : 'Details' }}
                 </button>
             </mat-card-actions>
         </mat-card>
