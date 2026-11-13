@@ -9,7 +9,7 @@
 
 .invite-form {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   align-items: end;
   gap: 0.65rem 0.8rem;
   margin-bottom: 0.85rem;
@@ -28,7 +28,7 @@
 
 .invite-controls {
   display: grid;
-  grid-template-columns: minmax(9rem, 1fr) 8.5rem auto;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
   align-items: start;
   gap: 0.6rem;
 }
@@ -340,37 +340,6 @@ mat-paginator {
 .empty-state p {
   margin: 0;
   font-size: 0.8rem;
-}
-
-@media (max-width: 700px) {
-  .invite-form {
-    grid-template-columns: 1fr;
-  }
-
-  .invite-controls {
-    grid-template-columns: minmax(0, 1fr) 7.5rem;
-  }
-
-  .invite-button {
-    grid-column: 1 / -1;
-  }
-
-  .person-row {
-    gap: 0.7rem;
-  }
-
-  .person-info {
-    flex-basis: calc(100% - 4rem);
-  }
-
-  .person-usage {
-    order: 3;
-    flex-basis: calc(100% - 7rem);
-  }
-
-  .allocation-control {
-    margin-left: auto;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

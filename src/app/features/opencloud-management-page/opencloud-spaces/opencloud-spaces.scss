@@ -58,7 +58,7 @@ h2 {
 
 .create-form {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   align-items: end;
   gap: 0.65rem 0.8rem;
   margin-bottom: 0.85rem;
@@ -78,7 +78,7 @@ h2 {
 
 .create-controls {
   display: grid;
-  grid-template-columns: minmax(9rem, 1fr) 9rem auto;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
   align-items: start;
   gap: 0.6rem;
 }
@@ -157,13 +157,13 @@ button:disabled {
 .space-info {
   display: grid;
   min-width: 0;
-  flex: 1;
+  flex: 1 1 8rem;
   gap: 0.25rem;
 }
 
 .space-info strong {
   overflow: hidden;
-  font-size: 1.2rem;
+  font-size: clamp(1.05rem, 3vw, 1.2rem);
   font-weight: 650;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -263,11 +263,10 @@ button:disabled {
 .space-card {
   display: flex;
   width: 100%;
-  max-width: 34rem;
   min-width: 0;
   flex-direction: column;
   gap: 0.8rem;
-  padding: 1rem;
+  padding: clamp(0.85rem, 3vw, 1rem);
   border: 1px solid transparent;
   border-radius: 1.45rem;
   background:
@@ -280,12 +279,13 @@ button:disabled {
   min-width: 0;
   align-items: center;
   gap: 0.65rem;
+  flex-wrap: wrap;
 }
 
 .space-card .space-emblem {
-  width: 2.75rem;
-  height: 2.75rem;
-  flex-basis: 2.75rem;
+  width: clamp(2.4rem, 8vw, 2.75rem);
+  height: clamp(2.4rem, 8vw, 2.75rem);
+  flex-basis: clamp(2.4rem, 8vw, 2.75rem);
   border-radius: 0.7rem;
 }
 
@@ -334,8 +334,8 @@ button:disabled {
 }
 
 .space-card .allocation-control button {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: clamp(2rem, 7vw, 2.25rem);
+  height: clamp(2rem, 7vw, 2.25rem);
   border-color: rgba(148, 163, 184, 0.25);
   border-radius: 50%;
   background: rgba(148, 163, 184, 0.08);
@@ -530,45 +530,6 @@ button:disabled {
 .add-member-form button:focus-visible {
   outline: 2px solid #f6bd60;
   outline-offset: 2px;
-}
-
-@media (max-width: 700px) {
-  .create-form {
-    grid-template-columns: 1fr;
-  }
-
-  .create-controls {
-    grid-template-columns: minmax(0, 1fr) 7.5rem;
-  }
-
-  .create-button {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 420px) {
-  .space-card {
-    padding: 0.85rem;
-  }
-
-  .space-heading {
-    gap: 0.45rem;
-  }
-
-  .space-card .space-emblem {
-    width: 2.4rem;
-    height: 2.4rem;
-    flex-basis: 2.4rem;
-  }
-
-  .space-info strong {
-    font-size: 1.05rem;
-  }
-
-  .space-card .allocation-control button {
-    width: 2rem;
-    height: 2rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
