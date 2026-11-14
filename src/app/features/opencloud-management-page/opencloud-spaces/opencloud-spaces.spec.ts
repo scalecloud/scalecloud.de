@@ -59,6 +59,7 @@ describe('OpenCloudSpaces', () => {
 
     expect(fixture.nativeElement.textContent).toContain('Used 0.5 of 2 TB');
     expect(fixture.nativeElement.textContent).not.toContain('Allocated');
+    expect(fixture.nativeElement.querySelector('.space-heading .space-usage')).toBeTruthy();
     const usageActions = fixture.nativeElement.querySelector('.space-usage .usage-actions');
     expect(usageActions?.querySelector('strong')?.textContent?.trim()).toBe('25 %');
     expect(usageActions?.querySelector('.allocation-control')).toBeTruthy();

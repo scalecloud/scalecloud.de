@@ -33,6 +33,7 @@ html .mat-mdc-unelevated-button:not(:disabled) {
 .sc-stepper {
   display: flex;
   height: 2.45rem;
+  flex: 0 0 auto;
   align-items: center;
   overflow: hidden;
   border: 1px solid var(--sc-border);

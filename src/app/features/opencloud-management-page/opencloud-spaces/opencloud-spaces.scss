@@ -76,7 +76,7 @@
 
 .space-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 32rem), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 32rem), 1fr));
   align-items: start;
   gap: 0.8rem;
 }
@@ -102,7 +102,7 @@
 .space-heading {
   display: flex;
   min-width: 0;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.65rem;
   flex-wrap: wrap;
 }
@@ -115,6 +115,7 @@
 
 .space-usage {
   display: grid;
+  flex: 2 1 20rem;
   min-width: 0;
   gap: 0.45rem;
 }
@@ -123,7 +124,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.5rem;
   font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
