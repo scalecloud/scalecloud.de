@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { OpenCloudSpaceMembers } from '../opencloud-space-members/opencloud-space-members';
 import { OpenCloudSpaces } from './opencloud-spaces';
 
 describe('OpenCloudSpaces', () => {
@@ -55,11 +57,15 @@ describe('OpenCloudSpaces', () => {
     }]);
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Used 0.50 of 2.00 TB');
+    expect(fixture.nativeElement.textContent).toContain('Used 0.5 of 2 TB');
     expect(fixture.nativeElement.textContent).not.toContain('Allocated');
-    expect(fixture.nativeElement.querySelector('.space-heading .allocation-control')).toBeTruthy();
-    expect((fixture.nativeElement.querySelector('.space-heading .allocation-control input') as HTMLInputElement).value)
+    const usageActions = fixture.nativeElement.querySelector('.space-usage .usage-actions');
+    expect(usageActions?.querySelector('strong')?.textContent?.trim()).toBe('25 %');
+    expect(usageActions?.querySelector('.allocation-control')).toBeTruthy();
+    expect((fixture.nativeElement.querySelector('.space-usage .allocation-control input') as HTMLInputElement).value)
       .toBe('2');
+    expect(fixture.nativeElement.querySelector('.space-overview')?.nextElementSibling?.localName)
+      .toBe('app-opencloud-space-members');
     expect(fixture.nativeElement.querySelector('mat-progress-bar')?.getAttribute('aria-valuenow')).toBe('25');
     expect(fixture.nativeElement.querySelector('svg[role="img"]')?.getAttribute('aria-label'))
       .toBe('30-day storage usage for Design team');
@@ -99,8 +105,10 @@ describe('OpenCloudSpaces', () => {
     details.open = true;
     fixture.detectChanges();
     (fixture.nativeElement.querySelector('.remove-member') as HTMLButtonElement).click();
-    component.setSelectedMember(space.id, person.uid);
-    component.submitAddMember({ preventDefault: vi.fn() } as unknown as Event, space);
+    const membersComponent = fixture.debugElement.query(By.directive(OpenCloudSpaceMembers))
+      .injector.get(OpenCloudSpaceMembers);
+    membersComponent.selectedMember.set(person.uid);
+    membersComponent.submitAddMember({ preventDefault: vi.fn() } as unknown as Event);
 
     expect(removed).toHaveBeenCalledWith({ spaceID: 'space-1', permissionID: 'permission-1' });
     expect(added).toHaveBeenCalledWith({ spaceID: 'space-1', uid: 'person-2' });

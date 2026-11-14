@@ -1,0 +1,46 @@
+<details class="space-members">
+  <summary>
+    <span>Members</span>
+    <span class="member-count">{{ space().memberCount }}</span>
+    <mat-icon aria-hidden="true">expand_more</mat-icon>
+  </summary>
+  <div class="space-members-content">
+    <div class="member-list">
+      @for (member of space().members; track member.permissionID) {
+        <div class="member-row">
+          <div class="member-info">
+            <strong>{{ member.displayName || member.email || (member.groupID ? 'Group' : 'OpenCloud member') }}</strong>
+            @if (member.email) {
+              <span>{{ member.email }}</span>
+            }
+          </div>
+          <button mat-icon-button class="remove-member" type="button"
+            [attr.aria-label]="'Remove ' + (member.displayName || member.email || 'member') + ' from ' + space().name"
+            [disabled]="busy() || !member.permissionID"
+            (click)="removeMember.emit({ spaceID: space().id, permissionID: member.permissionID })">
+            <mat-icon aria-hidden="true">person_remove</mat-icon>
+          </button>
+        </div>
+      } @empty {
+        <span class="members-empty">No people in this space yet</span>
+      }
+    </div>
+    @if (availablePeople().length > 0) {
+      <form class="add-member-form" (submit)="submitAddMember($event)">
+        <mat-form-field appearance="outline" class="member-select" subscriptSizing="dynamic">
+          <mat-label>Add a person</mat-label>
+          <mat-select [value]="selectedMember()" [disabled]="busy()"
+            (selectionChange)="selectedMember.set($event.value)">
+            <mat-option value="">Select a person</mat-option>
+            @for (person of availablePeople(); track person.uid) {
+              <mat-option [value]="person.uid">{{ person.email }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <button mat-flat-button type="submit" [disabled]="busy() || !selectedMember()">
+          <mat-icon aria-hidden="true">person_add</mat-icon> Add
+        </button>
+      </form>
+    }
+  </div>
+</details>

@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { MatOption, MatSelect } from '@angular/material/select';
+import { OpenCloudSpaceMembers } from '../opencloud-space-members/opencloud-space-members';
 import {
   OpenCloudCreateSpaceRequest,
   OpenCloudPersonAllocation,
@@ -42,7 +42,7 @@ function createSpaceUsageChart(space: OpenCloudSpaceAllocation): SpaceUsageChart
   templateUrl: './opencloud-spaces.html',
   styleUrl: './opencloud-spaces.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIcon, MatButton, MatIconButton, MatProgressBar, MatPaginator, DecimalPipe, MatFormField, MatLabel, MatSuffix, MatInput, MatOption, MatSelect],
+  imports: [MatIcon, MatButton, MatProgressBar, MatPaginator, DecimalPipe, MatFormField, MatLabel, MatSuffix, MatInput, OpenCloudSpaceMembers],
 })
 export class OpenCloudSpaces {
   readonly spaces = input.required<OpenCloudSpaceAllocation[]>();
@@ -64,7 +64,6 @@ export class OpenCloudSpaces {
     this.searchQuery();
     return 0;
   });
-  readonly selectedMembers = signal<Record<string, string>>({});
   readonly filteredSpaces = computed(() => {
     const query = this.searchQuery().trim().toLowerCase();
     if (!query) return this.spaces();
@@ -107,31 +106,6 @@ export class OpenCloudSpaces {
     const next = space.storageQuantity + change;
     if (next < 1 || next > space.storageQuantity + this.availableQuantity()) return;
     this.quantityChange.emit({ spaceID: space.id, storageQuantity: next });
-  }
-
-  availablePeople(space: OpenCloudSpaceAllocation): OpenCloudPersonAllocation[] {
-    const memberUIDs = new Set((space.members ?? []).map((member) => member.uid).filter(Boolean));
-    return this.people().filter((person) => person.openCloudLinked && !memberUIDs.has(person.uid));
-  }
-
-  selectedMember(spaceID: string): string {
-    return this.selectedMembers()[spaceID] ?? '';
-  }
-
-  setSelectedMember(spaceID: string, uid: string): void {
-    this.selectedMembers.update((selected) => ({ ...selected, [spaceID]: uid }));
-  }
-
-  submitAddMember(event: Event, space: OpenCloudSpaceAllocation): void {
-    event.preventDefault();
-    const uid = this.selectedMember(space.id);
-    if (!uid || this.busy()) return;
-    this.addMember.emit({ spaceID: space.id, uid });
-    this.selectedMembers.update((selected) => {
-      const next = { ...selected };
-      delete next[space.id];
-      return next;
-    });
   }
 
   usagePercent(space: OpenCloudSpaceAllocation): number {

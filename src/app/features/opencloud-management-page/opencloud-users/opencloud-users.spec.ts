@@ -92,6 +92,8 @@ describe('OpenCloudUsers', () => {
 
     const allocation = fixture.nativeElement.querySelector('.allocation-control input') as HTMLInputElement;
     expect(allocation.value).toBe('2');
+    expect(fixture.nativeElement.textContent).toContain('Used 0 of 2 TB');
+    expect(fixture.nativeElement.querySelector('.usage-actions strong')?.textContent?.trim()).toBe('0 %');
   });
 
   it('stages role changes and emits them when saved', () => {

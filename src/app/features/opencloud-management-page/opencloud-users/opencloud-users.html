@@ -32,75 +32,83 @@
   <div class="people-list">
     @for (user of visibleUsers(); track user.uid) {
       <article class="person-row sc-card sc-card--compact">
-        <div class="person-avatar" aria-hidden="true" [style.color]="avatarColors(user.uid).foreground"
-          [style.background-color]="avatarColors(user.uid).background"
-          [style.border-color]="avatarColors(user.uid).border">{{ initial(user.email) }}</div>
-        <div class="person-info">
-          <strong>{{ user.email.split('@')[0] }}</strong>
-          <span class="person-email">{{ user.email }}</span>
-          <div class="role-list">
-            <mat-chip-listbox multiple class="role-chip-list" [attr.aria-label]="'Roles for ' + user.email">
-              @for (role of roleOptions(user); track role) {
-                <mat-chip-option [selected]="selectedRoles(user).includes(role)"
-                  [disabled]="roleOptionDisabled(user, role)" [matTooltip]="roleDescription(role)"
-                  (selectionChange)="setRoleSelected(user, role, $event.selected)">
-                  {{ roleLabel(role) }}
-                </mat-chip-option>
+        <div class="person-identity">
+          <div class="person-avatar" aria-hidden="true" [style.color]="avatarColors(user.uid).foreground"
+            [style.background-color]="avatarColors(user.uid).background"
+            [style.border-color]="avatarColors(user.uid).border">{{ initial(user.email) }}</div>
+          <div class="person-info">
+            <strong>{{ user.email.split('@')[0] }}</strong>
+            <span class="person-email">{{ user.email }}</span>
+            <div class="role-list">
+              <mat-chip-listbox multiple class="role-chip-list" [attr.aria-label]="'Roles for ' + user.email">
+                @for (role of roleOptions(user); track role) {
+                  <mat-chip-option [selected]="selectedRoles(user).includes(role)"
+                    [disabled]="roleOptionDisabled(user, role)" [matTooltip]="roleDescription(role)"
+                    (selectionChange)="setRoleSelected(user, role, $event.selected)">
+                    {{ roleLabel(role) }}
+                  </mat-chip-option>
+                }
+              </mat-chip-listbox>
+              @if (!user.isOwner && rolesChanged(user)) {
+                <div class="role-actions">
+                  <button mat-button type="button" [disabled]="busy() || selectedRoles(user).length === 0"
+                    (click)="saveRoles(user)">
+                    <mat-icon aria-hidden="true">save</mat-icon> Save roles
+                  </button>
+                  <button mat-button type="button" [disabled]="busy()" (click)="cancelRoleChanges(user)">
+                    Cancel
+                  </button>
+                </div>
               }
-            </mat-chip-listbox>
-            @if (!user.isOwner && rolesChanged(user)) {
-              <div class="role-actions">
-                <button mat-button type="button" [disabled]="busy() || selectedRoles(user).length === 0"
-                  (click)="saveRoles(user)">
-                  <mat-icon aria-hidden="true">save</mat-icon> Save roles
-                </button>
-                <button mat-button type="button" [disabled]="busy()" (click)="cancelRoleChanges(user)">
-                  Cancel
-                </button>
-              </div>
-            }
+            </div>
           </div>
         </div>
-        @if (user.storageQuantity > 0) {
-          <div class="person-usage">
-            <div class="usage-copy">
-              <span>Used {{ (user.usedQuantity ?? 0) * storageAmount() | number:'1.2-2' }} of {{ user.storageQuantity * storageAmount() | number:'1.2-2' }} {{ storageUnit() }}</span>
-              <strong>{{ usagePercent(user) | number:'1.0-0' }} %</strong>
+        <div class="person-storage">
+          @if (user.storageQuantity > 0) {
+            <div class="person-usage">
+              <div class="usage-copy">
+                <span>Used {{ (user.usedQuantity ?? 0) * storageAmount() | number:'1.0-2' }} of {{ user.storageQuantity * storageAmount() | number:'1.0-2' }} {{ storageUnit() }}</span>
+                <div class="usage-actions">
+                  <strong>{{ usagePercent(user) | number:'1.0-0' }} %</strong>
+                  <div class="allocation-control" role="group" [attr.aria-label]="'Storage allocation for ' + user.email">
+                    <div class="sc-stepper">
+                      <button type="button" [attr.aria-label]="'Reduce storage for ' + user.email"
+                        [disabled]="busy() || user.storageQuantity <= 1" (click)="adjustUser(user, -1)">−</button>
+                      <input type="number" [attr.aria-label]="'Allocated storage for ' + user.email"
+                        [value]="user.storageQuantity * storageAmount() | number:'1.0-2'" readonly>
+                      <button type="button" [attr.aria-label]="'Increase storage for ' + user.email"
+                        [disabled]="busy() || availableQuantity() < 1" (click)="adjustUser(user, 1)">+</button>
+                    </div>
+                    <span class="sc-text-muted">{{ storageUnit() }}</span>
+                  </div>
+                </div>
+              </div>
+              <mat-progress-bar class="usage-bar" mode="determinate" [value]="usagePercent(user)"
+                [attr.aria-label]="'Storage used by ' + user.email" />
+              <div class="person-history">
+                <div class="history-heading sc-text-muted">30-day usage</div>
+                @if ((user.dailyUsage?.length ?? 0) > 0) {
+                  <svg class="usage-chart" viewBox="0 0 300 48" preserveAspectRatio="none" role="img"
+                    [attr.aria-label]="'30-day storage usage for ' + user.email">
+                    <path [attr.d]="usageCharts().get(user.uid)?.area ?? ''" fill="rgba(34, 211, 238, 0.12)" />
+                    <path [attr.d]="usageCharts().get(user.uid)?.line ?? ''" fill="none" stroke="#22d3ee"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+                    <circle [attr.cx]="usageCharts().get(user.uid)?.lastX ?? 0"
+                      [attr.cy]="usageCharts().get(user.uid)?.lastY ?? 0" r="2.5" fill="#67e8f9" />
+                  </svg>
+                } @else {
+                  <span class="history-empty sc-text-muted">No usage history yet</span>
+                }
+              </div>
             </div>
-            <mat-progress-bar class="usage-bar" mode="determinate" [value]="usagePercent(user)"
-              [attr.aria-label]="'Storage used by ' + user.email" />
-            <div class="person-history">
-              <div class="history-heading sc-text-muted">30-day usage</div>
-              @if ((user.dailyUsage?.length ?? 0) > 0) {
-                <svg class="usage-chart" viewBox="0 0 300 48" preserveAspectRatio="none" role="img"
-                  [attr.aria-label]="'30-day storage usage for ' + user.email">
-                  <path [attr.d]="usageCharts().get(user.uid)?.area ?? ''" fill="rgba(34, 211, 238, 0.12)" />
-                  <path [attr.d]="usageCharts().get(user.uid)?.line ?? ''" fill="none" stroke="#22d3ee"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
-                  <circle [attr.cx]="usageCharts().get(user.uid)?.lastX ?? 0"
-                    [attr.cy]="usageCharts().get(user.uid)?.lastY ?? 0" r="2.5" fill="#67e8f9" />
-                </svg>
-              } @else {
-                <span class="history-empty sc-text-muted">No usage history yet</span>
-              }
+          } @else {
+            <div class="unassigned-storage">
+              <span class="sc-text-muted">No storage assigned</span>
+              <button mat-flat-button type="button" [disabled]="busy() || availableQuantity() < 1"
+                (click)="assignFirstUnit(user)">Assign 1 unit</button>
             </div>
-          </div>
-          <div class="allocation-control" role="group" [attr.aria-label]="'Storage allocation for ' + user.email">
-            <div class="sc-stepper">
-              <button type="button" [attr.aria-label]="'Reduce storage for ' + user.email"
-                [disabled]="busy() || user.storageQuantity <= 1" (click)="adjustUser(user, -1)">−</button>
-              <input type="number" [attr.aria-label]="'Allocated storage for ' + user.email"
-                [value]="user.storageQuantity * storageAmount() | number:'1.0-2'" readonly>
-              <button type="button" [attr.aria-label]="'Increase storage for ' + user.email"
-                [disabled]="busy() || availableQuantity() < 1" (click)="adjustUser(user, 1)">+</button>
-            </div>
-            <span class="sc-text-muted">{{ storageUnit() }}</span>
-          </div>
-        } @else {
-          <span class="no-allocation sc-text-muted">No storage assigned</span>
-          <button mat-flat-button type="button" [disabled]="busy() || availableQuantity() < 1"
-            (click)="assignFirstUnit(user)">Assign 1 unit</button>
-        }
+          }
+        </div>
       </article>
     } @empty {
       <div class="empty-state">
