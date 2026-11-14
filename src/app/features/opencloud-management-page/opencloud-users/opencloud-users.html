@@ -85,12 +85,16 @@
               }
             </div>
           </div>
-          <div class="allocation-control" [attr.aria-label]="user.storageQuantity * storageAmount() + ' ' + storageUnit() + ' allocated to ' + user.email">
-            <button mat-icon-button type="button" aria-label="Reduce storage" [disabled]="busy() || user.storageQuantity <= 1"
-              (click)="adjustUser(user, -1)"><mat-icon aria-hidden="true">remove</mat-icon></button>
-            <strong>{{ user.storageQuantity * storageAmount() | number:'1.2-2' }}<small>{{ storageUnit() }}</small></strong>
-            <button mat-icon-button type="button" aria-label="Increase storage" [disabled]="busy() || availableQuantity() < 1"
-              (click)="adjustUser(user, 1)"><mat-icon aria-hidden="true">add</mat-icon></button>
+          <div class="allocation-control" role="group" [attr.aria-label]="'Storage allocation for ' + user.email">
+            <div class="sc-stepper">
+              <button type="button" [attr.aria-label]="'Reduce storage for ' + user.email"
+                [disabled]="busy() || user.storageQuantity <= 1" (click)="adjustUser(user, -1)">−</button>
+              <input type="number" [attr.aria-label]="'Allocated storage for ' + user.email"
+                [value]="user.storageQuantity * storageAmount() | number:'1.0-2'" readonly>
+              <button type="button" [attr.aria-label]="'Increase storage for ' + user.email"
+                [disabled]="busy() || availableQuantity() < 1" (click)="adjustUser(user, 1)">+</button>
+            </div>
+            <span class="sc-text-muted">{{ storageUnit() }}</span>
           </div>
         } @else {
           <span class="no-allocation">No storage assigned</span>

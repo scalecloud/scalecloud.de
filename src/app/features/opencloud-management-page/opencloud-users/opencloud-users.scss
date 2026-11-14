@@ -278,39 +278,6 @@ mat-paginator {
   gap: 0.35rem;
 }
 
-.allocation-control button {
-  display: grid;
-  width: 2.5rem;
-  height: 2.5rem;
-  flex: 0 0 2.5rem;
-  place-items: center;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  border-radius: 50%;
-  color: #e6eef5;
-  background: #19232d;
-  cursor: pointer;
-  font: inherit;
-  font-size: 1.1rem;
-}
-
-.allocation-control strong {
-  min-width: 2.5rem;
-  color: #e6eef5;
-  text-align: center;
-  font-family: 'Space Grotesk', Inter, sans-serif;
-  font-size: 1.4rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-.allocation-control small {
-  margin-left: 0.15rem;
-  color: #9db0c4;
-  font-family: Inter, sans-serif;
-  font-size: 0.68rem;
-  font-weight: 500;
-}
-
 .no-allocation {
   flex: 1 1 9rem;
   color: #9db0c4;

@@ -36,16 +36,16 @@
             <strong>{{ space.name }}</strong>
           </div>
           @if (space.storageQuantity > 0) {
-            <div class="allocation-control" [attr.aria-label]="'Storage quota for ' + space.name">
-              <button mat-icon-button type="button" [attr.aria-label]="'Decrease storage quota for ' + space.name"
-                [disabled]="busy() || space.storageQuantity <= 1" (click)="adjustSpace(space, -1)">
-                <mat-icon aria-hidden="true">remove</mat-icon>
-              </button>
-              <strong>{{ space.storageQuantity * storageAmount() | number:'1.2-2' }}<small>{{ storageUnit() }}</small></strong>
-              <button mat-icon-button type="button" [attr.aria-label]="'Increase storage quota for ' + space.name"
-                [disabled]="busy() || availableQuantity() < 1" (click)="adjustSpace(space, 1)">
-                <mat-icon aria-hidden="true">add</mat-icon>
-              </button>
+            <div class="allocation-control" role="group" [attr.aria-label]="'Storage quota for ' + space.name">
+              <div class="sc-stepper">
+                <button type="button" [attr.aria-label]="'Decrease storage quota for ' + space.name"
+                  [disabled]="busy() || space.storageQuantity <= 1" (click)="adjustSpace(space, -1)">−</button>
+                <input type="number" [attr.aria-label]="'Storage quota for ' + space.name"
+                  [value]="space.storageQuantity * storageAmount() | number:'1.0-2'" readonly>
+                <button type="button" [attr.aria-label]="'Increase storage quota for ' + space.name"
+                  [disabled]="busy() || availableQuantity() < 1" (click)="adjustSpace(space, 1)">+</button>
+              </div>
+              <span class="sc-text-muted">{{ storageUnit() }}</span>
             </div>
           } @else {
             <button mat-button class="assign-button header-assign" type="button"

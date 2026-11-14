@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -41,7 +41,7 @@ function createPersonUsageChart(user: OpenCloudPersonAllocation): PersonUsageCha
   templateUrl: './opencloud-users.html',
   styleUrl: './opencloud-users.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIcon, MatButton, MatIconButton, MatProgressBar, MatPaginator, DecimalPipe, MatChipListbox, MatChipOption, MatTooltip, MatFormField, MatLabel, MatSuffix, MatInput],
+  imports: [MatIcon, MatButton, MatProgressBar, MatPaginator, DecimalPipe, MatChipListbox, MatChipOption, MatTooltip, MatFormField, MatLabel, MatSuffix, MatInput],
 })
 export class OpenCloudUsers {
   readonly users = input.required<OpenCloudPersonAllocation[]>();

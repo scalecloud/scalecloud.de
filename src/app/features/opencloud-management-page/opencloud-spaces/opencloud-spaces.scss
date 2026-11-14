@@ -181,7 +181,6 @@ button:disabled {
   gap: 0.35rem;
 }
 
-.allocation-control button,
 .release-button {
   display: grid;
   width: 1.9rem;
@@ -195,18 +194,6 @@ button:disabled {
   cursor: pointer;
   font: inherit;
   font-size: 1.1rem;
-}
-
-.allocation-control strong {
-  min-width: 2.8rem;
-  text-align: center;
-  font-size: 0.82rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.allocation-control small {
-  color: #f6bd60;
-  font-size: 0.65rem;
 }
 
 .release-button {
@@ -327,27 +314,6 @@ button:disabled {
   --mat-progress-bar-active-indicator-height: 0.5rem;
   --mat-progress-bar-track-color: rgba(148, 163, 184, 0.14);
   --mat-progress-bar-track-height: 0.5rem;
-}
-
-.space-card .allocation-control {
-  gap: 0.35rem;
-}
-
-.space-card .allocation-control button {
-  width: clamp(2rem, 7vw, 2.25rem);
-  height: clamp(2rem, 7vw, 2.25rem);
-  border-color: rgba(148, 163, 184, 0.25);
-  border-radius: 50%;
-  background: rgba(148, 163, 184, 0.08);
-}
-
-.space-card .allocation-control strong {
-  min-width: 2.8rem;
-  font-size: 1.05rem;
-}
-
-.space-card .allocation-control small {
-  color: #fcd34d;
 }
 
 .space-card .header-assign {

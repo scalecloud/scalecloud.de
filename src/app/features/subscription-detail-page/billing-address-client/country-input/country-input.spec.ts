@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -58,7 +57,6 @@ describe('CountryInput', () => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        NoopAnimationsModule,
         MatAutocompleteModule,
         MatFormFieldModule,
         MatInputModule,
