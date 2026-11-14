@@ -11,15 +11,6 @@
 .sc-card,
 html .mat-mdc-card {
   @include sc-card-surface;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 2px;
-    background: var(--sc-accent-line);
-    pointer-events: none;
-  }
 }
 
 .sc-card--compact {
