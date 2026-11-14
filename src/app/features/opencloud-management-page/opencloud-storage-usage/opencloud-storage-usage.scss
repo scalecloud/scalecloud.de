@@ -1,0 +1,88 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.usage {
+  display: grid;
+  min-width: 0;
+  gap: 0.45rem;
+}
+
+.usage-copy {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 0.3rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.usage-copy > span {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow-wrap: normal;
+  text-align: right;
+}
+
+.usage-copy strong {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.usage-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 0.3rem;
+}
+
+.allocation-control {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.usage-copy .sc-stepper > button {
+  width: 1.75rem;
+}
+
+.usage-copy .sc-stepper > input[type='number'] {
+  width: 3rem;
+}
+
+.usage-bar {
+  display: block;
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 99px;
+  --mat-progress-bar-active-indicator-height: 0.5rem;
+  --mat-progress-bar-track-color: rgba(148, 163, 184, 0.14);
+  --mat-progress-bar-track-height: 0.5rem;
+}
+
+.usage-history {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+  margin-top: 0.1rem;
+  justify-items: end;
+  text-align: right;
+}
+
+.usage-chart {
+  display: block;
+  width: 100%;
+  height: 2.4rem;
+  overflow: visible;
+}
+
+.unassigned-storage {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}

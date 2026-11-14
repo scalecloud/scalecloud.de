@@ -56,4 +56,25 @@ describe('OpenCloudSpaceMembers', () => {
 
     expect(added).not.toHaveBeenCalled();
   });
+
+  it('paginates long member lists', () => {
+    fixture.componentRef.setInput('space', {
+      id: 'space-1',
+      name: 'Design team',
+      storageQuantity: 1,
+      memberCount: 12,
+      members: Array.from({ length: 12 }, (_, index) => ({
+        permissionID: `permission-${index}`,
+        displayName: `Member ${index}`,
+      })),
+    });
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelectorAll('.member-row')).toHaveLength(5);
+    component.onPageChange({ pageIndex: 1, pageSize: 5, length: 12 });
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelectorAll('.member-row')).toHaveLength(5);
+    expect(fixture.nativeElement.querySelector('.member-info strong')?.textContent).toBe('Member 5');
+  });
 });

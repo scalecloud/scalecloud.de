@@ -1,0 +1,43 @@
+@if (storageQuantity() > 0) {
+  <div class="usage">
+    <div class="usage-copy">
+      <span>Used {{ usedQuantity() * storageAmount() | number:'1.0-2' }} of {{ storageQuantity() * storageAmount() | number:'1.0-2' }} {{ storageUnit() }}</span>
+      <div class="usage-actions">
+        <strong>{{ usagePercent() | number:'1.0-0' }} %</strong>
+        <div class="allocation-control" role="group" [attr.aria-label]="'Storage allocation for ' + label()">
+          <div class="sc-stepper">
+            <button type="button" [attr.aria-label]="'Reduce storage for ' + label()"
+              [disabled]="busy() || storageQuantity() <= 1" (click)="quantityChange.emit(-1)">−</button>
+            <input type="number" [attr.aria-label]="'Allocated storage for ' + label()"
+              [value]="storageQuantity() * storageAmount() | number:'1.0-2'" readonly>
+            <button type="button" [attr.aria-label]="'Increase storage for ' + label()"
+              [disabled]="busy() || availableQuantity() < 1" (click)="quantityChange.emit(1)">+</button>
+          </div>
+          <span class="sc-text-muted">{{ storageUnit() }}</span>
+        </div>
+      </div>
+    </div>
+    <mat-progress-bar class="usage-bar" mode="determinate" [value]="usagePercent()"
+      [attr.aria-label]="'Storage used by ' + label()" />
+    <div class="usage-history">
+      <div class="history-heading sc-text-muted">30-day usage</div>
+      @if (dailyUsage().length > 0) {
+        <svg class="usage-chart" viewBox="0 0 300 48" preserveAspectRatio="none" role="img"
+          [attr.aria-label]="'30-day storage usage for ' + label()">
+          <path [attr.d]="usageChart().area" fill="rgba(34, 211, 238, 0.12)" />
+          <path [attr.d]="usageChart().line" fill="none" stroke="#22d3ee"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+          <circle [attr.cx]="usageChart().lastX" [attr.cy]="usageChart().lastY" r="2.5" fill="#67e8f9" />
+        </svg>
+      } @else {
+        <span class="history-empty sc-text-muted">No usage history yet</span>
+      }
+    </div>
+  </div>
+} @else {
+  <div class="unassigned-storage">
+    <span class="sc-text-muted">No storage assigned</span>
+    <button mat-flat-button type="button" [disabled]="busy() || availableQuantity() < 1"
+      (click)="assignFirstUnit.emit()">Assign 1 unit</button>
+  </div>
+}

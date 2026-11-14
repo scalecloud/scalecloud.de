@@ -59,17 +59,36 @@ describe('OpenCloudSpaces', () => {
 
     expect(fixture.nativeElement.textContent).toContain('Used 0.5 of 2 TB');
     expect(fixture.nativeElement.textContent).not.toContain('Allocated');
-    expect(fixture.nativeElement.querySelector('.space-heading .space-usage')).toBeTruthy();
-    const usageActions = fixture.nativeElement.querySelector('.space-usage .usage-actions');
+    expect(fixture.nativeElement.querySelector('.space-card app-opencloud-storage-usage')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.space-card app-opencloud-space-members')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.space-identity')?.parentElement?.classList.contains('allocation-identity'))
+      .toBe(true);
+    const usageActions = fixture.nativeElement.querySelector('app-opencloud-storage-usage .usage-actions');
     expect(usageActions?.querySelector('strong')?.textContent?.trim()).toBe('25 %');
     expect(usageActions?.querySelector('.allocation-control')).toBeTruthy();
-    expect((fixture.nativeElement.querySelector('.space-usage .allocation-control input') as HTMLInputElement).value)
+    expect((fixture.nativeElement.querySelector('app-opencloud-storage-usage .allocation-control input') as HTMLInputElement).value)
       .toBe('2');
-    expect(fixture.nativeElement.querySelector('.space-overview')?.nextElementSibling?.localName)
-      .toBe('app-opencloud-space-members');
+    expect(fixture.nativeElement.querySelector('.allocation-details app-opencloud-space-members')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('mat-progress-bar')?.getAttribute('aria-valuenow')).toBe('25');
     expect(fixture.nativeElement.querySelector('svg[role="img"]')?.getAttribute('aria-label'))
       .toBe('30-day storage usage for Design team');
+  });
+
+  it('assigns the first storage unit to an unassigned space', () => {
+    const changed = vi.fn();
+    component.quantityChange.subscribe(changed);
+    fixture.componentRef.setInput('spaces', [{
+      id: 'space-1',
+      name: 'Design team',
+      memberCount: 0,
+      storageQuantity: 0,
+      members: [],
+    }]);
+    fixture.detectChanges();
+
+    (fixture.nativeElement.querySelector('.unassigned-storage button') as HTMLButtonElement).click();
+
+    expect(changed).toHaveBeenCalledWith({ spaceID: 'space-1', storageQuantity: 1 });
   });
 
   it('adds available linked people and removes listed members', () => {
@@ -102,9 +121,6 @@ describe('OpenCloudSpaces', () => {
     fixture.componentRef.setInput('people', [person]);
     fixture.detectChanges();
 
-    const details = fixture.nativeElement.querySelector('details') as HTMLDetailsElement;
-    details.open = true;
-    fixture.detectChanges();
     (fixture.nativeElement.querySelector('.remove-member') as HTMLButtonElement).click();
     const membersComponent = fixture.debugElement.query(By.directive(OpenCloudSpaceMembers))
       .injector.get(OpenCloudSpaceMembers);

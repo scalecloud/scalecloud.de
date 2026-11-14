@@ -1,12 +1,11 @@
-<details class="space-members">
-  <summary>
+<section class="space-members" [attr.aria-label]="'Members of ' + space().name">
+  <div class="space-members-heading">
     <span>Members</span>
     <span class="member-count">{{ space().memberCount }}</span>
-    <mat-icon aria-hidden="true">expand_more</mat-icon>
-  </summary>
+  </div>
   <div class="space-members-content">
     <div class="member-list">
-      @for (member of space().members; track member.permissionID) {
+      @for (member of visibleMembers(); track member.permissionID) {
         <div class="member-row">
           <div class="member-info">
             <strong>{{ member.displayName || member.email || (member.groupID ? 'Group' : 'OpenCloud member') }}</strong>
@@ -25,6 +24,11 @@
         <span class="members-empty">No people in this space yet</span>
       }
     </div>
+    @if (space().members.length > pageSize()) {
+      <mat-paginator aria-label="Space member pages" [length]="space().members.length"
+        [pageIndex]="pageIndex()" [pageSize]="pageSize()" [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons (page)="onPageChange($event)" />
+    }
     @if (availablePeople().length > 0) {
       <form class="add-member-form" (submit)="submitAddMember($event)">
         <mat-form-field appearance="outline" class="member-select" subscriptSizing="dynamic">
@@ -43,4 +47,4 @@
       </form>
     }
   </div>
-</details>
+</section>

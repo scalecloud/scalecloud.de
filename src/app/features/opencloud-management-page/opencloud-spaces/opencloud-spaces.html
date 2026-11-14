@@ -30,63 +30,23 @@
   <div class="space-grid">
     @for (space of visibleSpaces(); track space.id) {
       <article class="space-card sc-card sc-card--compact">
-        <div class="space-overview">
-          <div class="space-heading">
+        <app-opencloud-allocation-header>
+          <div allocation-identity class="space-identity">
             <div class="space-emblem" aria-hidden="true"><mat-icon>grid_view</mat-icon></div>
             <div class="space-info">
               <strong>{{ space.name }}</strong>
             </div>
-            @if (space.storageQuantity > 0) {
-              <div class="space-usage">
-                <div class="usage-copy">
-                  <span>Used {{ (space.usedQuantity ?? 0) * storageAmount() | number:'1.0-2' }} of {{ space.storageQuantity * storageAmount() | number:'1.0-2' }} {{ storageUnit() }}</span>
-                  <div class="usage-actions">
-                    <strong>{{ usagePercent(space) | number:'1.0-0' }} %</strong>
-                    <div class="allocation-control" role="group" [attr.aria-label]="'Storage quota for ' + space.name">
-                      <div class="sc-stepper">
-                        <button type="button" [attr.aria-label]="'Decrease storage quota for ' + space.name"
-                          [disabled]="busy() || space.storageQuantity <= 1" (click)="adjustSpace(space, -1)">−</button>
-                        <input type="number" [attr.aria-label]="'Storage quota for ' + space.name"
-                          [value]="space.storageQuantity * storageAmount() | number:'1.0-2'" readonly>
-                        <button type="button" [attr.aria-label]="'Increase storage quota for ' + space.name"
-                          [disabled]="busy() || availableQuantity() < 1" (click)="adjustSpace(space, 1)">+</button>
-                      </div>
-                      <span class="sc-text-muted">{{ storageUnit() }}</span>
-                    </div>
-                  </div>
-                </div>
-                <mat-progress-bar class="usage-bar" mode="determinate" [value]="usagePercent(space)"
-                  [attr.aria-label]="'Storage used by ' + space.name" />
-              </div>
-            } @else {
-              <button mat-flat-button class="header-assign" type="button"
-                [disabled]="busy() || availableQuantity() < 1"
-                (click)="quantityChange.emit({ spaceID: space.id, storageQuantity: 1 })">Assign 1 unit</button>
-            }
           </div>
-          @if (space.storageQuantity === 0) {
-            <p class="unassigned">No storage assigned</p>
-          }
-
-          <div class="space-history">
-            <div class="history-heading sc-text-muted">30-day usage</div>
-            @if ((space.dailyUsage?.length ?? 0) > 0) {
-              <svg class="usage-chart" viewBox="0 0 300 48" preserveAspectRatio="none" role="img"
-                [attr.aria-label]="'30-day storage usage for ' + space.name">
-                <path [attr.d]="usageCharts().get(space.id)?.area ?? ''" fill="rgba(246, 189, 96, 0.12)" />
-                <path [attr.d]="usageCharts().get(space.id)?.line ?? ''" fill="none" stroke="#f6bd60"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
-                <circle [attr.cx]="usageCharts().get(space.id)?.lastX ?? 0"
-                  [attr.cy]="usageCharts().get(space.id)?.lastY ?? 0" r="2.5" fill="#fcd34d" />
-              </svg>
-            } @else {
-              <span class="history-empty sc-text-muted">No usage history yet</span>
-            }
-          </div>
-        </div>
-
-        <app-opencloud-space-members [space]="space" [people]="people()" [busy]="busy()"
-          (addMember)="addMember.emit($event)" (removeMember)="removeMember.emit($event)" />
+          <app-opencloud-storage-usage allocation-usage class="space-usage" [label]="space.name"
+            [storageQuantity]="space.storageQuantity" [usedQuantity]="space.usedQuantity ?? 0"
+            [storageAmount]="storageAmount()" [storageUnit]="storageUnit()"
+            [availableQuantity]="availableQuantity()" [busy]="busy()" [dailyUsage]="space.dailyUsage ?? []"
+            (quantityChange)="adjustSpace(space, $event)"
+            (assignFirstUnit)="quantityChange.emit({ spaceID: space.id, storageQuantity: 1 })" />
+          <app-opencloud-space-members allocation-details class="space-members" [space]="space"
+            [people]="people()" [busy]="busy()" (addMember)="addMember.emit($event)"
+            (removeMember)="removeMember.emit($event)" />
+        </app-opencloud-allocation-header>
       </article>
     } @empty {
       <div class="empty-state">

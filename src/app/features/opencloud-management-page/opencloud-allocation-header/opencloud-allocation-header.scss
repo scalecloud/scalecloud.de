@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  min-width: 0;
+  container: allocation-header / inline-size;
+}
+
+.allocation-layout {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "identity usage"
+    "details usage";
+  align-items: start;
+  gap: 1rem;
+}
+
+.allocation-identity {
+  grid-area: identity;
+  min-width: 0;
+}
+
+.allocation-usage {
+  grid-area: usage;
+  min-width: 0;
+}
+
+.allocation-details {
+  grid-area: details;
+  min-width: 0;
+}
+
+@container allocation-header (max-width: 42rem) {
+  .allocation-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "identity"
+      "details"
+      "usage";
+  }
+}
