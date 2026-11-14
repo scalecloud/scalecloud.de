@@ -1,10 +1,10 @@
-<section class="hero-card" aria-labelledby="pool-title">
+<section class="hero-card sc-card sc-card--compact" aria-labelledby="pool-title">
   <div class="allocation-overview">
     <h2 id="pool-title">Storage allocation</h2>
     <div class="allocated-total">
       <strong>{{ allocatedStorage() | number:'1.2-2' }}</strong>
-      <span>{{ overview().storageUnit }} of {{ totalStorage() | number:'1.2-2' }} {{ overview().storageUnit }} allocated</span>
-      <button mat-button class="manage-total" type="button" (click)="manageTotal.emit()">
+      <span class="sc-text-muted">{{ overview().storageUnit }} of {{ totalStorage() | number:'1.2-2' }} {{ overview().storageUnit }} allocated</span>
+      <button mat-flat-button type="button" (click)="manageTotal.emit()">
         <mat-icon aria-hidden="true">open_in_new</mat-icon> Change total storage
       </button>
     </div>
@@ -16,17 +16,17 @@
     </div>
 
     <div class="allocation-tiles">
-      <div class="allocation-tile people-tile">
-        <span>People</span>
-        <strong>{{ peopleStorage() | number:'1.2-2' }} <small>{{ overview().storageUnit }}</small></strong>
+      <div class="allocation-tile">
+        <span class="sc-section-title">People</span>
+        <strong>{{ peopleStorage() | number:'1.2-2' }} <small class="sc-text-muted">{{ overview().storageUnit }}</small></strong>
       </div>
-      <div class="allocation-tile spaces-tile">
-        <span>Spaces</span>
-        <strong>{{ spacesStorage() | number:'1.2-2' }} <small>{{ overview().storageUnit }}</small></strong>
+      <div class="allocation-tile">
+        <span class="sc-section-title">Spaces</span>
+        <strong>{{ spacesStorage() | number:'1.2-2' }} <small class="sc-text-muted">{{ overview().storageUnit }}</small></strong>
       </div>
-      <div class="allocation-tile free-tile" [class.empty-pool]="availableQuantity() === 0">
-        <span>Free</span>
-        <strong>{{ freeStorage() | number:'1.2-2' }} <small>{{ overview().storageUnit }}</small></strong>
+      <div class="allocation-tile">
+        <span class="sc-section-title">Free</span>
+        <strong>{{ freeStorage() | number:'1.2-2' }} <small class="sc-text-muted">{{ overview().storageUnit }}</small></strong>
       </div>
     </div>
 
@@ -34,9 +34,9 @@
 
   <div class="usage-overview">
     @if (usageSeries().length > 0) {
-      <div class="usage-total">{{ currentUsage() * overview().storageAmount | number:'1.2-2' }}<small>{{ overview().storageUnit }}</small></div>
+      <div class="usage-total">{{ currentUsage() * overview().storageAmount | number:'1.2-2' }}<small class="sc-text-muted">{{ overview().storageUnit }}</small></div>
       @if (usageSeries().length > 1) {
-        <span class="usage-change" [class.usage-decrease]="usageDelta() < 0">
+        <span class="sc-text-muted">
           {{ usageDelta() >= 0 ? '+' : '' }}{{ usageDelta() * overview().storageAmount | number:'1.2-2' }} {{ overview().storageUnit }}
         </span>
       }
@@ -65,7 +65,7 @@
     } @else {
       <div class="usage-empty">
         <mat-icon aria-hidden="true">monitoring</mat-icon>
-        <span>No daily usage history yet</span>
+        <span class="sc-text-muted">No daily usage history yet</span>
       </div>
     }
   </div>

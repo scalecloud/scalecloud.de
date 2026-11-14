@@ -34,7 +34,7 @@
           }
         </mat-form-field>
         @if (!showForm()) {
-          <button mat-button class="add-item" [class.is-space]="activeTab() === 'spaces'" type="button"
+          <button mat-flat-button class="add-item" type="button"
             [disabled]="busy() || (activeTab() === 'spaces' && availableQuantity() < 1)" (click)="openForm()">
             <mat-icon aria-hidden="true">{{ activeTab() === 'people' ? 'person_add' : 'add_box' }}</mat-icon>
             {{ activeTab() === 'people' ? 'Invite a person' : 'Create a space' }}

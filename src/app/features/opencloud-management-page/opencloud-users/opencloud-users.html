@@ -1,6 +1,6 @@
 <section class="people-panel" aria-label="People">
   @if (showInviteForm()) {
-    <form class="invite-form" (submit)="submitInvite($event)">
+    <form class="invite-form sc-card sc-card--compact" (submit)="submitInvite($event)">
       <label class="field-label" for="invite-email">Invite a person</label>
       <div class="invite-controls">
         <mat-form-field appearance="outline" class="email-field" subscriptSizing="dynamic">
@@ -17,7 +17,7 @@
             (change)="setInviteQuantity($any($event.target).value)">
           <span matSuffix>{{ storageAmount() }} {{ storageUnit() }}</span>
         </mat-form-field>
-        <button mat-button class="invite-button" type="submit" [disabled]="busy() || availableQuantity() < 1">
+        <button mat-flat-button type="submit" [disabled]="busy() || availableQuantity() < 1">
           <mat-icon aria-hidden="true">send</mat-icon> Invite
         </button>
       </div>
@@ -31,7 +31,7 @@
 
   <div class="people-list">
     @for (user of visibleUsers(); track user.uid) {
-      <article class="person-row" [class.owner-row]="user.isOwner">
+      <article class="person-row sc-card sc-card--compact">
         <div class="person-avatar" aria-hidden="true" [style.color]="avatarColors(user.uid).foreground"
           [style.background-color]="avatarColors(user.uid).background"
           [style.border-color]="avatarColors(user.uid).border">{{ initial(user.email) }}</div>
@@ -50,11 +50,11 @@
             </mat-chip-listbox>
             @if (!user.isOwner && rolesChanged(user)) {
               <div class="role-actions">
-                <button mat-button class="save-roles" type="button" [disabled]="busy() || selectedRoles(user).length === 0"
+                <button mat-button type="button" [disabled]="busy() || selectedRoles(user).length === 0"
                   (click)="saveRoles(user)">
                   <mat-icon aria-hidden="true">save</mat-icon> Save roles
                 </button>
-                <button mat-button class="cancel-roles" type="button" [disabled]="busy()" (click)="cancelRoleChanges(user)">
+                <button mat-button type="button" [disabled]="busy()" (click)="cancelRoleChanges(user)">
                   Cancel
                 </button>
               </div>
@@ -70,7 +70,7 @@
             <mat-progress-bar class="usage-bar" mode="determinate" [value]="usagePercent(user)"
               [attr.aria-label]="'Storage used by ' + user.email" />
             <div class="person-history">
-              <div class="history-heading">30-day usage</div>
+              <div class="history-heading sc-text-muted">30-day usage</div>
               @if ((user.dailyUsage?.length ?? 0) > 0) {
                 <svg class="usage-chart" viewBox="0 0 300 48" preserveAspectRatio="none" role="img"
                   [attr.aria-label]="'30-day storage usage for ' + user.email">
@@ -81,7 +81,7 @@
                     [attr.cy]="usageCharts().get(user.uid)?.lastY ?? 0" r="2.5" fill="#67e8f9" />
                 </svg>
               } @else {
-                <span class="history-empty">No usage history yet</span>
+                <span class="history-empty sc-text-muted">No usage history yet</span>
               }
             </div>
           </div>
@@ -97,8 +97,8 @@
             <span class="sc-text-muted">{{ storageUnit() }}</span>
           </div>
         } @else {
-          <span class="no-allocation">No storage assigned</span>
-          <button mat-button class="assign-button" type="button" [disabled]="busy() || availableQuantity() < 1"
+          <span class="no-allocation sc-text-muted">No storage assigned</span>
+          <button mat-flat-button type="button" [disabled]="busy() || availableQuantity() < 1"
             (click)="assignFirstUnit(user)">Assign 1 unit</button>
         }
       </article>
