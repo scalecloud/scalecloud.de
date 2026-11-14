@@ -16,10 +16,12 @@ import { BillingPortalClient } from '../subscription-detail-page/customer-portal
 import {
   OpenCloudAddSpaceMemberRequest,
   OpenCloudCreateSpaceRequest,
+  OpenCloudDeleteSpaceRequest,
   OpenCloudInviteUserRequest,
   OpenCloudOverviewReply,
   OpenCloudRemoveSpaceMemberRequest,
   OpenCloudUpdateUserRolesRequest,
+  OpenCloudRemoveUserRequest,
 } from './opencloud-management-model';
 import { OpenCloudSummary } from './opencloud-summary/opencloud-summary';
 import { OpenCloudUsers } from './opencloud-users/opencloud-users';
@@ -121,6 +123,13 @@ export class OpenCloudManagementPage implements OnInit {
     );
   }
 
+  removeUser(request: Omit<OpenCloudRemoveUserRequest, 'subscriptionID'>): void {
+    this.mutate(
+      () => this.client.removeUser({ ...request, subscriptionID: this.subscriptionID() }),
+      'Person removed from subscription.',
+    );
+  }
+
   updatePersonStorage(request: { uid: string; storageQuantity: number; isOwner: boolean }): void {
     if (request.isOwner) {
       this.updateOwnerStorage(request.storageQuantity);
@@ -148,6 +157,13 @@ export class OpenCloudManagementPage implements OnInit {
     this.mutate(
       () => this.client.updateSpaceStorage({ ...request, subscriptionID: this.subscriptionID() }),
       'Space storage updated.',
+    );
+  }
+
+  deleteSpace(request: Omit<OpenCloudDeleteSpaceRequest, 'subscriptionID'>): void {
+    this.mutate(
+      () => this.client.deleteSpace({ ...request, subscriptionID: this.subscriptionID() }),
+      'Space deleted.',
     );
   }
 

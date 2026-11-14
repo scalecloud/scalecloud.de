@@ -68,6 +68,7 @@ export interface OpenCloudInviteUserRequest {
   subscriptionID: string;
   email: string;
   storageQuantity: number;
+  roles: string[];
 }
 
 export interface OpenCloudUpdateUserStorageRequest {
@@ -97,12 +98,22 @@ export interface OpenCloudUpdateSpaceStorageRequest {
 export interface OpenCloudAddSpaceMemberRequest {
   subscriptionID: string;
   spaceID: string;
-  uid: string;
+  email: string;
 }
 
 export interface OpenCloudRemoveSpaceMemberRequest {
   subscriptionID: string;
   spaceID: string;
   permissionID: string;
+}
+
+export interface OpenCloudDeleteSpaceRequest {
+  subscriptionID: string;
+  spaceID: string;
+}
+
+export interface OpenCloudRemoveUserRequest {
+  subscriptionID: string;
+  uid: string;
 }
 

@@ -5,6 +5,7 @@ import { API_URL } from 'src/app/core/config/api-token';
 import {
   OpenCloudCreateSpaceRequest,
   OpenCloudAddSpaceMemberRequest,
+  OpenCloudDeleteSpaceRequest,
   OpenCloudInviteUserRequest,
   OpenCloudOverviewReply,
   OpenCloudOverviewRequest,
@@ -13,6 +14,7 @@ import {
   OpenCloudUpdateOwnerStorageRequest,
   OpenCloudUpdateUserRolesRequest,
   OpenCloudUpdateUserStorageRequest,
+  OpenCloudRemoveUserRequest,
 } from './opencloud-management-model';
 
 @Injectable({ providedIn: 'root' })
@@ -37,6 +39,10 @@ export class OpenCloudManagementClient {
     return this.http.post(`${this.baseUrl}/update-user-roles`, request);
   }
 
+  removeUser(request: OpenCloudRemoveUserRequest): Observable<unknown> {
+    return this.http.post(`${this.baseUrl}/remove-user`, request);
+  }
+
   updateOwnerStorage(request: OpenCloudUpdateOwnerStorageRequest): Observable<unknown> {
     return this.http.post(`${this.baseUrl}/update-owner-storage`, request);
   }
@@ -47,6 +53,10 @@ export class OpenCloudManagementClient {
 
   updateSpaceStorage(request: OpenCloudUpdateSpaceStorageRequest): Observable<unknown> {
     return this.http.post(`${this.baseUrl}/update-space-storage`, request);
+  }
+
+  deleteSpace(request: OpenCloudDeleteSpaceRequest): Observable<unknown> {
+    return this.http.post(`${this.baseUrl}/delete-space`, request);
   }
 
   addSpaceMember(request: OpenCloudAddSpaceMemberRequest): Observable<unknown> {

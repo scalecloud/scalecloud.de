@@ -1,4 +1,4 @@
-@if (storageQuantity() > 0) {
+@if (storageQuantity() > 0 || hasUsage()) {
   <div class="usage">
     <div class="usage-copy">
       <span>Used {{ usedQuantity() * storageAmount() | number:'1.0-2' }} of {{ storageQuantity() * storageAmount() | number:'1.0-2' }} {{ storageUnit() }}</span>
@@ -7,7 +7,7 @@
         <div class="allocation-control" role="group" [attr.aria-label]="'Storage allocation for ' + label()">
           <div class="sc-stepper">
             <button type="button" [attr.aria-label]="'Reduce storage for ' + label()"
-              [disabled]="busy() || storageQuantity() <= 1" (click)="quantityChange.emit(-1)">−</button>
+              [disabled]="busy() || storageQuantity() <= minimumQuantity()" (click)="quantityChange.emit(-1)">−</button>
             <input type="number" [attr.aria-label]="'Allocated storage for ' + label()"
               [value]="storageQuantity() * storageAmount() | number:'1.0-2'" readonly>
             <button type="button" [attr.aria-label]="'Increase storage for ' + label()"

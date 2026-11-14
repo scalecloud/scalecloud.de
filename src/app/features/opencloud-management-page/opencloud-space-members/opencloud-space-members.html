@@ -1,10 +1,5 @@
 <section class="space-members" [attr.aria-label]="'Members of ' + space().name">
-  <div class="space-members-heading">
-    <span>Members</span>
-    <span class="member-count">{{ space().memberCount }}</span>
-  </div>
-  <div class="space-members-content">
-    <div class="member-list">
+  <div class="member-list">
       @for (member of visibleMembers(); track member.permissionID) {
         <div class="member-row">
           <div class="member-info">
@@ -23,28 +18,21 @@
       } @empty {
         <span class="members-empty">No people in this space yet</span>
       }
-    </div>
-    @if (space().members.length > pageSize()) {
+  </div>
+  @if (space().members.length > pageSize()) {
       <mat-paginator aria-label="Space member pages" [length]="space().members.length"
         [pageIndex]="pageIndex()" [pageSize]="pageSize()" [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons (page)="onPageChange($event)" />
-    }
-    @if (availablePeople().length > 0) {
-      <form class="add-member-form" (submit)="submitAddMember($event)">
-        <mat-form-field appearance="outline" class="member-select" subscriptSizing="dynamic">
-          <mat-label>Add a person</mat-label>
-          <mat-select [value]="selectedMember()" [disabled]="busy()"
-            (selectionChange)="selectedMember.set($event.value)">
-            <mat-option value="">Select a person</mat-option>
-            @for (person of availablePeople(); track person.uid) {
-              <mat-option [value]="person.uid">{{ person.email }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <button mat-flat-button type="submit" [disabled]="busy() || !selectedMember()">
-          <mat-icon aria-hidden="true">person_add</mat-icon> Add
-        </button>
-      </form>
-    }
-  </div>
+  }
+  <form class="add-member" (submit)="submitAddMember($event)">
+    <mat-form-field appearance="outline" class="member-email" subscriptSizing="dynamic">
+      <mat-label>Add by email</mat-label>
+      <input matInput type="email" autocomplete="email" required [value]="email()"
+        [disabled]="busy()" (input)="email.set($any($event.target).value)">
+      <mat-hint>The person needs an OpenCloud account.</mat-hint>
+    </mat-form-field>
+    <button mat-icon-button type="submit" aria-label="Add person to space" [disabled]="busy() || !email().trim()">
+      <mat-icon aria-hidden="true">person_add</mat-icon>
+    </button>
+  </form>
 </section>

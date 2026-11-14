@@ -48,14 +48,15 @@
             [storageAmount]="data.storageAmount" [storageUnit]="data.storageUnit" [busy]="busy()"
             [searchQuery]="searchQuery()"
             [showInviteForm]="showForm()" (invite)="inviteUser($event)"
-            (quantityChange)="updatePersonStorage($event)" (rolesChange)="updateUserRoles($event)" />
+            (quantityChange)="updatePersonStorage($event)" (rolesChange)="updateUserRoles($event)"
+            (removeUser)="removeUser($event)" />
         } @else {
           <app-opencloud-spaces [spaces]="data.spaces" [availableQuantity]="availableQuantity()"
-            [people]="people()" [storageAmount]="data.storageAmount" [storageUnit]="data.storageUnit" [busy]="busy()"
+            [storageAmount]="data.storageAmount" [storageUnit]="data.storageUnit" [busy]="busy()"
             [searchQuery]="searchQuery()"
             [showCreateForm]="showForm()" (create)="createSpace($event)"
             (quantityChange)="updateSpaceStorage($event)" (addMember)="addSpaceMember($event)"
-            (removeMember)="removeSpaceMember($event)" />
+            (removeMember)="removeSpaceMember($event)" (deleteSpace)="deleteSpace($event)" />
         }
       </mat-tab-nav-panel>
     </div>

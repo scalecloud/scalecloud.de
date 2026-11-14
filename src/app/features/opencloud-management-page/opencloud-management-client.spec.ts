@@ -34,11 +34,31 @@ describe('OpenCloudManagementClient', () => {
     req.flush({ subscriptionID: 'sub-1', totalQuantity: 1, storageAmount: 1, storageUnit: 'TB', owner: {}, users: [], spaces: [] });
   });
 
-  it('adds a linked person to a space', () => {
-    const request = { subscriptionID: 'sub-1', spaceID: 'space-1', uid: 'user-1' };
+  it('adds an OpenCloud user to a space by email', () => {
+    const request = { subscriptionID: 'sub-1', spaceID: 'space-1', email: 'user@example.com' };
     client.addSpaceMember(request).subscribe();
 
     const req = http.expectOne(`${apiUrl}/dashboard/opencloud/add-space-member`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(request);
+    req.flush({ success: true });
+  });
+
+  it('deletes a managed space', () => {
+    const request = { subscriptionID: 'sub-1', spaceID: 'space-1' };
+    client.deleteSpace(request).subscribe();
+
+    const req = http.expectOne(`${apiUrl}/dashboard/opencloud/delete-space`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(request);
+    req.flush({ success: true });
+  });
+
+  it('removes a person from a subscription without deleting their OpenCloud account', () => {
+    const request = { subscriptionID: 'sub-1', uid: 'user-1' };
+    client.removeUser(request).subscribe();
+
+    const req = http.expectOne(`${apiUrl}/dashboard/opencloud/remove-user`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(request);
     req.flush({ success: true });
@@ -55,7 +75,7 @@ describe('OpenCloudManagementClient', () => {
   });
 
   it('updates a subscription member\'s roles', () => {
-    const request = { subscriptionID: 'sub-1', uid: 'user-1', roles: ['User', 'Billing'] };
+    const request = { subscriptionID: 'sub-1', uid: 'user-1', roles: ['Billing'] };
     client.updateUserRoles(request).subscribe();
 
     const req = http.expectOne(`${apiUrl}/dashboard/opencloud/update-user-roles`);

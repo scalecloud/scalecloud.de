@@ -36,15 +36,20 @@
             <div class="space-info">
               <strong>{{ space.name }}</strong>
             </div>
+            <button mat-icon-button class="delete-space" type="button"
+              [attr.aria-label]="'Delete space ' + space.name" [disabled]="busy()"
+              (click)="deleteSpace.emit({ spaceID: space.id })">
+              <mat-icon aria-hidden="true">delete</mat-icon>
+            </button>
           </div>
-          <app-opencloud-storage-usage allocation-usage class="space-usage" [label]="space.name"
+          <app-opencloud-storage-usage allocation-usage [label]="space.name"
             [storageQuantity]="space.storageQuantity" [usedQuantity]="space.usedQuantity ?? 0"
             [storageAmount]="storageAmount()" [storageUnit]="storageUnit()"
             [availableQuantity]="availableQuantity()" [busy]="busy()" [dailyUsage]="space.dailyUsage ?? []"
             (quantityChange)="adjustSpace(space, $event)"
             (assignFirstUnit)="quantityChange.emit({ spaceID: space.id, storageQuantity: 1 })" />
-          <app-opencloud-space-members allocation-details class="space-members" [space]="space"
-            [people]="people()" [busy]="busy()" (addMember)="addMember.emit($event)"
+          <app-opencloud-space-members allocation-details [space]="space"
+            [busy]="busy()" (addMember)="addMember.emit($event)"
             (removeMember)="removeMember.emit($event)" />
         </app-opencloud-allocation-header>
       </article>

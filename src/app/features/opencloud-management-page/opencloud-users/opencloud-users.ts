@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
@@ -17,7 +17,7 @@ import { OpenCloudStorageUsage } from '../opencloud-storage-usage/opencloud-stor
   templateUrl: './opencloud-users.html',
   styleUrl: './opencloud-users.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIcon, MatButton, MatPaginator, MatChipListbox, MatChipOption, MatTooltip, MatFormField, MatLabel, MatSuffix, MatInput, OpenCloudAllocationHeader, OpenCloudStorageUsage],
+  imports: [MatIcon, MatButton, MatIconButton, MatPaginator, MatChipListbox, MatChipOption, MatTooltip, MatFormField, MatLabel, MatSuffix, MatInput, OpenCloudAllocationHeader, OpenCloudStorageUsage],
 })
 export class OpenCloudUsers {
   readonly users = input.required<OpenCloudPersonAllocation[]>();
@@ -30,14 +30,16 @@ export class OpenCloudUsers {
   readonly invite = output<Omit<OpenCloudInviteUserRequest, 'subscriptionID'>>();
   readonly quantityChange = output<{ uid: string; storageQuantity: number; isOwner: boolean }>();
   readonly rolesChange = output<{ uid: string; roles: string[] }>();
+  readonly removeUser = output<{ uid: string }>();
   readonly email = signal('');
   readonly inviteQuantity = signal(1);
+  readonly inviteRoles = signal<string[]>([]);
   readonly pageSize = signal(25);
   readonly pageIndex = linkedSignal(() => {
     this.searchQuery();
     return 0;
   });
-  readonly editableRoles = [Role.Administrator, Role.User, Role.Billing];
+  readonly editableRoles = [Role.Administrator, Role.Billing];
   readonly roleDescriptions = RoleDescriptions;
   readonly pendingRoles = linkedSignal<Record<string, string[]>>(() =>
     Object.fromEntries(this.users().map((user) => [user.uid, [...user.roles]])),
@@ -62,22 +64,24 @@ export class OpenCloudUsers {
   submitInvite(event: Event): void {
     event.preventDefault();
     const email = this.email().trim();
-    if (!email || this.availableQuantity() < 1 || this.inviteQuantity() < 1) return;
-    this.invite.emit({ email, storageQuantity: this.inviteQuantity() });
+    const storageQuantity = Math.min(this.inviteQuantity(), this.availableQuantity());
+    if (!email || (storageQuantity === 0 && this.inviteRoles().length === 0)) return;
+    this.invite.emit({ email, storageQuantity, roles: [...this.inviteRoles()] });
     this.email.set('');
-    this.inviteQuantity.set(1);
+    this.inviteRoles.set([]);
+    this.inviteQuantity.set(Math.min(1, this.availableQuantity()));
   }
 
   setInviteQuantity(value: string): void {
     const parsed = Number(value);
     if (Number.isFinite(parsed)) {
-      this.inviteQuantity.set(Math.min(this.availableQuantity(), Math.max(1, Math.floor(parsed))));
+      this.inviteQuantity.set(Math.min(this.availableQuantity(), Math.max(0, Math.floor(parsed))));
     }
   }
 
   adjustUser(user: OpenCloudPersonAllocation, change: number): void {
     const next = user.storageQuantity + change;
-    if (next < 1 || next > user.storageQuantity + this.availableQuantity()) return;
+    if (next < 0 || next > user.storageQuantity + this.availableQuantity()) return;
     this.quantityChange.emit({ uid: user.uid, storageQuantity: next, isOwner: user.isOwner });
   }
 
@@ -95,10 +99,8 @@ export class OpenCloudUsers {
     return this.pendingRoles()[user.uid] ?? user.roles;
   }
 
-  roleOptionDisabled(user: OpenCloudPersonAllocation, role: string): boolean {
-    if (this.busy() || user.isOwner) return true;
-    const selected = this.selectedRoles(user);
-    return selected.length === 1 && selected[0] === role;
+  roleOptionDisabled(user: OpenCloudPersonAllocation): boolean {
+    return this.busy() || user.isOwner;
   }
 
   setRoleSelected(user: OpenCloudPersonAllocation, role: string, selected: boolean): void {
@@ -107,8 +109,20 @@ export class OpenCloudUsers {
     const next = selected
       ? [...new Set([...current, role])]
       : current.filter((currentRole) => currentRole !== role);
-    if (next.length === 0) return;
     this.pendingRoles.update((roles) => ({ ...roles, [user.uid]: next }));
+  }
+
+  setInviteRoleSelected(role: string, selected: boolean): void {
+    if (!this.editableRoles.includes(role as Role) || this.busy()) return;
+    const current = this.inviteRoles();
+    this.inviteRoles.set(selected
+      ? [...new Set([...current, role])]
+      : current.filter((currentRole) => currentRole !== role));
+  }
+
+  canInvite(): boolean {
+    return Boolean(this.email().trim())
+      && (Math.min(this.inviteQuantity(), this.availableQuantity()) > 0 || this.inviteRoles().length > 0);
   }
 
   rolesChanged(user: OpenCloudPersonAllocation): boolean {
@@ -148,7 +162,7 @@ export class OpenCloudUsers {
       case 'owner': return 'Owner';
       case 'administrator': return 'Admin';
       case 'billing': return 'Billing';
-      default: return 'User';
+      default: return role;
     }
   }
 

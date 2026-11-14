@@ -21,6 +21,7 @@ interface UsageChart {
 export class OpenCloudStorageUsage {
   readonly label = input.required<string>();
   readonly storageQuantity = input.required<number>();
+  readonly minimumQuantity = input(1);
   readonly usedQuantity = input(0);
   readonly storageAmount = input.required<number>();
   readonly storageUnit = input.required<string>();
@@ -30,10 +31,11 @@ export class OpenCloudStorageUsage {
   readonly quantityChange = output<number>();
   readonly assignFirstUnit = output<void>();
 
+  readonly hasUsage = computed(() => this.usedQuantity() > 0 || this.dailyUsage().length > 0);
   readonly usagePercent = computed(() => this.storageQuantity() > 0
     ? Math.min(100, Math.max(0, this.usedQuantity() / this.storageQuantity() * 100))
-    : 0);
-  readonly usageChart = computed(() => {
+    : this.usedQuantity() > 0 ? 100 : 0);
+  readonly usageChart = computed<UsageChart>(() => {
     const series = [...this.dailyUsage()].sort((left, right) => left.date.localeCompare(right.date)).slice(-30);
     if (series.length === 0) return { line: '', area: '', lastX: 0, lastY: 0 };
 

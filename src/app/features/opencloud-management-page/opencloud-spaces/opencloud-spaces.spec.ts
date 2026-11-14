@@ -13,7 +13,6 @@ describe('OpenCloudSpaces', () => {
     fixture = TestBed.createComponent(OpenCloudSpaces);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('spaces', []);
-    fixture.componentRef.setInput('people', []);
     fixture.componentRef.setInput('availableQuantity', 3);
     fixture.componentRef.setInput('storageAmount', 1);
     fixture.componentRef.setInput('storageUnit', 'TB');
@@ -74,24 +73,7 @@ describe('OpenCloudSpaces', () => {
       .toBe('30-day storage usage for Design team');
   });
 
-  it('assigns the first storage unit to an unassigned space', () => {
-    const changed = vi.fn();
-    component.quantityChange.subscribe(changed);
-    fixture.componentRef.setInput('spaces', [{
-      id: 'space-1',
-      name: 'Design team',
-      memberCount: 0,
-      storageQuantity: 0,
-      members: [],
-    }]);
-    fixture.detectChanges();
-
-    (fixture.nativeElement.querySelector('.unassigned-storage button') as HTMLButtonElement).click();
-
-    expect(changed).toHaveBeenCalledWith({ spaceID: 'space-1', storageQuantity: 1 });
-  });
-
-  it('adds available linked people and removes listed members', () => {
+  it('adds a person by email, removes listed members, and deletes a space', () => {
     const space = {
       id: 'space-1',
       name: 'Design team',
@@ -105,30 +87,25 @@ describe('OpenCloudSpaces', () => {
         email: 'existing@example.com',
       }],
     };
-    const person = {
-      uid: 'person-2',
-      email: 'new@example.com',
-      roles: ['User'],
-      openCloudLinked: true,
-      storageQuantity: 1,
-      isOwner: false,
-    };
     const added = vi.fn();
     const removed = vi.fn();
+    const deleted = vi.fn();
     component.addMember.subscribe(added);
     component.removeMember.subscribe(removed);
+    component.deleteSpace.subscribe(deleted);
     fixture.componentRef.setInput('spaces', [space]);
-    fixture.componentRef.setInput('people', [person]);
     fixture.detectChanges();
 
     (fixture.nativeElement.querySelector('.remove-member') as HTMLButtonElement).click();
     const membersComponent = fixture.debugElement.query(By.directive(OpenCloudSpaceMembers))
       .injector.get(OpenCloudSpaceMembers);
-    membersComponent.selectedMember.set(person.uid);
+    membersComponent.email.set('new@example.com');
     membersComponent.submitAddMember({ preventDefault: vi.fn() } as unknown as Event);
+    (fixture.nativeElement.querySelector('.delete-space') as HTMLButtonElement).click();
 
     expect(removed).toHaveBeenCalledWith({ spaceID: 'space-1', permissionID: 'permission-1' });
-    expect(added).toHaveBeenCalledWith({ spaceID: 'space-1', uid: 'person-2' });
+    expect(added).toHaveBeenCalledWith({ spaceID: 'space-1', email: 'new@example.com' });
+    expect(deleted).toHaveBeenCalledWith({ spaceID: 'space-1' });
   });
 
   it('filters spaces and paginates the matching results', () => {

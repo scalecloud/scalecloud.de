@@ -15,19 +15,20 @@
   gap: 1rem;
 }
 
+.allocation-layout > * {
+  min-width: 0;
+}
+
 .allocation-identity {
   grid-area: identity;
-  min-width: 0;
 }
 
 .allocation-usage {
   grid-area: usage;
-  min-width: 0;
 }
 
 .allocation-details {
   grid-area: details;
-  min-width: 0;
 }
 
 @container allocation-header (max-width: 42rem) {

@@ -1,15 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { OpenCloudSpaceMembers } from '../opencloud-space-members/opencloud-space-members';
-import {
-  OpenCloudCreateSpaceRequest,
-  OpenCloudPersonAllocation,
-  OpenCloudSpaceAllocation,
-} from '../opencloud-management-model';
+import { OpenCloudCreateSpaceRequest, OpenCloudSpaceAllocation } from '../opencloud-management-model';
 import { OpenCloudAllocationHeader } from '../opencloud-allocation-header/opencloud-allocation-header';
 import { OpenCloudStorageUsage } from '../opencloud-storage-usage/opencloud-storage-usage';
 
@@ -18,12 +14,11 @@ import { OpenCloudStorageUsage } from '../opencloud-storage-usage/opencloud-stor
   templateUrl: './opencloud-spaces.html',
   styleUrl: './opencloud-spaces.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIcon, MatButton, MatPaginator, MatFormField, MatLabel, MatSuffix, MatInput, OpenCloudSpaceMembers, OpenCloudAllocationHeader, OpenCloudStorageUsage],
+  imports: [MatIcon, MatButton, MatIconButton, MatPaginator, MatFormField, MatLabel, MatSuffix, MatInput, OpenCloudSpaceMembers, OpenCloudAllocationHeader, OpenCloudStorageUsage],
 })
 export class OpenCloudSpaces {
   readonly spaces = input.required<OpenCloudSpaceAllocation[]>();
   readonly searchQuery = input('');
-  readonly people = input.required<OpenCloudPersonAllocation[]>();
   readonly availableQuantity = input.required<number>();
   readonly storageAmount = input.required<number>();
   readonly storageUnit = input.required<string>();
@@ -31,8 +26,9 @@ export class OpenCloudSpaces {
   readonly showCreateForm = input(false);
   readonly create = output<Omit<OpenCloudCreateSpaceRequest, 'subscriptionID'>>();
   readonly quantityChange = output<{ spaceID: string; storageQuantity: number }>();
-  readonly addMember = output<{ spaceID: string; uid: string }>();
+  readonly addMember = output<{ spaceID: string; email: string }>();
   readonly removeMember = output<{ spaceID: string; permissionID: string }>();
+  readonly deleteSpace = output<{ spaceID: string }>();
   readonly name = signal('');
   readonly initialQuantity = signal(1);
   readonly pageSize = signal(25);

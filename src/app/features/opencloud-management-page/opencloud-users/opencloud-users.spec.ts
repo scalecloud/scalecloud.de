@@ -18,7 +18,7 @@ describe('OpenCloudUsers', () => {
     fixture.detectChanges();
   });
 
-  it('emits an invitation with at least one unit of storage', () => {
+  it('emits a storage-only invitation without a User role', () => {
     const invited = vi.fn();
     component.invite.subscribe(invited);
     component.email.set('new@example.com');
@@ -26,7 +26,7 @@ describe('OpenCloudUsers', () => {
 
     component.submitInvite({ preventDefault: vi.fn() } as unknown as Event);
 
-    expect(invited).toHaveBeenCalledWith({ email: 'new@example.com', storageQuantity: 2 });
+    expect(invited).toHaveBeenCalledWith({ email: 'new@example.com', storageQuantity: 2, roles: [] });
   });
 
   it('does not invite a person when no quantity is available', () => {
@@ -40,13 +40,63 @@ describe('OpenCloudUsers', () => {
     expect(invited).not.toHaveBeenCalled();
   });
 
-  it('does not decrement an assigned user below one unit', () => {
+  it('allows reducing an assigned user to zero storage', () => {
     const changed = vi.fn();
     component.quantityChange.subscribe(changed);
 
-    component.adjustUser({ uid: 'user-1', email: 'user@example.com', roles: ['User'], openCloudLinked: true, storageQuantity: 1, isOwner: false }, -1);
+    component.adjustUser({ uid: 'user-1', email: 'user@example.com', roles: [], openCloudLinked: true, storageQuantity: 1, isOwner: false }, -1);
 
-    expect(changed).not.toHaveBeenCalled();
+    expect(changed).toHaveBeenCalledWith({ uid: 'user-1', storageQuantity: 0, isOwner: false });
+  });
+
+  it('allows inviting an admin with no storage', () => {
+    const invited = vi.fn();
+    component.invite.subscribe(invited);
+    component.email.set('admin@example.com');
+    component.inviteQuantity.set(0);
+    component.setInviteRoleSelected('Administrator', true);
+
+    component.submitInvite({ preventDefault: vi.fn() } as unknown as Event);
+
+    expect(invited).toHaveBeenCalledWith({
+      email: 'admin@example.com',
+      storageQuantity: 0,
+      roles: ['Administrator'],
+    });
+  });
+
+  it('keeps the invite email field enabled when no storage is available', () => {
+    fixture.componentRef.setInput('availableQuantity', 0);
+    fixture.componentRef.setInput('showInviteForm', true);
+    fixture.detectChanges();
+
+    const emailInput = fixture.nativeElement.querySelector('#invite-email') as HTMLInputElement;
+    expect(emailInput.disabled).toBe(false);
+  });
+
+  it('does not allow a zero-storage invitation without an admin or billing role', () => {
+    const invited = vi.fn();
+    component.invite.subscribe(invited);
+    component.email.set('person@example.com');
+    component.inviteQuantity.set(0);
+
+    component.submitInvite({ preventDefault: vi.fn() } as unknown as Event);
+
+    expect(invited).not.toHaveBeenCalled();
+  });
+
+  it('allows clearing all OpenCloud roles', () => {
+    const user = {
+      uid: 'user-1', email: 'user@example.com', roles: ['Billing'], openCloudLinked: true,
+      storageQuantity: 0, isOwner: false,
+    };
+    const rolesChanged = vi.fn();
+    component.rolesChange.subscribe(rolesChanged);
+
+    component.setRoleSelected(user, 'Billing', false);
+    component.saveRoles(user);
+
+    expect(rolesChanged).toHaveBeenCalledWith({ uid: 'user-1', roles: [] });
   });
 
   it('uses the same two-letter initials as the account header', () => {
@@ -62,7 +112,7 @@ describe('OpenCloudUsers', () => {
     fixture.componentRef.setInput('users', [{
       uid: 'user-1',
       email: 'user@example.com',
-      roles: ['User'],
+      roles: [],
       openCloudLinked: true,
       storageQuantity: 2,
       usedQuantity: 0.5,
@@ -83,7 +133,7 @@ describe('OpenCloudUsers', () => {
     fixture.componentRef.setInput('users', [{
       uid: 'user-1',
       email: 'user@example.com',
-      roles: ['User'],
+      roles: [],
       openCloudLinked: true,
       storageQuantity: 2,
       isOwner: false,
@@ -100,7 +150,7 @@ describe('OpenCloudUsers', () => {
 
   it('stages role changes and emits them when saved', () => {
     const user = {
-      uid: 'user-1', email: 'user@example.com', roles: ['User'], openCloudLinked: true,
+      uid: 'user-1', email: 'user@example.com', roles: [], openCloudLinked: true,
       storageQuantity: 1, isOwner: false,
     };
     const rolesChanged = vi.fn();
@@ -110,14 +160,14 @@ describe('OpenCloudUsers', () => {
     expect(component.rolesChanged(user)).toBe(true);
     component.saveRoles(user);
 
-    expect(rolesChanged).toHaveBeenCalledWith({ uid: 'user-1', roles: ['User', 'Billing'] });
+    expect(rolesChanged).toHaveBeenCalledWith({ uid: 'user-1', roles: ['Billing'] });
   });
 
   it('filters people and paginates the matching results', () => {
     fixture.componentRef.setInput('users', Array.from({ length: 30 }, (_, index) => ({
       uid: `user-${index}`,
       email: `person-${index}@example.com`,
-      roles: ['User'],
+      roles: [],
       openCloudLinked: true,
       storageQuantity: 1,
       isOwner: false,

@@ -13,7 +13,7 @@ const overview: OpenCloudOverviewReply = {
     dailyUsage: [{ date: '2026-10-01', usedQuantity: 1 }, { date: '2026-10-02', usedQuantity: 1.2 }],
   },
   users: [{
-    uid: 'user-1', email: 'user@example.com', roles: ['User'], openCloudLinked: true, storageQuantity: 3,
+    uid: 'user-1', email: 'user@example.com', roles: [], openCloudLinked: true, storageQuantity: 3,
     dailyUsage: [{ date: '2026-10-01', usedQuantity: 0.5 }, { date: '2026-10-02', usedQuantity: 0.6 }],
   }],
   spaces: [{

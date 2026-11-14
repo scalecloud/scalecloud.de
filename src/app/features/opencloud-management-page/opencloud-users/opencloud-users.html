@@ -6,26 +6,31 @@
         <mat-form-field appearance="outline" class="email-field" subscriptSizing="dynamic">
           <mat-label>Email address</mat-label>
           <input matInput id="invite-email" type="email" autocomplete="email" required
-            [value]="email()" [disabled]="busy() || availableQuantity() < 1"
+            [value]="email()" [disabled]="busy()"
             (input)="email.set($any($event.target).value)">
         </mat-form-field>
         <mat-form-field appearance="outline" class="quantity-field" subscriptSizing="dynamic">
           <mat-label>Storage</mat-label>
-          <input matInput aria-label="Storage for invited person" type="number" min="1"
+          <input matInput aria-label="Storage for invited person" type="number" min="0" step="1"
             [max]="availableQuantity()" [value]="inviteQuantity()"
-            [disabled]="busy() || availableQuantity() < 1"
+            [disabled]="busy()"
             (change)="setInviteQuantity($any($event.target).value)">
           <span matSuffix>{{ storageAmount() }} {{ storageUnit() }}</span>
         </mat-form-field>
-        <button mat-flat-button type="submit" [disabled]="busy() || availableQuantity() < 1">
+        <button mat-flat-button type="submit" [disabled]="busy() || !canInvite()">
           <mat-icon aria-hidden="true">send</mat-icon> Invite
         </button>
       </div>
-      @if (availableQuantity() < 1) {
-        <p class="form-hint">Free up storage first.</p>
-      } @else {
-        <p class="form-hint">At least {{ storageAmount() }} {{ storageUnit() }} is required.</p>
-      }
+      <mat-chip-listbox multiple aria-label="Roles for invited person" class="role-chip-list">
+        @for (role of editableRoles; track role) {
+          <mat-chip-option [selected]="inviteRoles().includes(role)"
+            [disabled]="busy()" [matTooltip]="roleDescriptions[role]"
+            (selectionChange)="setInviteRoleSelected(role, $event.selected)">
+            {{ roleLabel(role) }}
+          </mat-chip-option>
+        }
+      </mat-chip-listbox>
+      <p class="form-hint">Storage-only people need at least one unit. Admins and Billing can have no storage.</p>
     </form>
   }
 
@@ -40,18 +45,25 @@
             <div class="person-info">
               <strong>{{ user.email }}</strong>
             </div>
+            @if (!user.isOwner) {
+              <button mat-icon-button class="remove-user" type="button"
+                [attr.aria-label]="'Remove ' + user.email + ' from subscription'"
+                [disabled]="busy()" (click)="removeUser.emit({ uid: user.uid })">
+                <mat-icon aria-hidden="true">person_remove</mat-icon>
+              </button>
+            }
           </div>
           <app-opencloud-storage-usage allocation-usage [label]="user.email"
-            [storageQuantity]="user.storageQuantity" [usedQuantity]="user.usedQuantity ?? 0"
+            [storageQuantity]="user.storageQuantity" [minimumQuantity]="0" [usedQuantity]="user.usedQuantity ?? 0"
             [storageAmount]="storageAmount()" [storageUnit]="storageUnit()"
             [availableQuantity]="availableQuantity()" [busy]="busy()" [dailyUsage]="user.dailyUsage ?? []"
             (quantityChange)="adjustUser(user, $event)" (assignFirstUnit)="assignFirstUnit(user)" />
-          <div allocation-details class="person-details">
+          <div allocation-details>
             <div class="role-list">
               <mat-chip-listbox multiple class="role-chip-list" [attr.aria-label]="'Roles for ' + user.email">
                 @for (role of roleOptions(user); track role) {
                   <mat-chip-option [selected]="selectedRoles(user).includes(role)"
-                    [disabled]="roleOptionDisabled(user, role)" [matTooltip]="roleDescription(role)"
+                    [disabled]="roleOptionDisabled(user)" [matTooltip]="roleDescription(role)"
                     (selectionChange)="setRoleSelected(user, role, $event.selected)">
                     {{ roleLabel(role) }}
                   </mat-chip-option>
@@ -59,7 +71,7 @@
               </mat-chip-listbox>
               @if (!user.isOwner && rolesChanged(user)) {
                 <div class="role-actions">
-                  <button mat-button type="button" [disabled]="busy() || selectedRoles(user).length === 0"
+                  <button mat-button type="button" [disabled]="busy()"
                     (click)="saveRoles(user)">
                     <mat-icon aria-hidden="true">save</mat-icon> Save roles
                   </button>
