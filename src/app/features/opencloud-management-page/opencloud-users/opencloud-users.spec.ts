@@ -79,6 +79,21 @@ describe('OpenCloudUsers', () => {
       .toBe('30-day storage usage for user@example.com');
   });
 
+  it('does not show decimal places for whole-number storage allocations', () => {
+    fixture.componentRef.setInput('users', [{
+      uid: 'user-1',
+      email: 'user@example.com',
+      roles: ['User'],
+      openCloudLinked: true,
+      storageQuantity: 2,
+      isOwner: false,
+    }]);
+    fixture.detectChanges();
+
+    const allocation = fixture.nativeElement.querySelector('.allocation-control input') as HTMLInputElement;
+    expect(allocation.value).toBe('2');
+  });
+
   it('stages role changes and emits them when saved', () => {
     const user = {
       uid: 'user-1', email: 'user@example.com', roles: ['User'], openCloudLinked: true,

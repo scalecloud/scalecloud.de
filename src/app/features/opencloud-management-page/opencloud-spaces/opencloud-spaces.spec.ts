@@ -58,6 +58,8 @@ describe('OpenCloudSpaces', () => {
     expect(fixture.nativeElement.textContent).toContain('Used 0.50 of 2.00 TB');
     expect(fixture.nativeElement.textContent).not.toContain('Allocated');
     expect(fixture.nativeElement.querySelector('.space-heading .allocation-control')).toBeTruthy();
+    expect((fixture.nativeElement.querySelector('.space-heading .allocation-control input') as HTMLInputElement).value)
+      .toBe('2');
     expect(fixture.nativeElement.querySelector('mat-progress-bar')?.getAttribute('aria-valuenow')).toBe('25');
     expect(fixture.nativeElement.querySelector('svg[role="img"]')?.getAttribute('aria-label'))
       .toBe('30-day storage usage for Design team');
